@@ -15,4 +15,39 @@ RUN apt-get update && apt-get install -y \
           ros-${ROS_DISTRO}-demo-nodes-py \
           ros-${ROS_DISTRO}-xacro \
           ros-${ROS_DISTRO}-robot-localization \
-&& rm -rf /var/lib/apt/lists/*
+  && rm -rf /var/lib/apt/lists/*
+
+# Install RPLidar ROS2 driver
+RUN apt-get update && apt-get install -y \
+    ros-humble-rplidar-ros \
+  && rm -rf /var/lib/apt/lists/*
+
+# Create a non-root user
+ARG USERNAME=ros
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+
+# Create the user group, assign UID + group
+# Create the home directory and .config dir
+RUN groupadd --gid $USER_GID $USERNAME \
+          && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME \
+          && mkdir /home/$USERNAME/.config && chown $USER_UID:$USER_GID /home/$USERNAME/.config
+
+# Add sudo support for the non-root user
+RUN apt-get update && apt-get install -y sudo \
+          && echo "$USERNAME ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME \
+          && chmod 0440 /etc/sudoers.d/$USERNAME
+
+# Switch from root to user
+USER $USERNAME
+
+# Entrypoint script
+COPY ros_entrypoint.sh /ros_entrypoint.sh
+ENTRYPOINT ["/bin/bash","/ros_entrypoint.sh"]
+RUN echo "source /ros_entrypoint.sh" >> ~/.bashrc
+
+# Add user to dialout group to access the serial port
+RUN sudo usermod -aG dialout $USERNAME
+
+# Source the ROS setup file
+RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
