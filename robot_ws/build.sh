@@ -1,7 +1,7 @@
 # Script to build the ros2_humble image
 
 #!/bin/bash
-IMAGE_NAME="ros2_humble"
+IMAGE_NAME="ros2_humble_img"
 
 # Get the directory where THIS script is located
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
