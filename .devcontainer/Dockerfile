@@ -1,5 +1,24 @@
 FROM osrf/ros:humble-desktop
 
+# System tools
+RUN apt-get update && apt-get install -y \
+    iproute2 \
+    iputils-ping \ 
+    joystick \ 
+    net-tools \
+    nano \
+&& rm -rf /var/lib/apt/lists/*
+
+# ROS2 base - demo nodes + xacro + robot localization
+RUN apt-get update && apt-get install -y \
+          ros-${ROS_DISTRO}-demo-nodes-cpp \
+          ros-${ROS_DISTRO}-demo-nodes-py \
+          ros-${ROS_DISTRO}-xacro \
+          ros-${ROS_DISTRO}-joint-state-publisher \
+          ros-${ROS_DISTRO}-joint-state-publisher-gui \
+          ros-${ROS_DISTRO}-robot-localization \
+  && rm -rf /var/lib/apt/lists/*
+
 # Add ubuntu user with same UID and GID as your host system, if it doesn't already exist
 # Since Ubuntu 24.04, a non-root user is created by default with the name vscode and UID=1000
 ARG USERNAME=ubuntu
