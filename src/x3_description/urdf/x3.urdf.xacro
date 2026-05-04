@@ -1,0 +1,5 @@
+<?xml version = "1.0"?>
+<robot name = "agent" xmlns:xacro = "http://www.ros.org/wiki/xacro">
+    <!-- INCLUDE FILES -->
+    <xacro:include filename = "x3_body.xacro"/>
+</robot>
