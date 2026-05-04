@@ -1,0 +1,47 @@
+<?xml version = "1.0"?>
+<robot xmlns:xacro = "http://www.ros.org/wiki/xacro">
+    <!-- PERIPHERALS -->
+    <!-- lidar -->
+    <link name = "lidar_link">
+        <visual>
+            <origin xyz = "0 0 0" rpy = "1.570796 0 1.570796"/>
+            <geometry>
+                <mesh filename = "package://x3_description/meshes/lidar_link.STL" scale = "0.001 0.001 0.001"/>
+            </geometry>
+            <material name = "White"/>
+        </visual>
+
+        <collision>
+            <origin xyz = "0 0 -0.0005" rpy = "0 0 0"/>
+            <geometry>
+                <cylinder radius = "0.047" length = "0.04"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <mass value = "0.19"/>
+            <xacro:cylinder_inertia
+                mass = "0.19"
+                radius = "0.047"
+                length = "0.04"
+            />
+        </inertial>
+    </link>
+    <xacro:fixed_joint name="lidar_joint" parent="base_link" child="lidar_link" xyz="0.0405 5.25826986680105E-05 0.08285" rpy="0 0 0"/>
+    
+    <!-- camera -->
+    <xacro:common_link name="camera_link" material="White" collision_shape="box" collision_size="0.06 0.17 0.05">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0"/>
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+        </inertial>
+    </xacro:common_link>
+    <xacro:fixed_joint name="camera_joint" parent="base_link" child="camera_link" xyz="0.085105 1.7948E-05 0.06" rpy="0 -0.415 0"/>
+
+    <!-- Optical camera link & joint -->
+    <link name="camera_link_optical"></link>
+    <xacro:fixed_joint name="camera_optical_joint" parent="camera_link" child="camera_link_optical" xyz="0 0 0" rpy="-${pi/2} 0 -${pi/2}"/>
+
+
+</robot>

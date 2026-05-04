@@ -1,5 +1,60 @@
 <?xml version = "1.0"?>
 <robot name = "agent" xmlns:xacro = "http://www.ros.org/wiki/xacro">
-    <!-- INCLUDE FILES -->
+
+    <!-- ========== Common Macros ========== -->
+    <xacro:macro name="common_link" params="name material *origin collision_shape collision_size collision_xyz:='0 0 0'">
+        <link name="${name}">
+            <visual>
+                <geometry>
+                    <mesh filename="package://x3_description/meshes/${name}.STL"/>
+                </geometry>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <material name="${material}"/>
+            </visual>
+            <collision>
+                <geometry>
+                    <xacro:if value="${collision_shape == 'box'}">
+                        <box size="${collision_size}"/>
+                    </xacro:if>
+                    <xacro:if value="${collision_shape == 'cylinder'}">
+                        <cylinder radius="${collision_size.split()[0]}" length="${collision_size.split()[1]}"/>
+                    </xacro:if>
+                </geometry>
+                <origin xyz="${collision_xyz}" rpy="0 0 0"/>
+            </collision>
+            <xacro:insert_block name="origin"/>
+        </link>
+    </xacro:macro>
+    <xacro:macro name="continuous_joint" params="name parent child xyz rpy axis">
+        <joint name="${name}" type="continuous">
+            <parent link="${parent}"/>
+            <child link="${child}"/>
+            <origin xyz="${xyz}" rpy="${rpy}"/>
+            <axis xyz="${axis}"/>
+            <limit lower="${-pi}" upper="${pi}" effort="100" velocity="2.5"/>
+            <dynamics friction="1E-04"/>
+        </joint>
+    </xacro:macro>
+    <xacro:macro name="fixed_joint" params="name parent child xyz rpy">
+        <joint name="${name}" type="fixed">
+            <parent link="${parent}"/>
+            <child link="${child}"/>
+            <origin xyz="${xyz}" rpy="${rpy}"/>
+        </joint>
+    </xacro:macro>
+
+    <xacro:macro name = "cylinder_inertia" params = "mass radius length">
+        <inertia
+            ixx = "${mass * (3 * radius**2 + length**2) / 12}"
+            ixy = "0"
+            ixz = "0"
+            iyy = "${mass * (3 * radius**2 + length**2) / 12}"
+            iyz = "0"
+            izz = "${mass * radius**2 / 12}"
+        />
+    </xacro:macro>
+
+    <!-- ========== Includes ========== -->
     <xacro:include filename = "x3_body.xacro"/>
+    <xacro:include filename = "x3_sensors.xacro"/>
 </robot>

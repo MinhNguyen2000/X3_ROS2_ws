@@ -11,54 +11,6 @@
 
     <!-- Base links -->
     <link name="base_footprint"/>
-
-    <!-- Common link macro -->
-    <xacro:macro name="common_link" params="name material *origin collision_shape collision_size collision_xyz:='0 0 0'">
-        <link name="${name}">
-            <visual>
-                <geometry>
-                    <mesh filename="package://x3_description/meshes/${name}.STL"/>
-                </geometry>
-                <origin xyz="0 0 0" rpy="0 0 0"/>
-                <material name="${material}"/>
-            </visual>
-            <collision>
-                <geometry>
-                    <xacro:if value="${collision_shape == 'box'}">
-                        <box size="${collision_size}"/>
-                    </xacro:if>
-                    <xacro:if value="${collision_shape == 'cylinder'}">
-                        <cylinder radius="${collision_size.split()[0]}" length="${collision_size.split()[1]}"/>
-                    </xacro:if>
-                </geometry>
-                <origin xyz="${collision_xyz}" rpy="0 0 0"/>
-            </collision>
-            <xacro:insert_block name="origin"/>
-        </link>
-    </xacro:macro>
-
-    <!-- Continuous joint macro -->
-    <xacro:macro name="continuous_joint" params="name parent child xyz rpy axis">
-        <joint name="${name}" type="continuous">
-            <parent link="${parent}"/>
-            <child link="${child}"/>
-            <origin xyz="${xyz}" rpy="${rpy}"/>
-            <axis xyz="${axis}"/>
-            <limit lower="${-pi}" upper="${pi}" effort="100" velocity="2.5"/>
-            <dynamics friction="1E-04"/>
-        </joint>
-    </xacro:macro>
-
-    <!-- Fixed joint macro -->
-    <xacro:macro name="fixed_joint" params="name parent child xyz rpy">
-        <joint name="${name}" type="fixed">
-            <parent link="${parent}"/>
-            <child link="${child}"/>
-            <origin xyz="${xyz}" rpy="${rpy}"/>
-        </joint>
-    </xacro:macro>
-
-    <!-- Base Link -->
     <xacro:common_link name="base_link" material="Green" collision_shape="box" collision_size="0.2235 0.139 0.1165" collision_xyz='0.005 0 0.0025    '>
         <inertial>
             <origin xyz="0.00498197982182523 5.70233829969297E-05 -0.0121008098068578" rpy="0 0 0"/>
@@ -77,7 +29,7 @@
     <xacro:fixed_joint name="base_joint" parent="base_footprint" child="base_link" xyz="0.0 0.0 0.0850" rpy="0 0 0"/>
     
     <link name="imu_link"/>
-    <xacro:fixed_joint name="base_imu" parent="base_link" child="imu_link" xyz="-0.06 0.01 0.01" rpy="0 3.1415 1.5707"/>
+    <xacro:fixed_joint name="base_imu" parent="base_link" child="imu_link" xyz="-0.06 0.025 0.095" rpy="0 3.1415 1.5707"/>
 
     <!-- Wheels -->
     <xacro:common_link name="front_right_wheel" material="White" collision_shape="cylinder" collision_size="0.035 0.03">
