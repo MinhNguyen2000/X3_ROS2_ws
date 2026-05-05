@@ -46,12 +46,12 @@ class yahboomcar_driver(Node):
 		self.ylinear_limit = self.get_parameter('ylinear_limit').get_parameter_value().double_value
 		self.angular_limit = self.get_parameter('angular_limit').get_parameter_value().double_value
 
-		print(self.car_type)
-		print(self.imu_link)
-		print(self.Prefix)
-		print(self.xlinear_limit)
-		print(self.ylinear_limit)
-		print(self.angular_limit)
+		print("Car type: " + self.car_type)
+		# print(self.imu_link)
+		# print(self.Prefix)
+		print(f"Linear x limit: {self.xlinear_limit}")
+		print(f"Linear y limit: {self.ylinear_limit}")
+		print(f"Angular limit: {self.angular_limit}")
 
 		#create subcriber
 		self.sub_cmd_vel = self.create_subscription(TwistStamped,"cmd_vel",self.cmd_vel_callback,1)

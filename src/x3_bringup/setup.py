@@ -24,6 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            "mcnamu_driver = x3_bringup.Mcnamu_driver:main",
         ],
     },
 )
