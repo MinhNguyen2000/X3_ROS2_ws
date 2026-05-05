@@ -1,0 +1,9 @@
+/home/toosimple/workspace/astra_ws/src/ros2_astra_camera/astra_camera_msgs/cmake-build-debug/rosidl_adapter/astra_camera_msgs:msg/DeviceInfo.idl
+/home/toosimple/workspace/astra_ws/src/ros2_astra_camera/astra_camera_msgs/cmake-build-debug/rosidl_adapter/astra_camera_msgs:msg/Extrinsics.idl
+/home/toosimple/workspace/astra_ws/src/ros2_astra_camera/astra_camera_msgs/cmake-build-debug/rosidl_adapter/astra_camera_msgs:msg/Metadata.idl
+/home/toosimple/workspace/astra_ws/src/ros2_astra_camera/astra_camera_msgs/cmake-build-debug/rosidl_adapter/astra_camera_msgs:srv/GetDeviceInfo.idl
+/home/toosimple/workspace/astra_ws/src/ros2_astra_camera/astra_camera_msgs/cmake-build-debug/rosidl_adapter/astra_camera_msgs:srv/GetCameraInfo.idl
+/home/toosimple/workspace/astra_ws/src/ros2_astra_camera/astra_camera_msgs/cmake-build-debug/rosidl_adapter/astra_camera_msgs:srv/GetCameraParams.idl
+/home/toosimple/workspace/astra_ws/src/ros2_astra_camera/astra_camera_msgs/cmake-build-debug/rosidl_adapter/astra_camera_msgs:srv/GetInt32.idl
+/home/toosimple/workspace/astra_ws/src/ros2_astra_camera/astra_camera_msgs/cmake-build-debug/rosidl_adapter/astra_camera_msgs:srv/GetString.idl
+/home/toosimple/workspace/astra_ws/src/ros2_astra_camera/astra_camera_msgs/cmake-build-debug/rosidl_adapter/astra_camera_msgs:srv/SetInt32.idl
