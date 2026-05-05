@@ -42,18 +42,13 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /
 RUN git clone https://github.com/libuvc/libuvc.git \
-          && cd libuvc \
-          && mkdir build && cd build \
-          && cmake .. \
-          && make -j4 \
-          && make install \
-          && ldconfig \
+    && cd libuvc \
+    && mkdir build && cd build \
+    && cmake .. \
+    && make -j4 \
+    && make install \
+    && ldconfig \
 && rm -rf /libuvc
-
-# Install RPLidar ROS2 driver
-RUN apt-get update && apt-get install -y \
-    ros-humble-rplidar-ros \
-  && rm -rf /var/lib/apt/lists/*
 
 # Install Python packages
 RUN apt update && apt install -y python3-pip \
