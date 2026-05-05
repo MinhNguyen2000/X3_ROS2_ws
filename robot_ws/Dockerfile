@@ -11,16 +11,29 @@ RUN apt-get update && apt-get install -y \
 
 # ROS2 base - demo nodes + xacro + robot localization
 RUN apt-get update && apt-get install -y \
-          ros-${ROS_DISTRO}-demo-nodes-cpp \
-          ros-${ROS_DISTRO}-demo-nodes-py \
-          ros-${ROS_DISTRO}-xacro \
-          ros-${ROS_DISTRO}-robot-localization \
+    ros-${ROS_DISTRO}-demo-nodes-cpp \
+    ros-${ROS_DISTRO}-demo-nodes-py \
+    ros-${ROS_DISTRO}-xacro \
+    ros-${ROS_DISTRO}-robot-localization \
+    ros-${ROS_DISTRO}-joint-state-publisher \
+    ros-${ROS_DISTRO}-joint-state-publisher-gui \
+    ros-${ROS_DISTRO}-robot-state-publisher \
   && rm -rf /var/lib/apt/lists/*
 
 # Install RPLidar ROS2 driver
 RUN apt-get update && apt-get install -y \
     ros-humble-rplidar-ros \
   && rm -rf /var/lib/apt/lists/*
+
+# Install Python packages
+RUN apt update && apt install -y python3-pip \
+    && rm -rf /var/lib/apt/list/*
+
+# Install Rosmaster_lib
+RUN sudo pip3 install pyserial
+
+COPY rosmaster_driver_install /tmp/rosmaster_driver_install
+RUN cd /tmp/rosmaster_driver_install && python3 setup.py install
 
 # Create a non-root user
 ARG USERNAME=ros
@@ -51,3 +64,6 @@ RUN sudo usermod -aG dialout $USERNAME
 
 # Source the ROS setup file
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
+
+WORKDIR /X1_ROS2_ws
+USER root 
