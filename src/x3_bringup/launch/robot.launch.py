@@ -56,6 +56,10 @@ def generate_launch_description():
         parameters=[{"robot_description": robot_description}],
     )
 
+    joint_state_publisher_gui = Node(
+        package="joint_state_publisher",
+        executable="joint_state_publisher", 
+    )
 
     # camera launch file
     camera_launch = IncludeLaunchDescription(
@@ -84,6 +88,31 @@ def generate_launch_description():
         }],
     )
 
+    # lidar launch file
+    lidar_launch = Node(
+        package='rplidar_ros',
+        executable='rplidar_node',
+        name='rplidar_node',
+        output='screen',
+        parameters=[{
+            'channel_type': 'serial',
+            'serial_port': '/dev/rplidar',
+            'serial_baudrate': 1000000,
+            'frame_id': 'laser',
+            'inverted': False,
+            'angle_compensate': True,
+            'scan_mode': 'DenseBoost',
+        }]
+    )
+
+    lidar_tf_rotate = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='laser_transform',
+        arguments=['0', '0', '0', '3.14159', '0', '0', 'base_link', 'laser']
+        #                                      ^ yaw 180°
+    )
+
     # Low level driver node - IMU, wheel encoder, and wheel motors
     driver_node = Node(
         package='x3_bringup',
@@ -94,7 +123,10 @@ def generate_launch_description():
         model_arg,
         camera_name_arg,
         robot_state_publisher_node,
+        joint_state_publisher_gui,
         camera_launch,
         image_republisher_node,
+        lidar_launch,
+        lidar_tf_rotate,
         driver_node,
     ])
