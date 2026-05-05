@@ -37,6 +37,11 @@ RUN apt-get update && \
 # Switch from root to user
 USER $USERNAME
 
+# Entrypoint script
+COPY ros_entrypoint.sh /ros_entrypoint.sh
+ENTRYPOINT ["/bin/bash","/ros_entrypoint.sh"]
+RUN echo "source /ros_entrypoint.sh" >> /home/$USERNAME/.bashrc
+
 # Add user to video group to allow access to webcam
 RUN sudo usermod --append --groups video $USERNAME
 
