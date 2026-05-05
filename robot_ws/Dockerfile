@@ -20,6 +20,36 @@ RUN apt-get update && apt-get install -y \
     ros-${ROS_DISTRO}-robot-state-publisher \
   && rm -rf /var/lib/apt/lists/*
 
+# ROS2 camera - to work with the Orbbec Astra Pro Plus camera
+RUN apt-get update && apt-get install -y \
+    libgflags-dev \
+    libgoogle-glog-dev \
+    libdw-dev \
+    libusb-1.0-0-dev \
+    libeigen3-dev \
+    nlohmann-json3-dev \
+    ros-${ROS_DISTRO}-image-geometry \
+    ros-${ROS_DISTRO}-camera-info-manager \
+    ros-${ROS_DISTRO}-image-transport \
+    ros-${ROS_DISTRO}-compressed-image-transport \
+    ros-${ROS_DISTRO}-image-publisher \
+    ros-${ROS_DISTRO}-image-transport-plugins \
+    ros-${ROS_DISTRO}-backward-ros \
+    ros-${ROS_DISTRO}-diagnostic-updater \
+    ros-${ROS_DISTRO}-diagnostic-msgs \
+    ros-${ROS_DISTRO}-statistics-msgs \
+&& rm -rf /var/lib/apt/lists/*
+
+WORKDIR /
+RUN git clone https://github.com/libuvc/libuvc.git \
+          && cd libuvc \
+          && mkdir build && cd build \
+          && cmake .. \
+          && make -j4 \
+          && make install \
+          && ldconfig \
+&& rm -rf /libuvc
+
 # Install RPLidar ROS2 driver
 RUN apt-get update && apt-get install -y \
     ros-humble-rplidar-ros \
@@ -64,6 +94,7 @@ RUN sudo usermod -aG dialout $USERNAME
 
 # Source the ROS setup file
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
+RUN echo "source /X3_ROS2_ws/install/setup.bash" >> ~/.bashrc
 
-WORKDIR /X1_ROS2_ws
+WORKDIR /X3_ROS2_ws
 USER root 
