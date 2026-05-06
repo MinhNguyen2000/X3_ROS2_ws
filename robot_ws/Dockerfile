@@ -91,5 +91,11 @@ RUN sudo usermod -aG dialout $USERNAME
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
 RUN echo "source /X3_ROS2_ws/install/setup.bash" >> ~/.bashrc
 
+# Install Python libraries for DRL policy
+RUN pip install "numpy<2" \
+    matplotlib \
+    opencv-python \
+    stable-baselines3
+
 WORKDIR /X3_ROS2_ws
 USER root 
