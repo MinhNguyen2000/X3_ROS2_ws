@@ -118,26 +118,25 @@ class yahboomcar_driver(Node):
 		if len(self.Prefix)==0:
 			# state.name = ["back_right_joint", "back_left_joint","front_left_steer_joint","front_left_wheel_joint",
 			# 				"front_right_steer_joint", "front_right_wheel_joint"]
-			state.name = ["back_right_joint", "back_left_joint", "front_left_wheel_joint", "front_right_wheel_joint"]
+			state.name = ["back_left_joint", "front_left_joint", "front_right_joint", "back_right_joint"]
 			
 		else:
 			state.name = [self.Prefix+"back_right_joint",self.Prefix+ "back_left_joint",self.Prefix+"front_left_steer_joint",self.Prefix+"front_left_wheel_joint",
 							self.Prefix+"front_right_steer_joint", self.Prefix+"front_right_wheel_joint"]
 		
-		#print ("mag: ",self.car.get_magnetometer_data())		
+		#print ("mag: ",self.car.get_magnetometer_data())
+		# ===== Miscellaneous car data =====		
 		battery.data = self.car.get_battery_voltage()*1.0
 		edition.data = self.car.get_version()*1.0
+		
+		# ===== IMU Data processing =====
 		ax, ay, az = self.car.get_accelerometer_data()
 		gx, gy, gz = self.car.get_gyroscope_data()
 		mx, my, mz = self.car.get_magnetometer_data()
 		mx = mx * 1.0
 		my = my * 1.0
 		mz = mz * 1.0
-		vx, vy, angular = self.car.get_motion_data()
-		'''print("vx: ",vx)
-		print("vy: ",vy)
-		print("angular: ",angular)'''
-		# Publish gyroscope data
+
 		imu.header.stamp = time_stamp.to_msg()
 		imu.header.frame_id = self.imu_link
 		imu.linear_acceleration.x = ax*1.0
@@ -153,24 +152,40 @@ class yahboomcar_driver(Node):
 		mag.magnetic_field.y = my*1.0
 		mag.magnetic_field.z = mz*1.0
 		
-		# Publish the current linear vel and angular vel of the car
+		# ===== Car velocities =====
+		vx, vy, angular = self.car.get_motion_data()
 		twiststamped.header.stamp = time_stamp.to_msg()
 		twiststamped.twist.linear.x = vx *1.0
 		twiststamped.twist.linear.y = vy *1.0
 		twiststamped.twist.angular.z = angular*1.0    
 		
+		# ===== Joint states =====
+		m1, m2, m3, m4 = self.car.get_motor_encoder()
+
+        # 11 ticks per shaft rev, 30:1 input:output shaft, 4 for quadrature
+		ticks_per_rev = 11 * 30 * 4     
+
+		state.position = [
+            int(m1) / ticks_per_rev * 2 * math.pi,
+            int(m2) / ticks_per_rev * 2 * math.pi,
+            int(m3) / ticks_per_rev * 2 * math.pi,
+            int(m4) / ticks_per_rev * 2 * math.pi,
+        ]
+
+		# ===== Debug Prints =====
 		# print("ax: %.5f, ay: %.5f, az: %.5f" % (ax, ay, az))
 		# print("gx: %.5f, gy: %.5f, gz: %.5f" % (gx, gy, gz))
 		# print("mx: %.5f, my: %.5f, mz: %.5f" % (mx, my, mz))
 		# rospy.loginfo("battery: {}".format(battery))
 		# rospy.loginfo("vx: {}, vy: {}, angular: {}".format(twist.linear.x, twist.linear.y, twist.angular.z))
+
+		# ===== Publish data =====
 		self.volPublisher.publish(battery)
 		self.EdiPublisher.publish(edition)
 		self.imuPublisher.publish(imu)
 		self.magPublisher.publish(mag)
 		self.velPublisher.publish(twiststamped)
-		
-		
+		self.staPublisher.publish(state)
 			
 def main():
 	rclpy.init() 

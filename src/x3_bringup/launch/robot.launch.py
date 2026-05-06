@@ -59,11 +59,6 @@ def generate_launch_description():
         parameters=[{"robot_description": robot_description}],
     )
 
-    joint_state_publisher_gui = Node(
-        package="joint_state_publisher",
-        executable="joint_state_publisher", 
-    )
-
     # camera launch file
     camera_launch = IncludeLaunchDescription(
         AnyLaunchDescriptionSource(camera_launch_path),
@@ -131,7 +126,6 @@ def generate_launch_description():
         model_arg,
         camera_name_arg,
         robot_state_publisher_node,
-        joint_state_publisher_gui,
         camera_launch,
         image_republisher_node,
         lidar_node,
