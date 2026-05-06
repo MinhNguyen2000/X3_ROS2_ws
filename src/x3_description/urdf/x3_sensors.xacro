@@ -4,7 +4,7 @@
     <!-- lidar -->
     <link name = "lidar_link">
         <visual>
-            <origin xyz = "0 0 0" rpy = "1.570796 0 1.570796"/>
+            <origin xyz = "0 0 0" rpy = "1.570796 0 ${1.570796 - pi}"/>
             <geometry>
                 <mesh filename = "package://x3_description/meshes/lidar_link.STL" scale = "0.001 0.001 0.001"/>
             </geometry>
@@ -27,7 +27,7 @@
             />
         </inertial>
     </link>
-    <xacro:fixed_joint name="lidar_joint" parent="base_link" child="lidar_link" xyz="0.0405 5.25826986680105E-05 0.08285" rpy="0 0 0"/>
+    <xacro:fixed_joint name="lidar_joint" parent="base_link" child="lidar_link" xyz="0.0405 5.25826986680105E-05 0.08285" rpy="0 0 ${pi}"/>
     
     <!-- camera -->
     <xacro:common_link name="camera_link" material="White" collision_shape="box" collision_size="0.06 0.17 0.05">

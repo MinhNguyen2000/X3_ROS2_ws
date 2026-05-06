@@ -81,7 +81,7 @@ def generate_launch_description():
         ],
         parameters=[{
             # JPEG quality 0-100: lower = smaller packets, higher = better image quality.
-            'compressed.jpeg_quality': 80,
+            'compressed.jpeg_quality': 60,
             'compressed.format': 'jpeg',
         }],
     )
@@ -103,14 +103,6 @@ def generate_launch_description():
         }]
     )
 
-    lidar_tf_rotate = Node(
-        package='tf2_ros',
-        executable='static_transform_publisher',
-        name='laser_transform',
-        arguments=['0', '0', '0', '3.14159', '0', '0', 'base_link', 'lidar_link']
-        #                             ^ yaw 180°
-    )
-
     # Launch the odometry nodes
     odom_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([odom_launch_path])
@@ -129,7 +121,6 @@ def generate_launch_description():
         camera_launch,
         image_republisher_node,
         lidar_node,
-        lidar_tf_rotate,
         odom_launch,
         driver_node,
     ])
