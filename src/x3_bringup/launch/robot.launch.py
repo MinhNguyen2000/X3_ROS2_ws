@@ -101,7 +101,7 @@ def generate_launch_description():
             'channel_type': 'serial',
             'serial_port': '/dev/rplidar',
             'serial_baudrate': 1000000,
-            'frame_id': 'laser',
+            'frame_id': 'lidar_link',
             'inverted': False,
             'angle_compensate': True,
             'scan_mode': 'DenseBoost',
