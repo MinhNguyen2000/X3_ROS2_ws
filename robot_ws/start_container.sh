@@ -7,6 +7,7 @@ docker run -d --name ros2_humble --restart unless-stopped \
   --privileged \
   -e NVIDIA_VISIBLE_DEVICES=all \
   -e NVIDIA_DRIVER_CAPABILITIES=all \
+  -e TZ=Canada/Atlantic \
   -v /dev:/dev --device-cgroup-rule='c *:* rmw' \
   -v ~/X3_ROS2_ws:/X3_ROS2_ws \
   ros2_humble_img sleep infinity
