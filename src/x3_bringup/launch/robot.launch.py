@@ -27,6 +27,9 @@ def generate_launch_description():
     camera_pkg_dir = get_package_share_directory("astra_camera")
     camera_launch_path = os.path.join(camera_pkg_dir, "launch", "astra_pro_plus.launch.xml")
 
+    bringup_pkg_dir = get_package_share_directory("x3_bringup")
+    odom_launch_path = os.path.join(bringup_pkg_dir, "launch", "odom.launch.py")
+
     # ===== DECLARE LAUNCH ARGUMENTS =====
     model_arg = DeclareLaunchArgument(
         name="robot_model",
@@ -89,7 +92,7 @@ def generate_launch_description():
     )
 
     # lidar launch file
-    lidar_launch = Node(
+    lidar_node = Node(
         package='rplidar_ros',
         executable='rplidar_node',
         name='rplidar_node',
@@ -109,15 +112,20 @@ def generate_launch_description():
         package='tf2_ros',
         executable='static_transform_publisher',
         name='laser_transform',
-        arguments=['0', '0', '0', '3.14159', '0', '0', 'base_link', 'laser']
-        #                                      ^ yaw 180°
+        arguments=['0', '0', '0', '3.14159', '0', '0', 'base_link', 'lidar_link']
+        #                             ^ yaw 180°
+    )
+
+    # Launch the odometry nodes
+    odom_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([odom_launch_path])
     )
 
     # Low level driver node - IMU, wheel encoder, and wheel motors
     driver_node = Node(
         package='x3_bringup',
         executable='mcnamu_driver',
-    )
+    )  
 
     return LaunchDescription([
         model_arg,
@@ -126,7 +134,8 @@ def generate_launch_description():
         joint_state_publisher_gui,
         camera_launch,
         image_republisher_node,
-        lidar_launch,
+        lidar_node,
         lidar_tf_rotate,
+        odom_launch,
         driver_node,
     ])
