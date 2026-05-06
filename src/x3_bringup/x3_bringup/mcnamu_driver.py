@@ -74,14 +74,14 @@ class yahboomcar_driver(Node):
 		self.edition.data = 1.0
 		self.car.create_receive_threading()
 
-	def cmd_vel_callback(self,msg):
+	def cmd_vel_callback(self, msg:TwistStamped):
         # Car motion control, subscriber callback function
 		if not isinstance(msg, TwistStamped): return
         # Issue linear vel and angular vel
-		vx = msg.linear.x*1.0
+		vx = msg.twist.linear.x*1.0
         #vy = msg.linear.y/1000.0*180.0/3.1416    #Radian system
-		vy = msg.linear.y*1.0
-		angular = msg.angular.z*1.0     # wait for chang
+		vy = msg.twist.linear.y*1.0
+		angular = msg.twist.angular.z*1.0     # wait for chang
 		self.car.set_car_motion(vx, vy, angular)
 		'''print("cmd_vx: ",vx)
 		print("cmd_vy: ",vy)
