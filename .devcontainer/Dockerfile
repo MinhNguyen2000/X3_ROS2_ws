@@ -7,16 +7,26 @@ RUN apt-get update && apt-get install -y \
     joystick \ 
     net-tools \
     nano \
-&& rm -rf /var/lib/apt/lists/*
+  && rm -rf /var/lib/apt/lists/*
 
-# ROS2 base - demo nodes + xacro + robot localization
+# ROS2 base - diagnostic tools
 RUN apt-get update && apt-get install -y \
-          ros-${ROS_DISTRO}-demo-nodes-cpp \
-          ros-${ROS_DISTRO}-demo-nodes-py \
-          ros-${ROS_DISTRO}-xacro \
-          ros-${ROS_DISTRO}-joint-state-publisher \
-          ros-${ROS_DISTRO}-joint-state-publisher-gui \
-          ros-${ROS_DISTRO}-robot-localization \
+    ros-${ROS_DISTRO}-demo-nodes-cpp \
+    ros-${ROS_DISTRO}-demo-nodes-py \
+    ros-${ROS_DISTRO}-xacro \
+    ros-${ROS_DISTRO}-joint-state-publisher \
+    ros-${ROS_DISTRO}-joint-state-publisher-gui \
+    ros-${ROS_DISTRO}-robot-localization \
+    ros-${ROS_DISTRO}-rqt-tf-tree \
+    ros-${ROS_DISTRO}-plotjuggler-ros \
+  && rm -rf /var/lib/apt/lists/*
+
+# ROS2 camera - packages to visualize the camera stream
+RUN apt-get update && apt-get install -y \
+    ros-${ROS_DISTRO}-image-transport \
+    ros-${ROS_DISTRO}-image-transport-plugins \
+    ros-${ROS_DISTRO}-compressed-image-transport \
+    ros-${ROS_DISTRO}-image-publisher \
   && rm -rf /var/lib/apt/lists/*
 
 # Add ubuntu user with same UID and GID as your host system, if it doesn't already exist
