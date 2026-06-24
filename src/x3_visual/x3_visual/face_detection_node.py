@@ -35,7 +35,7 @@ class FaceDetectionNode(Node):
         self.input_h, self.input_w = input_hw
 
         # --- Locate the ONNX model
-        pkg_dir = get_package_share_directory('x1_visual')
+        pkg_dir = get_package_share_directory('x3_visual')
         model_path = os.path.join(pkg_dir, 'models', 'face_detection', f'{model_name}.onnx')
 
         # --- Build ONNXRuntime session with TRT or CUDA execution provider
@@ -67,9 +67,9 @@ class FaceDetectionNode(Node):
 
         self.camera_info: CameraInfo | None = None
         self.camera_info_sub = self.create_subscription(CameraInfo, '/camera/color/camera_info', self.camera_info_callback, 10)
-        self.crop_pub = self.create_publisher( Image, '/face_crop', qos_profile=qos)
-        self.detection_pub = self.create_publisher( Detection2DArray, '/face_detection', qos_profile = qos)
-        self.face_pose_pub = self.create_publisher( PoseStamped, '/face_pose', 10)
+        self.crop_pub = self.create_publisher(Image, '/face_crop', qos_profile=qos)
+        self.detection_pub = self.create_publisher(Detection2DArray, '/face_detection', qos_profile = qos)
+        self.face_pose_pub = self.create_publisher(PoseStamped, '/face_pose', 10)
 
         # --- Declare variables
         self.face_x_smooth = 0.0
@@ -87,7 +87,7 @@ class FaceDetectionNode(Node):
                     'trt_max_workspace_size':           256 * 1024 * 1024,
                     'trt_fp16_enable':                  True,
                     'trt_engine_cache_enable':          True,
-                    'trt_engine_cache_path':            '/X1_ROS2_ws/src/x1_visual/models/face_detection',
+                    'trt_engine_cache_path':            '/X3_ROS2_ws/src/x3_visual/models/face_detection',
                     'trt_force_sequential_engine_build': False
                 }),
                 ('CUDAExecutionProvider', {'device_id': 0}),

@@ -30,8 +30,8 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'face_detection_node = x1_visual.face_detection_node:main',
-            'emotion_recognition_node = x1_visual.emotion_recognition_node:main'
+            'face_detection_node = x3_visual.face_detection_node:main',
+            'emotion_recognition_node = x3_visual.emotion_recognition_node:main'
         ],
     },
 )
