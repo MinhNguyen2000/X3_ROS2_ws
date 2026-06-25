@@ -66,7 +66,8 @@ COPY rosmaster_driver_install /tmp/rosmaster_driver_install
 RUN cd /tmp/rosmaster_driver_install && python3 setup.py install
 
 # Set shared library path and cuda tools executable paths for CUDA inference
-ENV LD_LIBRARY_PATH=/usr/local/cuda-12.6/targets/aarch64-linux/lib:${LD_LIBRARY_PATH}
+# ENV LD_LIBRARY_PATH=/usr/local/cuda-12.6/targets/aarch64-linux/lib:/usr/lib/aarch64-linux-gnu:/usr/lib/aarch64-linux-gnu/nvidia
+ENV LD_LIBRARY_PATH=/usr/local/cuda-12.6/targets/aarch64-linux/lib:/usr/lib/gpu_libs
 ENV PATH=/usr/local/cuda-12.6/bin:${PATH}
 
 # Create a non-root user
@@ -96,18 +97,23 @@ RUN echo "source /ros_entrypoint.sh" >> ~/.bashrc
 # Add user to dialout group to access the serial port
 RUN sudo usermod -aG dialout $USERNAME
 
+# Add user to the video group to access Jetson GPU accelerated graphics
+RUN sudo usermod --append --groups video $USERNAME
+
 # Source the ROS setup file
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
 RUN echo "source /X3_ROS2_ws/install/setup.bash" >> ~/.bashrc
 
 # Set CUDA library paths for interactive SSH sessions
-RUN echo 'export LD_LIBRARY_PATH=/usr/local/cuda-12.6/targets/aarch64-linux/lib:$LD_LIBRARY_PATH' >> ~/.bashrc
+# RUN echo 'export LD_LIBRARY_PATH=/usr/local/cuda-12.6/targets/aarch64-linux/lib:/usr/lib/aarch64-linux-gnu:$LD_LIBRARY_PATH' >> ~/.bashrc
+RUN echo 'export LD_LIBRARY_PATH=/usr/local/cuda-12.6/targets/aarch64-linux/lib:/usr/lib/gpu_libs:$LD_LIBRARY_PATH' >> ~/.bashrc
 
 # Install Python libraries for DRL policy
 RUN pip install "numpy<2" \
     matplotlib \
     opencv-python \
-    stable-baselines3
+    stable-baselines3 \
+    && pip3 install onnxruntime-gpu --extra-index-url https://pypi.jetson-ai-lab.io/jp6/cu126
 
 WORKDIR /X3_ROS2_ws
 USER root 
