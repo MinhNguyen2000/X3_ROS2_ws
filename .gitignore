@@ -1,3 +1,7 @@
 build/
 install/
 log/
+robot_ws/gpu_libs
+
+# Ignore TRT engine files in src folder (hardware-dependent)
+*.engine

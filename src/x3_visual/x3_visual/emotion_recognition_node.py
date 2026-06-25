@@ -17,19 +17,19 @@ class EmotionRecognitionNode(Node):
         super().__init__('emotion_recognition_node')
 
         # --- Parameters
-        self.declare_parameter('model_name', 'fer2013_ResNet18')
+        self.declare_parameter('model_name', 'fer2013_ResNet50_0')
         # self.declare_parameter('sad_confidence_threshold', 0.20)
         self.declare_parameter('use_trt', True)
 
-        model_name = self.get_parameter('model_name').value
+        self.model_name = self.get_parameter('model_name').value
         # self.sad_threshold = self.get_parameter('sad_confidence_threshold').value
         use_trt = self.get_parameter('use_trt').value
 
         # --- Load ONNX model
         pkg_dir = get_package_share_directory('x3_visual')
-        self.model_dir = os.path.join(pkg_dir, 'models', 'emotion_recognition', model_name)
-        model_path = os.path.join(self.model_dir, f'model.onnx')
-        onnx_config_path = os.path.join(self.model_dir, 'onnx_config.json')
+        model_dir = os.path.join(pkg_dir, 'models', 'emotion_recognition', self.model_name)
+        model_path = os.path.join(model_dir, f'model.onnx')
+        onnx_config_path = os.path.join(model_dir, 'onnx_config.json')
 
         # Error handling
         if not os.path.exists(onnx_config_path):
@@ -60,7 +60,7 @@ class EmotionRecognitionNode(Node):
 
         self.get_logger().info(
             f'Emotion recognition node ready \n'
-            f'  model: {model_name} \n'
+            f'  model: {self.model_name} \n'
             f'  input: {self.input_name} {self.input_shape} \n'
             f'  output: {self.output_name} {self.output_shape} \n'
             f'  provider: {self.session.get_providers()}'
@@ -92,7 +92,7 @@ class EmotionRecognitionNode(Node):
                     'trt_max_workspace_size':   512 * 1024 * 1024,
                     'trt_fp16_enable':          True,
                     'trt_engine_cache_enable':  True,
-                    'trt_engine_cache_path':    self.model_dir
+                    'trt_engine_cache_path':    os.path.join('/X3_ROS2_ws', 'src', 'x3_visual', 'models', 'emotion_recognition', self.model_name)
                 }),
                 ('CUDAExecutionProvider', {'device_id': 0}),
                 'CPUExecutionProvider'
@@ -170,9 +170,11 @@ class EmotionRecognitionNode(Node):
         pred_label = self.class_names[pred_idx]
         pred_conf = float(probs[pred_idx])
 
+        probs_formatted = list(f"{self.class_names[i][0]}: {prob:5.3f}" for i, prob in enumerate(probs))
+
         self.get_logger().info(
-            f'Detected Emotion: {pred_label} ({pred_conf:.2f}) | '
-            f'Probabilities: {probs} \n'
+            f'Detected Emotion: {pred_label} ({pred_conf:.2f}) \n'
+            f'Probabilities: {probs_formatted} \n'
             f'Face @ ({pose_msg.pose.position.x:.2f}, '
             f'{pose_msg.pose.position.y:.2f}, '
             f'{pose_msg.pose.position.z:.2f})'
@@ -185,7 +187,7 @@ class EmotionRecognitionNode(Node):
             self.latest_pose = distress_face_pose
             self.distress_face_pose_pub.publish(distress_face_pose)
 
-            self.get_logger().info(f'{pred_label} face published at distance {pose_msg.pose.position.z:.2f}m')
+            # self.get_logger().info(f'{pred_label} face published at distance {pose_msg.pose.position.z:.2f}m')
 
 def main():
     rclpy.init()

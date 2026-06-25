@@ -15,7 +15,14 @@ setup(
 
         # model weights
         (os.path.join('share', package_name, 'models', 'face_detection'), glob('models/face_detection/*.onnx')),
-        (os.path.join('share', package_name, 'models', 'emotion_recognition'), glob('models/emotion_recognition/*'))
+        *[
+            (
+                os.path.join('share', package_name, 'models', 'emotion_recognition', model_name), 
+                glob(f'models/emotion_recognition/{model_name}/*')
+            )
+            for model_name in os.listdir('models/emotion_recognition')
+            if os.path.isdir(f'models/emotion_recognition/{model_name}')
+        ]
     ],
     install_requires=['setuptools'],
     zip_safe=True,

@@ -17,7 +17,7 @@ class FaceDetectionNode(Node):
         super().__init__('face_detection_node')
 
         # --- Parameters 
-        self.declare_parameter('model_name', 'yolov5_n_widerface_01')
+        self.declare_parameter('model_name', 'yolov8_n_widerface_01')
         self.declare_parameter('input_topic', '/camera/color/image_raw')
         self.declare_parameter('confidence_threshold', 0.50)
         self.declare_parameter('nms_threshold', 0.45)
@@ -36,7 +36,8 @@ class FaceDetectionNode(Node):
 
         # --- Locate the ONNX model
         pkg_dir = get_package_share_directory('x3_visual')
-        model_path = os.path.join(pkg_dir, 'models', 'face_detection', f'{model_name}.onnx')
+        model_dir = os.path.join(pkg_dir, 'models', 'face_detection')
+        model_path = os.path.join(model_dir, f'{model_name}.onnx')
 
         # --- Build ONNXRuntime session with TRT or CUDA execution provider
         self.session = self._load_session(model_path, use_trt)
@@ -87,7 +88,7 @@ class FaceDetectionNode(Node):
                     'trt_max_workspace_size':           256 * 1024 * 1024,
                     'trt_fp16_enable':                  True,
                     'trt_engine_cache_enable':          True,
-                    'trt_engine_cache_path':            '/X3_ROS2_ws/src/x3_visual/models/face_detection',
+                    'trt_engine_cache_path':            os.path.join('/X3_ROS2_ws', 'src', 'x3_visual', 'models', 'face_detection'),
                     'trt_force_sequential_engine_build': False
                 }),
                 ('CUDAExecutionProvider', {'device_id': 0}),
