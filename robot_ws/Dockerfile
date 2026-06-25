@@ -40,6 +40,11 @@ RUN apt-get update && apt-get install -y \
     ros-${ROS_DISTRO}-statistics-msgs \
 && rm -rf /var/lib/apt/lists/*
 
+# ROS2 vision - to work with vision base packages
+RUN apt-get update && apt-get install -y \
+    ros-${ROS_DISTRO}-vision-msgs \
+&& rm -rf /var/lib/apt/lists/*
+
 WORKDIR /
 RUN git clone https://github.com/libuvc/libuvc.git \
     && cd libuvc \
@@ -59,6 +64,10 @@ RUN sudo pip3 install pyserial
 
 COPY rosmaster_driver_install /tmp/rosmaster_driver_install
 RUN cd /tmp/rosmaster_driver_install && python3 setup.py install
+
+# Set shared library path and cuda tools executable paths for CUDA inference
+ENV LD_LIBRARY_PATH=/usr/local/cuda-12.6/targets/aarch64-linux/lib:${LD_LIBRARY_PATH}
+ENV PATH=/usr/local/cuda-12.6/bin:${PATH}
 
 # Create a non-root user
 ARG USERNAME=ros
@@ -90,6 +99,9 @@ RUN sudo usermod -aG dialout $USERNAME
 # Source the ROS setup file
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
 RUN echo "source /X3_ROS2_ws/install/setup.bash" >> ~/.bashrc
+
+# Set CUDA library paths for interactive SSH sessions
+RUN echo 'export LD_LIBRARY_PATH=/usr/local/cuda-12.6/targets/aarch64-linux/lib:$LD_LIBRARY_PATH' >> ~/.bashrc
 
 # Install Python libraries for DRL policy
 RUN pip install "numpy<2" \
