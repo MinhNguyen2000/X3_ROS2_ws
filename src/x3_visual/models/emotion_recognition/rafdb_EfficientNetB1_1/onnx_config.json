@@ -1,0 +1,31 @@
+{
+  "model_class": "EfficientNetModel",
+  "model_variant": "b1",
+  "dataset": "RAFDB",
+  "input_hw": [
+    240,
+    240
+  ],
+  "color_mode": "rgb",
+  "normalize_mean": [
+    0.485,
+    0.456,
+    0.406
+  ],
+  "normalize_std": [
+    0.229,
+    0.224,
+    0.225
+  ],
+  "class_names": [
+    "Surprise",
+    "Fear",
+    "Disgust",
+    "Happy",
+    "Sad",
+    "Angry",
+    "Neutral"
+  ],
+  "output_is_logits": true,
+  "export_timestamp": "2026-07-04T03:03:46.501232"
+}
