@@ -4,7 +4,7 @@ on the Jetson Orin Nano. Measures steady state latency and preprocessing
 cost for each model found under src/x3_visual/models/emotion_recognition
 
 Usage: 
-    python benchmark_emotion_recognition.py [--model_dir PATH]
+    python benchmark_emotion_recognition.py [--models_dir PATH]
                                             [--provider PROVIDER]
                                             [--n_warmup N]
                                             [--n_runs N]
@@ -47,7 +47,7 @@ class ModelBenchmarkResult:
     # Inference latency - for session.run()
     infer_mean_ms:      float
     infer_std_ms:       float
-    infer_medians_ms:   float
+    infer_median_ms:    float
     infer_p95_ms:       float
     infer_p99_ms:       float
     infer_min_ms:       float
@@ -57,6 +57,7 @@ class ModelBenchmarkResult:
     # End-to-end (preprocessing + inference)
     e2e_mean_ms:        float
     e2e_std_ms:         float
+    e2e_median_ms:      float
     e2e_p95_ms:         float
     e2e_p99_ms:         float
     e2e_min_ms:         float
@@ -70,7 +71,7 @@ def load_session(model_path: str, provider: str, trt_cache_dir: str):
     if provider == "trt":
         providers = [
             ('TensorrtExecutionProvider', {
-                'devide_id':                0,
+                'device_id':                0,
                 'trt_max_workspace_size':   512 * 1024 * 1024,
                 'trt_fp16_enable':          True,
                 'trt_engine_cache_enable':  True,
@@ -118,7 +119,7 @@ def preprocess(cv_image: np.ndarray,
     else:
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
-    img = img.astype(np.float) / 255.0
+    img = img.astype(np.float32) / 255.0
 
     if normalize_mean is not None:
         mean = np.array(normalize_mean, dtype=np.float32)
@@ -370,7 +371,7 @@ def main():
         help='Path to the emotion_recognition/directory (contains per-model subdirs)'
     )
     parser.add_argument(
-        '---provider', type=str, default='cuda', choices=['trt', 'cuda', 'cpu'],
+        '---provider', type=str, default='trt', choices=['trt', 'cuda', 'cpu'],
         help='ORT execution provider. Use "trt" on Jetson after engine compilation. Default: cuda'
     )
     parser.add_argument(
@@ -386,7 +387,7 @@ def main():
         help='Directory to write the results CSV, JSON, and plots. Default: ./benchmark_output'
     )
     parser.add_argument(
-        '--models', type=str, default=None,
+        '--model', type=str, default=None,
         help='Benchmark a single named model directory instead of all models.'
              'Must be a subdirectory name within --models_dir'
     )
@@ -432,7 +433,7 @@ def main():
                 model_dir   = model_dir,
                 provider    = args.provider,
                 n_warmup    = args.n_warmup,
-                n_runs      = args.n_run,
+                n_runs      = args.n_runs,
             )
             results.append(result)
             raw_infer[model_name] = infer_ms
