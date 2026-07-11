@@ -1,0 +1,23 @@
+{
+  "model_class": "MobileViTModel",
+  "model_variant": "x-small",
+  "dataset": "FER2013",
+  "input_hw": [
+    256,
+    256
+  ],
+  "color_mode": "grayscale",
+  "normalize_mean": null,
+  "normalize_std": null,
+  "class_names": [
+    "Angry",
+    "Disgust",
+    "Fear",
+    "Happy",
+    "Sad",
+    "Surprise",
+    "Neutral"
+  ],
+  "output_is_logits": true,
+  "export_timestamp": "2026-07-10T07:04:48.125209"
+}
