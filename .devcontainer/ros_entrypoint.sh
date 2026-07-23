@@ -20,5 +20,6 @@ source /opt/ros/humble/setup.bash
 git submodule update --init --recursive
 
 source /X3_ROS2_ws/install/setup.bash
+export IGN_GAZEBO_RESOURCE_PATH=/X3_ROS2_ws/install/x3_description/share:$IGN_GAZEBO_RESOURCE_PATH
 
 exec "$@"

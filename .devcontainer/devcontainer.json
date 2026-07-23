@@ -5,7 +5,10 @@
     "--privileged",
     "--network=host",
     "--env=DISPLAY=${localEnv:DISPLAY}",
-    "--volume=/tmp/.X11-unix:/tmp/.X11-unix:rw"
+    "--volume=/tmp/.X11-unix:/tmp/.X11-unix:rw",
+    "--gpus=all",
+    "--env=NVIDIA_VISIBLE_DEVICES=all",
+    "--env=NVIDIA_DRIVER_CAPABILITIES=all,graphics"
   ],
   "workspaceMount": "source=${localWorkspaceFolder},target=/${localWorkspaceFolderBasename},type=bind",
   "workspaceFolder": "/${localWorkspaceFolderBasename}",
@@ -14,5 +17,17 @@
   ],
   "containerEnv": {
     "TZ": "Canada/Atlantic"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "twxs.cmake",
+        "ms-vscode.cmake-tools",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.vscode-python-envs",
+        "ms-python.debugpy"
+      ]
+    }
   }
 }

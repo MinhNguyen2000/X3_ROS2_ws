@@ -21,6 +21,14 @@ RUN apt-get update && apt-get install -y \
     ros-${ROS_DISTRO}-plotjuggler-ros \
   && rm -rf /var/lib/apt/lists/*
 
+# ROS2 Gazebo - simulation testing
+RUN apt-get update && apt-get install -y \
+    ros-${ROS_DISTRO}-ros-gz \
+    ros-${ROS_DISTRO}-gz-ros2-control \
+    ros-${ROS_DISTRO}-ros2-control \
+    ros-${ROS_DISTRO}-ros2-controllers \
+  && rm -rf /var/lib/apt/lists/*
+
 # ROS2 camera - packages to visualize the camera stream
 RUN apt-get update && apt-get install -y \
     ros-${ROS_DISTRO}-image-transport \
@@ -66,6 +74,21 @@ RUN rosdep update
 
 # Source the ROS setup file
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc
+
+# Install python 3 and pip
+RUN sudo apt-get install -y python3 python3-pip && \
+    sudo apt-get clean && \
+    sudo rm -rf /var/lib/apt/lists/*
+
+# Pip install constraints
+COPY constraints.txt /tmp/constraints.txt
+
+# Install necessary pip packages
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir --upgrade pip
+RUN pip install --no-cache-dir --constraint /tmp/constraints.txt --upgrade "setuptools>=30.3.0,<80" "packaging>=23.2,<25"
+RUN pip install --no-cache-dir --constraint /tmp/constraints.txt -r /tmp/requirements.txt
+RUN pip install --no-cache-dir torch==2.9.0+cpu --index-url https://download.pytorch.org/whl/cpu
 
 ################################
 ## ADD ANY CUSTOM SETUP BELOW ##
