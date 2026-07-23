@@ -30,7 +30,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            "policy_node = x3_drl_policy.policy_node:main"
+            "policy_node = x3_drl_policy.policy_node:main",
         ],
     },
 )
