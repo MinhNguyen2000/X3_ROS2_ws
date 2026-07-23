@@ -1,0 +1,96 @@
+import sys
+import rclpy
+from rclpy.action import ActionClient
+from rclpy.node import Node
+from rclpy.task import Future
+from x3_nav_interfaces.action import NavigateToGoal
+from geometry_msgs.msg import PoseStamped
+
+class GoalClient(Node):
+    def __init__(self, x: float, y: float, goal_tolerance: float):
+        super().__init__('goal_client')
+        self._done = False
+
+        self._client = ActionClient(
+            self, 
+            NavigateToGoal, 
+            'navigate_to_goal'
+        )
+
+        self.get_logger().info('Waiting for action server...')
+        self._client.wait_for_server()
+
+        goal = NavigateToGoal.Goal()
+        goal.target_pose = PoseStamped()
+        goal.target_pose.header.stamp       = self.get_clock().now().to_msg()
+        goal.target_pose.header.frame_id    = 'odom'
+        goal.target_pose.pose.position.x    = x
+        goal.target_pose.pose.position.y    = y
+        goal.goal_tolerance                 = goal_tolerance
+
+        self.get_logger().info(f'Sending goal: ({x: 5.3f},{y: 5.3f})')
+        self._send_future = self._client.send_goal_async(
+            goal,
+            feedback_callback=self.feedback_callback
+        )
+        self._send_future.add_done_callback(self.goal_accepted_callback)
+
+    def goal_accepted_callback(self, future: Future):
+        '''Actions performed on client side when the server receives the goal'''
+        self._goal_handle = future.result()
+        if not self._goal_handle.accepted:
+            self.get_logger().info('Goal rejected :(')
+            return
+        
+        self.get_logger().info('Goal accepted')
+        self._goal_handle.get_result_async().add_done_callback(self.result_callback)
+
+    def feedback_callback(self, feedback):
+        '''Acknowledging methods whenever the server send a feedback'''
+        f = feedback.feedback
+        self.get_logger().info(
+            f'Time: {f.elapsed_time: 5.2f} | ' 
+            f'Distance to goal: {f.distance_to_goal: 5.3f} m'
+        )
+
+    def result_callback(self, future):
+        result = future.result().result
+        self.get_logger().info(
+            f'{result.message} | Total distance travelled: {result.total_distance: 5.3f}')
+        self._done = True
+
+    def cancel(self):
+        self.get_logger().info('Sending cancel request to the server...')
+        cancel_future = self._goal_handle.cancel_goal_async()
+
+        while rclpy.ok() and not cancel_future.done():
+            rclpy.spin_once(self, timeout_sec=0.1)
+        
+        cancel_response = cancel_future.result()
+        if cancel_response:
+            self.get_logger().info('Cancel acknowledged by the server.')
+        else:
+            self.get_logger().warn('Cancel request rejected by the server.')
+
+def main():
+    rclpy.init(signal_handler_options=rclpy.SignalHandlerOptions.NO)
+
+    # Usage -> ros2 run x3_nav_bringup goal_client 3.0 2.0 0.5
+    user_args = rclpy.utilities.remove_ros_args(sys.argv)[1:]
+    x = float(user_args[0]) if len(user_args) > 0 else 0.0
+    y = float(user_args[1]) if len(user_args) > 1 else 0.0
+    goal_tolerance = float(user_args[2]) if len(user_args) > 2 else 0.2
+
+    node = GoalClient(x, y, goal_tolerance)
+    try:
+        while rclpy.ok() and not node._done:
+            rclpy.spin_once(node, timeout_sec=0.1)
+    except KeyboardInterrupt:
+        node.cancel()
+    finally:
+        node.destroy_node()
+        if rclpy.ok():
+            rclpy.shutdown()
+
+if __name__ == "__main__":
+    main()
