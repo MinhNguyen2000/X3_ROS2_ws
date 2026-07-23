@@ -155,9 +155,9 @@ Visualization Manager:
           Value: true
         imu_link:
           Value: true
-        laser:
-          Value: true
         lidar_link:
+          Value: true
+        odom:
           Value: true
       Marker Scale: 0.25
       Name: TF
@@ -165,31 +165,30 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        base_footprint:
-          base_link:
-            back_left_wheel:
-              {}
-            back_right_wheel:
-              {}
-            camera_link:
-              camera_color_frame:
-                camera_color_optical_frame:
-                  {}
-              camera_depth_frame:
-                camera_depth_optical_frame:
-                  {}
-              camera_link_optical:
+        odom:
+          base_footprint:
+            base_link:
+              back_left_wheel:
                 {}
-            front_left_wheel:
-              {}
-            front_right_wheel:
-              {}
-            imu_link:
-              {}
-            laser:
-              {}
-            lidar_link:
-              {}
+              back_right_wheel:
+                {}
+              camera_link:
+                camera_color_frame:
+                  camera_color_optical_frame:
+                    {}
+                camera_depth_frame:
+                  camera_depth_optical_frame:
+                    {}
+                camera_link_optical:
+                  {}
+              front_left_wheel:
+                {}
+              front_right_wheel:
+                {}
+              imu_link:
+                {}
+              lidar_link:
+                {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -249,7 +248,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: base_footprint
+    Fixed Frame: odom
     Frame Rate: 30
   Name: root
   Tools:
@@ -292,25 +291,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 2.2741074562072754
+      Distance: 3.138697624206543
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0
-        Y: 0
-        Z: 0
+        X: 0.1309695690870285
+        Y: 0.020580578595399857
+        Z: 0.1257515549659729
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.9003980159759521
+      Pitch: 0.7953978776931763
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.585397720336914
+      Yaw: 3.090397834777832
     Saved: ~
 Window Geometry:
   Camera:

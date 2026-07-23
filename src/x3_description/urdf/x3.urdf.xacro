@@ -1,9 +1,17 @@
 <?xml version = "1.0"?>
 <robot name = "agent" xmlns:xacro = "http://www.ros.org/wiki/xacro">
 
-    <!-- ========== Common Macros ========== -->
-    <xacro:macro name="common_link" params="name material *origin collision_shape collision_size collision_xyz:='0 0 0'">
-        <link name="${name}">
+    <!-- ========== ARGUMENTS & PARAMETERS ========== -->
+    <xacro:arg name = "agent_name" default = "agent"/>
+    <xacro:arg name = "use_ros_control" default = "false"/>
+    <xacro:property name = "prefix" value = "$(arg agent_name)"/>
+    <xacro:property name = "wheel_effort" value = "1.0"/>
+    <!-- TODO - also change this in the controllers YAML file -->
+    <xacro:property name = "wheel_max_vel" value = "50.0"/>
+    
+    <!-- ========== COMMON MACROS ========== -->
+    <xacro:macro name="common_link" params="prefix name material *origin collision_shape collision_size collision_xyz:='0 0 0'">
+        <link name="${prefix}_${name}">
             <visual>
                 <geometry>
                     <mesh filename="package://x3_description/meshes/${name}.STL"/>
@@ -25,20 +33,20 @@
             <xacro:insert_block name="origin"/>
         </link>
     </xacro:macro>
-    <xacro:macro name="continuous_joint" params="name parent child xyz rpy axis">
-        <joint name="${name}" type="continuous">
-            <parent link="${parent}"/>
-            <child link="${child}"/>
+    <xacro:macro name="continuous_joint" params="prefix name parent child xyz rpy axis">
+        <joint name="${prefix}_${name}" type="continuous">
+            <parent link="${prefix}_${parent}"/>
+            <child link="${prefix}_${child}"/>
             <origin xyz="${xyz}" rpy="${rpy}"/>
             <axis xyz="${axis}"/>
-            <limit lower="${-pi}" upper="${pi}" effort="100" velocity="2.5"/>
+            <limit effort="${wheel_effort}" velocity="${wheel_max_vel}"/>
             <dynamics friction="1E-04"/>
         </joint>
     </xacro:macro>
-    <xacro:macro name="fixed_joint" params="name parent child xyz rpy">
-        <joint name="${name}" type="fixed">
-            <parent link="${parent}"/>
-            <child link="${child}"/>
+    <xacro:macro name="fixed_joint" params="prefix name parent child xyz rpy">
+        <joint name="${prefix}_${name}" type="fixed">
+            <parent link="${prefix}_${parent}"/>
+            <child link="${prefix}_${child}"/>
             <origin xyz="${xyz}" rpy="${rpy}"/>
         </joint>
     </xacro:macro>
@@ -57,4 +65,16 @@
     <!-- ========== Includes ========== -->
     <xacro:include filename = "x3_body.xacro"/>
     <xacro:include filename = "x3_sensors.xacro"/>
+    <xacro:include filename = "x3_gazebo_properties.xacro"/>
+
+    <!-- if using ros2_control -->
+    <xacro:if value = "$(arg use_ros_control)">
+        <xacro:include filename = "x3_ros_control.xacro"/>
+    </xacro:if>
+
+    <!-- if using gazebo control -->
+    <xacro:unless value = "$(arg use_ros_control)">
+        <xacro:include filename = "x3_gazebo_control.xacro"/>
+    </xacro:unless>
+
 </robot>

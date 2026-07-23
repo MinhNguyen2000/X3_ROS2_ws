@@ -2,7 +2,7 @@ import os # To manipulate the file paths
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
-from launch.substitutions import Command, LaunchConfiguration, EnvironmentVariable
+from launch.substitutions import Command, LaunchConfiguration, EnvironmentVariable, PythonExpression
 from launch.conditions import IfCondition, UnlessCondition
 
 from launch_ros.actions import Node 
@@ -13,9 +13,9 @@ from ament_index_python.packages import get_package_share_directory
 def generate_launch_description():
 
     # Declare launch arguments
-    ns_arg = DeclareLaunchArgument(
-        "ns",
-        default_value="robot1",
+    agent_name_arg = DeclareLaunchArgument(
+        "agent_name",
+        default_value="agent0",
         description="Namespace for the robot"
     )
     
@@ -38,32 +38,49 @@ def generate_launch_description():
         description="Absolute path to robot URDF file"
     )
 
+    rviz_only_arg = DeclareLaunchArgument(
+        name = "rviz_only",
+        default_value="true",
+        description="Set to true when running Gazebo with ros2_control or on real hardware (robot publishes joint states itself)"
+    )
 
-    ns = LaunchConfiguration("ns")
+    agent_name = LaunchConfiguration("agent_name")
     use_gui = LaunchConfiguration("use_gui")
     robot_type = LaunchConfiguration("robot_type")
     model = LaunchConfiguration("model")
+    rviz_only = LaunchConfiguration("rviz_only")
 
     # The robot_description parameter contains the urdf file of the robot to be published by robot_state_publisher
-    robot_description = ParameterValue(Command(["xacro ", model]))
+    robot_description = ParameterValue(
+        Command(["xacro ", model, " agent_name:=", agent_name]),
+        value_type=str
+    )
 
     # Node definition
     robot_state_publisher = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
-        parameters= [{"robot_description": robot_description}]
+        namespace=agent_name,
+        parameters= [{"robot_description": robot_description}],
+        condition=UnlessCondition(rviz_only),
     ) 
 
     joint_state_publisher_gui = Node(
         package="joint_state_publisher_gui",
         executable="joint_state_publisher_gui", 
-        condition= IfCondition(use_gui)
+        namespace=agent_name,
+        condition=IfCondition(
+            PythonExpression(["'", rviz_only, "' == 'false' and '", use_gui, "' == 'true'"])
+        ),
     )
 
     joint_state_publisher = Node(
         package="joint_state_publisher",
         executable="joint_state_publisher",
-        condition= UnlessCondition(use_gui)
+        namespace=agent_name,
+        condition=IfCondition(
+            PythonExpression(["'", rviz_only, "' == 'false' and '", use_gui, "' == 'false'"])
+        ),
     )
 
     rviz_node = Node(
@@ -76,8 +93,9 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
-        ns_arg,
+        agent_name_arg,
         use_gui_arg,
+        rviz_only_arg,
         # robot_type_arg,
         model_arg,
         robot_state_publisher,

@@ -10,8 +10,8 @@
     </material>
 
     <!-- Base links -->
-    <link name="base_footprint"/>
-    <xacro:common_link name="base_link" material="Green" collision_shape="box" collision_size="0.2235 0.139 0.1165" collision_xyz='0.005 0 0.0025    '>
+    <link name="${prefix}_base_footprint"/>
+    <xacro:common_link prefix="${prefix}" name="base_link" material="Green" collision_shape="box" collision_size="0.2235 0.139 0.1165" collision_xyz='0.005 0 0.0025    '>
         <inertial>
             <origin xyz="0.00498197982182523 5.70233829969297E-05 -0.0121008098068578" rpy="0 0 0"/>
             <mass value="0.486218814966626"/>
@@ -26,13 +26,13 @@
     </xacro:common_link>
 
     <!-- Fixed Joints -->
-    <xacro:fixed_joint name="base_joint" parent="base_footprint" child="base_link" xyz="0.0 0.0 0.0850" rpy="0 0 0"/>
+    <xacro:fixed_joint prefix="${prefix}" name="base_joint" parent="base_footprint" child="base_link" xyz="0.0 0.0 0.0850" rpy="0 0 0"/>
     
-    <link name="imu_link"/>
-    <xacro:fixed_joint name="base_imu" parent="base_link" child="imu_link" xyz="-0.06 0.025 0.095" rpy="0 3.1415 1.5707"/>
+    <link name="${prefix}_imu_link"/>
+    <xacro:fixed_joint prefix="${prefix}" name="base_imu" parent="base_link" child="imu_link" xyz="-0.06 0.025 0.095" rpy="0 3.1415 1.5707"/>
 
     <!-- Wheels -->
-    <xacro:common_link name="front_right_wheel" material="White" collision_shape="cylinder" collision_size="0.035 0.03">
+    <xacro:common_link prefix="${prefix}" name="front_right_wheel" material="White" collision_shape="cylinder" collision_size="0.035 0.03">
         <inertial>
             <origin xyz="1.9051E-06 -2.3183E-07 -0.00064079" rpy="0 0 0"/>
             <mass value="0.051532"/>
@@ -40,10 +40,9 @@
                      iyy="1.4594E-05" iyz="-1.7476E-09" izz="2.4264E-05"/>
         </inertial>
     </xacro:common_link>
-    <xacro:continuous_joint name="front_right_joint" parent="base_link" child="front_right_wheel"
-                      xyz="0.08 -0.0845 -0.0389" rpy="-${pi/2} 0 0" axis="0 0 1"/>
-    
-    <xacro:common_link name="front_left_wheel" material="White" collision_shape="cylinder" collision_size="0.035 0.03">
+    <xacro:continuous_joint prefix="${prefix}" name="front_right_joint" parent="base_link" child="front_right_wheel" xyz="0.08 -0.0845 -0.0389" rpy="${pi/2} 0 0" axis="0 0 -1"/>
+
+    <xacro:common_link prefix="${prefix}" name="front_left_wheel" material="White" collision_shape="cylinder" collision_size="0.035 0.03">
         <inertial>
             <origin xyz="2.3728E-06 -9.4228E-07 0.00064068" rpy="0 0 0"/>
             <mass value="0.051543"/>
@@ -51,9 +50,9 @@
                      iyy="1.4598E-05" iyz="1.7972E-09" izz="2.4267E-05"/>
         </inertial>
     </xacro:common_link>
-    <xacro:continuous_joint name="front_left_joint" parent="base_link" child="front_left_wheel"
-                      xyz="0.08 0.0845 -0.0389" rpy="${pi/2} 0 0" axis="0 0 -1"/>
-    <xacro:common_link name="back_right_wheel" material="White" collision_shape="cylinder" collision_size="0.035 0.03">
+    <xacro:continuous_joint prefix="${prefix}" name="front_left_joint" parent="base_link" child="front_left_wheel" xyz="0.08 0.0845 -0.0389" rpy="${pi/2} 0 0" axis="0 0 -1"/>
+    
+    <xacro:common_link prefix="${prefix}" name="back_right_wheel" material="White" collision_shape="cylinder" collision_size="0.035 0.03">
         <inertial>
             <origin xyz="-1.75924169923403E-06 1.28388821071107E-06 -0.000590549296238266" rpy="0 0 0"/>
             <mass value="0.051540174053366"/>
@@ -61,10 +60,9 @@
                      iyy="1.4596501955693E-05" iyz="-6.27904057423818E-10" izz="2.42663091380451E-05"/>
         </inertial>
     </xacro:common_link>
-    <xacro:continuous_joint name="back_right_joint" parent="base_link" child="back_right_wheel"
-                      xyz="-0.08 -0.0845 -0.0395" rpy="-${pi/2} 0 0" axis="0 0 1"/>
+    <xacro:continuous_joint prefix="${prefix}" name="back_right_joint" parent="base_link" child="back_right_wheel" xyz="-0.08 -0.0845 -0.0395" rpy="${pi/2} 0 0" axis="0 0 -1"/>
     
-    <xacro:common_link name="back_left_wheel" material="White" collision_shape="cylinder" collision_size="0.035 0.03">
+    <xacro:common_link prefix="${prefix}" name="back_left_wheel" material="White" collision_shape="cylinder" collision_size="0.035 0.03">
         <inertial>
             <origin xyz="-4.01213085227115E-07 2.04910264598596E-06 0.000590775697051377" rpy="0 0 0"/>
             <mass value="0.0515309299357028"/>
@@ -72,6 +70,5 @@
                      iyy="1.45948727598913E-05" iyz="1.61769812110049E-10" izz="2.4263683888153E-05"/>
         </inertial>
     </xacro:common_link>
-    <xacro:continuous_joint name="back_left_joint" parent="base_link" child="back_left_wheel"
-                      xyz="-0.08 0.0845 -0.0395" rpy="${pi/2} 0 0" axis="0 0 -1"/>
+    <xacro:continuous_joint prefix="${prefix}" name="back_left_joint" parent="base_link" child="back_left_wheel" xyz="-0.08 0.0845 -0.0395" rpy="${pi/2} 0 0" axis="0 0 -1"/>
 </robot>

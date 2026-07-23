@@ -7,9 +7,23 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
+find_package(ament_cmake_python REQUIRED)
+find_package(rclpy REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
+
+# Install Python modules
+ament_python_install_package(${PROJECT_NAME})
+
+
+install(PROGRAMS 
+  ${PROJECT_NAME}/odom_to_vel_raw_node.py 
+  ${PROJECT_NAME}/odom_offset_node.py
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 install(
-  DIRECTORY launch meshes urdf rviz
+  DIRECTORY config launch meshes urdf rviz worlds
   DESTINATION share/${PROJECT_NAME}
 )
 
