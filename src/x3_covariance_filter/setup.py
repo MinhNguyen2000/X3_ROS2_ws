@@ -24,7 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            "covariance_filter = x3_covariance_filter.covariance_filter:main",
+            "covariance_filter_node = x3_covariance_filter.covariance_filter:main",
         ],
     },
 )
