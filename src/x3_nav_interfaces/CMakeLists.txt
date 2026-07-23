@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(x3_drl_interfaces)
+project(x3_nav_interfaces)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -12,6 +12,7 @@ find_package(geometry_msgs REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "action/NavigateToGoal.action"
+  "action/NavigateToGoalSequence.action"
   DEPENDENCIES geometry_msgs
 )
 
