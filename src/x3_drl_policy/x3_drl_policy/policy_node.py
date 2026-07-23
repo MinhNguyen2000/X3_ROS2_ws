@@ -7,7 +7,7 @@ from rclpy.action import ActionServer, CancelResponse, GoalResponse
 from rclpy.action.server import ServerGoalHandle
 from rclpy.executors import MultiThreadedExecutor       # to prevent blocking code while navigating to the goal
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy
-from x3_drl_interfaces.action import NavigateToGoal
+from x3_nav_interfaces.action import NavigateToGoal
 
 import numpy as np
 # TODO - import torch related packages for DRL inference (torch and torch.nn)
@@ -27,21 +27,22 @@ class DRLPolicyNode(Node):
     def __init__(self):
         super().__init__('drl_policy_server')
 
-        # TODO - declare and store ROS2 parameters/runtime arguments 
+        self.declare_parameter('agent_name', 'agent0')
         self.declare_parameter('goal_tolerance', 0.5)
-        self.declare_parameter('obstacle_tolerance', 0.20)
-        self.declare_parameter('model_name', 'TD3_001')
-        self.declare_parameter('max_lin_vel', 0.2)
-        self.declare_parameter('max_angular_vel', 0.3)
-        self.declare_parameter('goal_timeout', 30.0)
+        self.declare_parameter('obstacle_tolerance', 0.21)
+        self.declare_parameter('model_name', 'TD3_00378_1000')
+        self.declare_parameter('max_lin_vel', 0.4)
+        self.declare_parameter('max_angular_vel', 0.6)
+        self.declare_parameter('goal_timeout', 60.0)
 
-        self.default_goal_tolerance     = self.get_parameter('goal_tolerance').value
-        self.default_obstacle_tolerance = self.get_parameter('obstacle_tolerance').value
-        self.model_name                 = self.get_parameter('model_name').value
-        self.model_type                 = self.model_name.split('_')[0]
-        self.max_lin_vel                = self.get_parameter('max_lin_vel').value
-        self.max_angular_vel            = self.get_parameter('max_angular_vel').value
-        self.goal_timeout               = self.get_parameter('goal_timeout').value
+        self.agent_name         = self.get_parameter('agent_name').value
+        self.goal_tolerance     = self.get_parameter('goal_tolerance').value
+        self.obstacle_tolerance = self.get_parameter('obstacle_tolerance').value
+        self.model_name         = self.get_parameter('model_name').value
+        self.model_type         = self.model_name.split('_')[0]
+        self.max_lin_vel        = self.get_parameter('max_lin_vel').value
+        self.max_angular_vel    = self.get_parameter('max_angular_vel').value
+        self.goal_timeout       = self.get_parameter('goal_timeout').value
 
         # TODO - load the model and extract the number of n_ray_groups for LiDAR group
         # Assume that the models and norm stats are stored under drl_policy/policy/TD3_xxx/model.zip and norm_stats.pkl
@@ -55,7 +56,7 @@ class DRLPolicyNode(Node):
         norm = np.load(norm_stat_path)
         self.obs_mean    = norm["mean"].astype(np.float32)
         self.obs_var     = norm["var"].astype(np.float32)
-        self.clip_obs    = float(norm["clip_obs"][0])
+        self.clip_obs    = float(norm["clip_obs"])
 
         # # DEBUG - Check the loaded stats
         # print(f"obs_mean shape: {self.obs_mean.shape}")   # should be (27,)
@@ -111,11 +112,9 @@ class DRLPolicyNode(Node):
 
         # --- Subscribers & Publisher ---
         qos = QoSProfile(depth=10, reliability=QoSReliabilityPolicy.BEST_EFFORT)
-        # TODO - make the topic name dynamic according to /agent_name/odom namespace when this node is launched
-        self.odom_sub = self.create_subscription(Odometry,'/odom', self.odom_callback, qos)
-        self.lidar_sub = self.create_subscription(LaserScan, '/scan', self.lidar_callback, qos)
-        # TODO - make the topic name dynamic according to /agent_name/cmd_vel namespace when this node is launched
-        self.cmd_pub = self.create_publisher(TwistStamped, '/cmd_vel', 10)
+        self.odom_sub = self.create_subscription(Odometry,f'{self.agent_name}/odom', self.odom_callback, qos)
+        self.lidar_sub = self.create_subscription(LaserScan, f'{self.agent_name}/scan', self.lidar_callback, qos)
+        self.cmd_pub = self.create_publisher(TwistStamped, f'{self.agent_name}/cmd_vel', 10)
 
         # --- Active goal handle ---
         self._current_goal_handle: ServerGoalHandle | None = None
@@ -128,6 +127,8 @@ class DRLPolicyNode(Node):
             cancel_callback=self.cancel_callback,
             execute_callback=self.execute_callback
         )
+
+        self.get_logger().info(f"Running DRL policy - {self.model_name}")
 
     def odom_callback(self, msg: Odometry):
         self.latest_odom = msg
@@ -187,8 +188,7 @@ class DRLPolicyNode(Node):
         target = goal_handle.request.target_pose
         self.goal_tolerance = (goal_handle.request.goal_tolerance 
                                if goal_handle.request.goal_tolerance > 0.0
-                               else self.default_goal_tolerance)
-        self.obstacle_tolerance = self.default_obstacle_tolerance
+                               else self.goal_tolerance)
         start = time.time()
 
         # Initialize feedback and result message
@@ -278,14 +278,14 @@ class DRLPolicyNode(Node):
             self.action[1] = np.clip(self.action[1], -1.0, 1.0)
 
             # # --- Debug prints ---
-            # self.get_logger().info(
-            #     f'obs → (dx={obs[0]: 5.3f} | dy={obs[1]: 5.3f} | dg={obs[2]: 5.3f}) \n'
-            #     f'(theta={np.arctan2(obs[4], obs[3])/np.pi*180: 5.2f} | phi={np.arctan2(obs[6], obs[5])/np.pi*180: 5.2f}) \n'
-            #     f'(vx={obs[7]: 5.3f} | vyaw={obs[8]: 5.3f}) \n'
-            #     f'Min LiDAR group idx: {np.argmin(obs[9:])} | {np.min(obs[9:])} \n'
-            #     f'lidar:{obs[9:]} \n'
-            #     f"Policy action: {self.action[0]:5.3f}, {self.action[1]:5.3f}"
-            # )
+            self.get_logger().info(
+                f'obs → (dx={obs[0]: 5.3f} | dy={obs[1]: 5.3f} | dg={obs[2]: 5.3f})'
+                # f'\n(theta={p.arctan2(obs[4], obs[3])/np.pi*180: 5.2f} | phi={np.arctan2(obs[6], obs[5])/np.pi*180: 5.2f})'
+                # f'\n(vx={obs[7]: 5.3f} | vyaw={obs[8]: 5.3f})'
+                # f'\nMin LiDAR group idx: {np.argmin(obs[9:])} | {np.min(obs[9:])}'
+                # f'\nlidar:{obs[9:]}'
+                # f'\nPolicy action: {self.action[0]:5.3f}, {self.action[1]:5.3f}'
+            )
 
             self._get_rewards(obs)
 
