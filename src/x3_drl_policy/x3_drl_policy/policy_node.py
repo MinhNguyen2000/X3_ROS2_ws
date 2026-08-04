@@ -178,14 +178,14 @@ class DRLPolicyNode(Node):
     def lidar_callback(self, msg: LaserScan):
         ranges = np.array(msg.ranges)
 
-        # index of the zero angle in the (-π, π) scan
-        zero_idx = round(-msg.angle_min / msg.angle_increment)
+        # # index of the zero angle in the (-π, π) scan
+        # zero_idx = round(-msg.angle_min / msg.angle_increment)
 
-        # rotate the ranges from (-π, π) to (0, 2π)
-        ranges_drl = np.roll(ranges, -zero_idx)
+        # # rotate the ranges from (-π, π) to (0, 2π)
+        # ranges_drl = np.roll(ranges, -zero_idx)
 
         self.latest_scan = copy.deepcopy(msg)
-        self.latest_scan.ranges = ranges_drl.tolist()
+        # self.latest_scan.ranges = ranges_drl.tolist()
 
     def goal_callback(self, goal_request: NavigateToGoal):
         '''
@@ -315,9 +315,9 @@ class DRLPolicyNode(Node):
                 # f'obs → (dx={obs[0]: 5.3f} | dy={obs[1]: 5.3f} | dg={obs[2]: 5.3f})'
                 # f'\n(theta={p.arctan2(obs[4], obs[3])/np.pi*180: 5.2f} | phi={np.arctan2(obs[6], obs[5])/np.pi*180: 5.2f})'
                 # f'\n(vx={obs[7]: 5.3f} | vyaw={obs[8]: 5.3f})'
-                # f'\nMin LiDAR group idx: {np.argmin(obs[9:])} | {np.min(obs[9:])}'
-                # f'\nlidar:{obs[9:]}'
-                f'Policy action: {self.action[0]:5.3f}, {self.action[1]:5.3f}'
+                f'\nMin LiDAR group idx: {np.argmin(obs[9:])} | {np.min(obs[9:])}'
+                f'\nlidar:{obs[9:]}'
+                # f'Policy action: {self.action[0]:5.3f}, {self.action[1]:5.3f}'
             )
             
             if self.action_mode == 'direct':

@@ -89,11 +89,12 @@ class APFPlannerNode(Node):
     def lidar_callback(self, msg: LaserScan):
         ranges = np.array(msg.ranges)
 
-        # index of the zero angle in the (-π, π) scan
-        zero_idx = round(-msg.angle_min / msg.angle_increment)
+        # # index of the zero angle in the (-π, π) scan
+        # zero_idx = round(-msg.angle_min / msg.angle_increment)
 
-        # rotate the ranges from (-π, π) to (0, 2π)
-        ranges_drl = np.roll(ranges, -zero_idx)
+        # # rotate the ranges from (-π, π) to (0, 2π)
+        # ranges_drl = np.roll(ranges, -zero_idx)
+        ranges_drl = ranges
 
         # mask out LiDAR ranges hitting the rear antennae
         antennae_mask = ranges_drl <= 0.20
