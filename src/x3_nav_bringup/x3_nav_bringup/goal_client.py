@@ -49,14 +49,14 @@ class GoalClient(Node):
         '''Acknowledging methods whenever the server send a feedback'''
         f = feedback.feedback
         self.get_logger().info(
-            f'Time: {f.elapsed_time: 5.2f} | ' 
+            f'Time: {f.elapsed_time: 6.2f} | ' 
             f'Distance to goal: {f.distance_to_goal: 5.3f} m'
         )
 
     def result_callback(self, future):
         result = future.result().result
         self.get_logger().info(
-            f'{result.message} | Total distance travelled: {result.total_distance: 5.3f}')
+            f'Success: {result.success} | {result.message} | Total distance travelled: {result.total_distance: 5.3f}')
         self._done = True
 
     def cancel(self):

@@ -6,13 +6,17 @@ from rclpy.action.client import ClientGoalHandle
 from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.executors import MultiThreadedExecutor       # to prevent blocking code while navigating to the goal
 from rcl_interfaces.srv import GetParameters
+from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSDurabilityPolicy
 
 from x3_nav_interfaces.action import NavigateToGoal, NavigateToGoalSequence
+from std_msgs.msg import String
 from std_srvs.srv import Trigger
-from geometry_msgs.msg import Quaternion
+from geometry_msgs.msg import TwistStamped, PoseStamped, Quaternion
+from nav_msgs.msg import Odometry
 
 import os, json
 import time
+from datetime import datetime
 import numpy as np
 import signal
 
@@ -26,6 +30,15 @@ class GoalSequenceServer(Node):
     def __init__(self):
         super().__init__('goal_sequence_server')
 
+        # ===== ROS Parameters =====
+        self.declare_parameter('agent_name', 'agent0')
+        self.declare_parameter('planner_choice', 'drl')        # choices - drl/apf
+
+        self.agent_name         = self.get_parameter('agent_name').value
+        self.planner_choice     = self.get_parameter('planner_choice').value
+        self._nav_planner_name  = None
+
+        # ===== Callback & Action Server/Client =====
         # this callback group allows the action client's callbacks to fire while
         # the execute_callback co-routine is awaiting
         self._callback_group = ReentrantCallbackGroup()
@@ -47,16 +60,35 @@ class GoalSequenceServer(Node):
             callback_group=self._callback_group
         )
 
-        # Service client to grab model_name parameter from the drl_policy_server
-        self._param_client = self.create_client(
-            GetParameters,
-            '/drl_policy_server/get_parameters'
+        # Fetch current active planner
+        planner_id_qos = QoSProfile(
+            depth=1,
+            reliability=QoSReliabilityPolicy.RELIABLE,
+            durability=QoSDurabilityPolicy.TRANSIENT_LOCAL
         )
-        
-        if self._param_client.wait_for_service(timeout_sec=1.0):
-            self._fetch_model_name()
-        else:
-            self.get_logger().warn('Could not reach policy_node to fetch model name')
+        self._planner_id_sub = self.create_subscription(
+            String,
+            'active_planner',
+            self._planner_id_callback,
+            planner_id_qos
+        )
+
+        # Subscribe to the commanded velocity actually sent to the robot,
+        # published by whichever planner (DRL/APF) is currently active.
+        self._cmd_vel_sub = self.create_subscription(
+            TwistStamped,
+            f'{self.agent_name}/cmd_vel',
+            self._cmd_vel_callback,
+            10
+        )
+
+        # Subscribe to the wheel odometry executed by the robot
+        self._wheel_odom_sub = self.create_subscription(
+            Odometry,
+            f'{self.agent_name}/wheel_odom',
+            self._wheel_odom_callback,
+            10
+        )
 
         # Service server to save the trajectory from previous run
         self._save_srv = self.create_service(
@@ -66,12 +98,18 @@ class GoalSequenceServer(Node):
         )
 
         self._pose_buffer = []
+        self._cmd_vel_buffer = []
+        self._actual_vel_buffer = []
         self._elapsed_time = 0.0
         self._total_distance = 0.0
 
+        # Duration without logging velocities after goal send to avoid acceleration spike
+        self._settle_until = 0.0
+        self._settle_duration = 0.05
+
         self.get_logger().info('Goal sequence server ready')
 
-        self.get_logger().info('Waiting for DRL policy server...')
+        self.get_logger().info('Waiting for navigation policy server...')
         self._nav_client.wait_for_server()
         self.get_logger().info('Got it')
     
@@ -100,13 +138,18 @@ class GoalSequenceServer(Node):
         the result
         '''
 
-        self._pose_buffer = []  # clear the pose trajectory
+        self._pose_buffer = []          # clear the pose trajectory to store upcoming poses
+        self._cmd_vel_buffer = []       # clear the velocity trajectory to store upcoming cmd_vel
+        self._actual_vel_buffer = []    # clear the executed velocity trajectory
 
-        request         = seq_goal_handle.request
-        waypoints       = request.waypoints
-        tolerance       = request.goal_tolerance
-        stop_on_fail    = request.stop_on_failure
-        total           = len(waypoints)
+        request                 = seq_goal_handle.request
+        waypoints: PoseStamped  = request.waypoints
+        tolerance: float        = request.goal_tolerance
+        stop_on_fail: bool      = request.stop_on_failure
+        total                   = len(waypoints)
+
+        self.tolerance = tolerance
+        self.stop_on_fail = stop_on_fail
 
         feedback_msg    = NavigateToGoalSequence.Feedback()
         feedback_msg.total_waypoints = total
@@ -116,6 +159,7 @@ class GoalSequenceServer(Node):
         self._total_distance = 0.0
 
         start = time.time()
+        self._start_time = start
 
         # --- Check action server availability ---
         if not self._nav_client.wait_for_server(timeout_sec=5.0):
@@ -145,10 +189,12 @@ class GoalSequenceServer(Node):
 
             send_goal_future = await self._nav_client.send_goal_async(
                 nav_goal,
-                feedback_callback=lambda fb, i=idx: self._relay_feedback(fb, seq_goal_handle, i, total, feedback_msg, start)
+                feedback_callback=lambda fb, i=idx: self._relay_feedback(fb, seq_goal_handle, i, total, feedback_msg)
             )
 
             nav_goal_handle: ClientGoalHandle = send_goal_future
+
+            self._settle_until = (time.time() - self._start_time) + self._settle_duration
 
             # --- Check for goal acceptance ---
             if not nav_goal_handle.accepted:
@@ -194,8 +240,7 @@ class GoalSequenceServer(Node):
                         seq_goal_handle: ServerGoalHandle,
                         current_idx: int,
                         total: int,
-                        feedback_msg: NavigateToGoalSequence.Feedback,
-                        start: float
+                        feedback_msg: NavigateToGoalSequence.Feedback
     ):
         '''
         Forward feedback from the DRL policy action server to the sequence
@@ -204,7 +249,7 @@ class GoalSequenceServer(Node):
         
         feedback_msg.current_waypoint = current_idx
         feedback_msg.total_waypoints = total
-        feedback_msg.elapsed_time = float(time.time() - start)
+        feedback_msg.elapsed_time = float(time.time() - self._start_time)
 
         # Extract from the policy node's NavigateToGoal action feedback
         fb = nav_feedback_handle.feedback
@@ -214,52 +259,92 @@ class GoalSequenceServer(Node):
         seq_goal_handle.publish_feedback(feedback_msg)
 
         self._pose_buffer.append({
+            "t": round(feedback_msg.elapsed_time, 4),
             "x": round(fb.current_pose.position.x, 3),
             "y": round(fb.current_pose.position.y, 3),
-            "yaw": round(self._yaw_from_quaternion(fb.current_pose.orientation), 3)
-        })  
-    
-    def _fetch_model_name(self):
-        request = GetParameters.Request()
-        request.names = ['model_name']
-        future = self._param_client.call_async(request)
-        future.add_done_callback(self._model_name_callback)
+            "yaw": round(self._yaw_from_quaternion(fb.current_pose.orientation), 3),
+        })
 
-    def _model_name_callback(self, future):
-        try:
-            response = future.result()
-            self._model_name = response.values[0].string_value
-            self.get_logger().info(f'Navigating using model {self._model_name}')
-        except Exception as e:
-            self.get_logger().error(f'Failed to fetch model name: {e}')
+    def _cmd_vel_callback(self, msg: TwistStamped):
+        '''
+        Logs every commanded velocity sample as published by whichever planner
+        (DRL/APF) is currently active.
+        '''
+        # Only log while a sequence is actively navigating
+        if not hasattr(self, '_start_time'):
+            return
+
+        t = time.time() - self._start_time
+        if t < self._settle_until:
+            return          # skip samples after waypoint transition
+        
+        self._cmd_vel_buffer.append({
+            "t":    round(t, 4),
+            "vx":   round(msg.twist.linear.x, 3),
+            "vyaw": round(msg.twist.angular.z, 3),
+        })
+
+    def _wheel_odom_callback(self, msg: Odometry):
+        '''
+        Logs the velocity actually executed by the robot, derived from wheel
+        encoders via diff_drive_controller (pre-EKF, so it reflects real
+        motor/wheel behavior rather than a smoothed state estimate).
+        '''
+        # Only log while a sequence is actively navigating
+        if not hasattr(self, '_start_time'):
+            return
+ 
+        t = time.time() - self._start_time
+        if t < self._settle_until:
+                    return          # skip samples after waypoint transition
+ 
+        self._actual_vel_buffer.append({
+            "t":    round(t, 4),
+            "vx":   round(msg.twist.twist.linear.x, 3),
+            "vyaw": round(msg.twist.twist.angular.z, 3),
+        })
+
+    def _planner_id_callback(self, msg: String):
+        if msg.data != self._nav_planner_name:
+            self.get_logger().info(f'Detected active planner: {msg.data}')
+        self._nav_planner_name = msg.data
 
     def _save_callback(self, request: Trigger.Request, response: Trigger.Response):
+        '''
+        Example usage of this service
+        > ros2 service call /save_path std_srvs/srv/Trigger
+        '''
         ws_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..','..'))
-        save_dir = os.path.join(ws_dir, 'src', 'drl_policy', 'recorded_paths')
+        save_dir = os.path.join(ws_dir, 'scripts', 'recorded_paths', f'{self._nav_planner_name}')
         os.makedirs(save_dir, exist_ok=True)
-        record_path_name = f"{self._model_name}_{self._path_name}.json"
+        formatted_time = datetime.now().strftime("%d%m%y_%H%M")
+        record_path_name = f"{self._path_name}_{formatted_time}.json"
         save_path = os.path.join(save_dir, record_path_name)
 
         data = {
-            "model_name":       self._model_name,
+            "planner_name":     self._nav_planner_name,
             "path_name":        self._path_name,
+            "goal_tolerance":   getattr(self, "tolerance", None),
+            "stop_on_fail":     getattr(self, "stop_on_fail", None),
             "elapsed_time":     self._elapsed_time,
             "total_distance":   self._total_distance,
             "poses":            self._pose_buffer,
+            "velocities":       self._cmd_vel_buffer,
+            "actual_velocities": self._actual_vel_buffer
         }
         
         with open(save_path, 'w') as f:
             json.dump(data, f, indent=2)
         
         response.success = True
-        response.message = f'Save {len(self._pose_buffer)} poses to {save_path}'
+        response.message = f'Saved {len(self._pose_buffer)} poses, {len(self._cmd_vel_buffer)} cmd_vel, and {len(self._actual_vel_buffer)} actual vel to {save_path}'
         self.get_logger().info(response.message)
         return response
     
     def _yaw_from_quaternion(self, q: Quaternion) -> float:
         siny_cosp = 2.0 * (q.w * q.z + q.x * q.y)
         cosy_cosp = 1.0 - 2.0 * (q.y**2 + q.z**2)
-        return float(np.atan2(siny_cosp, cosy_cosp, dtype=np.float32))
+        return float(np.arctan2(siny_cosp, cosy_cosp, dtype=np.float32))
 
 def main():
     rclpy.init()

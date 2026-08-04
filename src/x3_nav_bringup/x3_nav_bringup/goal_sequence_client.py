@@ -12,8 +12,9 @@ from std_srvs.srv import Trigger
 import os, json, time
 
 # --- Load the paths
+# TODO - dynamically select which path json file to load depending on the world used
 pkg_dir = get_package_share_directory('x3_nav_bringup')
-path_file = os.path.join(pkg_dir, 'paths', 'paths.json')
+path_file = os.path.join(pkg_dir, 'paths', 'paths_world_1.json')
 with open(path_file, 'r') as f:
     PATHS = json.load(f)
 
@@ -86,7 +87,7 @@ class GoalSequenceClient(Node):
         if (time.time() - self._feedback_time >= 1.0):
             self._feedback_time = time.time()
             self.get_logger().info(
-                f' Time: {f.elapsed_time: 5.2f} | '
+                f' Time: {f.elapsed_time: 6.2f} | '
                 f'Waypoint {f.current_waypoint + 1}/{f.total_waypoints} | '
                 f'current goal dist: {f.distance_to_current_goal: 5.3f}m'
             )
