@@ -13,7 +13,7 @@ Panels:
         - /Odometry2
         - /Odometry2/Shape1
       Splitter Ratio: 0.39694657921791077
-    Tree Height: 752
+    Tree Height: 365
   - Class: rviz_common/Selection
     Name: Selection
   - Class: rviz_common/Tool Properties
@@ -337,16 +337,16 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 12.010986328125
+      Distance: 14.286027908325195
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 3.0315287113189697
-        Y: 2.977189302444458
-        Z: -0.9512328505516052
+        X: 3.540794849395752
+        Y: 2.79288387298584
+        Z: -0.9514155387878418
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
