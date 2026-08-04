@@ -30,6 +30,7 @@ setup(
     entry_points={
         'console_scripts': [
             "mcnamu_driver = x3_bringup.mcnamu_driver:main",
+            "image_republisher = x3_bringup.image_republisher:main",
         ],
     },
 )

@@ -16,6 +16,12 @@ def generate_launch_description():
     description_pkg_dir = get_package_share_directory("x3_description")
 
     # ===== DECLARE LAUNCH ARGUMENTS =====
+    agent_name = LaunchConfiguration("agent_name")
+    agent_name_arg = DeclareLaunchArgument(
+        "agent_name",
+        default_value = "agent0",
+        description = "Namespace of the launching agent"
+    )
 
     # ===== NODES & LAUNCH DESCRIPTIONS =====
     rviz = Node(
@@ -25,6 +31,15 @@ def generate_launch_description():
         arguments=["-d", os.path.join(description_pkg_dir, "rviz", "real.rviz")]
     )
 
+    image_uncompress_node = Node(
+        package="x3_bringup",
+        executable="image_republisher",
+        name="image_republisher",
+        namespace=agent_name
+    )
+
     return LaunchDescription([
-        rviz
+        agent_name_arg,
+        rviz,
+        image_uncompress_node
     ])
