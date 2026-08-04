@@ -1,5 +1,5 @@
 ### ekf config file ###
-ekf_odom_node:
+/**/ekf_odom_node:
     ros__parameters:
 # The frequency, in Hz, at which the filter will output a position estimate. Note that the filter will not begin
 # computation until it receives at least one message from one of the inputs. It will then run continuously at the
@@ -67,9 +67,9 @@ ekf_odom_node:
 #     3b. MAKE SURE something else is generating the odom->base_link transform. Note that this can even be another state
 #         estimation node from robot_localization! However, that instance should *not* fuse the global data.
         map_frame: map                          # Defaults to "map" if unspecified
-        odom_frame: odom                        # Defaults to "odom" if unspecified
-        base_link_frame: base_footprint         # Defaults to "base_link" if unspecified
-        world_frame: odom                       # Defaults to the value of odom_frame if unspecified
+        odom_frame: $(var agent_name)_odom                        # Defaults to "odom" if unspecified
+        base_link_frame: $(var agent_name)_base_footprint         # Defaults to "base_link" if unspecified
+        world_frame: $(var agent_name)_odom                       # Defaults to the value of odom_frame if unspecified
 
 # The filter accepts an arbitrary number of inputs from each input message type (nav_msgs/Odometry,
 # geometry_msgs/PoseWithCovarianceStamped, geometry_msgs/TwistWithCovarianceStamped,
@@ -78,11 +78,11 @@ ekf_odom_node:
 # default values, and must be specified.
         # ===== Wheel encoder odometry =====
         # /vel_raw publishes body-frame linear + angular velocity (twist only, no pose)
-        twist0: /vel_covariance
+        twist0: vel_covariance
         twist0_config: [false,  false,  false,
                        false,   false,  false,
-                       true,    true,   false,
-                       false,   false,  true,
+                       true,    true,   false,          # vx, vy
+                       false,   false,  true,           # vyaw
                        false,   false,  false]
         twist0_queue_size: 10
         twist0_nodelay: false
@@ -91,9 +91,9 @@ ekf_odom_node:
 
         # ===== LiDAR scan matching =====
         # Use the pose + covariance for correcting encoder drift
-        odom0: /odom_rf2o_covariance
-        odom0_config: [true,    true,   false,
-                       false,   false,  true,
+        odom0: odom_rf2o_covariance
+        odom0_config: [true,    true,   false,          # x, y
+                       false,   false,  true,           # z
                        false,   false,  false,
                        false,   false,  false,
                        false,   false,  false]
@@ -105,12 +105,12 @@ ekf_odom_node:
 
         # ===== IMU =====
         # Fuse the angular velocity & linear
-        imu0: /imu/data_covariance
+        imu0: imu/data_covariance
         imu0_config: [false,    false,  false,
                       false,    false,  false,
                       false,    false,  false,
-                      true,     true,   true,
-                      true,     true,   false]
+                      true,     true,   true,           # vroll, vpitch, vyaw
+                      false,    false,  false]          # ax, ay
         imu0_differential: false
         imu0_relative: false
         imu0_queue_size: 10

@@ -5,3 +5,6 @@ robot_ws/gpu_libs
 
 # Ignore TRT engine files in src folder (hardware-dependent)
 *.engine
+
+# Python stuff
+__pycache__

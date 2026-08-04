@@ -14,7 +14,7 @@ setup(
         ('share/' + package_name, ['package.xml']),
         # Include launch directory in the build
         (os.path.join('share', package_name, 'launch'), glob(os.path.join('launch',"*launch.py"))),
-        (os.path.join('share', package_name, 'config'), glob(os.path.join('config',"*.yaml"))),
+        (os.path.join('share', package_name, 'config'), glob(os.path.join('config',"*"))),
     ],
     install_requires=['setuptools'],
     zip_safe=True,

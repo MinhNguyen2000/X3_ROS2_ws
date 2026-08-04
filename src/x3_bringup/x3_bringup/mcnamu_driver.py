@@ -40,18 +40,19 @@ class yahboomcar_driver(Node):
 		self.declare_parameter('angular_limit', 5.0)
 
 		self.car_type = self.get_parameter('car_type').get_parameter_value().string_value
-		self.imu_link = self.get_parameter('imu_link').get_parameter_value().string_value
 		self.Prefix = self.get_parameter('Prefix').get_parameter_value().string_value
+		self.imu_link = self.get_parameter('imu_link').get_parameter_value().string_value
+		self.imu_link = self.imu_link if not self.Prefix else self.Prefix + '_' + self.imu_link
 		self.xlinear_limit = self.get_parameter('xlinear_limit').get_parameter_value().double_value
 		self.ylinear_limit = self.get_parameter('ylinear_limit').get_parameter_value().double_value
 		self.angular_limit = self.get_parameter('angular_limit').get_parameter_value().double_value
 
-		print("Car type: " + self.car_type)
-		# print(self.imu_link)
-		# print(self.Prefix)
-		print(f"Linear x limit: {self.xlinear_limit}")
-		print(f"Linear y limit: {self.ylinear_limit}")
-		print(f"Angular limit: {self.angular_limit}")
+		self.get_logger().info("Car type: " + self.car_type)
+		self.get_logger().info("Prefix: " + self.Prefix)
+		self.get_logger().info("IMU link name: " + self.imu_link)
+		self.get_logger().info(f"Linear x limit: {self.xlinear_limit}")
+		self.get_logger().info(f"Linear y limit: {self.ylinear_limit}")
+		self.get_logger().info(f"Angular limit: {self.angular_limit}")
 
 		#create subcriber
 		self.sub_cmd_vel = self.create_subscription(TwistStamped,"cmd_vel",self.cmd_vel_callback,1)
@@ -121,8 +122,12 @@ class yahboomcar_driver(Node):
 			state.name = ["back_left_joint", "front_left_joint", "front_right_joint", "back_right_joint"]
 			
 		else:
-			state.name = [self.Prefix+"back_right_joint",self.Prefix+ "back_left_joint",self.Prefix+"front_left_steer_joint",self.Prefix+"front_left_wheel_joint",
-							self.Prefix+"front_right_steer_joint", self.Prefix+"front_right_wheel_joint"]
+			state.name = [
+				self.Prefix + "_back_left_joint",
+				self.Prefix + "_front_left_joint",
+				self.Prefix + "_front_right_joint",
+				self.Prefix + "_back_right_joint"
+			]
 		
 		#print ("mag: ",self.car.get_magnetometer_data())
 		# ===== Miscellaneous car data =====		

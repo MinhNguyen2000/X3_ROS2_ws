@@ -1,7 +1,7 @@
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, GroupAction
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, GroupAction, OpaqueFunction
 from launch.launch_description_sources import PythonLaunchDescriptionSource, AnyLaunchDescriptionSource
-from launch.substitutions import Command, LaunchConfiguration
+from launch.substitutions import Command, LaunchConfiguration, PythonExpression
 
 from launch_ros.actions import Node 
 from launch_ros.actions import ComposableNodeContainer
@@ -10,7 +10,7 @@ from launch_ros.descriptions import ComposableNode
 from launch_ros.parameter_descriptions import ParameterValue
 
 from ament_index_python.packages import get_package_share_directory
-import os
+import os, tempfile
 
 def generate_launch_description():
     '''
@@ -29,8 +29,16 @@ def generate_launch_description():
 
     bringup_pkg_dir = get_package_share_directory("x3_bringup")
     odom_launch_path = os.path.join(bringup_pkg_dir, "launch", "odom.launch.py")
+    controllers_template_path = os.path.join(bringup_pkg_dir, "config", "controllers.yaml.template")
 
     # ===== DECLARE LAUNCH ARGUMENTS =====
+    agent_name = LaunchConfiguration("agent_name")
+    agent_name_arg = DeclareLaunchArgument(
+        "agent_name",
+        default_value = "agent0",
+        description = "Namespace of the launching agent"
+    )
+
     model_arg = DeclareLaunchArgument(
         name="robot_model",
         default_value=model_dir,
@@ -43,84 +51,116 @@ def generate_launch_description():
         description='Camera name namespace'
     )
 
+    is_gazebo_arg = DeclareLaunchArgument(
+        name="is_gazebo",
+        default_value="false",
+        description="Whether to load Gazebo-specific plugins/properties"
+    )
+
     robot_model = LaunchConfiguration("robot_model")
     camera_name = LaunchConfiguration("camera_name")
 
-    robot_description = ParameterValue(
-        Command(["xacro ", robot_model]),
-        value_type = str
-    )
+    def launch_setup(context, *args, **kwags):
+        agent_name_str = LaunchConfiguration("agent_name").perform(context)
 
-    # ===== NODES & LAUNCH DESCRIPTIONS =====
-    # robot state publisher
-    robot_state_publisher_node = Node(
-        package="robot_state_publisher",
-        executable="robot_state_publisher",
-        parameters=[{"robot_description": robot_description}],
-    )
+        # Render controllers.yaml template and populate with agent_name
+        with open(controllers_template_path, "r") as f:
+            rendered = f.read().replace("__AGENT_NAME__", agent_name_str)
+        rendered_controllers_path = os.path.join(tempfile.gettempdir(), f"{agent_name_str}_controllers.yaml")
+        with open(rendered_controllers_path, "w") as f:
+            f.write(rendered)
 
-    # camera launch file
-    camera_launch = IncludeLaunchDescription(
-        AnyLaunchDescriptionSource(camera_launch_path),
-        launch_arguments={
-            'camera_name': camera_name,
-        }.items()
-    )
+        robot_description = ParameterValue(
+            Command(["xacro ", robot_model,
+                    " agent_name:=", agent_name,
+                    " use_ros_control:=true",
+                    " is_gazebo:=", LaunchConfiguration("is_gazebo")]),
+            value_type = str
+        )
 
-    # image transport republisher
-    # subscribes to: /<camera_name>/color/image_raw
-    # publishes to: /<camera_color>/image_raw/compressed
-    image_republisher_node = Node(
-        package='image_transport',
-        executable='republish',
-        name='color_image_republisher',
-        arguments=['raw', 'compressed'],
-        remappings=[
-            ('in',  [camera_name, '/color/image_raw']),
-            ('out/compressed', [camera_name, '/color/image_raw/compressed']),
-        ],
-        parameters=[{
-            # JPEG quality 0-100: lower = smaller packets, higher = better image quality.
-            'compressed.jpeg_quality': 60,
-            'compressed.format': 'jpeg',
-        }],
-    )
+        # ===== NODES & LAUNCH DESCRIPTIONS =====
+        # robot state publisher
+        robot_state_publisher_node = Node(
+            package="robot_state_publisher",
+            executable="robot_state_publisher",
+            namespace=agent_name,
+            parameters=[{"robot_description": robot_description}],
+        )
 
-    # lidar launch file
-    lidar_node = Node(
-        package='rplidar_ros',
-        executable='rplidar_node',
-        name='rplidar_node',
-        output='screen',
-        parameters=[{
-            'channel_type': 'serial',
-            'serial_port': '/dev/rplidar',
-            'serial_baudrate': 1000000,
-            'frame_id': 'lidar_link',
-            'inverted': False,
-            'angle_compensate': True,
-            'scan_mode': 'DenseBoost',
-        }]
-    )
+        # camera launch file
+        camera_launch = IncludeLaunchDescription(
+            AnyLaunchDescriptionSource(camera_launch_path),
+            launch_arguments={
+                'camera_name': agent_name,
+            }.items()
+        )
 
-    # Launch the odometry nodes
-    odom_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([odom_launch_path])
-    )
+        # image transport republisher
+        # subscribes to: /<camera_name>/color/image_raw
+        # publishes to: /<camera_color>/image_raw/compressed
+        image_republisher_node = Node(
+            package='image_transport',
+            executable='republish',
+            name='color_image_republisher',
+            namespace=agent_name,
+            arguments=['raw', 'compressed'],
+            remappings=[
+                ('in',  ['color/image_raw']),
+                ('out/compressed', ['color/image_raw/compressed']),
+            ],
+            parameters=[{
+                # JPEG quality 0-100: lower = smaller packets, higher = better image quality.
+                'compressed.jpeg_quality': 60,
+                'compressed.format': 'jpeg',
+            }],
+        )
 
-    # Low level driver node - IMU, wheel encoder, and wheel motors
-    driver_node = Node(
-        package='x3_bringup',
-        executable='mcnamu_driver',
-    )  
+        # lidar launch file
+        lidar_node = Node(
+            package='rplidar_ros',
+            executable='rplidar_node',
+            name='rplidar_node',
+            namespace=agent_name,
+            output='screen',
+            parameters=[{
+                'channel_type': 'serial',
+                'serial_port': '/dev/rplidar',
+                'serial_baudrate': 1000000,
+                'frame_id': PythonExpression(["'", agent_name, "_lidar_link'"]),
+                'inverted': False,
+                'angle_compensate': True,
+                'scan_mode': 'Standard',
+            }]
+        )
+
+        # Launch the odometry nodes
+        odom_launch = IncludeLaunchDescription(
+            PythonLaunchDescriptionSource([odom_launch_path])
+        )
+
+        # Low level driver node - IMU, wheel encoder, and wheel motors
+        driver_node = Node(
+            package='x3_bringup',
+            executable='mcnamu_driver',
+            namespace=agent_name,
+            parameters=[{
+                'Prefix': agent_name,
+            }]
+        )  
+
+        return [
+            robot_state_publisher_node,
+            camera_launch,
+            image_republisher_node,
+            lidar_node,
+            odom_launch,
+            driver_node,
+        ]
 
     return LaunchDescription([
+        agent_name_arg,
         model_arg,
         camera_name_arg,
-        robot_state_publisher_node,
-        camera_launch,
-        image_republisher_node,
-        lidar_node,
-        odom_launch,
-        driver_node,
+        is_gazebo_arg,
+        OpaqueFunction(function=launch_setup)
     ])
