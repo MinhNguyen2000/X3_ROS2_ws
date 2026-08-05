@@ -58,109 +58,96 @@ def generate_launch_description():
     )
 
     robot_model = LaunchConfiguration("robot_model")
-    camera_name = LaunchConfiguration("camera_name")
+    camera_name = LaunchConfiguration("orbbec_cameracamera_name")
 
-    def launch_setup(context, *args, **kwags):
-        agent_name_str = LaunchConfiguration("agent_name").perform(context)
 
-        # Render controllers.yaml template and populate with agent_name
-        with open(controllers_template_path, "r") as f:
-            rendered = f.read().replace("__AGENT_NAME__", agent_name_str)
-        rendered_controllers_path = os.path.join(tempfile.gettempdir(), f"{agent_name_str}_controllers.yaml")
-        with open(rendered_controllers_path, "w") as f:
-            f.write(rendered)
+    robot_description = ParameterValue(
+        Command(["xacro ", robot_model,
+                " agent_name:=", agent_name,
+                " use_ros_control:=false",
+                " is_gazebo:=", LaunchConfiguration("is_gazebo")]),
+        value_type = str
+    )
 
-        robot_description = ParameterValue(
-            Command(["xacro ", robot_model,
-                    " agent_name:=", agent_name,
-                    " use_ros_control:=true",
-                    " is_gazebo:=", LaunchConfiguration("is_gazebo")]),
-            value_type = str
-        )
+    # ===== NODES & LAUNCH DESCRIPTIONS =====
+    # robot state publisher
+    robot_state_publisher_node = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        namespace=agent_name,
+        parameters=[{"robot_description": robot_description}],
+    )
 
-        # ===== NODES & LAUNCH DESCRIPTIONS =====
-        # robot state publisher
-        robot_state_publisher_node = Node(
-            package="robot_state_publisher",
-            executable="robot_state_publisher",
-            namespace=agent_name,
-            parameters=[{"robot_description": robot_description}],
-        )
+    # camera launch file
+    camera_launch = IncludeLaunchDescription(
+        AnyLaunchDescriptionSource(camera_launch_path),
+        launch_arguments={
+            'camera_name': agent_name,
+        }.items()
+    )
 
-        # camera launch file
-        camera_launch = IncludeLaunchDescription(
-            AnyLaunchDescriptionSource(camera_launch_path),
-            launch_arguments={
-                'camera_name': agent_name,
-            }.items()
-        )
+    # image transport republisher
+    # subscribes to: <agent_name>/color/image_raw
+    # publishes to: <agent_name>/color/image_raw/compressed
+    image_republisher_node = Node(
+        package='image_transport',
+        executable='republish',
+        name='color_image_republisher',
+        namespace=agent_name,
+        arguments=['raw', 'compressed'],
+        remappings=[
+            ('in',  ['color/image_raw']),
+            ('out/compressed', ['color/image_raw/compressed']),
+        ],
+        parameters=[{
+            # JPEG quality 0-100: lower = smaller packets, higher = better image quality.
+            'compressed.jpeg_quality': 60,
+            'compressed.format': 'jpeg',
+        }],
+    )
 
-        # image transport republisher
-        # subscribes to: /<camera_name>/color/image_raw
-        # publishes to: /<camera_color>/image_raw/compressed
-        image_republisher_node = Node(
-            package='image_transport',
-            executable='republish',
-            name='color_image_republisher',
-            namespace=agent_name,
-            arguments=['raw', 'compressed'],
-            remappings=[
-                ('in',  ['color/image_raw']),
-                ('out/compressed', ['color/image_raw/compressed']),
-            ],
-            parameters=[{
-                # JPEG quality 0-100: lower = smaller packets, higher = better image quality.
-                'compressed.jpeg_quality': 60,
-                'compressed.format': 'jpeg',
-            }],
-        )
+    # lidar launch file
+    lidar_node = Node(
+        package='rplidar_ros',
+        executable='rplidar_node',
+        name='rplidar_node',
+        namespace=agent_name,
+        output='screen',
+        parameters=[{
+            'channel_type': 'serial',
+            'serial_port': '/dev/rplidar',
+            'serial_baudrate': 1000000,
+            'frame_id': PythonExpression(["'", agent_name, "_lidar_link'"]),
+            'inverted': False,
+            'angle_compensate': True,
+            'scan_mode': 'Standard',
+        }]
+    )
 
-        # lidar launch file
-        lidar_node = Node(
-            package='rplidar_ros',
-            executable='rplidar_node',
-            name='rplidar_node',
-            namespace=agent_name,
-            output='screen',
-            parameters=[{
-                'channel_type': 'serial',
-                'serial_port': '/dev/rplidar',
-                'serial_baudrate': 1000000,
-                'frame_id': PythonExpression(["'", agent_name, "_lidar_link'"]),
-                'inverted': False,
-                'angle_compensate': True,
-                'scan_mode': 'Standard',
-            }]
-        )
+    # Launch the odometry nodes
+    odom_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([odom_launch_path])
+    )
 
-        # Launch the odometry nodes
-        odom_launch = IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([odom_launch_path])
-        )
-
-        # Low level driver node - IMU, wheel encoder, and wheel motors
-        driver_node = Node(
-            package='x3_bringup',
-            executable='mcnamu_driver',
-            namespace=agent_name,
-            parameters=[{
-                'Prefix': agent_name,
-            }]
-        )  
-
-        return [
-            robot_state_publisher_node,
-            camera_launch,
-            image_republisher_node,
-            lidar_node,
-            odom_launch,
-            driver_node,
-        ]
+    # Low level driver node - IMU, wheel encoder, and wheel motors
+    driver_node = Node(
+        package='x3_bringup',
+        executable='mcnamu_driver',
+        namespace=agent_name,
+        parameters=[{
+            'Prefix': agent_name,
+        }]
+    )  
 
     return LaunchDescription([
         agent_name_arg,
         model_arg,
         camera_name_arg,
         is_gazebo_arg,
-        OpaqueFunction(function=launch_setup)
+        robot_state_publisher_node,
+        camera_launch,
+        image_republisher_node,
+        lidar_node,
+        odom_launch,
+        driver_node,
     ])
