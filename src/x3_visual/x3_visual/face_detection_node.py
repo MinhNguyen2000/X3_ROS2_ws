@@ -17,16 +17,16 @@ class FaceDetectionNode(Node):
         super().__init__('face_detection_node')
 
         # --- Parameters 
+        self.declare_parameter('agent_name', 'agent0')
         self.declare_parameter('model_name', 'yolov8_n_widerface_01')
-        self.declare_parameter('input_topic', '/camera/color/image_raw')
         self.declare_parameter('confidence_threshold', 0.50)
         self.declare_parameter('nms_threshold', 0.45)
-        self.declare_parameter('input_hw', [640, 640])
+        self.declare_parameter('input_hw', [640, 640])              # expected hw ratio by YOLO model
         self.declare_parameter('use_trt', True)
         self.declare_parameter('assumed_face_width', 0.14)          # average adult face width (m)
 
+        self.agent_name     = self.get_parameter('agent_name').value
         model_name          = self.get_parameter('model_name').value
-        input_topic         = self.get_parameter('input_topic').value
         self.conf_threshold = self.get_parameter('confidence_threshold').value
         self.nms_threshold  = self.get_parameter('nms_threshold').value
         input_hw            = self.get_parameter('input_hw').value
@@ -59,18 +59,13 @@ class FaceDetectionNode(Node):
         # --- ROS2 interfaces
         self.bridge = CvBridge()
         qos = QoSProfile(depth=10, reliability=QoSReliabilityPolicy.BEST_EFFORT)
-        self.image_sub = self.create_subscription(
-            Image,
-            input_topic,
-            self.image_callback,
-            qos_profile = qos
-        )
 
         self.camera_info: CameraInfo | None = None
-        self.camera_info_sub = self.create_subscription(CameraInfo, '/camera/color/camera_info', self.camera_info_callback, 10)
-        self.crop_pub = self.create_publisher(Image, '/face_crop', qos_profile=qos)
-        self.detection_pub = self.create_publisher(Detection2DArray, '/face_detection', qos_profile = qos)
-        self.face_pose_pub = self.create_publisher(PoseStamped, '/face_pose', 10)
+        self.camera_info_sub    = self.create_subscription(CameraInfo,  f'color/camera_info',  self.camera_info_callback,  10)
+        self.image_sub          = self.create_subscription(Image,       f'color/image_raw',    self.image_callback,        qos_profile = qos)
+        self.crop_pub       = self.create_publisher(Image,              f'color/face_crop',      qos_profile=qos)
+        self.detection_pub  = self.create_publisher(Detection2DArray,   f'color/face_detection', qos_profile = qos)
+        self.face_pose_pub  = self.create_publisher(PoseStamped,        f'color/face_pose',      10)
 
         # --- Declare variables
         self.face_x_smooth = 0.0
@@ -233,7 +228,7 @@ class FaceDetectionNode(Node):
 
         pose = PoseStamped()
         pose.header.stamp = stamp
-        pose.header.frame_id = 'camera_color_optical_frame'
+        pose.header.frame_id = f'{self.agent_name}_color_optical_frame'
         pose.pose.position.x     = float(self.face_x_smooth)
         pose.pose.position.y     = float(self.face_y_smooth)
         pose.pose.position.z     = float(self.face_z_smooth)

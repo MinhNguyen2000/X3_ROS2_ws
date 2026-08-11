@@ -17,8 +17,8 @@ class EmotionRecognitionNode(Node):
         super().__init__('emotion_recognition_node')
 
         # --- Parameters
-        self.declare_parameter('model_name', 'fer2013_ResNet50_0')
-        # self.declare_parameter('sad_confidence_threshold', 0.20)
+        self.declare_parameter('model_name', 'fer2013_MobileViT_XXS_3')
+        # self.declare_parameter('sad_confidence_threshold', 0.20) 
         self.declare_parameter('use_trt', True)
 
         self.model_name = self.get_parameter('model_name').value
@@ -34,7 +34,7 @@ class EmotionRecognitionNode(Node):
         # Error handling
         if not os.path.exists(onnx_config_path):
             raise FileNotFoundError(
-                f"onnx_config.json not found at {onnx_config_path}."
+                f"onnx_config.json not found at {onnx_config_path} ."
                 f"Re-export the model with export_onnx() to generate it"
             )
 
@@ -72,8 +72,8 @@ class EmotionRecognitionNode(Node):
 
         # Use the ApproximateTimeSynchronizer to align crop and pose by timestamp. 
         # This ensure the face crop and pose belong to a similar detection frame
-        self.face_crop_sub = Subscriber(self, Image, '/face_crop', qos_profile=qos)
-        self.face_pose_sub = Subscriber(self, PoseStamped, '/face_pose', 10)
+        self.face_crop_sub = Subscriber(self, Image,        'color/face_crop', qos_profile=qos)
+        self.face_pose_sub = Subscriber(self, PoseStamped,  'color/face_pose', 10)
 
         self.sync = ApproximateTimeSynchronizer(
             [self.face_crop_sub, self.face_pose_sub],
@@ -82,15 +82,16 @@ class EmotionRecognitionNode(Node):
         )
         self.sync.registerCallback(self.synced_callback)
 
-        self.distress_face_pose_pub = self.create_publisher(PoseStamped, '/distress_face_pos', 10)
+        self.distress_face_pose_pub = self.create_publisher(PoseStamped, 'distress_face_pose', 10)
 
     def _load_session(self, model_path: str, use_trt: bool) -> ort.InferenceSession:
         if use_trt:
             providers = [
                 ('TensorrtExecutionProvider', {
                     'device_id':                0,
-                    'trt_max_workspace_size':   512 * 1024 * 1024,
+                    'trt_max_workspace_size':   256 * 1024 * 1024,
                     'trt_fp16_enable':          True,
+                    'trt_layer_norm_fp32_fallback': True,
                     'trt_engine_cache_enable':  True,
                     'trt_engine_cache_path':    os.path.join('/X3_ROS2_ws', 'src', 'x3_visual', 'models', 'emotion_recognition', self.model_name)
                 }),
@@ -172,7 +173,8 @@ class EmotionRecognitionNode(Node):
 
         probs_formatted = list(f"{self.class_names[i][0]}: {prob:5.3f}" for i, prob in enumerate(probs))
 
-        self.get_logger().info(
+        # DEBUG - display predicted emotion
+        self.get_logger().debug(
             f'Detected Emotion: {pred_label} ({pred_conf:.2f}) \n'
             f'Probabilities: {probs_formatted} \n'
             f'Face @ ({pose_msg.pose.position.x:.2f}, '
@@ -180,12 +182,13 @@ class EmotionRecognitionNode(Node):
             f'{pose_msg.pose.position.z:.2f})'
         )
 
-        # --- Republish the face pose if detected sad
+        # --- Republish the face pose if detected distress signals
         if pred_label in ('Angry', 'Disgust', 'Fear', 'Sad'):
             distress_face_pose = pose_msg
-            distress_face_pose.header.stamp = self.get_clock().now().to_msg()
+            # distress_face_pose.header.stamp = self.get_clock().now().to_msg()
             self.latest_pose = distress_face_pose
             self.distress_face_pose_pub.publish(distress_face_pose)
+            self.get_logger().info('>>> Published distress face pose <<<')
 
             # self.get_logger().info(f'{pred_label} face published at distance {pose_msg.pose.position.z:.2f}m')
 
