@@ -1,0 +1,51 @@
+{
+  "planner_name": "TD3_00380_1000",
+  "path_name": "path2_world_1",
+  "goal_tolerance": 0.30000001192092896,
+  "stop_on_fail": true,
+  "elapsed_time": 0.0,
+  "total_distance": 0.0,
+  "poses": [
+    {
+      "t": 0.0056,
+      "x": -0.0,
+      "y": 0.0,
+      "yaw": 0.0
+    },
+    {
+      "t": 0.0062,
+      "x": -0.0,
+      "y": 0.0,
+      "yaw": 0.0
+    }
+  ],
+  "velocities": [
+    {
+      "t": 0.0012,
+      "vx": 0.5,
+      "vyaw": 1.0
+    },
+    {
+      "t": 0.0017,
+      "vx": 0.5,
+      "vyaw": 1.0
+    },
+    {
+      "t": 0.0019,
+      "vx": 0.5,
+      "vyaw": 1.0
+    },
+    {
+      "t": 0.0026,
+      "vx": 0.5,
+      "vyaw": 1.0
+    }
+  ],
+  "actual_velocities": [
+    {
+      "t": 0.0014,
+      "vx": 0.0,
+      "vyaw": -0.0
+    }
+  ]
+}
