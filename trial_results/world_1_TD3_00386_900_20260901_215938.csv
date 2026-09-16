@@ -1,0 +1,140 @@
+trial_idx,world_name,planner,drl_model_name,goal_x,goal_y,straight_line_distance,success,failure_reason,distance_traveled_odom,distance_traveled_planner,distance_diff_percent,travel_time,final_distance_to_goal,timeseries_log_path,timestamp
+0,world_1,DRL,TD3_00386_900,0.0,0.5,0.5,True,,0.739,0.734,0.655,4.745,0.2,trial_results/timeseries/world_1_TD3_00386_900_trial000.json,2026-09-01T21:59:47.275015
+1,world_1,DRL,TD3_00386_900,0.0,1.0,1.0,True,,1.217,1.206,0.892,5.025,0.193,trial_results/timeseries/world_1_TD3_00386_900_trial001.json,2026-09-01T21:59:57.567888
+2,world_1,DRL,TD3_00386_900,0.0,1.5,1.5,False,Goal timeout after 90.0s,2.131,2.131,0.005,90.022,0.247,trial_results/timeseries/world_1_TD3_00386_900_trial002.json,2026-09-01T22:01:32.854508
+3,world_1,DRL,TD3_00386_900,0.0,2.0,2.0,True,,2.518,2.507,0.425,7.738,0.192,trial_results/timeseries/world_1_TD3_00386_900_trial003.json,2026-09-01T22:01:44.968726
+4,world_1,DRL,TD3_00386_900,0.0,2.5,2.5,True,,3.132,3.122,0.343,9.144,0.199,trial_results/timeseries/world_1_TD3_00386_900_trial004.json,2026-09-01T22:01:59.388663
+5,world_1,DRL,TD3_00386_900,0.0,4.0,4.0,False,Goal timeout after 90.0s,4.677,4.675,0.036,90.003,1.391,trial_results/timeseries/world_1_TD3_00386_900_trial005.json,2026-09-01T22:03:33.657390
+6,world_1,DRL,TD3_00386_900,0.0,5.5,5.5,False,Goal timeout after 90.0s,6.328,6.328,0.003,90.009,1.335,trial_results/timeseries/world_1_TD3_00386_900_trial006.json,2026-09-01T22:05:09.202509
+7,world_1,DRL,TD3_00386_900,0.0,6.0,6.0,False,"Obstacle hit, mission aborted.",6.301,6.3,0.021,13.527,1.813,trial_results/timeseries/world_1_TD3_00386_900_trial007.json,2026-09-01T22:05:28.059788
+8,world_1,DRL,TD3_00386_900,0.5,0.5,0.707,True,,0.638,0.635,0.434,3.683,0.196,trial_results/timeseries/world_1_TD3_00386_900_trial008.json,2026-09-01T22:05:37.065051
+9,world_1,DRL,TD3_00386_900,0.5,1.5,1.581,False,Goal timeout after 90.0s,2.302,2.301,0.01,90.021,0.467,trial_results/timeseries/world_1_TD3_00386_900_trial009.json,2026-09-01T22:07:11.367550
+10,world_1,DRL,TD3_00386_900,0.5,2.0,2.062,False,Goal timeout after 90.0s,3.199,3.198,0.025,90.016,0.297,trial_results/timeseries/world_1_TD3_00386_900_trial010.json,2026-09-01T22:08:47.396462
+11,world_1,DRL,TD3_00386_900,0.5,2.5,2.55,True,,3.996,3.985,0.27,11.98,0.198,trial_results/timeseries/world_1_TD3_00386_900_trial011.json,2026-09-01T22:09:03.983615
+12,world_1,DRL,TD3_00386_900,0.5,3.0,3.041,False,"Obstacle hit, mission aborted.",3.804,3.793,0.283,10.934,0.325,trial_results/timeseries/world_1_TD3_00386_900_trial012.json,2026-09-01T22:09:20.433801
+13,world_1,DRL,TD3_00386_900,0.5,3.5,3.536,False,Goal timeout after 90.0s,3.772,3.769,0.056,90.039,1.054,trial_results/timeseries/world_1_TD3_00386_900_trial013.json,2026-09-01T22:10:54.744084
+14,world_1,DRL,TD3_00386_900,0.5,4.0,4.031,False,"Obstacle hit, mission aborted.",3.921,3.921,0.001,15.238,1.448,trial_results/timeseries/world_1_TD3_00386_900_trial014.json,2026-09-01T22:11:14.310664
+15,world_1,DRL,TD3_00386_900,0.5,5.5,5.523,False,Goal timeout after 90.0s,6.424,6.423,0.007,90.014,1.256,trial_results/timeseries/world_1_TD3_00386_900_trial015.json,2026-09-01T22:12:48.595442
+16,world_1,DRL,TD3_00386_900,0.5,6.0,6.021,False,Goal timeout after 90.0s,6.432,6.431,0.021,90.021,1.644,trial_results/timeseries/world_1_TD3_00386_900_trial016.json,2026-09-01T22:14:23.222194
+17,world_1,DRL,TD3_00386_900,1.0,0.0,1.0,True,,0.804,0.804,0.0,1.71,0.196,trial_results/timeseries/world_1_TD3_00386_900_trial017.json,2026-09-01T22:14:30.271163
+18,world_1,DRL,TD3_00386_900,1.0,0.5,1.118,True,,0.973,0.965,0.917,2.053,0.192,trial_results/timeseries/world_1_TD3_00386_900_trial018.json,2026-09-01T22:14:36.594027
+19,world_1,DRL,TD3_00386_900,1.0,1.5,1.803,False,Goal timeout after 90.0s,0.934,0.934,0.034,90.018,1.266,trial_results/timeseries/world_1_TD3_00386_900_trial019.json,2026-09-01T22:16:11.871095
+20,world_1,DRL,TD3_00386_900,1.0,2.0,2.236,False,Goal timeout after 90.0s,0.825,0.822,0.323,90.005,1.732,trial_results/timeseries/world_1_TD3_00386_900_trial020.json,2026-09-01T22:17:46.455198
+21,world_1,DRL,TD3_00386_900,1.0,2.5,2.693,True,,3.736,3.725,0.288,13.102,0.194,trial_results/timeseries/world_1_TD3_00386_900_trial021.json,2026-09-01T22:18:04.885886
+22,world_1,DRL,TD3_00386_900,1.0,3.0,3.162,True,,4.272,4.262,0.253,11.859,0.195,trial_results/timeseries/world_1_TD3_00386_900_trial022.json,2026-09-01T22:18:22.208957
+23,world_1,DRL,TD3_00386_900,1.0,3.5,3.64,True,,4.828,4.817,0.224,12.742,0.192,trial_results/timeseries/world_1_TD3_00386_900_trial023.json,2026-09-01T22:18:39.219507
+24,world_1,DRL,TD3_00386_900,1.0,4.0,4.123,True,,5.435,5.424,0.199,16.699,0.19,trial_results/timeseries/world_1_TD3_00386_900_trial024.json,2026-09-01T22:19:00.194823
+25,world_1,DRL,TD3_00386_900,1.0,4.5,4.61,False,Goal timeout after 90.0s,3.892,3.892,0.003,90.017,2.111,trial_results/timeseries/world_1_TD3_00386_900_trial025.json,2026-09-01T22:20:35.480943
+26,world_1,DRL,TD3_00386_900,1.0,5.0,5.099,False,Goal timeout after 90.0s,3.907,3.906,0.003,90.011,2.616,trial_results/timeseries/world_1_TD3_00386_900_trial026.json,2026-09-01T22:22:09.815376
+27,world_1,DRL,TD3_00386_900,1.0,5.5,5.59,True,,7.326,7.315,0.147,15.334,0.195,trial_results/timeseries/world_1_TD3_00386_900_trial027.json,2026-09-01T22:22:29.683166
+28,world_1,DRL,TD3_00386_900,1.0,6.0,6.083,True,,7.889,7.879,0.136,16.196,0.19,trial_results/timeseries/world_1_TD3_00386_900_trial028.json,2026-09-01T22:22:51.162079
+29,world_1,DRL,TD3_00386_900,1.5,0.0,1.5,True,,1.311,1.3,0.822,2.636,0.191,trial_results/timeseries/world_1_TD3_00386_900_trial029.json,2026-09-01T22:22:58.069014
+30,world_1,DRL,TD3_00386_900,1.5,0.5,1.581,True,,1.404,1.393,0.763,2.835,0.192,trial_results/timeseries/world_1_TD3_00386_900_trial030.json,2026-09-01T22:23:06.163783
+31,world_1,DRL,TD3_00386_900,1.5,1.0,1.803,False,Goal timeout after 90.0s,0.708,0.708,0.038,90.017,1.152,trial_results/timeseries/world_1_TD3_00386_900_trial031.json,2026-09-01T22:24:40.695438
+32,world_1,DRL,TD3_00386_900,1.5,1.5,2.121,False,Goal timeout after 90.0s,0.716,0.715,0.054,90.017,1.519,trial_results/timeseries/world_1_TD3_00386_900_trial032.json,2026-09-01T22:26:15.302737
+33,world_1,DRL,TD3_00386_900,1.5,2.0,2.5,False,Goal timeout after 90.0s,0.751,0.75,0.029,90.022,1.959,trial_results/timeseries/world_1_TD3_00386_900_trial033.json,2026-09-01T22:27:49.645784
+34,world_1,DRL,TD3_00386_900,1.5,2.5,2.915,False,Goal timeout after 90.0s,0.883,0.881,0.307,90.019,2.295,trial_results/timeseries/world_1_TD3_00386_900_trial034.json,2026-09-01T22:29:23.988594
+35,world_1,DRL,TD3_00386_900,1.5,3.0,3.354,True,,4.762,4.751,0.226,14.566,0.192,trial_results/timeseries/world_1_TD3_00386_900_trial035.json,2026-09-01T22:29:43.179008
+36,world_1,DRL,TD3_00386_900,1.5,3.5,3.808,True,,5.137,5.126,0.21,13.446,0.19,trial_results/timeseries/world_1_TD3_00386_900_trial036.json,2026-09-01T22:30:00.899988
+37,world_1,DRL,TD3_00386_900,1.5,4.0,4.272,True,,5.618,5.607,0.192,14.206,0.191,trial_results/timeseries/world_1_TD3_00386_900_trial037.json,2026-09-01T22:30:20.466629
+38,world_1,DRL,TD3_00386_900,1.5,4.5,4.743,True,,6.147,6.125,0.348,15.352,0.185,trial_results/timeseries/world_1_TD3_00386_900_trial038.json,2026-09-01T22:30:40.091301
+39,world_1,DRL,TD3_00386_900,1.5,5.0,5.22,True,,6.692,6.681,0.161,17.024,0.196,trial_results/timeseries/world_1_TD3_00386_900_trial039.json,2026-09-01T22:31:02.390425
+40,world_1,DRL,TD3_00386_900,1.5,5.5,5.701,True,,7.432,7.421,0.145,16.215,0.19,trial_results/timeseries/world_1_TD3_00386_900_trial040.json,2026-09-01T22:31:23.181498
+41,world_1,DRL,TD3_00386_900,1.5,6.0,6.185,True,,7.94,7.929,0.135,16.562,0.19,trial_results/timeseries/world_1_TD3_00386_900_trial041.json,2026-09-01T22:31:44.019160
+42,world_1,DRL,TD3_00386_900,2.0,0.0,2.0,True,,1.817,1.795,1.185,3.58,0.184,trial_results/timeseries/world_1_TD3_00386_900_trial042.json,2026-09-01T22:31:53.170419
+43,world_1,DRL,TD3_00386_900,2.0,0.5,2.062,True,,1.869,1.862,0.383,3.763,0.2,trial_results/timeseries/world_1_TD3_00386_900_trial043.json,2026-09-01T22:32:02.194957
+44,world_1,DRL,TD3_00386_900,2.0,1.0,2.236,True,,2.093,2.082,0.514,5.288,0.198,trial_results/timeseries/world_1_TD3_00386_900_trial044.json,2026-09-01T22:32:11.996528
+45,world_1,DRL,TD3_00386_900,2.0,1.5,2.5,True,,2.494,2.483,0.435,7.586,0.191,trial_results/timeseries/world_1_TD3_00386_900_trial045.json,2026-09-01T22:32:24.130376
+46,world_1,DRL,TD3_00386_900,2.0,2.0,2.828,False,Goal timeout after 90.0s,0.875,0.875,0.044,90.018,2.065,trial_results/timeseries/world_1_TD3_00386_900_trial046.json,2026-09-01T22:33:58.426000
+47,world_1,DRL,TD3_00386_900,2.0,3.5,4.031,False,"Obstacle hit, mission aborted.",0.911,0.911,0.013,10.891,3.355,trial_results/timeseries/world_1_TD3_00386_900_trial047.json,2026-09-01T22:34:14.317120
+48,world_1,DRL,TD3_00386_900,2.0,4.0,4.472,True,,5.908,5.897,0.182,15.875,0.191,trial_results/timeseries/world_1_TD3_00386_900_trial048.json,2026-09-01T22:34:35.468064
+49,world_1,DRL,TD3_00386_900,2.0,4.5,4.924,True,,6.313,6.302,0.171,17.082,0.195,trial_results/timeseries/world_1_TD3_00386_900_trial049.json,2026-09-01T22:34:57.331563
+50,world_1,DRL,TD3_00386_900,2.0,5.0,5.385,True,,7.165,7.154,0.15,16.801,0.198,trial_results/timeseries/world_1_TD3_00386_900_trial050.json,2026-09-01T22:35:19.415751
+51,world_1,DRL,TD3_00386_900,2.0,5.5,5.852,True,,7.664,7.654,0.141,16.701,0.191,trial_results/timeseries/world_1_TD3_00386_900_trial051.json,2026-09-01T22:35:40.398337
+52,world_1,DRL,TD3_00386_900,2.0,6.0,6.325,True,,8.128,8.118,0.13,17.174,0.185,trial_results/timeseries/world_1_TD3_00386_900_trial052.json,2026-09-01T22:36:01.903731
+53,world_1,DRL,TD3_00386_900,2.5,0.0,2.5,True,,2.308,2.297,0.467,4.508,0.193,trial_results/timeseries/world_1_TD3_00386_900_trial053.json,2026-09-01T22:36:11.315105
+54,world_1,DRL,TD3_00386_900,2.5,1.5,2.915,True,,2.83,2.819,0.38,5.996,0.195,trial_results/timeseries/world_1_TD3_00386_900_trial054.json,2026-09-01T22:36:21.570320
+55,world_1,DRL,TD3_00386_900,2.5,2.0,3.202,True,,3.357,3.346,0.321,7.639,0.197,trial_results/timeseries/world_1_TD3_00386_900_trial055.json,2026-09-01T22:36:33.474675
+56,world_1,DRL,TD3_00386_900,2.5,2.5,3.536,True,,3.957,3.949,0.204,10.154,0.199,trial_results/timeseries/world_1_TD3_00386_900_trial056.json,2026-09-01T22:36:48.178396
+57,world_1,DRL,TD3_00386_900,2.5,3.0,3.905,False,Goal timeout after 90.0s,3.844,3.843,0.02,90.013,0.951,trial_results/timeseries/world_1_TD3_00386_900_trial057.json,2026-09-01T22:38:23.461989
+58,world_1,DRL,TD3_00386_900,2.5,3.5,4.301,False,Goal timeout after 90.0s,3.84,3.839,0.034,90.023,1.479,trial_results/timeseries/world_1_TD3_00386_900_trial058.json,2026-09-01T22:39:59.355386
+59,world_1,DRL,TD3_00386_900,2.5,4.0,4.717,False,Goal timeout after 90.0s,3.895,3.893,0.06,90.02,1.964,trial_results/timeseries/world_1_TD3_00386_900_trial059.json,2026-09-01T22:41:34.700707
+60,world_1,DRL,TD3_00386_900,2.5,4.5,5.148,False,Goal timeout after 90.0s,3.943,3.94,0.072,90.003,2.426,trial_results/timeseries/world_1_TD3_00386_900_trial060.json,2026-09-01T22:43:09.243383
+61,world_1,DRL,TD3_00386_900,2.5,5.0,5.59,True,,8.028,8.017,0.134,20.616,0.192,trial_results/timeseries/world_1_TD3_00386_900_trial061.json,2026-09-01T22:43:34.182794
+62,world_1,DRL,TD3_00386_900,3.0,0.0,3.0,True,,2.813,2.802,0.384,5.426,0.196,trial_results/timeseries/world_1_TD3_00386_900_trial062.json,2026-09-01T22:43:43.959418
+63,world_1,DRL,TD3_00386_900,3.0,1.5,3.354,True,,3.404,3.397,0.222,8.903,0.199,trial_results/timeseries/world_1_TD3_00386_900_trial063.json,2026-09-01T22:43:57.381548
+64,world_1,DRL,TD3_00386_900,3.0,2.0,3.606,True,,3.731,3.72,0.289,7.92,0.196,trial_results/timeseries/world_1_TD3_00386_900_trial064.json,2026-09-01T22:44:10.566898
+65,world_1,DRL,TD3_00386_900,3.0,2.5,3.905,True,,4.215,4.204,0.256,9.002,0.194,trial_results/timeseries/world_1_TD3_00386_900_trial065.json,2026-09-01T22:44:24.843885
+66,world_1,DRL,TD3_00386_900,3.0,3.0,4.243,True,,4.771,4.76,0.219,10.409,0.193,trial_results/timeseries/world_1_TD3_00386_900_trial066.json,2026-09-01T22:44:39.521420
+67,world_1,DRL,TD3_00386_900,3.0,3.5,4.61,True,,5.251,5.24,0.205,12.5,0.193,trial_results/timeseries/world_1_TD3_00386_900_trial067.json,2026-09-01T22:44:56.287734
+68,world_1,DRL,TD3_00386_900,3.0,4.0,5.0,True,,5.79,5.779,0.186,13.548,0.191,trial_results/timeseries/world_1_TD3_00386_900_trial068.json,2026-09-01T22:45:14.104792
+69,world_1,DRL,TD3_00386_900,3.0,4.5,5.408,True,,6.382,6.371,0.168,14.652,0.195,trial_results/timeseries/world_1_TD3_00386_900_trial069.json,2026-09-01T22:45:33.028665
+70,world_1,DRL,TD3_00386_900,3.0,5.0,5.831,True,,7.133,7.123,0.151,16.7,0.191,trial_results/timeseries/world_1_TD3_00386_900_trial070.json,2026-09-01T22:45:54.699913
+71,world_1,DRL,TD3_00386_900,3.5,0.0,3.5,True,,3.342,3.321,0.643,6.415,0.186,trial_results/timeseries/world_1_TD3_00386_900_trial071.json,2026-09-01T22:46:05.639461
+72,world_1,DRL,TD3_00386_900,3.5,0.5,3.536,False,Goal timeout after 90.0s,2.26,2.257,0.111,90.044,1.345,trial_results/timeseries/world_1_TD3_00386_900_trial072.json,2026-09-01T22:47:39.945376
+73,world_1,DRL,TD3_00386_900,3.5,1.0,3.64,False,Goal timeout after 90.0s,2.166,2.166,0.032,90.015,1.535,trial_results/timeseries/world_1_TD3_00386_900_trial073.json,2026-09-01T22:49:15.298581
+74,world_1,DRL,TD3_00386_900,3.5,1.5,3.808,False,Goal timeout after 90.0s,2.469,2.468,0.067,90.015,1.612,trial_results/timeseries/world_1_TD3_00386_900_trial074.json,2026-09-01T22:50:50.046761
+75,world_1,DRL,TD3_00386_900,3.5,2.0,4.031,True,,4.166,4.155,0.258,9.686,0.199,trial_results/timeseries/world_1_TD3_00386_900_trial075.json,2026-09-01T22:51:04.758599
+76,world_1,DRL,TD3_00386_900,3.5,2.5,4.301,True,,4.544,4.533,0.237,9.607,0.19,trial_results/timeseries/world_1_TD3_00386_900_trial076.json,2026-09-01T22:51:18.717865
+77,world_1,DRL,TD3_00386_900,3.5,3.0,4.61,True,,5.086,5.075,0.212,11.08,0.192,trial_results/timeseries/world_1_TD3_00386_900_trial077.json,2026-09-01T22:51:34.109060
+78,world_1,DRL,TD3_00386_900,3.5,4.5,5.701,True,,6.746,6.738,0.119,18.79,0.198,trial_results/timeseries/world_1_TD3_00386_900_trial078.json,2026-09-01T22:51:58.219587
+79,world_1,DRL,TD3_00386_900,3.5,5.0,6.103,True,,7.202,7.191,0.149,15.999,0.191,trial_results/timeseries/world_1_TD3_00386_900_trial079.json,2026-09-01T22:52:18.989979
+80,world_1,DRL,TD3_00386_900,3.5,5.5,6.519,True,,7.823,7.814,0.12,16.942,0.192,trial_results/timeseries/world_1_TD3_00386_900_trial080.json,2026-09-01T22:52:40.207072
+81,world_1,DRL,TD3_00386_900,3.5,6.0,6.946,False,Goal timeout after 90.0s,6.918,6.917,0.019,90.012,1.219,trial_results/timeseries/world_1_TD3_00386_900_trial081.json,2026-09-01T22:54:15.086001
+82,world_1,DRL,TD3_00386_900,4.0,0.0,4.0,True,,3.845,3.834,0.279,7.678,0.193,trial_results/timeseries/world_1_TD3_00386_900_trial082.json,2026-09-01T22:54:27.093114
+83,world_1,DRL,TD3_00386_900,4.0,0.5,4.031,False,Goal timeout after 90.0s,2.273,2.27,0.143,90.017,1.846,trial_results/timeseries/world_1_TD3_00386_900_trial083.json,2026-09-01T22:56:01.369782
+84,world_1,DRL,TD3_00386_900,4.0,1.0,4.123,False,Goal timeout after 90.0s,2.384,2.384,0.011,90.016,1.953,trial_results/timeseries/world_1_TD3_00386_900_trial084.json,2026-09-01T22:57:36.003364
+85,world_1,DRL,TD3_00386_900,4.0,1.5,4.272,True,,4.636,4.625,0.232,14.689,0.195,trial_results/timeseries/world_1_TD3_00386_900_trial085.json,2026-09-01T22:57:56.263528
+86,world_1,DRL,TD3_00386_900,4.0,2.0,4.472,True,,4.772,4.761,0.226,11.135,0.198,trial_results/timeseries/world_1_TD3_00386_900_trial086.json,2026-09-01T22:58:13.167972
+87,world_1,DRL,TD3_00386_900,4.0,2.5,4.717,True,,5.087,5.076,0.212,10.671,0.2,trial_results/timeseries/world_1_TD3_00386_900_trial087.json,2026-09-01T22:58:29.103863
+88,world_1,DRL,TD3_00386_900,4.0,3.0,5.0,True,,5.474,5.463,0.197,11.477,0.192,trial_results/timeseries/world_1_TD3_00386_900_trial088.json,2026-09-01T22:58:45.847465
+89,world_1,DRL,TD3_00386_900,4.0,4.0,5.657,False,Goal timeout after 90.0s,5.193,5.192,0.008,90.015,1.269,trial_results/timeseries/world_1_TD3_00386_900_trial089.json,2026-09-01T23:00:21.379123
+90,world_1,DRL,TD3_00386_900,4.0,4.5,6.021,False,Goal timeout after 90.0s,5.469,5.469,0.004,90.009,1.598,trial_results/timeseries/world_1_TD3_00386_900_trial090.json,2026-09-01T23:01:55.812705
+91,world_1,DRL,TD3_00386_900,4.0,5.0,6.403,True,,7.492,7.481,0.144,17.489,0.195,trial_results/timeseries/world_1_TD3_00386_900_trial091.json,2026-09-01T23:02:17.623454
+92,world_1,DRL,TD3_00386_900,4.0,5.5,6.801,True,,7.862,7.851,0.137,16.28,0.195,trial_results/timeseries/world_1_TD3_00386_900_trial092.json,2026-09-01T23:02:38.277630
+93,world_1,DRL,TD3_00386_900,4.0,6.0,7.211,True,,8.222,8.211,0.131,16.28,0.194,trial_results/timeseries/world_1_TD3_00386_900_trial093.json,2026-09-01T23:02:59.137315
+94,world_1,DRL,TD3_00386_900,4.5,0.0,4.5,True,,4.348,4.337,0.247,8.49,0.194,trial_results/timeseries/world_1_TD3_00386_900_trial094.json,2026-09-01T23:03:12.100033
+95,world_1,DRL,TD3_00386_900,4.5,0.5,4.528,False,Goal timeout after 90.0s,2.465,2.465,0.016,90.005,2.297,trial_results/timeseries/world_1_TD3_00386_900_trial095.json,2026-09-01T23:04:46.376169
+96,world_1,DRL,TD3_00386_900,4.5,1.0,4.61,False,Goal timeout after 90.0s,2.286,2.284,0.083,90.014,2.459,trial_results/timeseries/world_1_TD3_00386_900_trial096.json,2026-09-01T23:06:21.912544
+97,world_1,DRL,TD3_00386_900,4.5,1.5,4.743,True,,5.469,5.459,0.197,13.39,0.182,trial_results/timeseries/world_1_TD3_00386_900_trial097.json,2026-09-01T23:06:40.629795
+98,world_1,DRL,TD3_00386_900,4.5,2.0,4.924,True,,5.444,5.433,0.198,11.998,0.19,trial_results/timeseries/world_1_TD3_00386_900_trial098.json,2026-09-01T23:06:57.903877
+99,world_1,DRL,TD3_00386_900,4.5,2.5,5.148,True,,5.739,5.728,0.188,11.861,0.194,trial_results/timeseries/world_1_TD3_00386_900_trial099.json,2026-09-01T23:07:14.034021
+100,world_1,DRL,TD3_00386_900,4.5,3.0,5.408,True,,5.93,5.919,0.181,12.16,0.195,trial_results/timeseries/world_1_TD3_00386_900_trial100.json,2026-09-01T23:07:31.462737
+101,world_1,DRL,TD3_00386_900,4.5,3.5,5.701,True,,6.253,6.242,0.173,13.087,0.197,trial_results/timeseries/world_1_TD3_00386_900_trial101.json,2026-09-01T23:07:51.610875
+102,world_1,DRL,TD3_00386_900,4.5,4.0,6.021,False,Goal timeout after 90.0s,5.275,5.275,0.002,90.018,1.566,trial_results/timeseries/world_1_TD3_00386_900_trial102.json,2026-09-01T23:09:26.136916
+103,world_1,DRL,TD3_00386_900,4.5,4.5,6.364,False,Goal timeout after 90.0s,5.096,5.096,0.005,90.004,1.93,trial_results/timeseries/world_1_TD3_00386_900_trial103.json,2026-09-01T23:11:00.473296
+104,world_1,DRL,TD3_00386_900,4.5,5.0,6.727,False,Goal timeout after 90.0s,5.249,5.247,0.047,90.013,2.258,trial_results/timeseries/world_1_TD3_00386_900_trial104.json,2026-09-01T23:12:34.809668
+105,world_1,DRL,TD3_00386_900,4.5,5.5,7.106,True,,8.429,8.42,0.1,18.713,0.184,trial_results/timeseries/world_1_TD3_00386_900_trial105.json,2026-09-01T23:12:57.869654
+106,world_1,DRL,TD3_00386_900,4.5,6.0,7.5,True,,8.725,8.715,0.123,17.848,0.197,trial_results/timeseries/world_1_TD3_00386_900_trial106.json,2026-09-01T23:13:19.985761
+107,world_1,DRL,TD3_00386_900,5.0,0.5,5.025,False,"Obstacle hit, mission aborted.",4.909,4.898,0.219,10.435,0.503,trial_results/timeseries/world_1_TD3_00386_900_trial107.json,2026-09-01T23:13:36.198067
+108,world_1,DRL,TD3_00386_900,5.0,1.0,5.099,False,Goal timeout after 90.0s,2.317,2.315,0.104,90.007,2.927,trial_results/timeseries/world_1_TD3_00386_900_trial108.json,2026-09-01T23:15:10.729568
+109,world_1,DRL,TD3_00386_900,5.0,2.5,5.59,True,,6.262,6.251,0.172,12.72,0.191,trial_results/timeseries/world_1_TD3_00386_900_trial109.json,2026-09-01T23:15:28.774869
+110,world_1,DRL,TD3_00386_900,5.0,3.0,5.831,True,,6.462,6.451,0.166,13.061,0.196,trial_results/timeseries/world_1_TD3_00386_900_trial110.json,2026-09-01T23:15:46.355141
+111,world_1,DRL,TD3_00386_900,5.0,3.5,6.103,True,,6.645,6.634,0.162,13.323,0.198,trial_results/timeseries/world_1_TD3_00386_900_trial111.json,2026-09-01T23:16:03.945951
+112,world_1,DRL,TD3_00386_900,5.0,4.0,6.403,True,,6.874,6.864,0.157,13.967,0.199,trial_results/timeseries/world_1_TD3_00386_900_trial112.json,2026-09-01T23:16:22.482553
+113,world_1,DRL,TD3_00386_900,5.0,4.5,6.727,True,,7.297,7.287,0.147,17.244,0.2,trial_results/timeseries/world_1_TD3_00386_900_trial113.json,2026-09-01T23:16:45.002882
+114,world_1,DRL,TD3_00386_900,5.0,5.0,7.071,False,Goal timeout after 90.0s,5.156,5.156,0.002,90.011,2.62,trial_results/timeseries/world_1_TD3_00386_900_trial114.json,2026-09-01T23:18:20.286426
+115,world_1,DRL,TD3_00386_900,5.5,0.0,5.5,False,"Obstacle hit, mission aborted.",4.67,4.659,0.231,8.884,0.901,trial_results/timeseries/world_1_TD3_00386_900_trial115.json,2026-09-01T23:18:33.747006
+116,world_1,DRL,TD3_00386_900,5.5,0.5,5.523,False,Goal timeout after 90.0s,4.704,4.704,0.0,90.02,1.134,trial_results/timeseries/world_1_TD3_00386_900_trial116.json,2026-09-01T23:20:09.355380
+117,world_1,DRL,TD3_00386_900,5.5,1.0,5.59,True,,6.277,6.266,0.174,14.923,0.198,trial_results/timeseries/world_1_TD3_00386_900_trial117.json,2026-09-01T23:20:29.656420
+118,world_1,DRL,TD3_00386_900,5.5,2.5,6.042,True,,6.732,6.721,0.161,15.655,0.193,trial_results/timeseries/world_1_TD3_00386_900_trial118.json,2026-09-01T23:20:49.578654
+119,world_1,DRL,TD3_00386_900,5.5,3.0,6.265,True,,6.779,6.768,0.159,13.559,0.199,trial_results/timeseries/world_1_TD3_00386_900_trial119.json,2026-09-01T23:21:07.407978
+120,world_1,DRL,TD3_00386_900,5.5,3.5,6.519,True,,7.034,7.023,0.153,13.886,0.196,trial_results/timeseries/world_1_TD3_00386_900_trial120.json,2026-09-01T23:21:26.058908
+121,world_1,DRL,TD3_00386_900,5.5,4.0,6.801,True,,7.21,7.199,0.15,14.052,0.19,trial_results/timeseries/world_1_TD3_00386_900_trial121.json,2026-09-01T23:21:44.832868
+122,world_1,DRL,TD3_00386_900,5.5,4.5,7.106,True,,7.535,7.524,0.143,14.651,0.194,trial_results/timeseries/world_1_TD3_00386_900_trial122.json,2026-09-01T23:22:03.785030
+123,world_1,DRL,TD3_00386_900,5.5,5.0,7.433,True,,8.018,8.008,0.134,15.697,0.197,trial_results/timeseries/world_1_TD3_00386_900_trial123.json,2026-09-01T23:22:23.835906
+124,world_1,DRL,TD3_00386_900,5.5,5.5,7.778,True,,8.597,8.587,0.125,17.783,0.2,trial_results/timeseries/world_1_TD3_00386_900_trial124.json,2026-09-01T23:22:45.931088
+125,world_1,DRL,TD3_00386_900,5.5,6.0,8.139,False,Goal timeout after 90.0s,8.797,8.795,0.015,90.006,0.992,trial_results/timeseries/world_1_TD3_00386_900_trial125.json,2026-09-01T23:24:21.209435
+126,world_1,DRL,TD3_00386_900,6.0,0.0,6.0,False,"Obstacle hit, mission aborted.",4.671,4.671,0.006,9.104,1.394,trial_results/timeseries/world_1_TD3_00386_900_trial126.json,2026-09-01T23:24:35.636428
+127,world_1,DRL,TD3_00386_900,6.0,0.5,6.021,False,"Obstacle hit, mission aborted.",4.762,4.76,0.038,9.649,1.538,trial_results/timeseries/world_1_TD3_00386_900_trial127.json,2026-09-01T23:24:49.547881
+128,world_1,DRL,TD3_00386_900,6.0,1.0,6.083,True,,6.946,6.936,0.155,17.049,0.198,trial_results/timeseries/world_1_TD3_00386_900_trial128.json,2026-09-01T23:25:10.967405
+129,world_1,DRL,TD3_00386_900,6.0,1.5,6.185,True,,6.983,6.972,0.154,16.522,0.199,trial_results/timeseries/world_1_TD3_00386_900_trial129.json,2026-09-01T23:25:32.817454
+130,world_1,DRL,TD3_00386_900,6.0,2.0,6.325,False,Goal timeout after 90.0s,6.097,6.095,0.036,90.013,1.443,trial_results/timeseries/world_1_TD3_00386_900_trial130.json,2026-09-01T23:27:08.109435
+131,world_1,DRL,TD3_00386_900,6.0,2.5,6.5,True,,7.517,7.507,0.142,18.247,0.189,trial_results/timeseries/world_1_TD3_00386_900_trial131.json,2026-09-01T23:27:31.052838
+132,world_1,DRL,TD3_00386_900,6.0,3.0,6.708,True,,7.316,7.306,0.147,14.875,0.196,trial_results/timeseries/world_1_TD3_00386_900_trial132.json,2026-09-01T23:27:50.198029
+133,world_1,DRL,TD3_00386_900,6.0,3.5,6.946,True,,7.371,7.349,0.293,14.564,0.181,trial_results/timeseries/world_1_TD3_00386_900_trial133.json,2026-09-01T23:28:09.286636
+134,world_1,DRL,TD3_00386_900,6.0,4.0,7.211,True,,7.669,7.648,0.281,15.137,0.179,trial_results/timeseries/world_1_TD3_00386_900_trial134.json,2026-09-01T23:28:29.290275
+135,world_1,DRL,TD3_00386_900,6.0,4.5,7.5,True,,8.062,8.051,0.134,16.055,0.198,trial_results/timeseries/world_1_TD3_00386_900_trial135.json,2026-09-01T23:28:49.962226
+136,world_1,DRL,TD3_00386_900,6.0,5.0,7.81,True,,8.313,8.303,0.13,16.244,0.196,trial_results/timeseries/world_1_TD3_00386_900_trial136.json,2026-09-01T23:29:10.505340
+137,world_1,DRL,TD3_00386_900,6.0,5.5,8.139,True,,8.719,8.708,0.124,17.081,0.198,trial_results/timeseries/world_1_TD3_00386_900_trial137.json,2026-09-01T23:29:32.258572
+138,world_1,DRL,TD3_00386_900,6.0,6.0,8.485,True,,9.296,9.285,0.116,18.478,0.195,trial_results/timeseries/world_1_TD3_00386_900_trial138.json,2026-09-01T23:29:56.008822

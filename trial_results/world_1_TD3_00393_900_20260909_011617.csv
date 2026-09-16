@@ -1,0 +1,140 @@
+trial_idx,world_name,planner,drl_model_name,goal_x,goal_y,straight_line_distance,success,failure_reason,distance_traveled_odom,distance_traveled_planner,distance_diff_percent,travel_time,final_distance_to_goal,timeseries_log_path,timestamp
+0,world_1,DRL,TD3_00393_900,0.0,0.5,0.5,True,,0.909,0.903,0.608,4.144,0.197,trial_results/timeseries/world_1_TD3_00393_900_trial000.json,2026-09-09T01:16:25.831723
+1,world_1,DRL,TD3_00393_900,0.0,1.0,1.0,True,,1.322,1.311,0.816,4.285,0.19,trial_results/timeseries/world_1_TD3_00393_900_trial001.json,2026-09-09T01:16:35.634370
+2,world_1,DRL,TD3_00393_900,0.0,1.5,1.5,True,,1.836,1.825,0.587,5.289,0.197,trial_results/timeseries/world_1_TD3_00393_900_trial002.json,2026-09-09T01:16:45.441570
+3,world_1,DRL,TD3_00393_900,0.0,2.0,2.0,True,,2.451,2.44,0.44,6.514,0.2,trial_results/timeseries/world_1_TD3_00393_900_trial003.json,2026-09-09T01:16:56.212820
+4,world_1,DRL,TD3_00393_900,0.0,2.5,2.5,True,,3.244,3.233,0.333,8.083,0.197,trial_results/timeseries/world_1_TD3_00393_900_trial004.json,2026-09-09T01:17:08.807111
+5,world_1,DRL,TD3_00393_900,0.0,4.0,4.0,True,,4.76,4.749,0.226,11.699,0.194,trial_results/timeseries/world_1_TD3_00393_900_trial005.json,2026-09-09T01:17:25.781310
+6,world_1,DRL,TD3_00393_900,0.0,5.5,5.5,True,,6.232,6.221,0.172,14.335,0.198,trial_results/timeseries/world_1_TD3_00393_900_trial006.json,2026-09-09T01:17:44.382154
+7,world_1,DRL,TD3_00393_900,0.0,6.0,6.0,True,,6.718,6.707,0.16,15.159,0.199,trial_results/timeseries/world_1_TD3_00393_900_trial007.json,2026-09-09T01:18:03.875495
+8,world_1,DRL,TD3_00393_900,0.5,0.5,0.707,True,,0.834,0.826,1.043,3.35,0.196,trial_results/timeseries/world_1_TD3_00393_900_trial008.json,2026-09-09T01:18:12.499407
+9,world_1,DRL,TD3_00393_900,0.5,1.5,1.581,True,,2.984,2.983,0.039,12.201,0.2,trial_results/timeseries/world_1_TD3_00393_900_trial009.json,2026-09-09T01:18:29.264400
+10,world_1,DRL,TD3_00393_900,0.5,2.0,2.062,True,,3.538,3.53,0.217,9.209,0.2,trial_results/timeseries/world_1_TD3_00393_900_trial010.json,2026-09-09T01:18:43.736039
+11,world_1,DRL,TD3_00393_900,0.5,2.5,2.55,True,,3.946,3.935,0.272,9.717,0.198,trial_results/timeseries/world_1_TD3_00393_900_trial011.json,2026-09-09T01:18:57.719065
+12,world_1,DRL,TD3_00393_900,0.5,3.0,3.041,False,"Obstacle hit, mission aborted.",4.33,4.32,0.219,10.416,0.211,trial_results/timeseries/world_1_TD3_00393_900_trial012.json,2026-09-09T01:19:12.658319
+13,world_1,DRL,TD3_00393_900,0.5,3.5,3.536,True,,5.602,5.598,0.074,16.782,0.199,trial_results/timeseries/world_1_TD3_00393_900_trial013.json,2026-09-09T01:19:33.957423
+14,world_1,DRL,TD3_00393_900,0.5,4.0,4.031,False,"Obstacle hit, mission aborted.",4.256,4.249,0.17,11.842,1.579,trial_results/timeseries/world_1_TD3_00393_900_trial014.json,2026-09-09T01:19:51.318528
+15,world_1,DRL,TD3_00393_900,0.5,5.5,5.523,False,"Obstacle hit, mission aborted.",4.067,4.056,0.271,10.975,2.732,trial_results/timeseries/world_1_TD3_00393_900_trial015.json,2026-09-09T01:20:07.560384
+16,world_1,DRL,TD3_00393_900,0.5,6.0,6.021,False,"Obstacle hit, mission aborted.",4.017,4.006,0.27,10.915,3.226,trial_results/timeseries/world_1_TD3_00393_900_trial016.json,2026-09-09T01:20:22.942576
+17,world_1,DRL,TD3_00393_900,1.0,0.0,1.0,True,,0.814,0.792,2.645,1.713,0.187,trial_results/timeseries/world_1_TD3_00393_900_trial017.json,2026-09-09T01:20:29.422850
+18,world_1,DRL,TD3_00393_900,1.0,0.5,1.118,True,,0.959,0.948,1.12,2.013,0.199,trial_results/timeseries/world_1_TD3_00393_900_trial018.json,2026-09-09T01:20:35.696737
+19,world_1,DRL,TD3_00393_900,1.0,1.5,1.803,True,,3.338,3.334,0.132,10.457,0.2,trial_results/timeseries/world_1_TD3_00393_900_trial019.json,2026-09-09T01:20:50.771511
+20,world_1,DRL,TD3_00393_900,1.0,2.0,2.236,True,,4.418,4.407,0.244,11.06,0.198,trial_results/timeseries/world_1_TD3_00393_900_trial020.json,2026-09-09T01:21:06.102129
+21,world_1,DRL,TD3_00393_900,1.0,2.5,2.693,True,,4.534,4.523,0.236,10.856,0.199,trial_results/timeseries/world_1_TD3_00393_900_trial021.json,2026-09-09T01:21:21.282027
+22,world_1,DRL,TD3_00393_900,1.0,3.0,3.162,True,,4.778,4.768,0.226,11.295,0.192,trial_results/timeseries/world_1_TD3_00393_900_trial022.json,2026-09-09T01:21:37.900862
+23,world_1,DRL,TD3_00393_900,1.0,3.5,3.64,True,,5.223,5.212,0.211,11.978,0.196,trial_results/timeseries/world_1_TD3_00393_900_trial023.json,2026-09-09T01:21:55.148186
+24,world_1,DRL,TD3_00393_900,1.0,4.0,4.123,True,,5.844,5.833,0.182,13.667,0.192,trial_results/timeseries/world_1_TD3_00393_900_trial024.json,2026-09-09T01:22:14.355852
+25,world_1,DRL,TD3_00393_900,1.0,4.5,4.61,True,,6.161,6.15,0.175,14.699,0.191,trial_results/timeseries/world_1_TD3_00393_900_trial025.json,2026-09-09T01:22:33.584711
+26,world_1,DRL,TD3_00393_900,1.0,5.0,5.099,False,"Obstacle hit, mission aborted.",4.164,4.161,0.084,11.9,2.682,trial_results/timeseries/world_1_TD3_00393_900_trial026.json,2026-09-09T01:22:49.779410
+27,world_1,DRL,TD3_00393_900,1.0,5.5,5.59,False,"Obstacle hit, mission aborted.",4.16,4.151,0.21,11.589,3.029,trial_results/timeseries/world_1_TD3_00393_900_trial027.json,2026-09-09T01:23:05.631082
+28,world_1,DRL,TD3_00393_900,1.0,6.0,6.083,False,"Obstacle hit, mission aborted.",4.057,4.05,0.156,11.316,3.507,trial_results/timeseries/world_1_TD3_00393_900_trial028.json,2026-09-09T01:23:21.219818
+29,world_1,DRL,TD3_00393_900,1.5,0.0,1.5,True,,1.32,1.309,0.815,2.655,0.183,trial_results/timeseries/world_1_TD3_00393_900_trial029.json,2026-09-09T01:23:29.145588
+30,world_1,DRL,TD3_00393_900,1.5,0.5,1.581,True,,1.406,1.396,0.762,2.837,0.19,trial_results/timeseries/world_1_TD3_00393_900_trial030.json,2026-09-09T01:23:36.295412
+31,world_1,DRL,TD3_00393_900,1.5,1.0,1.803,True,,1.759,1.748,0.622,3.559,0.198,trial_results/timeseries/world_1_TD3_00393_900_trial031.json,2026-09-09T01:23:44.366662
+32,world_1,DRL,TD3_00393_900,1.5,1.5,2.121,True,,3.051,3.046,0.145,8.685,0.197,trial_results/timeseries/world_1_TD3_00393_900_trial032.json,2026-09-09T01:23:57.313629
+33,world_1,DRL,TD3_00393_900,1.5,2.0,2.5,True,,3.451,3.44,0.311,9.245,0.2,trial_results/timeseries/world_1_TD3_00393_900_trial033.json,2026-09-09T01:24:11.871644
+34,world_1,DRL,TD3_00393_900,1.5,2.5,2.915,True,,3.887,3.876,0.278,10.052,0.196,trial_results/timeseries/world_1_TD3_00393_900_trial034.json,2026-09-09T01:24:26.637396
+35,world_1,DRL,TD3_00393_900,1.5,3.0,3.354,True,,5.186,5.176,0.208,12.0,0.199,trial_results/timeseries/world_1_TD3_00393_900_trial035.json,2026-09-09T01:24:43.923859
+36,world_1,DRL,TD3_00393_900,1.5,3.5,3.808,True,,5.462,5.452,0.197,12.445,0.197,trial_results/timeseries/world_1_TD3_00393_900_trial036.json,2026-09-09T01:25:00.881976
+37,world_1,DRL,TD3_00393_900,1.5,4.0,4.272,True,,5.746,5.735,0.189,12.843,0.197,trial_results/timeseries/world_1_TD3_00393_900_trial037.json,2026-09-09T01:25:18.995681
+38,world_1,DRL,TD3_00393_900,1.5,4.5,4.743,True,,5.94,5.929,0.182,13.205,0.189,trial_results/timeseries/world_1_TD3_00393_900_trial038.json,2026-09-09T01:25:36.467614
+39,world_1,DRL,TD3_00393_900,1.5,5.0,5.22,True,,6.461,6.45,0.167,14.593,0.196,trial_results/timeseries/world_1_TD3_00393_900_trial039.json,2026-09-09T01:25:56.874693
+40,world_1,DRL,TD3_00393_900,1.5,5.5,5.701,True,,7.057,7.046,0.153,16.986,0.193,trial_results/timeseries/world_1_TD3_00393_900_trial040.json,2026-09-09T01:26:18.679054
+41,world_1,DRL,TD3_00393_900,1.5,6.0,6.185,True,,7.546,7.535,0.143,16.702,0.196,trial_results/timeseries/world_1_TD3_00393_900_trial041.json,2026-09-09T01:26:39.654743
+42,world_1,DRL,TD3_00393_900,2.0,0.0,2.0,True,,1.813,1.802,0.594,3.579,0.19,trial_results/timeseries/world_1_TD3_00393_900_trial042.json,2026-09-09T01:26:47.509945
+43,world_1,DRL,TD3_00393_900,2.0,0.5,2.062,True,,1.899,1.888,0.561,3.786,0.195,trial_results/timeseries/world_1_TD3_00393_900_trial043.json,2026-09-09T01:26:55.559522
+44,world_1,DRL,TD3_00393_900,2.0,1.0,2.236,True,,2.137,2.126,0.502,4.202,0.195,trial_results/timeseries/world_1_TD3_00393_900_trial044.json,2026-09-09T01:27:04.320059
+45,world_1,DRL,TD3_00393_900,2.0,1.5,2.5,True,,2.756,2.756,0.0,5.756,0.19,trial_results/timeseries/world_1_TD3_00393_900_trial045.json,2026-09-09T01:27:14.585630
+46,world_1,DRL,TD3_00393_900,2.0,2.0,2.828,True,,3.313,3.303,0.324,7.599,0.195,trial_results/timeseries/world_1_TD3_00393_900_trial046.json,2026-09-09T01:27:26.456251
+47,world_1,DRL,TD3_00393_900,2.0,3.5,4.031,True,,5.756,5.745,0.187,12.948,0.181,trial_results/timeseries/world_1_TD3_00393_900_trial047.json,2026-09-09T01:27:43.664631
+48,world_1,DRL,TD3_00393_900,2.0,4.0,4.472,True,,5.886,5.875,0.183,13.145,0.197,trial_results/timeseries/world_1_TD3_00393_900_trial048.json,2026-09-09T01:28:01.133264
+49,world_1,DRL,TD3_00393_900,2.0,4.5,4.924,True,,6.203,6.192,0.174,13.693,0.194,trial_results/timeseries/world_1_TD3_00393_900_trial049.json,2026-09-09T01:28:19.097186
+50,world_1,DRL,TD3_00393_900,2.0,5.0,5.385,True,,6.628,6.618,0.162,14.472,0.193,trial_results/timeseries/world_1_TD3_00393_900_trial050.json,2026-09-09T01:28:38.145283
+51,world_1,DRL,TD3_00393_900,2.0,5.5,5.852,True,,7.033,7.022,0.153,15.256,0.193,trial_results/timeseries/world_1_TD3_00393_900_trial051.json,2026-09-09T01:28:57.972452
+52,world_1,DRL,TD3_00393_900,2.0,6.0,6.325,True,,7.52,7.509,0.143,16.439,0.188,trial_results/timeseries/world_1_TD3_00393_900_trial052.json,2026-09-09T01:29:19.427762
+53,world_1,DRL,TD3_00393_900,2.5,0.0,2.5,True,,2.313,2.302,0.466,4.505,0.193,trial_results/timeseries/world_1_TD3_00393_900_trial053.json,2026-09-09T01:29:28.452334
+54,world_1,DRL,TD3_00393_900,2.5,1.5,2.915,True,,2.967,2.956,0.363,5.829,0.196,trial_results/timeseries/world_1_TD3_00393_900_trial054.json,2026-09-09T01:29:39.545969
+55,world_1,DRL,TD3_00393_900,2.5,2.0,3.202,True,,3.437,3.426,0.314,7.298,0.188,trial_results/timeseries/world_1_TD3_00393_900_trial055.json,2026-09-09T01:29:51.101550
+56,world_1,DRL,TD3_00393_900,2.5,2.5,3.536,True,,3.905,3.894,0.273,8.865,0.194,trial_results/timeseries/world_1_TD3_00393_900_trial056.json,2026-09-09T01:30:04.233371
+57,world_1,DRL,TD3_00393_900,2.5,3.0,3.905,True,,4.435,4.424,0.243,10.491,0.196,trial_results/timeseries/world_1_TD3_00393_900_trial057.json,2026-09-09T01:30:19.032177
+58,world_1,DRL,TD3_00393_900,2.5,3.5,4.301,True,,5.055,5.044,0.21,12.242,0.192,trial_results/timeseries/world_1_TD3_00393_900_trial058.json,2026-09-09T01:30:35.536017
+59,world_1,DRL,TD3_00393_900,2.5,4.0,4.717,True,,6.33,6.319,0.17,14.077,0.192,trial_results/timeseries/world_1_TD3_00393_900_trial059.json,2026-09-09T01:30:53.885995
+60,world_1,DRL,TD3_00393_900,2.5,4.5,5.148,True,,6.551,6.54,0.164,14.375,0.182,trial_results/timeseries/world_1_TD3_00393_900_trial060.json,2026-09-09T01:31:12.581611
+61,world_1,DRL,TD3_00393_900,2.5,5.0,5.59,True,,6.881,6.87,0.156,14.958,0.194,trial_results/timeseries/world_1_TD3_00393_900_trial061.json,2026-09-09T01:31:32.072952
+62,world_1,DRL,TD3_00393_900,3.0,0.0,3.0,True,,2.832,2.821,0.378,5.47,0.199,trial_results/timeseries/world_1_TD3_00393_900_trial062.json,2026-09-09T01:31:42.309797
+63,world_1,DRL,TD3_00393_900,3.0,1.5,3.354,True,,3.384,3.373,0.324,6.574,0.196,trial_results/timeseries/world_1_TD3_00393_900_trial063.json,2026-09-09T01:31:54.201941
+64,world_1,DRL,TD3_00393_900,3.0,2.0,3.606,True,,3.741,3.73,0.288,7.638,0.193,trial_results/timeseries/world_1_TD3_00393_900_trial064.json,2026-09-09T01:32:06.550147
+65,world_1,DRL,TD3_00393_900,3.0,2.5,3.905,True,,4.115,4.104,0.263,8.805,0.192,trial_results/timeseries/world_1_TD3_00393_900_trial065.json,2026-09-09T01:32:19.622843
+66,world_1,DRL,TD3_00393_900,3.0,3.0,4.243,True,,4.525,4.514,0.239,10.212,0.192,trial_results/timeseries/world_1_TD3_00393_900_trial066.json,2026-09-09T01:32:34.350057
+67,world_1,DRL,TD3_00393_900,3.0,3.5,4.61,True,,5.013,5.002,0.215,11.58,0.19,trial_results/timeseries/world_1_TD3_00393_900_trial067.json,2026-09-09T01:32:50.196195
+68,world_1,DRL,TD3_00393_900,3.0,4.0,5.0,True,,5.608,5.598,0.192,12.966,0.198,trial_results/timeseries/world_1_TD3_00393_900_trial068.json,2026-09-09T01:33:07.689378
+69,world_1,DRL,TD3_00393_900,3.0,4.5,5.408,True,,7.014,7.003,0.154,15.319,0.189,trial_results/timeseries/world_1_TD3_00393_900_trial069.json,2026-09-09T01:33:28.276844
+70,world_1,DRL,TD3_00393_900,3.0,5.0,5.831,True,,7.285,7.274,0.148,15.813,0.193,trial_results/timeseries/world_1_TD3_00393_900_trial070.json,2026-09-09T01:33:48.605907
+71,world_1,DRL,TD3_00393_900,3.5,0.0,3.5,True,,3.365,3.354,0.318,6.456,0.195,trial_results/timeseries/world_1_TD3_00393_900_trial071.json,2026-09-09T01:33:59.834835
+72,world_1,DRL,TD3_00393_900,3.5,0.5,3.536,True,,4.758,4.754,0.089,11.394,0.199,trial_results/timeseries/world_1_TD3_00393_900_trial072.json,2026-09-09T01:34:15.491803
+73,world_1,DRL,TD3_00393_900,3.5,1.0,3.64,True,,5.299,5.277,0.401,12.464,0.184,trial_results/timeseries/world_1_TD3_00393_900_trial073.json,2026-09-09T01:34:32.223069
+74,world_1,DRL,TD3_00393_900,3.5,1.5,3.808,True,,4.265,4.254,0.25,8.407,0.193,trial_results/timeseries/world_1_TD3_00393_900_trial074.json,2026-09-09T01:34:45.252663
+75,world_1,DRL,TD3_00393_900,3.5,2.0,4.031,True,,4.291,4.28,0.248,8.442,0.195,trial_results/timeseries/world_1_TD3_00393_900_trial075.json,2026-09-09T01:34:59.043451
+76,world_1,DRL,TD3_00393_900,3.5,2.5,4.301,True,,4.513,4.503,0.239,9.385,0.19,trial_results/timeseries/world_1_TD3_00393_900_trial076.json,2026-09-09T01:35:12.694687
+77,world_1,DRL,TD3_00393_900,3.5,3.0,4.61,True,,4.819,4.808,0.224,10.39,0.198,trial_results/timeseries/world_1_TD3_00393_900_trial077.json,2026-09-09T01:35:27.360581
+78,world_1,DRL,TD3_00393_900,3.5,4.5,5.701,False,"Obstacle hit, mission aborted.",0.991,0.981,1.036,3.843,4.866,trial_results/timeseries/world_1_TD3_00393_900_trial078.json,2026-09-09T01:35:36.721868
+79,world_1,DRL,TD3_00393_900,3.5,5.0,6.103,True,,7.732,7.721,0.139,16.641,0.194,trial_results/timeseries/world_1_TD3_00393_900_trial079.json,2026-09-09T01:35:58.624253
+80,world_1,DRL,TD3_00393_900,3.5,5.5,6.519,True,,8.037,8.026,0.135,17.23,0.182,trial_results/timeseries/world_1_TD3_00393_900_trial080.json,2026-09-09T01:36:20.128474
+81,world_1,DRL,TD3_00393_900,3.5,6.0,6.946,True,,8.747,8.744,0.044,19.274,0.199,trial_results/timeseries/world_1_TD3_00393_900_trial081.json,2026-09-09T01:36:44.675858
+82,world_1,DRL,TD3_00393_900,4.0,0.0,4.0,True,,3.906,3.895,0.274,7.461,0.195,trial_results/timeseries/world_1_TD3_00393_900_trial082.json,2026-09-09T01:36:56.456298
+83,world_1,DRL,TD3_00393_900,4.0,0.5,4.031,True,,4.782,4.771,0.228,9.388,0.193,trial_results/timeseries/world_1_TD3_00393_900_trial083.json,2026-09-09T01:37:10.350631
+84,world_1,DRL,TD3_00393_900,4.0,1.0,4.123,True,,5.359,5.348,0.203,11.578,0.194,trial_results/timeseries/world_1_TD3_00393_900_trial084.json,2026-09-09T01:37:27.213356
+85,world_1,DRL,TD3_00393_900,4.0,1.5,4.272,True,,4.939,4.928,0.22,9.75,0.195,trial_results/timeseries/world_1_TD3_00393_900_trial085.json,2026-09-09T01:37:42.536853
+86,world_1,DRL,TD3_00393_900,4.0,2.0,4.472,True,,4.836,4.825,0.222,9.447,0.193,trial_results/timeseries/world_1_TD3_00393_900_trial086.json,2026-09-09T01:37:56.700980
+87,world_1,DRL,TD3_00393_900,4.0,2.5,4.717,True,,5.068,5.057,0.212,10.415,0.193,trial_results/timeseries/world_1_TD3_00393_900_trial087.json,2026-09-09T01:38:11.643011
+88,world_1,DRL,TD3_00393_900,4.0,3.0,5.0,True,,5.274,5.263,0.204,11.156,0.198,trial_results/timeseries/world_1_TD3_00393_900_trial088.json,2026-09-09T01:38:28.063186
+89,world_1,DRL,TD3_00393_900,4.0,4.0,5.657,True,,6.886,6.884,0.043,19.945,0.2,trial_results/timeseries/world_1_TD3_00393_900_trial089.json,2026-09-09T01:38:53.278460
+90,world_1,DRL,TD3_00393_900,4.0,4.5,6.021,False,"Obstacle hit, mission aborted.",0.983,0.972,1.035,3.48,5.159,trial_results/timeseries/world_1_TD3_00393_900_trial090.json,2026-09-09T01:39:01.135080
+91,world_1,DRL,TD3_00393_900,4.0,5.0,6.403,False,"Obstacle hit, mission aborted.",0.932,0.923,0.913,4.123,5.607,trial_results/timeseries/world_1_TD3_00393_900_trial091.json,2026-09-09T01:39:09.767560
+92,world_1,DRL,TD3_00393_900,4.0,5.5,6.801,True,,8.393,8.383,0.128,17.931,0.195,trial_results/timeseries/world_1_TD3_00393_900_trial092.json,2026-09-09T01:39:33.208095
+93,world_1,DRL,TD3_00393_900,4.0,6.0,7.211,True,,8.798,8.788,0.124,18.67,0.199,trial_results/timeseries/world_1_TD3_00393_900_trial093.json,2026-09-09T01:39:57.153949
+94,world_1,DRL,TD3_00393_900,4.5,0.0,4.5,True,,4.426,4.415,0.243,8.445,0.199,trial_results/timeseries/world_1_TD3_00393_900_trial094.json,2026-09-09T01:40:11.670865
+95,world_1,DRL,TD3_00393_900,4.5,0.5,4.528,True,,5.11,5.099,0.211,9.908,0.198,trial_results/timeseries/world_1_TD3_00393_900_trial095.json,2026-09-09T01:40:25.838905
+96,world_1,DRL,TD3_00393_900,4.5,1.0,4.61,True,,5.571,5.56,0.195,11.417,0.182,trial_results/timeseries/world_1_TD3_00393_900_trial096.json,2026-09-09T01:40:41.522432
+97,world_1,DRL,TD3_00393_900,4.5,1.5,4.743,True,,5.512,5.501,0.195,12.478,0.197,trial_results/timeseries/world_1_TD3_00393_900_trial097.json,2026-09-09T01:40:59.270483
+98,world_1,DRL,TD3_00393_900,4.5,2.0,4.924,True,,5.527,5.517,0.195,10.855,0.19,trial_results/timeseries/world_1_TD3_00393_900_trial098.json,2026-09-09T01:41:15.395345
+99,world_1,DRL,TD3_00393_900,4.5,2.5,5.148,True,,5.57,5.56,0.194,11.033,0.19,trial_results/timeseries/world_1_TD3_00393_900_trial099.json,2026-09-09T01:41:30.717984
+100,world_1,DRL,TD3_00393_900,4.5,3.0,5.408,True,,5.756,5.746,0.187,11.944,0.191,trial_results/timeseries/world_1_TD3_00393_900_trial100.json,2026-09-09T01:41:46.925527
+101,world_1,DRL,TD3_00393_900,4.5,3.5,5.701,True,,6.035,6.024,0.178,12.884,0.197,trial_results/timeseries/world_1_TD3_00393_900_trial101.json,2026-09-09T01:42:04.130697
+102,world_1,DRL,TD3_00393_900,4.5,4.0,6.021,True,,6.434,6.423,0.171,14.011,0.192,trial_results/timeseries/world_1_TD3_00393_900_trial102.json,2026-09-09T01:42:22.409438
+103,world_1,DRL,TD3_00393_900,4.5,4.5,6.364,False,"Obstacle hit, mission aborted.",1.035,1.024,1.068,3.26,5.433,trial_results/timeseries/world_1_TD3_00393_900_trial103.json,2026-09-09T01:42:31.256977
+104,world_1,DRL,TD3_00393_900,4.5,5.0,6.727,False,"Obstacle hit, mission aborted.",0.912,0.905,0.796,3.4,5.919,trial_results/timeseries/world_1_TD3_00393_900_trial104.json,2026-09-09T01:42:40.172038
+105,world_1,DRL,TD3_00393_900,4.5,5.5,7.106,False,"Obstacle hit, mission aborted.",0.909,0.902,0.697,3.543,6.317,trial_results/timeseries/world_1_TD3_00393_900_trial105.json,2026-09-09T01:42:48.974462
+106,world_1,DRL,TD3_00393_900,4.5,6.0,7.5,False,"Obstacle hit, mission aborted.",0.902,0.895,0.748,3.62,6.732,trial_results/timeseries/world_1_TD3_00393_900_trial106.json,2026-09-09T01:42:57.162179
+107,world_1,DRL,TD3_00393_900,5.0,0.5,5.025,False,"Obstacle hit, mission aborted.",5.2,5.189,0.207,10.152,0.47,trial_results/timeseries/world_1_TD3_00393_900_trial107.json,2026-09-09T01:43:11.633642
+108,world_1,DRL,TD3_00393_900,5.0,1.0,5.099,True,,5.902,5.892,0.183,12.161,0.183,trial_results/timeseries/world_1_TD3_00393_900_trial108.json,2026-09-09T01:43:29.364611
+109,world_1,DRL,TD3_00393_900,5.0,2.5,5.59,True,,6.071,6.06,0.178,11.842,0.2,trial_results/timeseries/world_1_TD3_00393_900_trial109.json,2026-09-09T01:43:46.054989
+110,world_1,DRL,TD3_00393_900,5.0,3.0,5.831,True,,6.233,6.222,0.172,12.765,0.195,trial_results/timeseries/world_1_TD3_00393_900_trial110.json,2026-09-09T01:44:03.087475
+111,world_1,DRL,TD3_00393_900,5.0,3.5,6.103,True,,6.437,6.426,0.168,13.31,0.192,trial_results/timeseries/world_1_TD3_00393_900_trial111.json,2026-09-09T01:44:20.672603
+112,world_1,DRL,TD3_00393_900,5.0,4.0,6.403,True,,6.773,6.762,0.16,14.333,0.192,trial_results/timeseries/world_1_TD3_00393_900_trial112.json,2026-09-09T01:44:39.295860
+113,world_1,DRL,TD3_00393_900,5.0,4.5,6.727,True,,7.317,7.307,0.147,15.533,0.195,trial_results/timeseries/world_1_TD3_00393_900_trial113.json,2026-09-09T01:44:59.108352
+114,world_1,DRL,TD3_00393_900,5.0,5.0,7.071,False,"Obstacle hit, mission aborted.",0.998,0.987,1.108,3.059,6.17,trial_results/timeseries/world_1_TD3_00393_900_trial114.json,2026-09-09T01:45:06.438929
+115,world_1,DRL,TD3_00393_900,5.5,0.0,5.5,False,"Obstacle hit, mission aborted.",4.922,4.911,0.22,9.651,0.815,trial_results/timeseries/world_1_TD3_00393_900_trial115.json,2026-09-09T01:45:20.639107
+116,world_1,DRL,TD3_00393_900,5.5,0.5,5.523,False,"Obstacle hit, mission aborted.",5.082,5.071,0.212,10.13,1.003,trial_results/timeseries/world_1_TD3_00393_900_trial116.json,2026-09-09T01:45:35.045923
+117,world_1,DRL,TD3_00393_900,5.5,1.0,5.59,True,,6.329,6.307,0.343,12.87,0.185,trial_results/timeseries/world_1_TD3_00393_900_trial117.json,2026-09-09T01:45:52.190044
+118,world_1,DRL,TD3_00393_900,5.5,2.5,6.042,True,,6.636,6.625,0.162,12.882,0.2,trial_results/timeseries/world_1_TD3_00393_900_trial118.json,2026-09-09T01:46:10.344794
+119,world_1,DRL,TD3_00393_900,5.5,3.0,6.265,True,,6.677,6.666,0.161,13.004,0.198,trial_results/timeseries/world_1_TD3_00393_900_trial119.json,2026-09-09T01:46:28.614274
+120,world_1,DRL,TD3_00393_900,5.5,3.5,6.519,True,,6.856,6.845,0.157,13.887,0.199,trial_results/timeseries/world_1_TD3_00393_900_trial120.json,2026-09-09T01:46:46.786968
+121,world_1,DRL,TD3_00393_900,5.5,4.0,6.801,True,,7.087,7.076,0.152,14.449,0.19,trial_results/timeseries/world_1_TD3_00393_900_trial121.json,2026-09-09T01:47:06.504447
+122,world_1,DRL,TD3_00393_900,5.5,4.5,7.106,True,,7.385,7.374,0.146,15.222,0.19,trial_results/timeseries/world_1_TD3_00393_900_trial122.json,2026-09-09T01:47:25.991774
+123,world_1,DRL,TD3_00393_900,5.5,5.0,7.433,True,,7.827,7.816,0.138,16.102,0.194,trial_results/timeseries/world_1_TD3_00393_900_trial123.json,2026-09-09T01:47:46.370699
+124,world_1,DRL,TD3_00393_900,5.5,5.5,7.778,True,,8.125,8.114,0.134,16.546,0.197,trial_results/timeseries/world_1_TD3_00393_900_trial124.json,2026-09-09T01:48:07.184064
+125,world_1,DRL,TD3_00393_900,5.5,6.0,8.139,True,,8.852,8.841,0.121,19.518,0.193,trial_results/timeseries/world_1_TD3_00393_900_trial125.json,2026-09-09T01:48:30.974071
+126,world_1,DRL,TD3_00393_900,6.0,0.0,6.0,True,,6.184,6.173,0.174,12.059,0.19,trial_results/timeseries/world_1_TD3_00393_900_trial126.json,2026-09-09T01:48:48.298987
+127,world_1,DRL,TD3_00393_900,6.0,0.5,6.021,False,"Obstacle hit, mission aborted.",5.047,5.039,0.159,10.572,1.487,trial_results/timeseries/world_1_TD3_00393_900_trial127.json,2026-09-09T01:49:03.142565
+128,world_1,DRL,TD3_00393_900,6.0,1.0,6.083,True,,6.838,6.827,0.157,13.345,0.197,trial_results/timeseries/world_1_TD3_00393_900_trial128.json,2026-09-09T01:49:20.750476
+129,world_1,DRL,TD3_00393_900,6.0,1.5,6.185,True,,7.096,7.085,0.151,14.957,0.194,trial_results/timeseries/world_1_TD3_00393_900_trial129.json,2026-09-09T01:49:40.974791
+130,world_1,DRL,TD3_00393_900,6.0,2.0,6.325,True,,7.997,7.986,0.137,18.77,0.195,trial_results/timeseries/world_1_TD3_00393_900_trial130.json,2026-09-09T01:50:04.270618
+131,world_1,DRL,TD3_00393_900,6.0,2.5,6.5,True,,7.192,7.181,0.148,13.922,0.199,trial_results/timeseries/world_1_TD3_00393_900_trial131.json,2026-09-09T01:50:22.867761
+132,world_1,DRL,TD3_00393_900,6.0,3.0,6.708,True,,7.123,7.112,0.151,13.832,0.199,trial_results/timeseries/world_1_TD3_00393_900_trial132.json,2026-09-09T01:50:40.966290
+133,world_1,DRL,TD3_00393_900,6.0,3.5,6.946,True,,7.286,7.275,0.148,14.17,0.19,trial_results/timeseries/world_1_TD3_00393_900_trial133.json,2026-09-09T01:51:00.411564
+134,world_1,DRL,TD3_00393_900,6.0,4.0,7.211,True,,7.445,7.434,0.145,14.851,0.193,trial_results/timeseries/world_1_TD3_00393_900_trial134.json,2026-09-09T01:51:20.529115
+135,world_1,DRL,TD3_00393_900,6.0,4.5,7.5,True,,7.655,7.644,0.141,15.315,0.192,trial_results/timeseries/world_1_TD3_00393_900_trial135.json,2026-09-09T01:51:40.427793
+136,world_1,DRL,TD3_00393_900,6.0,5.0,7.81,True,,8.001,7.99,0.135,16.279,0.19,trial_results/timeseries/world_1_TD3_00393_900_trial136.json,2026-09-09T01:52:01.474182
+137,world_1,DRL,TD3_00393_900,6.0,5.5,8.139,True,,8.411,8.4,0.128,16.663,0.19,trial_results/timeseries/world_1_TD3_00393_900_trial137.json,2026-09-09T01:52:23.732965
+138,world_1,DRL,TD3_00393_900,6.0,6.0,8.485,True,,8.791,8.781,0.123,17.341,0.191,trial_results/timeseries/world_1_TD3_00393_900_trial138.json,2026-09-09T01:52:45.350822
