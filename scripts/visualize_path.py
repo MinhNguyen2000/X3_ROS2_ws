@@ -14,55 +14,133 @@ SDF_PATH            = os.path.join(CURRENT_DIR, '..', 'src', 'x3_description', '
 PATH_LISTS = {
     # ===== WORLD 1 =====
     ('path_1', 'world_1'): [
-        'APF/path1_world1_300726_0018',
-        'TD3_00380_1000/path1_world1_300726_1029',
-        # 'TD3_00384_500/path1_world1_300726_0031',
-        'TD3_00384_1000/path1_world1_300726_1101',
+        'APF/path1_world_1_300726_0018',
+        # 'TD3_00380_1000/path1_world_1_300726_1029',
+        # 'TD3_00384_500/path1_world_1_300726_0031',
+        # 'TD3_00384_1000/path1_world_1_300726_1101',
+        # 'TD3_00385_1000/path1_world_1_260826_2308'
+
+        # # TD3_delta (5 seeds)
+        # 'TD3_00386_1000/path1_world_1_300826_1152',
+        # 'TD3_00387_1000/path1_world_1_300826_1218',
+        # 'TD3_00388_1000/path1_world_1_300826_1246',
+        # 'TD3_00389_1000/path1_world_1_300826_1328',
+        # 'TD3_00390_1000/path1_world_1_300826_1336',
+
+        'TD3_00400_700/path1_world_1_110926_1830',
+        'TD3_00390_800/path1_world_1_110926_1820',
     ],
     ('path_2', 'world_1'): [
-        'APF/path2_world1_300726_1054',
-        'TD3_00380_1000/path2_world1_300726_1033',
-        # 'TD3_00384_500/path2_world1_300726_1025',
-        'TD3_00384_1000/path2_world1_300726_1107',
+        'APF/path2_world_1_300726_1054',
+        # 'TD3_00380_1000/path2_world_1_300726_1033',
+        # 'TD3_00384_500/path2_world_1_300726_1025',
+        # 'TD3_00384_1000/path2_world_1_300726_1107',
+
+        # # TD3_delta (5 seeds)
+        # 'TD3_00386_1000/path2_world_1_300826_1201',
+        # 'TD3_00387_1000/path2_world_1_300826_1222',
+        # 'TD3_00388_1000/path2_world_1_300826_1247',
+        # 'TD3_00389_1000/path2_world_1_300826_1329',
+        # 'TD3_00390_1000/path2_world_1_300826_1338',
+
+        'TD3_00400_700/path2_world_1_110926_1832',
+        'TD3_00390_800/path2_world_1_110926_1822',
     ],
     ('path_3', 'world_1'): [
-        'APF/path3_world1_300726_1055',
-        'TD3_00380_1000/path3_world1_300726_1035',
-        # 'TD3_00384_500/path3_world1_300726_1050',
-        'TD3_00384_1000/path3_world1_300726_1108',
+        'APF/path3_world_1_300726_1055',
+        # 'TD3_00380_1000/path3_world_1_300726_1035',
+        # 'TD3_00384_500/path3_world_1_300726_1050',
+        # 'TD3_00384_1000/path3_world_1_300726_1108',
+
+        # # TD3_delta (5 seeds)
+        # 'TD3_00386_1000/path3_world_1_300826_1202',
+        # 'TD3_00387_1000/path3_world_1_300826_1226',
+        # 'TD3_00388_1000/path3_world_1_300826_1253',
+        # 'TD3_00389_1000/path3_world_1_300826_1329',
+        # 'TD3_00390_1000/path3_world_1_300826_1339',
+
+        'TD3_00400_700/path3_world_1_110926_1836',
+        'TD3_00390_800/path3_world_1_110926_1824',
     ],
     ('path_4', 'world_1'): [
-        'APF/path4_world1_300726_1056',
-        'TD3_00380_1000/path4_world1_300726_1039',
-        # 'TD3_00384_500/path4_world1_300726_1051',
-        'TD3_00384_1000/path4_world1_300726_1111',
+        'APF/path4_world_1_300726_1056',
+        # 'TD3_00380_1000/path4_world_1_300726_1039',
+        # 'TD3_00384_500/path4_world_1_300726_1051',
+        # 'TD3_00384_1000/path4_world_1_300726_1111',
+
+        # # TD3_delta (5 seeds)
+        # 'TD3_00386_1000/path4_world_1_300826_1203',
+        # 'TD3_00387_1000/path4_world_1_300826_1228',
+        # 'TD3_00388_1000/path4_world_1_300826_1257',
+        # 'TD3_00389_1000/path4_world_1_300826_1330',
+        # 'TD3_00390_1000/path4_world_1_300826_1340',
+
+        'TD3_00400_700/path4_world_1_110926_1837',
+        'TD3_00390_800/path4_world_1_110926_1824',
     ],
     # ===== WORLD 2 =====
     ('path_1', 'world_2'): [
-        'APF/path1_world2_130826_1201',
-        'TD3_00380_1000/path1_world2_120826_1655',
-        'TD3_00384_1000/path1_world2_120826_1650',
+        'APF/path1_world_2_130826_1201',
+        # 'TD3_00380_1000/path1_world_2_120826_1655',
+        # 'TD3_00384_1000/path1_world_2_120826_1650',
+
+        # # TD3_delta (5 seeds)
+        # 'TD3_00386_1000/path1_world_2_300826_1204',
+        # 'TD3_00387_1000/path1_world_2_300826_1229',
+        # 'TD3_00388_1000/path1_world_2_300826_1323',
+        # 'TD3_00389_1000/path1_world_2_300826_1332',
+        # 'TD3_00390_1000/path1_world_2_300826_1341',
+
+        'TD3_00400_700/path1_world_2_110926_1840',
+        'TD3_00390_800/path1_world_2_110926_1842',
     ],
     # ===== WORLD 3 =====
     ('path_1', 'world_3'): [
-        'APF/path1_world3_130826_1204',
-        'TD3_00380_1000/path1_world3_120826_1659',
-        'TD3_00384_1000/path1_world3_120826_1700',
+        'APF/path1_world_3_130826_1204',
+        # 'TD3_00380_1000/path1_world_3_120826_1659',
+        # 'TD3_00384_1000/path1_world_3_120826_1700',
+
+        # # TD3_delta (5 seeds)
+        # 'TD3_00386_1000/path1_world_3_300826_1207',
+        # 'TD3_00387_1000/path1_world_3_300826_1230',
+        # 'TD3_00388_1000/path1_world_3_300826_1324',
+        # 'TD3_00389_1000/path1_world_3_300826_1333',
+        # 'TD3_00390_1000/path1_world_3_300826_1342',
+
+        'TD3_00400_700/path1_world_3_110926_1849',
+        'TD3_00390_800/path1_world_3_110926_1845',
     ],
     # ===== WORLD 4 =====
     ('path_1', 'world_4'): [
-        'APF/path1_world4_130826_1209',
-        'TD3_00380_1000/path1_world4_130826_1141',
-        'TD3_00384_1000/path1_world4_130826_1137',
+        'APF/path1_world_4_130826_1209',
+        # 'TD3_00380_1000/path1_world_4_130826_1141',
+        # 'TD3_00384_1000/path1_world_4_130826_1137',
+
+        # # TD3_delta (5 seeds)
+        # 'TD3_00386_1000/path1_world_4_300826_1210',
+        # 'TD3_00387_1000/path1_world_4_300826_1233',
+        # 'TD3_00388_1000/path1_world_4_300826_1326',
+        # 'TD3_00389_1000/path1_world_4_300826_1334',
+        # 'TD3_00390_1000/path1_world_4_300826_1344',
     ],
     # ===== WORLD 5 =====
     ('path_1', 'world_5'): [
-        'APF/path1_world5_130826_1211',
-        'TD3_00380_1000/path1_world5_130826_1215',
-        'TD3_00384_1000/path1_world5_130826_1155',
+        'APF/path1_world_5_130826_1211',
+        # 'TD3_00380_1000/path1_world_5_130826_1215',
+        # 'TD3_00384_1000/path1_world_5_130826_1155',
+
+        # # TD3_delta (5 seeds)
+        # 'TD3_00386_1000/path1_world_5_300826_1213',
+        # 'TD3_00387_1000/path1_world_5_300826_1243',
+        # 'TD3_00388_1000/path1_world_5_300826_1327',
+        # 'TD3_00389_1000/path1_world_5_300826_1334',
+        # 'TD3_00390_1000/path1_world_5_300826_1345',
+
+        'TD3_00400_700/path1_world_5_110926_1850',
+        'TD3_00390_800/path1_world_5_110926_1846',
     ],
 }
-0
+
 path_list = PATH_LISTS.get((PATH, WORLD), [])
 
 odom_init = {'x': -3.0, 'y': -3.0}
@@ -71,6 +149,7 @@ def rotated_box_corners(cx: float, cy: float, sx: float, sy: float, yaw: float) 
     '''
     Compute the 4 corners of a box centered at (cx, cy) with size (sx, sy),
     rotated by yaw (radians, CCW positive) about its own center.
+    Similar to the function used in visualize_batch_trials.py script
     '''
     hx, hy = sx / 2.0, sy / 2.0
     local_corners = np.array([
@@ -86,19 +165,19 @@ def rotated_box_corners(cx: float, cy: float, sx: float, sy: float, yaw: float) 
     return world_corners
 
 def main():
-    fig, ax = plt.subplots(figsize=(10,10))
-
+    fig, ax = plt.subplots(figsize=(12,12))
+ 
     # --- Visualize the path ---
     for path in path_list:
         PATHS_PATH = os.path.join(SAVED_PATHS_DIR, f'{path}.json')
         planner_name = path.split('/')[0].split('_')[:2]
         if len(planner_name) > 1:
-            if int(planner_name[1]) >= 383:
+            if int(planner_name[1]) <= 395:
                 planner_name[1] = 'delta'
             else:
                 planner_name[1] = 'direct'
         planner_name = '_'.join(planner_name)
-
+ 
         with open(PATHS_PATH, 'r') as f:
             data = json.load(f)
             
@@ -106,15 +185,15 @@ def main():
         x   = [pose.get('x', float('nan')) + odom_init['x'] for pose in poses]
         y   = [pose.get('y', float('nan')) + odom_init['y'] for pose in poses]
         yaw = [pose.get('yaw', float('nan')) for pose in poses]
-
+ 
         elapsed_time = data["elapsed_time"]
         total_distance = data["total_distance"]
-
-        line = ax.plot(x, y, '--', alpha=0.7, lw=2, label=f"{planner_name} | {elapsed_time: 6.2f}s | {total_distance: 6.2f}m")
-
-        ARROW_EVERY_N = 250
+ 
+        line = ax.plot(x, y, '--', alpha=0.7, lw=1.5, label=f"{planner_name} | {elapsed_time: 6.2f}s | {total_distance: 6.2f}m")
+ 
+        ARROW_EVERY_N = 300
         indices = range(0, len(x), ARROW_EVERY_N)
-
+ 
         ax.quiver(
             [x[i] for i in indices], 
             [y[i] for i in indices], 
@@ -126,10 +205,9 @@ def main():
             headwidth=4, headlength=5,
             alpha=0.8
         )
-
-    # --- TODO: Visualize the obstacles ---
+ 
     obstacles = parse_sdf_obstacles(SDF_PATH)
-
+ 
     for obs in obstacles:
         if obs["type"] == 'box':
             corners = rotated_box_corners(
@@ -140,7 +218,7 @@ def main():
                 color='red', alpha=0.5, linewidth=2
             )
             ax.add_patch(poly)
-
+ 
         elif obs["type"] == 'cylinder':
             circle = patches.Circle(
                 xy = (obs['x'], obs['y']),
@@ -148,9 +226,9 @@ def main():
                 color='red', alpha=0.5, linewidth=2
             )
             ax.add_patch(circle)
-
+ 
     # --- Visualize the goals ---       
-    path_name = path_list[0].split('/')[1].split('_')[:2]
+    path_name = path_list[0].split('/')[1].split('_')[:3]
     path_name = "_".join(path_name)
     print(f'Comparing the policy performance on {path_name}')
     with open(DEFAULT_PATHS_PATH, 'r') as f:
@@ -158,41 +236,59 @@ def main():
     goal_x = [goal[0] + odom_init['x'] for goal in AVAILABLE_PATHS[path_name]]
     goal_y = [goal[1] + odom_init['y'] for goal in AVAILABLE_PATHS[path_name]]
     goal_tolerance = 0.30        # radius (m)
-    goal_scatter_size = goal_tolerance * 2 * 100 / (2.54 / 72)     # one scatter size = 1/72 of an inch
-    ax.scatter(goal_x, goal_y, linewidths=1, edgecolors="#1C7826", s=goal_scatter_size, c="#3EA047", alpha=0.5)
-
+    goal_scatter_size = goal_tolerance * 1.5 * 100 / (2.54 / 72)     # one scatter size = 1/72 of an inch
+    ax.scatter(goal_x, goal_y, linewidths=1, linestyle='--', edgecolors="#1C7826", s=goal_scatter_size, c="#3EA047", alpha=0.50, zorder=2)
+ 
+    # --- Number each goal so order stays unambiguous even where paths cross a repeated goal ---
+    for i, (gx, gy) in enumerate(zip(goal_x, goal_y)):
+        ax.annotate(
+            str(i + 1),
+            xy=(gx, gy), xycoords='data',
+            ha='center', va='center',
+            fontsize=14, fontweight='bold', color='black',
+            zorder=3
+        )
+ 
     axis_limits = (-4.0, 4.0)
     ax.set_xlim(axis_limits); ax.set_ylim(axis_limits)
     ax.minorticks_on() 
     ax.tick_params(axis='both', which='minor', direction='in', labelsize=14)
     ax.tick_params(axis='both', which='major', direction='in', labelsize=14)
     ax.grid(False)
-    ax.legend(loc="upper left", fontsize=14)
+    ax.set_xlabel('X (m)', fontsize=12)
+    ax.set_ylabel('Y (m)', fontsize=12)
+    ax.set_aspect('equal')
+    ax.legend(loc='upper right', fontsize=14)
     plt.show()
         
 import xml.etree.ElementTree as ET
 def parse_sdf_obstacles(sdf_path: str) -> list:
+    """
+    Parse obstacles from SDF file.
+    Returns list of dicts with 'type', 'x', 'y', and geometry info.
+    Similar to the function used in visualize_path.py script
+    """
     tree = ET.parse(sdf_path)
     root = tree.getroot()
     obstacles = []
-
+ 
     for elem in root.iter('model'):
         # print(f"Tag: {elem.tag}, Attributes: {elem.attrib}")   # debug print to show the main tags under <sdf>
         
         name = elem.get('name','')
         is_box = name.startswith('box')
         is_cylinder = name.startswith('cylinder')
-
+ 
         if not (is_box or is_cylinder):
             continue
-
+ 
         pose_elem = elem.find('pose')
         pose_vals = [float(v) for v in pose_elem.text.strip().split()]
         x, y = pose_vals[0], pose_vals[1]
         # pose is (x, y, z, roll, pitch, yaw) in SDF; fall back to 0 if a
         # shorter pose string is ever encountered
         yaw = pose_vals[5] if len(pose_vals) >= 6 else 0.0
-
+ 
         if is_box:
             size_elem = elem.find('.//collision/geometry/box/size')
             size_x, size_y, _ = [float(v) for v in size_elem.text.strip().split()]
@@ -215,9 +311,9 @@ def parse_sdf_obstacles(sdf_path: str) -> list:
                 "radius": float(radius_elem.text.strip()),
                 "yaw": yaw   # unused for rendering (circle is rotationally symmetric)
             })
-
+ 
     return obstacles
-
-
+ 
+ 
 if __name__ == "__main__":
     main()
