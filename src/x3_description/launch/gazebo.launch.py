@@ -64,11 +64,20 @@ def generate_launch_description():
         "which needs proper offset to match agent spawn offset"
     )
 
+    launch_ekf_odom = LaunchConfiguration("launch_ekf_odom")
+    launch_ekf_odom_arg = DeclareLaunchArgument(
+        "launch_ekf_odom",
+        default_value = "true",
+        description = "Default to true to launch EKF odom estimation (lidar scan matching + " \
+        "covariance filter + EKF filter). Set to false when using trial orchestrator since " \
+        "these nodes are launched as a ManagedProcess to be terminated and restarted."
+    )
+
     world = PathJoinSubstitution([pkg_path, "worlds", LaunchConfiguration("world")])
     world_arg = DeclareLaunchArgument(
         "world",
         default_value = "world_1.sdf",
-        description = "Name of the world to be loaded, defaulting to empty_world.sdf"
+        description = "Name of the world to be loaded, defaulting to world_1.sdf"
     )
 
     gazebo_config = PathJoinSubstitution([pkg_path, "config", LaunchConfiguration("gazebo_config")])
@@ -224,7 +233,12 @@ def generate_launch_description():
             PythonLaunchDescriptionSource([odom_launch_path]),
             launch_arguments = {"agent_name": agent_name,
                                 "use_sim_time" : use_sim_time}.items(),
-            condition = IfCondition(use_ros_control)
+            condition = IfCondition(
+                PythonExpression([
+                    "'", use_ros_control, "' == 'true' and ", 
+                    "'", launch_ekf_odom, "' == 'true'"
+                ])
+            )
         )
 
         return [
@@ -246,6 +260,7 @@ def generate_launch_description():
         use_sim_time_arg,
         use_ros_control_arg,
         use_odom_publisher_arg,
+        launch_ekf_odom_arg,
         world_arg,
         gazebo_config_arg,
         x_offset_arg,
