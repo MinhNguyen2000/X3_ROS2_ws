@@ -23,6 +23,7 @@ import json
 import time
 import copy
 import signal
+import threading        # Monitor shutdown request, gracefully end processes, and send zero velocity cmd to robot
 
 class DRLPolicyNode(Node):
     def __init__(self):
@@ -48,7 +49,7 @@ class DRLPolicyNode(Node):
         self.goal_timeout       = self.get_parameter('goal_timeout').value
 
         # determine the action mode
-        if int(self.model_id) >= 383:
+        if 386 <= int(self.model_id) <= 395:
             self.action_mode = 'delta'
         else:
             self.action_mode = 'direct'
@@ -121,9 +122,9 @@ class DRLPolicyNode(Node):
 
         # --- Subscribers & Publisher ---
         qos = QoSProfile(depth=10, reliability=QoSReliabilityPolicy.BEST_EFFORT)
-        self.odom_sub = self.create_subscription(Odometry,f'{self.agent_name}/odom', self.odom_callback, qos)
-        self.lidar_sub = self.create_subscription(LaserScan, f'{self.agent_name}/scan', self.lidar_callback, qos)
-        self.cmd_pub = self.create_publisher(TwistStamped, f'{self.agent_name}/cmd_vel', 10)
+        self.odom_sub = self.create_subscription(Odometry,f'odom', self.odom_callback, qos)
+        self.lidar_sub = self.create_subscription(LaserScan, f'scan', self.lidar_callback, qos)
+        self.cmd_pub = self.create_publisher(TwistStamped, f'cmd_vel', 10)
 
         # Broadcast the model name
         planner_id_qos = QoSProfile(
@@ -508,19 +509,30 @@ class DRLPolicyNode(Node):
         return action
 
 def main():
-    rclpy.init()
+    rclpy.init(signal_handler_options=rclpy.SignalHandlerOptions.NO)
     node = DRLPolicyNode()
     executor = MultiThreadedExecutor()
     executor.add_node(node)
 
+    stop_event = threading.Event()
+
+    def _request_shutdown(*args):
+        '''Set the threading event to signal a shutdown request'''
+        stop_event.set()
+
     # catch sigterm from GUI:
-    signal.signal(signal.SIGTERM, lambda *args: executor.shutdown())
+    signal.signal(signal.SIGINT, _request_shutdown)     # from Ctrl+C in the terminal
+    signal.signal(signal.SIGTERM, _request_shutdown)    # from OS PID kill commands
 
     try: 
-        executor.spin()
-    except KeyboardInterrupt:
-        pass
+        while rclpy.ok() and not stop_event.is_set():
+            executor.spin_once(timeout_sec=0.1)
     finally:
+        for _ in range(5):
+            node._publish_cmd(0.0, 0.0)
+            time.sleep(0.02)
+
+        executor.shutdown()
         node.destroy_node()
         # if rclpy.ok():
         rclpy.shutdown()
