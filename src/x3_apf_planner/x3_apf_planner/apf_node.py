@@ -15,6 +15,7 @@ import numpy as np
 import copy
 import signal
 import time             # to maintain constant control sampling time
+import threading        # Monitor shutdown request, gracefully end processes, and send zero velocity cmd to robot
 
 class APFPlannerNode(Node):
     def __init__(self):
@@ -22,7 +23,7 @@ class APFPlannerNode(Node):
 
         # ===== ROS Parameters =====
         self.declare_parameter('agent_name', 'agent0')
-        self.declare_parameter('goal_tolerance', 0.5)
+        self.declare_parameter('goal_tolerance', 0.3)
         self.declare_parameter('obstacle_tolerance', 0.21)
         self.declare_parameter('max_lin_vel', 0.5)
         self.declare_parameter('max_angular_vel', 1.0)
@@ -55,9 +56,9 @@ class APFPlannerNode(Node):
 
         # ===== Subscribers & Publisher =====
         qos = QoSProfile(depth=10, reliability=QoSReliabilityPolicy.BEST_EFFORT)
-        self.odom_sub = self.create_subscription(Odometry, f'{self.agent_name}/odom', self.odom_callback, qos)
-        self.lidar_sub = self.create_subscription(LaserScan, f'{self.agent_name}/scan', self.lidar_callback, qos)
-        self.cmd_pub = self.create_publisher(TwistStamped, f'{self.agent_name}/cmd_vel', 10)
+        self.odom_sub = self.create_subscription(Odometry, f'odom', self.odom_callback, qos)
+        self.lidar_sub = self.create_subscription(LaserScan, f'scan', self.lidar_callback, qos)
+        self.cmd_pub = self.create_publisher(TwistStamped, f'cmd_vel', 10)
 
         planner_id_qos = QoSProfile(
             depth=1,
@@ -326,22 +327,32 @@ class APFPlannerNode(Node):
         return np.arctan2(siny_cosp, cosy_cosp, dtype=np.float32)
         
 def main():
-    rclpy.init()
+    rclpy.init(signal_handler_options=rclpy.SignalHandlerOptions.NO)
     node = APFPlannerNode()
     executor = MultiThreadedExecutor()
     executor.add_node(node)
 
+    stop_event = threading.Event()
+
+    def _request_shutdown(*args):
+        '''Set the threading event to signal a shutdown request'''
+        stop_event.set()
+
     # catch sigterm from GUI:
-    signal.signal(signal.SIGTERM, lambda *args: executor.shutdown())
+    signal.signal(signal.SIGINT, _request_shutdown)     # from Ctrl+C in the terminal
+    signal.signal(signal.SIGTERM, _request_shutdown)    # from OS PID kill commands
 
     try: 
-        executor.spin()
-    except KeyboardInterrupt:
-        pass
+        while rclpy.ok() and not stop_event.is_set():
+            executor.spin_once(timeout_sec=0.1)
     finally:
+        for _ in range(5):
+            node._publish_cmd(0.0, 0.0)
+            time.sleep(0.02)
+
+        executor.shutdown()
         node.destroy_node()
         # if rclpy.ok():
         rclpy.shutdown()
-
 if __name__ == '__main__':
     main()
