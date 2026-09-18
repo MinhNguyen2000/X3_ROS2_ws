@@ -21,9 +21,14 @@ class FaceDetectionNode(Node):
         self.declare_parameter('model_name', 'yolov8_n_widerface_01')
         self.declare_parameter('confidence_threshold', 0.50)
         self.declare_parameter('nms_threshold', 0.45)
-        self.declare_parameter('input_hw', [640, 640])              # expected hw ratio by YOLO model
+        self.declare_parameter('input_hw', [640, 640])      # expected hw ratio by YOLO model
         self.declare_parameter('use_trt', True)
-        self.declare_parameter('assumed_face_width', 0.14)          # average adult face width (m)
+        self.declare_parameter('assumed_face_width', 0.14)  # average adult face width (m) for fallback incase depth not available
+        self.declare_parameter('use_depth_estimate', True)  # prefer sampled Z from depth camera over face width estimate        
+        self.declare_parameter('depth_patch_radius', 3)	    # half-width (px) of the median_sampling patch
+        self.declare_parameter('min_valid_depth_pixels', 5) # min valid px in cropped patch to trust depth
+        self.declare_parameter('depth_max_staleness', 0.15) # max time between depth frame vs color frame
+        self.declare_parameter('depth_scale', 0.001)        # depth given in (mm), convert to (m)
 
         self.agent_name     = self.get_parameter('agent_name').value
         model_name          = self.get_parameter('model_name').value
@@ -32,6 +37,11 @@ class FaceDetectionNode(Node):
         input_hw            = self.get_parameter('input_hw').value
         use_trt             = self.get_parameter('use_trt').value
         self.assumed_face_width = self.get_parameter('assumed_face_width').value
+        self.use_depth_estimate  = self.get_parameter('use_depth_estimate').value
+        self.depth_patch_radius  = self.get_parameter('depth_patch_radius').value
+        self.min_valid_depth_pixels = self.get_parameter('min_valid_depth_pixels').value
+        self.depth_max_staleness = self.get_parameter('depth_max_staleness').value
+        self.depth_scale         = self.get_parameter('depth_scale').value
         self.input_h, self.input_w = input_hw
 
         # --- Locate the ONNX model
@@ -61,10 +71,11 @@ class FaceDetectionNode(Node):
         qos = QoSProfile(depth=10, reliability=QoSReliabilityPolicy.BEST_EFFORT)
 
         self.camera_info: CameraInfo | None = None
-        self.camera_info_sub    = self.create_subscription(CameraInfo,  f'color/camera_info',  self.camera_info_callback,  10)
-        self.image_sub          = self.create_subscription(Image,       f'color/image_raw',    self.image_callback,        qos_profile = qos)
+        self.camera_info_sub    = self.create_subscription(CameraInfo,  f'color/camera_info',   self.camera_info_callback,  10)
+        self.image_sub          = self.create_subscription(Image,       f'color/image_raw',     self.image_callback,        qos_profile = qos)
+        self.depth_sub          = self.create_subscription(Image,       f'depth/image_raw',     self.depth_callback,        qos_profile = qos) 
         self.crop_pub       = self.create_publisher(Image,              f'color/face_crop',      qos_profile=qos)
-        self.detection_pub  = self.create_publisher(Detection2DArray,   f'color/face_detection', qos_profile = qos)
+        # self.detection_pub  = self.create_publisher(Detection2DArray,   f'color/face_detection', qos_profile = qos)
         self.face_pose_pub  = self.create_publisher(PoseStamped,        f'color/face_pose',      10)
 
         # --- Declare variables
@@ -73,6 +84,10 @@ class FaceDetectionNode(Node):
         self.face_z_smooth = 0.0
         self.smooth_alpha = 0.9
 
+        # Cache of most recent data from the subscriptions
+        self.latest_depth_image: np.ndarray | None = None
+        self.latest_depth_stamp: float | None = None
+
     def _load_session(self, model_path: str, use_trt: bool) -> ort.InferenceSession:
         "Build an ONNXRuntime Inference Session with TensorRT (by default) or CUDA EP"
 
@@ -80,7 +95,7 @@ class FaceDetectionNode(Node):
             providers = [
                 ('TensorrtExecutionProvider', {
                     'device_id':                        0,
-                    'trt_max_workspace_size':           256 * 1024 * 1024,
+                    'trt_max_workspace_size':           128 * 1024 * 1024,
                     'trt_fp16_enable':                  True,
                     'trt_engine_cache_enable':          True,
                     'trt_engine_cache_path':            os.path.join('/X3_ROS2_ws', 'src', 'x3_visual', 'models', 'face_detection'),
@@ -199,7 +214,11 @@ class FaceDetectionNode(Node):
         
         return max(detections, key=score)
 
-    def _estimate_face_pose(self, bbox_cx: float, bbox_cy: float, bbox_w: float, stamp) -> PoseStamped | None:
+    def _estimate_face_pose(
+            self, 
+            bbox_cx: float, bbox_cy: float, bbox_w: float, 
+            stamp,
+            measured_z: float | None = None) -> PoseStamped | None:
         '''
         Monocular depth estimate of the 3D position of the face in the camera
         optical frame using the pinhole camera model and an assumed physical 
@@ -218,7 +237,13 @@ class FaceDetectionNode(Node):
         if bbox_w <= 0:
             return None
 
-        z = self.assumed_face_width * fx_camera / bbox_w
+        if measured_z is not None:  
+            # Depth camera distance measurement
+            z = measured_z
+        else:
+            # Face width heuristic approximation   
+            z = self.assumed_face_width * fx_camera / bbox_w
+
         x = (bbox_cx - cx_camera) / fx_camera * z
         y = (bbox_cy - cy_camera) / fy_camera * z
 
@@ -302,16 +327,68 @@ class FaceDetectionNode(Node):
         det.bbox.size_y = float(h)
         det_array_msg.detections.append(det)
 
-        self.detection_pub.publish(det_array_msg)
-        self.get_logger().info(f'Published {len(detections)} face detections')
+        # self.detection_pub.publish(det_array_msg)
+        # self.get_logger().info(f'Published {len(detections)} face detections')
+
+        # --- Sample depth measurement at bbox center
+        # (face width heuristic as fallback method inside _estimate_face_pose if unavailable/stale/invalid)
+        measured_z = None
+        if self.use_depth_estimate:
+            color_stamp = self._stamp_to_sec(msg.header.stamp)
+            depth_fresh = (
+                self.latest_depth_stamp is not None
+                and abs(color_stamp - self.latest_depth_stamp) <= self.depth_max_staleness
+            )
+
+            if depth_fresh:
+                measured_z = self._sample_depth(int(round(bbox_cx)), int(round(bbox_cy)))
+                if measured_z is None:
+                    self.get_logger().info('Depth patch invalid at bbox center, falling back to face width heuristic')
+            else:
+                self.get_logger().info('No fresh depth frame cached, falling back to width heuristic')
 
         # --- Estimate face pose and publish
-        pose = self._estimate_face_pose(bbox_cx=bbox_cx, bbox_cy=bbox_cy, bbox_w=w, stamp=msg.header.stamp)
+        pose = self._estimate_face_pose(
+            bbox_cx=bbox_cx, bbox_cy=bbox_cy, bbox_w=w, 
+            stamp=msg.header.stamp, 
+            measured_z=measured_z
+        )
         if pose is not None:
             self.face_pose_pub.publish(pose)
 
     def camera_info_callback(self, msg: CameraInfo):
         self.camera_info = msg
+
+    def depth_callback(self, msg: Image):
+        self.latest_depth_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough')
+        self.latest_depth_stamp = self._stamp_to_sec(msg.header.stamp)
+        
+    def _sample_depth(self, u: int, v: int) -> float | None:
+        '''
+        Median sample a small path around pixel (u, ) in the most recent depth image. 
+        Returns depth in meters, or none if no depth frame is cached or the patch has
+        too few valid (nonzero) returns.
+
+        (u,v) must be in color-image piixel space, and the depth stream must be registered
+        to color (depth_registration:=true) for this to be a valid lookup
+        '''
+        if self.latest_depth_image is None:
+            return None
+
+        h, w = self.latest_depth_image.shape[:2]
+        r = self.depth_patch_radius
+        u0, u1 = max(u-r, 0), min(u+r+1, w)
+        v0, v1 = max(v-r, 0), min(v+r+1, h)
+
+        patch = self.latest_depth_image[v0:v1, u0: u1].astype(np.float32)
+        valid = patch[patch > 0]
+        if valid.size < self.min_valid_depth_pixels:
+            return None
+        return float(np.median(valid)) * self.depth_scale
+
+    @staticmethod
+    def _stamp_to_sec(stamp) -> float:
+        return stamp.sec + stamp.nanosec * 1e-9
 
 def main():
 
