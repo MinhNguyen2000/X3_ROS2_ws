@@ -19,7 +19,7 @@ class FaceDetectionNode(Node):
         # --- Parameters 
         self.declare_parameter('agent_name', 'agent0')
         self.declare_parameter('model_name', 'yolov8_n_widerface_01')
-        self.declare_parameter('confidence_threshold', 0.50)
+        self.declare_parameter('confidence_threshold', 0.70)
         self.declare_parameter('nms_threshold', 0.45)
         self.declare_parameter('input_hw', [640, 640])      # expected hw ratio by YOLO model
         self.declare_parameter('use_trt', True)
@@ -29,6 +29,9 @@ class FaceDetectionNode(Node):
         self.declare_parameter('min_valid_depth_pixels', 5) # min valid px in cropped patch to trust depth
         self.declare_parameter('depth_max_staleness', 0.15) # max time between depth frame vs color frame
         self.declare_parameter('depth_scale', 0.001)        # depth given in (mm), convert to (m)
+        self.declare_parameter('publish_depth_crop_debug', False) # publish depth face crop for RViz comparison
+        self.declare_parameter('depth_debug_min_m', 0.3)    # fixed colormap range (m) - near clip
+        self.declare_parameter('depth_debug_max_m', 8.0)    # fixed colormap range(m) - far clip
 
         self.agent_name     = self.get_parameter('agent_name').value
         model_name          = self.get_parameter('model_name').value
@@ -42,6 +45,9 @@ class FaceDetectionNode(Node):
         self.min_valid_depth_pixels = self.get_parameter('min_valid_depth_pixels').value
         self.depth_max_staleness = self.get_parameter('depth_max_staleness').value
         self.depth_scale         = self.get_parameter('depth_scale').value
+        self.publish_depth_crop_debug = self.get_parameter('publish_depth_crop_debug').value
+        self.depth_debug_min_m  = self.get_parameter('depth_debug_min_m').value
+        self.depth_debug_max_m  = self.get_parameter('depth_debug_max_m').value
         self.input_h, self.input_w = input_hw
 
         # --- Locate the ONNX model
@@ -74,7 +80,11 @@ class FaceDetectionNode(Node):
         self.camera_info_sub    = self.create_subscription(CameraInfo,  f'color/camera_info',   self.camera_info_callback,  10)
         self.image_sub          = self.create_subscription(Image,       f'color/image_raw',     self.image_callback,        qos_profile = qos)
         self.depth_sub          = self.create_subscription(Image,       f'depth/image_raw',     self.depth_callback,        qos_profile = qos) 
-        self.crop_pub       = self.create_publisher(Image,              f'color/face_crop',      qos_profile=qos)
+
+        self.crop_pub       = self.create_publisher(Image,              f'color/face_crop',     qos_profile=qos)
+        # (DEBUG) colorized depth crop over the same bbox as color image for visually confirming color/depth
+        # alignment in RViz. Toggle off via publish_depth_crop_debug once alignment is trusted
+        self.depth_crop_pub = self.create_publisher(Image,              f'depth/face_crop',     qos_profile=qos)
         # self.detection_pub  = self.create_publisher(Detection2DArray,   f'color/face_detection', qos_profile = qos)
         self.face_pose_pub  = self.create_publisher(PoseStamped,        f'color/face_pose',      10)
 
@@ -314,6 +324,23 @@ class FaceDetectionNode(Node):
             # crop_w = x2c - x1c; crop_h = y2c - y1c
             # self.get_logger().info(f'Published a cropped image ({crop_w:4d},{crop_h:4d})')
 
+        # --- Debug: crop the SAME bbox out of the latest depth frame and
+        # publish alongside color/face_crop for visual alignment checking.
+        # Relies on depth_registration:=true (same (u,v) = same physical ray
+        # in both streams) -- if the two crops don't visually line up on the
+        # same face features, that's a registration/calibration problem, not
+        # a bug in this node.
+        if self.publish_depth_crop_debug and self.latest_depth_image is not None:
+            dh, dw = self.latest_depth_image.shape[:2]
+            # re-clip against depth's own shape in case it ever differs from color's
+            dx2c, dy2c = min(dw, x2c), min(dh, y2c)
+            depth_crop = self.latest_depth_image[y1c:dy2c, x1c:dx2c]
+            if depth_crop.size > 0:
+                depth_crop_colorized = self._colorize_depth_crop(depth_crop)
+                depth_crop_msg = self.bridge.cv2_to_imgmsg(depth_crop_colorized, encoding='bgr8')
+                depth_crop_msg.header = msg.header    # same stamp/frame as the color crop, for side-by-side comparison
+                self.depth_crop_pub.publish(depth_crop_msg)
+
         # --- Package into the Dection2DArray and publish
         det_array_msg = Detection2DArray()
         det_array_msg.header = msg.header
@@ -385,6 +412,29 @@ class FaceDetectionNode(Node):
         if valid.size < self.min_valid_depth_pixels:
             return None
         return float(np.median(valid)) * self.depth_scale
+
+    def _colorize_depth_crop(self, depth_crop: np.ndarray) -> np.ndarray:
+        '''
+        Normalize a raw 16UC1 (mm) depth crop into a FIXED-range colormap
+        (depth_debug_min_m..depth_debug_max_m), not a per-frame min/max.
+        Fixed range means the same color always means the same physical
+        distance across frames/publishes -- lets you actually compare
+        depth crops over time instead of every crop auto-contrast-stretching
+        to fill the color range regardless of real distance.
+ 
+        Invalid (zero) pixels are forced to black rather than mapped into
+        the near-range color, so "no return" is visually distinct from
+        "close".
+        '''
+        depth_m = depth_crop.astype(np.float32) * self.depth_scale
+        valid = depth_m > 0
+ 
+        span = self.depth_debug_max_m - self.depth_debug_min_m
+        normed = np.clip((depth_m - self.depth_debug_min_m) / span, 0.0, 1.0)
+        normed_u8 = (normed * 255).astype(np.uint8)
+        normed_u8[~valid] = 0
+ 
+        return cv2.applyColorMap(normed_u8, cv2.COLORMAP_JET)
 
     @staticmethod
     def _stamp_to_sec(stamp) -> float:
