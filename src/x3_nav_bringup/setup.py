@@ -32,6 +32,7 @@ setup(
             "goal_client = x3_nav_bringup.goal_client:main",
             "goal_sequence_server = x3_nav_bringup.goal_sequence_server:main",
             "goal_sequence_client = x3_nav_bringup.goal_sequence_client:main",
+            "face_follower_node = x3_nav_bringup.face_follower_node:main"
         ],
     },
 )
