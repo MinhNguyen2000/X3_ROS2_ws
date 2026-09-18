@@ -31,6 +31,7 @@ setup(
         'console_scripts': [
             "mcnamu_driver = x3_bringup.mcnamu_driver:main",
             "image_republisher = x3_bringup.image_republisher:main",
+            "lidar_rear_mask = x3_bringup.lidar_rear_mask:main",
         ],
     },
 )
