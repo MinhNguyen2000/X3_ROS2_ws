@@ -11,6 +11,7 @@ from launch_ros.parameter_descriptions import ParameterValue
 
 from ament_index_python.packages import get_package_share_directory
 import os, tempfile
+import math
 
 def generate_launch_description():
     '''
@@ -83,7 +84,27 @@ def generate_launch_description():
         AnyLaunchDescriptionSource(camera_launch_path),
         launch_arguments={
             'camera_name': agent_name,
+            'depth_registration': 'true',
+            'color_depth_synchronization': 'true',
+            'enable_d2c_viewer': 'true',
         }.items()
+    )
+
+    # face detection node
+    face_detection_node = Node(
+        package="x3_visual",
+        executable="face_detection_node",
+        namespace=agent_name,
+        arguments = [
+            "--ros-args", "--log-level", 
+            PythonExpression(["'", agent_name, ".face_detection_node:=error'"])
+        ],
+    )
+
+    emotion_recognition_node = Node(
+        package = "x3_visual",
+        executable="emotion_recognition_node",
+        namespace=agent_name,
     )
 
     # image transport republisher
@@ -115,12 +136,27 @@ def generate_launch_description():
         output='screen',
         parameters=[{
             'channel_type': 'serial',
+            'scan_frequency': 10.0,
             'serial_port': '/dev/rplidar',
             'serial_baudrate': 1000000,
             'frame_id': PythonExpression(["'", agent_name, "_lidar_link'"]),
             'inverted': False,
+            'flip_x_axis': True,
             'angle_compensate': True,
-            'scan_mode': 'Standard',
+            'scan_mode': 'DenseBoost',
+        }]
+    )
+
+    lidar_rear_mask_node = Node(
+        package='x3_bringup',
+        executable='lidar_rear_mask',
+        name='lidar_filter',
+        namespace=agent_name,
+        parameters=[{
+            'input_topic': 'scan',
+            'output_topic': 'scan_filtered',
+            'mask_center_angle': math.pi,
+            'mask_half_width': 0.80,
         }]
     )
 
@@ -139,15 +175,34 @@ def generate_launch_description():
         }]
     )  
 
+    drl_ctrl_node = Node(
+        package='x3_drl_policy',
+        executable='policy_node',
+        namespace=agent_name,
+        parameters=[{
+            'agent_name':       agent_name,
+            'goal_tolerance':   0.75,
+            'obstacle_tolerance': 0.205,
+            'max_lin_vel':      0.2,
+            'max_angular_vel':  0.5,
+            'goal_timeout':     30.0
+        }]
+    )
+
     return LaunchDescription([
         agent_name_arg,
         model_arg,
         camera_name_arg,
         is_gazebo_arg,
         robot_state_publisher_node,
+        lidar_node,
+        lidar_rear_mask_node,
         camera_launch,
         image_republisher_node,
-        lidar_node,
+        face_detection_node,
+        emotion_recognition_node,
         odom_launch,
+
         driver_node,
+        drl_ctrl_node
     ])
