@@ -6,6 +6,7 @@ from rclpy.action.client import ClientGoalHandle
 from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.executors import MultiThreadedExecutor       # to prevent blocking code while navigating to the goal
 from rcl_interfaces.srv import GetParameters
+
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSDurabilityPolicy
 
 from x3_nav_interfaces.action import NavigateToGoal, NavigateToGoalSequence
@@ -19,6 +20,7 @@ import time
 from datetime import datetime
 import numpy as np
 import signal
+import threading
 
 class GoalSequenceServer(Node):
     '''
@@ -66,40 +68,25 @@ class GoalSequenceServer(Node):
             reliability=QoSReliabilityPolicy.RELIABLE,
             durability=QoSDurabilityPolicy.TRANSIENT_LOCAL
         )
-        self._planner_id_sub = self.create_subscription(
-            String,
-            'active_planner',
-            self._planner_id_callback,
-            planner_id_qos
-        )
+        self._planner_id_sub = self.create_subscription(String, 'active_planner', self._planner_id_callback, planner_id_qos)
 
         # Subscribe to the commanded velocity actually sent to the robot,
         # published by whichever planner (DRL/APF) is currently active.
-        self._cmd_vel_sub = self.create_subscription(
-            TwistStamped,
-            f'{self.agent_name}/cmd_vel',
-            self._cmd_vel_callback,
-            10
-        )
+        self._cmd_vel_sub = self.create_subscription(TwistStamped, f'cmd_vel', self._cmd_vel_callback, 10)
 
-        # Subscribe to the wheel odometry executed by the robot
-        self._wheel_odom_sub = self.create_subscription(
-            Odometry,
-            f'{self.agent_name}/wheel_odom',
-            self._wheel_odom_callback,
-            10
-        )
+        # Subscribe to the wheel odometry executed by the robot (only available in Gazebo)
+        self._wheel_odom_sub = self.create_subscription(Odometry, f'wheel_odom', self._wheel_odom_callback, 10)
+
+        # Subscribe to camera-based ground truth odometry (only available on physical system)
+        self._camera_odom_sub = self.create_subscription(Odometry, f'odom_camera', self._camera_odom_callback, 10)
 
         # Service server to save the trajectory from previous run
-        self._save_srv = self.create_service(
-            Trigger,
-            'save_path',
-            self._save_callback
-        )
+        self._save_srv = self.create_service(Trigger, 'save_path', self._save_callback)
 
-        self._pose_buffer = []
-        self._cmd_vel_buffer = []
-        self._actual_vel_buffer = []
+        self._pose_buffer = []          # clear the pose trajectory to store upcoming poses
+        self._gt_pose_buffer = []       # ground truth pose estimation from ceiling camera tracker (if available)
+        self._cmd_vel_buffer = []       # clear the velocity trajectory to store upcoming cmd_vel
+        self._actual_vel_buffer = []    # clear the executed velocity trajectory
         self._elapsed_time = 0.0
         self._total_distance = 0.0
 
@@ -138,9 +125,11 @@ class GoalSequenceServer(Node):
         the result
         '''
 
-        self._pose_buffer = []          # clear the pose trajectory to store upcoming poses
-        self._cmd_vel_buffer = []       # clear the velocity trajectory to store upcoming cmd_vel
-        self._actual_vel_buffer = []    # clear the executed velocity trajectory
+        # Reset buffers
+        self._pose_buffer = []       
+        self._gt_pose_buffer = []    
+        self._cmd_vel_buffer = []    
+        self._actual_vel_buffer = [] 
 
         request                 = seq_goal_handle.request
         waypoints: PoseStamped  = request.waypoints
@@ -161,6 +150,8 @@ class GoalSequenceServer(Node):
         start = time.time()
         self._start_time = start
 
+        self.get_logger().info(f"Start time: {self._start_time}")
+
         # --- Check action server availability ---
         if not self._nav_client.wait_for_server(timeout_sec=5.0):
             self.get_logger().error('navigate_to_goal action server not available')
@@ -170,7 +161,7 @@ class GoalSequenceServer(Node):
 
         # --- Iterate through waypoints and send to action server ---
         for idx, waypoint in enumerate(waypoints):
-            # --- Check for cancellation on the goal handle ---
+            # --- Check for cancellation on the goal handle (once per waypoint)---
             if seq_goal_handle.is_cancel_requested:
                 seq_goal_handle.canceled()
                 result_msg.success = False
@@ -201,6 +192,7 @@ class GoalSequenceServer(Node):
                 self.get_logger().warn(f'Waypoint {idx + 1} rejected by the policy node')
 
                 if stop_on_fail:
+                    self._elapsed_time = time.time() - start
                     seq_goal_handle.abort()
                     result_msg.success = False
                     result_msg.message = f'Waypoint {idx + 1} rejected'
@@ -210,7 +202,7 @@ class GoalSequenceServer(Node):
             # --- Wait for the current goal to finish ---
             result_future   = await nav_goal_handle.get_result_async()
             nav_result      = result_future.result
-
+            self._elapsed_time = time.time() - start
             result_msg.total_distance += nav_result.total_distance
             self._total_distance = result_msg.total_distance
 
@@ -226,8 +218,8 @@ class GoalSequenceServer(Node):
                     result_msg.message = f'Stopped at waypoint {idx + 1}: {nav_result.message}'
                     return result_msg
             
-            self._elapsed_time = time.time() - start
-                
+        self.get_logger().info(f"Elapsed time: {self._elapsed_time}")
+
         # --- Check if all waypoints done (all goals) ---
         all_waypoints = result_msg.waypoints_completed == total
         seq_goal_handle.succeed()
@@ -296,12 +288,28 @@ class GoalSequenceServer(Node):
  
         t = time.time() - self._start_time
         if t < self._settle_until:
-                    return          # skip samples after waypoint transition
+            return          # skip samples after waypoint transition
  
         self._actual_vel_buffer.append({
             "t":    round(t, 4),
             "vx":   round(msg.twist.twist.linear.x, 3),
             "vyaw": round(msg.twist.twist.angular.z, 3),
+        })
+
+    def _camera_odom_callback(self, msg: Odometry):
+        # Only log while a sequence is actively navigating
+        if not hasattr(self, '_start_time'):
+            return
+    
+        t = time.time() - self._start_time
+        if t < self._settle_until:
+            return          # skip samples after waypoint transition
+    
+        self._gt_pose_buffer.append({
+            "t":    round(t, 4),
+            "x":    round(msg.pose.pose.position.x, 3),
+            "y":    round(msg.pose.pose.position.y, 3),
+            "yaw":  round(msg.pose.pose.orientation.z, 3),
         })
 
     def _planner_id_callback(self, msg: String):
@@ -329,6 +337,7 @@ class GoalSequenceServer(Node):
             "elapsed_time":     self._elapsed_time,
             "total_distance":   self._total_distance,
             "poses":            self._pose_buffer,
+            "poses_gt":         self._gt_pose_buffer,
             "velocities":       self._cmd_vel_buffer,
             "actual_velocities": self._actual_vel_buffer
         }
@@ -347,22 +356,28 @@ class GoalSequenceServer(Node):
         return float(np.arctan2(siny_cosp, cosy_cosp, dtype=np.float32))
 
 def main():
-    rclpy.init()
+    rclpy.init(signal_handler_options=rclpy.SignalHandlerOptions.NO)
     node = GoalSequenceServer()
     executor = MultiThreadedExecutor()
     executor.add_node(node)
 
+    stop_event = threading.Event()
+
+    def _request_shutdown(*args):
+        stop_event.set()
+
     # catch sigterm from GUI:
-    signal.signal(signal.SIGTERM, lambda *args: executor.shutdown())
+    signal.signal(signal.SIGINT, _request_shutdown)     # from Ctrl+C in the terminal
+    signal.signal(signal.SIGTERM, _request_shutdown)    # from OS PID kill commands
 
     try:
-        executor.spin()
-    except KeyboardInterrupt:
-        pass
+        while rclpy.ok() and not stop_event.is_set():
+            executor.spin_once(timeout_sec=0.1)
     finally:
+        executor.shutdown()
         node.destroy_node()
-        # if rclpy.ok():
-        rclpy.shutdown()
+        if rclpy.ok():
+            rclpy.shutdown()
 
 if __name__ == "__main__":
     main()
