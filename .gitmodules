@@ -5,3 +5,6 @@
 [submodule "src/rf2o_laser_odometry"]
 	path = src/rf2o_laser_odometry
 	url = https://github.com/MAPIRlab/rf2o_laser_odometry
+[submodule "src/fisheye_calibration"]
+	path = src/fisheye_calibration
+	url = https://github.com/LiZheng1997/Fisheye_Camera_Calibration_ROS2.git
