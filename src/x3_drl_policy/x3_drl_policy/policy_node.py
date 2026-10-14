@@ -6,8 +6,10 @@ from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Quaternion, PoseStamped, TwistStamped
 from rclpy.action import ActionServer, CancelResponse, GoalResponse
 from rclpy.action.server import ServerGoalHandle
+from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.executors import MultiThreadedExecutor       # to prevent blocking code while navigating to the goal
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSDurabilityPolicy
+from rclpy.time import Time
 from x3_nav_interfaces.action import NavigateToGoal
 
 import numpy as np
@@ -30,12 +32,12 @@ class DRLPolicyNode(Node):
         super().__init__('drl_policy_server')
 
         self.declare_parameter('agent_name', 'agent0')
-        self.declare_parameter('goal_tolerance', 0.5)
+        self.declare_parameter('goal_tolerance', 0.75)
         self.declare_parameter('obstacle_tolerance', 0.21)
-        self.declare_parameter('model_name', 'TD3_00384_1000')
-        # self.declare_parameter('model_name', 'TD3_00380_1000')
-        self.declare_parameter('max_lin_vel', 0.5)
-        self.declare_parameter('max_angular_vel', 1.0)
+        # self.declare_parameter('model_name', 'TD3_00391_1000')
+        self.declare_parameter('model_name', 'TD3_00388_1000')
+        self.declare_parameter('max_lin_vel', 0.2)
+        self.declare_parameter('max_angular_vel', 0.3)  
         self.declare_parameter('goal_timeout', 60.0)
 
         self.agent_name         = self.get_parameter('agent_name').value
@@ -49,7 +51,7 @@ class DRLPolicyNode(Node):
         self.goal_timeout       = self.get_parameter('goal_timeout').value
 
         # determine the action mode
-        if 386 <= int(self.model_id) <= 395:
+        if 386 <= int(self.model_id) <= 395 or int(self.model_id) == 384:
             self.action_mode = 'delta'
         else:
             self.action_mode = 'direct'
@@ -68,12 +70,12 @@ class DRLPolicyNode(Node):
         self.obs_var     = norm["var"].astype(np.float32)
         self.clip_obs    = float(norm["clip_obs"])
 
-        # # DEBUG - Check the loaded stats
+        # # (DEBUG) Check the loaded stats
         # print(f"obs_mean shape: {self.obs_mean.shape}")   # should be (27,)
         # print(f"obs_var shape:  {self.obs_var.shape}")    # should be (27,)
         # print(f"clip_obs:       {self.clip_obs}")         # typically 10.0
 
-        # # Check mean/var per observation component
+        # # (DEBUG) Check mean/var per observation component
         # labels = ["dx","dy","dgoal","c_head","s_head","c_bear","s_bear","vx","vyaw"] + [f"lidar_{i}" for i in range(18)]
         # for i, label in enumerate(labels):
         #     print(f"  {label:10s}  mean={self.obs_mean[i]: 7.4f}  std={np.sqrt(self.obs_var[i]):.4f}")
@@ -100,12 +102,8 @@ class DRLPolicyNode(Node):
         self._obs_space_size = 27
         self._obs_buffer = np.zeros(self._obs_space_size, dtype=np.float32)
 
-        # TODO - initialize DRL stuff
-        self.action_last = np.zeros(2)
-        self.action = np.zeros(2)
-        self.d_goal_last = 0.0
-        self.prev_abs_diff = 0.0
-        self.min_dist_last = 0.0
+        # Initialize DRL states and parameters
+        self._reset_states()
         self.d_safe = 0.5
         self.lidar_idx_threshold = 4
 
@@ -122,9 +120,11 @@ class DRLPolicyNode(Node):
 
         # --- Subscribers & Publisher ---
         qos = QoSProfile(depth=10, reliability=QoSReliabilityPolicy.BEST_EFFORT)
-        self.odom_sub = self.create_subscription(Odometry,f'odom', self.odom_callback, qos)
-        self.lidar_sub = self.create_subscription(LaserScan, f'scan', self.lidar_callback, qos)
-        self.cmd_pub = self.create_publisher(TwistStamped, f'cmd_vel', 10)
+        self._cb_group = ReentrantCallbackGroup()
+
+        self.odom_sub   = self.create_subscription(Odometry,  f'odom', self.odom_callback, qos, callback_group=self._cb_group)
+        self.lidar_sub  = self.create_subscription(LaserScan, f'scan_filtered', self.lidar_callback, qos, callback_group=self._cb_group)
+        self.cmd_pub    = self.create_publisher(TwistStamped, f'cmd_vel', 10)
 
         # Broadcast the model name
         planner_id_qos = QoSProfile(
@@ -144,19 +144,28 @@ class DRLPolicyNode(Node):
             'navigate_to_goal',
             goal_callback=self.goal_callback,
             cancel_callback=self.cancel_callback,
-            execute_callback=self.execute_callback
+            execute_callback=self.execute_callback,
+            callback_group=self._cb_group,
         )
 
         self.get_logger().info(f"Running DRL policy - {self.model_name}")
         self.get_logger().info(f'Action mode {self.action_mode}')
+
+    def _reset_states(self):
+        self.action_last = np.zeros(2)
+        self.action = np.zeros(2)
+        self.d_goal_last = 0.0
+        self.prev_abs_diff = 0.0
+        self.min_dist_last = 0.0
+        self._obs_buffer[:] = 0.0
 
     def _set_action_space(self):
         # set the low and high of the output action:
         self.action_low = np.array([0.0, -1.0], dtype = np.float32)
         self.action_high = np.array([1.0, 1.0], dtype = np.float32)
 
-        self.linear_scale = 2
-        self.angular_scale = 3
+        self.action_low = np.array([0.0, -self.max_angular_vel], dtype = np.float32)
+        self.action_high = np.array([self.max_lin_vel, self.max_angular_vel], dtype = np.float32)
 
         if self.action_mode == "direct":    # policy outputs direct velocities
             self.action_space = gym.spaces.Box(low = self.action_low, high = self.action_high, dtype = np.float32)            
@@ -177,16 +186,26 @@ class DRLPolicyNode(Node):
         self.latest_odom = msg
 
     def lidar_callback(self, msg: LaserScan):
-        ranges = np.array(msg.ranges)
+        ranges = np.asarray(msg.ranges, dtype=np.float32)
 
-        # index of the zero angle in the (-π, π) scan
+        # (-π, π) -> (0, 2π), index 0 = forward
         zero_idx = round(-msg.angle_min / msg.angle_increment)
+        raw = np.roll(ranges, -zero_idx)
 
-        # rotate the ranges from (-π, π) to (0, 2π)
-        ranges_drl = np.roll(ranges, -zero_idx)
+        # mask invalid returns
+        raw = np.where(np.isfinite(raw), raw, msg.range_max)
+        raw[raw < msg.range_min] = msg.range_max
+
+        # mask behind the LiDAR
+        ang = np.arange(raw.size) * msg.angle_increment
+        rear = np.abs(ang - np.pi) <= np.deg2rad(40.0)
+        raw[rear] = msg.range_max
+
+        raw = np.clip(raw, 0.0, msg.range_max)
 
         self.latest_scan = copy.deepcopy(msg)
-        self.latest_scan.ranges = ranges_drl.tolist()
+        # self.latest_scan.ranges = ranges_drl.tolist()
+        self.latest_ranges = np.flip(raw).copy()
 
     def goal_callback(self, goal_request: NavigateToGoal):
         '''
@@ -226,7 +245,6 @@ class DRLPolicyNode(Node):
         :type goal_handle: ServerGoalHandle
         '''
         self._current_goal_handle = goal_handle
-
         target = goal_handle.request.target_pose
         self.goal_tolerance = getattr(goal_handle.request, 'goal_tolerance', None) or self.goal_tolerance
         start = time.time()
@@ -235,8 +253,9 @@ class DRLPolicyNode(Node):
         feedback_msg = NavigateToGoal.Feedback()
         result_msg = NavigateToGoal.Result()
 
-        x_prev = self.latest_odom.pose.pose.position.x
-        y_prev = self.latest_odom.pose.pose.position.y
+        # Reset states
+        self._reset_states()
+
         total_distance = 0.0
 
         ctrl_freq = 50.0
@@ -250,7 +269,7 @@ class DRLPolicyNode(Node):
                 self._publish_cmd(0.0, 0.0)
                 self.action_last = np.zeros(2)
                 result_msg.success = False
-                result_msg.message = 'Goal aborted/pre-empted'
+                result_msg.message = 'Goal handle inactive'
                 return result_msg
 
             # --- Check for cancellation ---
@@ -273,11 +292,21 @@ class DRLPolicyNode(Node):
                 self.get_logger().warn(f'Goal timed out after {elapsed_time:.1f}s')
                 return result_msg
 
-            # --- Wait for all data ---
+            # --- Wait for first data ---
             if (self.latest_odom is None) or (self.latest_scan is None):
                 self.get_logger().warn('Waiting for odometry and LiDAR...')
                 time.sleep(ctrl_period)
                 continue
+
+            odom_age = self._get_msg_age(self.latest_odom.header.stamp)
+            scan_age = self._get_msg_age(self.latest_scan.header.stamp)
+            # self.get_logger().info(
+            #     f'data age: odom={odom_age:.3f}s scan={scan_age:.3f}s',
+            #     throttle_duration_sec=0.1
+            # )
+
+            x_prev = self.latest_odom.pose.pose.position.x
+            y_prev = self.latest_odom.pose.pose.position.y
 
             # --- 1. Extract + Normalize observation ---
             obs = self._get_obs(self.latest_odom, target, self.latest_scan)
@@ -287,6 +316,7 @@ class DRLPolicyNode(Node):
             # --- 2. Check termination conditions ---
             d_goal = obs[2]
             min_lidar = np.min(obs[9:])
+            
             # self.get_logger().info(f'Minimum LiDAR reading: {min_lidar}')
             if d_goal <= self.goal_tolerance:
                 goal_handle.succeed()
@@ -295,7 +325,7 @@ class DRLPolicyNode(Node):
                 result_msg.success=True
                 result_msg.message='Goal reached.'
                 result_msg.total_distance=float(total_distance)
-                self.get_logger().info('Goal reached.')
+                self.get_logger().info(f'Goal reached. Distance to goal {d_goal}')
                 return result_msg
             
             if min_lidar <= self.obstacle_tolerance:
@@ -303,23 +333,14 @@ class DRLPolicyNode(Node):
                 self._publish_cmd(0.0, 0.0)
                 self.action_last = np.zeros(2)
                 result_msg.success=False
-                result_msg.message='Obstacle hit, mission aborted.'
+                result_msg.message=f'Obstacle hit with distance {min_lidar:6.3f}, index {np.argmin(obs[9:])}. Mission aborted.'
                 result_msg.total_distance=float(total_distance)
-                self.get_logger().info(f'Obstacle hit with min_lidar={min_lidar: 5.3f}, mission aborted.')
+                self.get_logger().info(result_msg.message)
                 return result_msg
             
             # --- 3. DRL policy inference => action ---
             self.action = self._run_policy(obs_normed)          # vx, vyaw in moving agent frame
 
-            # # --- Debug prints ---
-            self.get_logger().info(
-                # f'obs → (dx={obs[0]: 5.3f} | dy={obs[1]: 5.3f} | dg={obs[2]: 5.3f})'
-                # f'\n(theta={p.arctan2(obs[4], obs[3])/np.pi*180: 5.2f} | phi={np.arctan2(obs[6], obs[5])/np.pi*180: 5.2f})'
-                # f'\n(vx={obs[7]: 5.3f} | vyaw={obs[8]: 5.3f})'
-                f'\nMin LiDAR group idx: {np.argmin(obs[9:])} | {np.min(obs[9:])}'
-                f'\nlidar:{obs[9:]}'
-                # f'Policy action: {self.action[0]:5.3f}, {self.action[1]:5.3f}'
-            )
             
             if self.action_mode == 'direct':
                 self.action = np.clip(self.action, self.action_low, self.action_high)
@@ -328,8 +349,18 @@ class DRLPolicyNode(Node):
 
             self._get_rewards(obs)
 
-            v = float(self.action[0]) * self.max_lin_vel
-            w = float(self.action[1]) * self.max_angular_vel
+            v = float(self.action[0])
+            w = float(self.action[1])
+
+            # # --- DEBUG prints ---
+            self.get_logger().info(
+                # f'obs → (dx={obs[0]: 5.3f} | dy={obs[1]: 5.3f} | dg={obs[2]: 5.3f})'
+                # f'\n(theta={p.arctan2(obs[4], obs[3])/np.pi*180: 5.2f} | phi={np.arctan2(obs[6], obs[5])/np.pi*180: 5.2f})'
+                # f'\n(vx={obs[7]: 5.3f} | vyaw={obs[8]: 5.3f})'
+                # f'Min LiDAR idx: {np.argmin(obs[9:]): 2d} | {np.min(obs[9:]): 5.4f} | '
+                # f'\nlidar:{obs[9:]}'
+                f'Policy: ({self.action[0]: 5.3f}, {self.action[1]: 5.3f}) | Commanded: ({v: 5.3f}, {w: 5.3f})'
+            )
             self._publish_cmd(v, w)
 
             # --- Extra: Publish Feedback
@@ -358,6 +389,9 @@ class DRLPolicyNode(Node):
             cmd.twist.linear.x = v
             cmd.twist.angular.z = w
             self.cmd_pub.publish(cmd)
+
+    def _get_msg_age(self, stamp_msg) -> float:
+        return (self.get_clock().now() - Time.from_msg(stamp_msg)).nanoseconds * 1e-9
 
     def _yaw_from_quaternion(self, q: Quaternion) -> float:
         siny_cosp = 2.0 * (q.w * q.z + q.x * q.y)
@@ -403,12 +437,19 @@ class DRLPolicyNode(Node):
         s_bearing = np.sin(rel_bearing, dtype=np.float32)
 
         # LIDAR min pooling
-        raw = np.array(scan.ranges, dtype=np.float32)
-        raw = np.where(np.isfinite(raw), raw, scan.range_max)       # replace inf/nan with max LiDAR range values
-        antennae_mask = raw <= 0.20
-        raw[antennae_mask] = scan.range_max                         # drop anything below the minimum LiDAR scan range 
-        raw = np.clip(raw, 0.0, scan.range_max)
-        raw = np.flip(raw)
+        # raw = np.array(scan.ranges, dtype=np.float32)
+        # raw = np.where(np.isfinite(raw), raw, scan.range_max)       # replace inf/nan with max LiDAR range values
+        # self.get_logger().info(f"{np.where(np.array(scan.ranges) < 0.2)}")
+        # self.get_logger().info(f"LiDAR scan points: {len(scan.ranges)}")
+
+        # TODO - tune this masking
+        # antennae_mask = raw <= 0.20
+        # raw[antennae_mask] = scan.range_max                  # drop anything below the minimum LiDAR scan range 
+        # raw[750:1050] = scan.range_max                       # negate influence of points behind the LiDAR 
+        # # raw = np.clip(raw, 0.0, scan.range_max)
+        # raw = np.clip(raw, scan.range_min, scan.range_max)
+        # raw = np.flip(raw)
+        raw = self.latest_ranges
         n_groups = 18           # TODO - dynamically modify this according to the model loaded
         lidar_groups    = np.array_split(raw, n_groups)
         lidar_obs       = np.array([g.min() for g in lidar_groups], dtype=np.float32)
@@ -511,7 +552,7 @@ class DRLPolicyNode(Node):
 def main():
     rclpy.init(signal_handler_options=rclpy.SignalHandlerOptions.NO)
     node = DRLPolicyNode()
-    executor = MultiThreadedExecutor()
+    executor = MultiThreadedExecutor(num_threads=4)
     executor.add_node(node)
 
     stop_event = threading.Event()
