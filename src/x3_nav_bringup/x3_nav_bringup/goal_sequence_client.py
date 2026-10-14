@@ -12,19 +12,31 @@ from std_srvs.srv import Trigger
 import os, json, time
 
 # --- Load the paths
-# TODO - dynamically select which path json file to load depending on the world used
-pkg_dir = get_package_share_directory('x3_nav_bringup')
-path_file = os.path.join(pkg_dir, 'paths', 'paths_world_1.json')
-with open(path_file, 'r') as f:
-    PATHS = json.load(f)
 
 class GoalSequenceClient(Node):
-    def __init__(self,
-                 path_name: str, 
-                 goal_tolerance: float, 
-                 stop_on_failure: bool):
+    def __init__(self):
         super().__init__('goal_sequence_client')
 
+        # ===== ROS Parameters =====
+        self.declare_parameter('world', 'world_lab')
+        self.declare_parameter('path', 'path1')
+        self.declare_parameter('goal_tolerance', 0.3)
+        self.declare_parameter('stop_on_failure', True)
+
+        world           = self.get_parameter('world').get_parameter_value().string_value
+        path            = self.get_parameter('path').get_parameter_value().string_value
+        path_name       = path + '_' + ''.join(world.split('_'))
+        goal_tolerance  = self.get_parameter('goal_tolerance').value
+        stop_on_failure = self.get_parameter('stop_on_failure').value
+
+        world_name = self.get_parameter('world').value
+
+        # ===== Load the paths =====
+        pkg_dir = get_package_share_directory('x3_nav_bringup')
+        path_file = os.path.join(pkg_dir, 'paths', f'paths_{world_name}.json')
+        with open(path_file, 'r') as f:
+            PATHS = json.load(f)
+            
         self._done = False
 
         # --- Check path name
@@ -132,15 +144,7 @@ class GoalSequenceClient(Node):
     
 def main():
     rclpy.init()
-
-    # Usage -> ros2 run drl_policy goal_sequence_client <path_name> <goal_tolerance> <stop_on_failure>
-    # Example -> ros2 run drl_policy goal_sequence_client path_1 0.1 FALSE
-    user_args = rclpy.utilities.remove_ros_args(sys.argv)[1:]
-    path_name       = str(user_args[0])     if len(user_args) > 0 else "path_1"
-    goal_tolerance  = float(user_args[1])   if len(user_args) > 1 else 0.1
-    stop_on_failure = bool(user_args[2])    if len(user_args) > 2 else True
-
-    node = GoalSequenceClient(path_name, goal_tolerance, stop_on_failure)
+    node = GoalSequenceClient()
 
     try: 
         while rclpy.ok() and not node._done:

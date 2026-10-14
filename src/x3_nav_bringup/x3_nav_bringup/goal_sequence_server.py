@@ -346,7 +346,10 @@ class GoalSequenceServer(Node):
             json.dump(data, f, indent=2)
         
         response.success = True
-        response.message = f'Saved {len(self._pose_buffer)} poses, {len(self._cmd_vel_buffer)} cmd_vel, and {len(self._actual_vel_buffer)} actual vel to {save_path}'
+        response.message  = f"Saved {len(self._pose_buffer)} poses, "
+        response.message += f"{len(self._gt_pose_buffer)} camera-based poses, "
+        response.message += f"{len(self._cmd_vel_buffer)} cmd_vel, and "
+        response.message += f"{len(self._actual_vel_buffer)} actual vel to {save_path}"
         self.get_logger().info(response.message)
         return response
     
