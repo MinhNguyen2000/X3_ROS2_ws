@@ -1,0 +1,12 @@
+{
+  "planner_name": "TD3_00397_1000",
+  "path_name": "path1_worldlab",
+  "goal_tolerance": 0.30000001192092896,
+  "stop_on_fail": true,
+  "elapsed_time": 0.21533942222595215,
+  "total_distance": 0.0,
+  "poses": [],
+  "poses_gt": [],
+  "velocities": [],
+  "actual_velocities": []
+}
