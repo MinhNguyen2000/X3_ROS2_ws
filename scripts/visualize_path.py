@@ -5,8 +5,8 @@ import numpy as np
 
 CURRENT_DIR         = os.path.dirname(os.path.abspath(__file__))
 
-PATH = 'path_1'
-WORLD = 'world_5'
+PATH = 'path_2'
+WORLD = 'world_lab'
 SAVED_PATHS_DIR     = os.path.join(CURRENT_DIR, '..', 'scripts', 'recorded_paths')
 DEFAULT_PATHS_PATH  = os.path.join(CURRENT_DIR, '..', 'src', 'x3_nav_bringup', 'paths', f'paths_{WORLD}.json')
 SDF_PATH            = os.path.join(CURRENT_DIR, '..', 'src', 'x3_description', 'worlds', f'{WORLD}.sdf')
@@ -139,11 +139,100 @@ PATH_LISTS = {
         'TD3_00400_700/path1_world_5_110926_1850',
         'TD3_00390_800/path1_world_5_110926_1846',
     ],
+
+    # ===== WORLD LAB =====
+    ('path_1', 'world_lab'): [
+        # # vyaw = 0.3
+        # # 'TD3_00386_1000/path1_world_lab_131026_2242',
+        # # path1_world_lab_131026_2306',
+        # 'TD3_00395_1000/path1_world_lab_131026_2311',
+        # # 'TD3_00395_900/path1_world_lab_131026_2312',
+        # 'TD3_00404_500/path1_world_lab_141026_0951',
+
+        # # vyaw = 0.4
+        # # 'TD3_00386_1000/path1_world_lab_131026_2242',
+        # # 'TD3_00386_1000/path1_world_lab_131026_2314',
+        # # 'TD3_00387_500/path1_world_lab_141026_0806',
+        # # 'TD3_00394_1000/path1_world_lab_141026_0913',
+        # 'TD3_00395_1000/path1_world_lab_141026_0916',
+        # # 'TD3_00395_900/path1_world_lab_141026_0918',
+
+        # 'TD3_00400_700/path1_world_lab_141026_1621',
+        # # 'TD3_00404_500/path1_world_lab_141026_1719',
+
+        # Batch of 10 TD3_delta runs (2026-10-15)
+        'TD3_00395_1000/path1_world_lab_151026_2036',
+        'TD3_00395_1000/path1_world_lab_151026_2037',
+        'TD3_00395_1000/path1_world_lab_151026_2039',
+        'TD3_00395_1000/path1_world_lab_151026_2040',
+        'TD3_00395_1000/path1_world_lab_151026_2041',
+        'TD3_00395_1000/path1_world_lab_151026_2042',
+        'TD3_00395_1000/path1_world_lab_151026_2044',
+        'TD3_00395_1000/path1_world_lab_151026_2045',
+        'TD3_00395_1000/path1_world_lab_151026_2046',
+        'TD3_00395_1000/path1_world_lab_151026_2048',
+
+        # Batch of 10 TD3_direct runs (2026-10-15)
+        'TD3_00404_500/path1_world_lab_151026_2050',
+        'TD3_00404_500/path1_world_lab_151026_2052',
+        'TD3_00404_500/path1_world_lab_151026_2054',
+        'TD3_00404_500/path1_world_lab_151026_2055',
+        'TD3_00404_500/path1_world_lab_151026_2057',
+        'TD3_00404_500/path1_world_lab_151026_2058',
+        'TD3_00404_500/path1_world_lab_151026_2100',
+        'TD3_00404_500/path1_world_lab_151026_2102',
+        'TD3_00404_500/path1_world_lab_151026_2110',
+        'TD3_00404_500/path1_world_lab_151026_2111',
+    ],
+
+    ('path_2', 'world_lab'): [
+        # # vyaw = 0.3
+        # # 'TD3_00386_1000/path2_world_lab_151026_1149',
+        # 'TD3_00388_1000/path2_world_lab_151026_1214',
+        # # 'TD3_00400_1000/path2_world_lab_151026_1506',
+        # 'TD3_00405_1000/path2_world_lab_151026_1527',
+
+        # # # vyaw = 0.4
+        # # 'TD3_00387_500/path2_world_lab_151026_1426',
+        # # 'TD3_00389_1000/path2_world_lab_151026_1431',
+        # # 'TD3_00390_800/path2_world_lab_151026_1434',
+        # 'TD3_00393_1000/path2_world_lab_151026_1440',
+        # # 'TD3_00394_1000/path2_world_lab_151026_1443',
+        # # 'TD3_00395_1000/path2_world_lab_151026_1446',
+        # 'TD3_00400_1000/path2_world_lab_151026_1543',
+
+        # Batch of 10 TD3_delta runs (2026-10-15)
+        'TD3_00388_1000/path2_world_lab_151026_2118',
+        'TD3_00388_1000/path2_world_lab_151026_2119',
+        'TD3_00388_1000/path2_world_lab_151026_2120',
+        'TD3_00388_1000/path2_world_lab_151026_2121',
+        'TD3_00388_1000/path2_world_lab_151026_2122',
+        'TD3_00388_1000/path2_world_lab_151026_2124',
+        'TD3_00388_1000/path2_world_lab_151026_2125',
+        'TD3_00388_1000/path2_world_lab_151026_2128',
+        'TD3_00388_1000/path2_world_lab_151026_2129',
+        'TD3_00388_1000/path2_world_lab_151026_2131',
+
+        # Batch of 10 TD3_delta runs (2026-10-15)
+        'TD3_00405_1000/path2_world_lab_151026_2144',
+        'TD3_00405_1000/path2_world_lab_151026_2145',
+        'TD3_00405_1000/path2_world_lab_151026_2146',
+        'TD3_00405_1000/path2_world_lab_151026_2147',
+        'TD3_00405_1000/path2_world_lab_151026_2148',
+        'TD3_00405_1000/path2_world_lab_151026_2149',
+        'TD3_00405_1000/path2_world_lab_151026_2154',
+        'TD3_00405_1000/path2_world_lab_151026_2156',
+        'TD3_00405_1000/path2_world_lab_151026_2157',
+        'TD3_00405_1000/path2_world_lab_151026_2158',
+        
+    ]
 }
 
 path_list = PATH_LISTS.get((PATH, WORLD), [])
 
-odom_init = {'x': -3.0, 'y': -3.0}
+# odom_init = {'x': -3.0, 'y': -3.0}
+odom_init = {'x': -1.6775, 'y': -0.7625}
+
 
 def rotated_box_corners(cx: float, cy: float, sx: float, sy: float, yaw: float) -> np.ndarray:
     '''
@@ -189,9 +278,9 @@ def main():
         elapsed_time = data["elapsed_time"]
         total_distance = data["total_distance"]
  
-        line = ax.plot(x, y, '--', alpha=0.7, lw=1.5, label=f"{planner_name} | {elapsed_time: 6.2f}s | {total_distance: 6.2f}m")
+        line = ax.plot(x, y, '--', alpha=0.7, lw=1.5, label=f"{planner_name} | {elapsed_time: 6.2f}s | {total_distance: 6.2f}m", zorder=1)
  
-        ARROW_EVERY_N = 300
+        ARROW_EVERY_N = 200
         indices = range(0, len(x), ARROW_EVERY_N)
  
         ax.quiver(
@@ -236,8 +325,8 @@ def main():
     goal_x = [goal[0] + odom_init['x'] for goal in AVAILABLE_PATHS[path_name]]
     goal_y = [goal[1] + odom_init['y'] for goal in AVAILABLE_PATHS[path_name]]
     goal_tolerance = 0.30        # radius (m)
-    goal_scatter_size = goal_tolerance * 1.5 * 100 / (2.54 / 72)     # one scatter size = 1/72 of an inch
-    ax.scatter(goal_x, goal_y, linewidths=1, linestyle='--', edgecolors="#1C7826", s=goal_scatter_size, c="#3EA047", alpha=0.50, zorder=2)
+    goal_scatter_size = goal_tolerance * 8.0 * 100 / (2.54 / 72)     # one scatter size = 1/72 of an inch
+    ax.scatter(goal_x, goal_y, linewidths=1, linestyle='--', edgecolors="#1C7826", s=goal_scatter_size, c="#3EA047", alpha=0.25, zorder=10)
  
     # --- Number each goal so order stays unambiguous even where paths cross a repeated goal ---
     for i, (gx, gy) in enumerate(zip(goal_x, goal_y)):
@@ -248,9 +337,15 @@ def main():
             fontsize=14, fontweight='bold', color='black',
             zorder=3
         )
- 
-    axis_limits = (-4.0, 4.0)
-    ax.set_xlim(axis_limits); ax.set_ylim(axis_limits)
+
+    arena_w = 9 * 0.305
+    arena_l = 15 * 0.305
+    x_axis_lim = (-arena_l/2, arena_l/2)
+    y_axis_lim = (-arena_w/2, arena_w/2)
+    # x_axis_lim = (-4.0, 4.0)
+    # y_axis_lim = (-4.0, 4.0)
+    ax.set_xlim(x_axis_lim); 
+    ax.set_ylim(y_axis_lim)
     ax.minorticks_on() 
     ax.tick_params(axis='both', which='minor', direction='in', labelsize=14)
     ax.tick_params(axis='both', which='major', direction='in', labelsize=14)
@@ -258,7 +353,7 @@ def main():
     ax.set_xlabel('X (m)', fontsize=12)
     ax.set_ylabel('Y (m)', fontsize=12)
     ax.set_aspect('equal')
-    ax.legend(loc='upper right', fontsize=14)
+    ax.legend(loc='upper right', bbox_to_anchor=(0.2, 1.0), fontsize=14)
     plt.show()
         
 import xml.etree.ElementTree as ET

@@ -2,40 +2,102 @@ import os, json
 import matplotlib.pyplot as plt
 import numpy as np
 
+PATH = 'path_1'
+WORLD = 'world_lab'
 CURRENT_DIR         = os.path.dirname(os.path.abspath(__file__))
 SAVED_PATHS_DIR     = os.path.join(CURRENT_DIR, '..', 'scripts', 'recorded_paths')
 
-# --- Path 1 World 1
-path_list = [
-    'APF/path1_world1_300726_0018',
-    'TD3_00380_1000/path1_world1_300726_1029',
-    # 'TD3_00384_500/path1_world1_300726_0031',
-    'TD3_00384_1000/path1_world1_300726_1101',
-]
+PATH_LISTS = {
+    # ===== WORLD 1 =====
+    ('path_1', 'world_1'): [
+        'APF/path1_world_1_300726_0018',
+        'TD3_00380_1000/path1_world_1_300726_1029',
+        'TD3_00384_500/path1_world_1_300726_0031',
+        # 'TD3_00384_1000/path1_world_1_300726_1101',
+        # 'TD3_00385_1000/path1_world_1_260826_2308'
+    ],
+    ('path_2', 'world_1'): [
+        'APF/path2_world_1_300726_1054',
+        'TD3_00380_1000/path2_world_1_300726_1033',
+        'TD3_00384_500/path2_world_1_300726_1025',
+        # 'TD3_00384_1000/path2_world_1_300726_1107',
+    ],
+    ('path_3', 'world_1'): [
+        'APF/path3_world_1_300726_1055',
+        'TD3_00380_1000/path3_world_1_300726_1035',
+        'TD3_00384_500/path3_world_1_300726_1050',
+        # 'TD3_00384_1000/path3_world_1_300726_1108',
+    ],
+    ('path_4', 'world_1'): [
+        'APF/path4_world_1_300726_1056',
+        'TD3_00380_1000/path4_world_1_300726_1039',
+        'TD3_00384_500/path4_world_1_300726_1051',
+        # 'TD3_00384_1000/path4_world_1_300726_1111',
+    ],
+    # ===== WORLD 2 =====
+    ('path_1', 'world_2'): [
+        'APF/path1_world_2_130826_1201',
+        'TD3_00380_1000/path1_world_2_120826_1655',
+        'TD3_00384_1000/path1_world_2_120826_1650',
+    ],
+    # ===== WORLD 3 =====
+    ('path_1', 'world_3'): [
+        'APF/path1_world_3_130826_1204',
+        'TD3_00380_1000/path1_world_3_120826_1659',
+        'TD3_00384_1000/path1_world_3_120826_1700',
+    ],
+    # ===== WORLD 4 =====
+    ('path_1', 'world_4'): [
+        'APF/path1_world_4_130826_1209',
+        'TD3_00380_1000/path1_world_4_130826_1141',
+        'TD3_00384_1000/path1_world_4_130826_1137',
+    ],
+    # ===== WORLD 5 =====
+    ('path_1', 'world_5'): [
+        'APF/path1_world_5_130826_1211',
+        'TD3_00380_1000/path1_world_5_130826_1215',
+        'TD3_00384_1000/path1_world_5_130826_1155',
+    ],
 
-# --- Path 2 World 1
-path_list = [ 
-    'APF/path2_world1_300726_1054', 
-    'TD3_00380_1000/path2_world1_300726_1033',
-    # 'TD3_00384_500/path2_world1_300726_1025',
-    'TD3_00384_1000/path2_world1_300726_1107',
-]
+    # ===== WORLD LAB =====
+    ('path_1', 'world_lab'): [
+        # vyaw = 0.3
+        # 'TD3_00386_1000/path1_world_lab_131026_2242',
+        # 'TD3_00394_1000/path1_world_lab_131026_2306',
+        'TD3_00395_1000/path1_world_lab_131026_2311',
+        # 'TD3_00395_900/path1_world_lab_131026_2312',
+        'TD3_00404_500/path1_world_lab_141026_0951',
 
-# --- Path 3 World 1
-path_list = [
-    'APF/path3_world1_300726_1055', 
-    'TD3_00380_1000/path3_world1_300726_1035',
-    # 'TD3_00384_500/path3_world1_300726_1050',
-    'TD3_00384_1000/path3_world1_300726_1108',
-]
+        # # vyaw = 0.4
+        # # 'TD3_00386_1000/path1_world_lab_131026_2242',
+        # # 'TD3_00386_1000/path1_world_lab_131026_2314',
+        # # 'TD3_00387_500/path1_world_lab_141026_0806',
+        # # 'TD3_00394_1000/path1_world_lab_141026_0913',
+        # 'TD3_00395_1000/path1_world_lab_141026_0916',
+        # # 'TD3_00395_900/path1_world_lab_141026_0918',
 
-# --- Path 4 World 1
-path_list = [
-    'APF/path4_world1_300726_1056', 
-    'TD3_00380_1000/path4_world1_300726_1039',
-    # 'TD3_00384_500/path4_world1_300726_1051',
-    'TD3_00384_1000/path4_world1_300726_1111',
-]
+        # 'TD3_00400_700/path1_world_lab_141026_1621',
+        # # 'TD3_00404_500/path1_world_lab_141026_1719',
+    ],
+
+    ('path_2', 'world_lab'): [
+        # vyaw = 0.3
+        # 'TD3_00386_1000/path2_world_lab_151026_1149',
+        'TD3_00388_1000/path2_world_lab_151026_1214',
+        # 'TD3_00400_1000/path2_world_lab_151026_1506',
+        'TD3_00405_1000/path2_world_lab_151026_1527',
+
+        # # # vyaw = 0.4
+        # # 'TD3_00387_500/path2_world_lab_151026_1426',
+        # # 'TD3_00389_1000/path2_world_lab_151026_1431',
+        # # 'TD3_00390_800/path2_world_lab_151026_1434',
+        # 'TD3_00393_1000/path2_world_lab_151026_1440',
+        # # 'TD3_00394_1000/path2_world_lab_151026_1443',
+        # # 'TD3_00395_1000/path2_world_lab_151026_1446',
+        # 'TD3_00400_1000/path2_world_lab_151026_1543',
+    ]
+}
+path_list = PATH_LISTS.get((PATH, WORLD), [])
 
 # TODO - change these according to the runs
 MAX_LIN_VEL = 0.5
@@ -179,7 +241,7 @@ def main():
         data = load_run(path)
         planner_name = path.split('/')[0].split('_')[:2]
         if len(planner_name) > 1:
-            if int(planner_name[1]) >= 383:
+            if int(planner_name[1]) <= 395:
                 planner_name[1] = 'delta'
             else:
                 planner_name[1] = 'direct'
@@ -219,23 +281,23 @@ def main():
         else:
             print(f"  -> no actual_velocities found for {path} (re-run with updated goal_sequence_server)")
 
-    ax_vx.set_ylabel("vx (m/s)")
+    ax_vx.set_ylabel("v (m/s)", fontsize=14)
     ax_vx.axhline(0, color='k', lw=0.5, alpha=0.3)
     ax_vx.legend(loc='upper right', fontsize=12)
-    ax_vx.set_title("Commanded linear velocity", fontsize=12)
+    ax_vx.set_title("Commanded linear velocity", fontsize=14)
  
-    ax_vyaw.set_ylabel("vyaw (rad/s)")
+    ax_vyaw.set_ylabel(r"$\omega$ (rad/s)", fontsize=14)
     ax_vyaw.axhline(0, color='k', lw=0.5, alpha=0.3)
-    ax_vyaw.set_title("Commanded angular velocity", fontsize=12)
+    ax_vyaw.set_title("Commanded angular velocity", fontsize=14)
  
-    ax_alin.set_ylabel("a_lin (m/s²)")
+    ax_alin.set_ylabel("a (m/s²)", fontsize=14)
     ax_alin.axhline(0, color='k', lw=0.5, alpha=0.3)
-    ax_alin.set_title("Linear acceleration", fontsize=12)
+    ax_alin.set_title("Linear acceleration", fontsize=14)
  
-    ax_ayaw.set_ylabel("a_ang (rad/s²)")
+    ax_ayaw.set_ylabel(r"$\alpha$ (rad/s²)", fontsize=14)
     ax_ayaw.axhline(0, color='k', lw=0.5, alpha=0.3)
-    ax_ayaw.set_title("Angular acceleration", fontsize=12)
-    ax_ayaw.set_xlabel("time (s)")
+    ax_ayaw.set_title("Angular acceleration", fontsize=14)
+    ax_ayaw.set_xlabel("time (s)", fontsize=12)
  
     for ax in axes:
         ax.minorticks_on()
@@ -255,19 +317,19 @@ def main():
 
             ax_vx_cmp.plot(cmp["t_grid"], cmp["vx_cmd"], lw=1.3, alpha=0.75, label="commanded")
             ax_vx_cmp.plot(cmp["t_grid"], cmp["vx_act"], lw=1.3, alpha=0.75, label="actual")
-            ax_vx_cmp.set_title(f"{planner_name}: commanded vs actual vx", fontsize=14)
+            ax_vx_cmp.set_title(f"{planner_name}: commanded vs actual vx", fontsize=16)
             ax_vx_cmp.set_ylabel("vx (m/s)")
             ax_vx_cmp.legend(loc='upper right', fontsize=8)
 
             ax_vyaw_cmp.plot(cmp["t_grid"], cmp["vyaw_cmd"], lw=1.3, alpha=0.75, label="commanded")
             ax_vyaw_cmp.plot(cmp["t_grid"], cmp["vyaw_act"], lw=1.3, alpha=0.75, label="actual")
-            ax_vyaw_cmp.set_title(fr"{planner_name}: commanded vs actual $\omega$", fontsize=14)
-            ax_vyaw_cmp.set_ylabel("vyaw (rad/s)")
+            ax_vyaw_cmp.set_title(fr"{planner_name}: commanded vs actual $\omega$", fontsize=16)
+            ax_vyaw_cmp.set_ylabel(r"$\omega$ (rad/s)")
 
             ax_err.plot(cmp["t_grid"], cmp["err_vx"], lw=1.0, alpha=0.8, label="err vx")
             ax_err.plot(cmp["t_grid"], cmp["err_vyaw"], lw=1.0, alpha=0.8, label=f"err $\omega$")
             ax_err.axhline(0, color='k', lw=0.5, alpha=0.3)
-            ax_err.set_title(f"{planner_name} - tracking error (actual - commanded)", fontsize=14)
+            ax_err.set_title(f"{planner_name} - tracking error (actual - commanded)", fontsize=16)
             ax_err.set_ylabel("error")
             ax_err.set_xlabel("time (s)")
             ax_err.legend(loc='upper right', fontsize=8)
