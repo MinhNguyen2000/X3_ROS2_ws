@@ -1,0 +1,14 @@
+metric,U,p_uncorrected,rank_biserial
+Duration (s),0.0,0.00018,-1.000
+Path length (m),30.0,0.14047,-0.400
+Min clearance (m),100.0,0.00018,1.000
+Leg 1 time (s),0.0,0.00018,-1.000
+Leg 1 length (m),0.0,0.00018,-1.000
+Leg 2 time (s),0.0,0.00018,-1.000
+Leg 2 length (m),0.0,0.00018,-1.000
+Leg 3 time (s),65.0,0.27304,0.300
+Leg 3 length (m),93.0,0.00131,0.860
+Leg 4 time (s),3.0,0.00044,-0.940
+Leg 4 length (m),65.0,0.27304,0.300
+Leg 5 time (s),42.0,0.57061,-0.160
+Leg 5 length (m),51.0,0.96985,0.020

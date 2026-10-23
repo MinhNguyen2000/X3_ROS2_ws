@@ -1,0 +1,20 @@
+metric,mean,sd,cv_percent,min,max
+Duration (s),29.1633,0.9540,3.2714,28.0993,30.6801
+Path length (m),5.3535,0.1988,3.7129,5.1270,5.7079
+Min clearance (m),0.3206,0.0587,,0.2137,0.3724
+Leg 1 time (s),7.3868,0.5931,8.0290,7.1401,9.0711
+Leg 1 length (m),1.2843,0.0277,2.1595,1.2695,1.3620
+Leg 2 time (s),7.2447,0.5623,7.7616,6.6971,8.2065
+Leg 2 length (m),1.3610,0.1181,8.6811,1.2396,1.5814
+Leg 3 time (s),9.5441,0.1965,2.0585,9.3150,9.8631
+Leg 3 length (m),1.8101,0.0520,2.8710,1.7517,1.8920
+Leg 4 time (s),4.9462,0.2279,4.6069,4.6255,5.3566
+Leg 4 length (m),0.8982,0.0338,3.7674,0.8397,0.9554
+Leg 1 start band width (m),0.0011,,,,
+Leg 1 max band width (m),0.0145,,,,
+Leg 2 start band width (m),0.0134,,,,
+Leg 2 max band width (m),0.1307,,,,
+Leg 3 start band width (m),0.1146,,,,
+Leg 3 max band width (m),0.2152,,,,
+Leg 4 start band width (m),0.1206,,,,
+Leg 4 max band width (m),0.1237,,,,
