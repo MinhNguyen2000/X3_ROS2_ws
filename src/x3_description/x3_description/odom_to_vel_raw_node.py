@@ -7,6 +7,8 @@ from geometry_msgs.msg import TwistStamped
 
 
 class OdomToVelRaw(Node):
+    '''Subscribes to Gazebo's OdometryPublisher's Odometry messages and publishes
+    TwistStamped messages using the original message's header and twist'''
     def __init__(self):
         super().__init__("odom_to_vel_raw_node")
 
@@ -14,9 +16,7 @@ class OdomToVelRaw(Node):
         agent_name = self.get_parameter("agent_name").get_parameter_value().string_value
 
         # diff_drive_controller's default odom topic, relative to its own namespace
-        self.sub = self.create_subscription(
-            Odometry, f"/{agent_name}/wheel_odom", self.odom_callback, 10
-        )
+        self.sub = self.create_subscription(Odometry, f"/{agent_name}/wheel_odom", self.odom_callback, 10)
         self.pub = self.create_publisher(TwistStamped, f"/{agent_name}/vel_raw", 10)
 
         self.get_logger().info("odom_to_vel_raw_node started!!")
