@@ -25,7 +25,7 @@ class GoalSequenceClient(Node):
 
         world           = self.get_parameter('world').get_parameter_value().string_value
         path            = self.get_parameter('path').get_parameter_value().string_value
-        path_name       = path + '_' + ''.join(world.split('_'))
+        path_name       = path + '_' + world
         goal_tolerance  = self.get_parameter('goal_tolerance').value
         stop_on_failure = self.get_parameter('stop_on_failure').value
 
