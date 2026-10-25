@@ -1,0 +1,83 @@
+41 jobs selected (36 DRL policies + APF), 0 already ok, 41 to run
+[1/41] APF world_5/path1 rep1
+    -> ok success=1 wp=5/5 (1.2 min elapsed)
+[2/41] APF world_5/path1 rep2
+    -> ok success=1 wp=5/5 (3.0 min elapsed)
+[3/41] APF world_5/path1 rep3
+    -> ok success=1 wp=5/5 (5.0 min elapsed)
+[4/41] APF world_5/path1 rep4
+    -> ok success=1 wp=5/5 (7.0 min elapsed)
+[5/41] APF world_5/path1 rep5
+    -> ok success=1 wp=5/5 (9.0 min elapsed)
+[6/41] TD3_00386_1000 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (10.2 min elapsed)
+[7/41] TD3_00387_1000 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (11.5 min elapsed)
+[8/41] TD3_00387_500 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (12.7 min elapsed)
+[9/41] TD3_00388_1000 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (14.0 min elapsed)
+[10/41] TD3_00388_900 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (15.2 min elapsed)
+[11/41] TD3_00389_1000 world_5/path1 rep1
+    -> ok success=0 wp=1/5 (15.8 min elapsed)
+[12/41] TD3_00389_900 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (17.0 min elapsed)
+[13/41] TD3_00390_1000 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (18.2 min elapsed)
+[14/41] TD3_00390_800 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (19.4 min elapsed)
+[15/41] TD3_00391_1000 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (20.6 min elapsed)
+[16/41] TD3_00391_800 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (21.8 min elapsed)
+[17/41] TD3_00392_1000 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (23.0 min elapsed)
+[18/41] TD3_00392_600 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (24.2 min elapsed)
+[19/41] TD3_00393_1000 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (25.4 min elapsed)
+[20/41] TD3_00393_900 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (26.7 min elapsed)
+[21/41] TD3_00394_1000 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (27.9 min elapsed)
+[22/41] TD3_00394_800 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (29.1 min elapsed)
+[23/41] TD3_00395_1000 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (30.4 min elapsed)
+[24/41] TD3_00395_900 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (31.6 min elapsed)
+[25/41] TD3_00396_1000 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (32.8 min elapsed)
+[26/41] TD3_00396_500 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (33.9 min elapsed)
+[27/41] TD3_00397_1000 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (35.0 min elapsed)
+[28/41] TD3_00398_1000 world_5/path1 rep1
+    -> ok success=0 wp=2/5 (35.9 min elapsed)
+[29/41] TD3_00399_1000 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (37.2 min elapsed)
+[30/41] TD3_00399_900 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (38.4 min elapsed)
+[31/41] TD3_00400_1000 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (39.7 min elapsed)
+[32/41] TD3_00400_700 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (40.8 min elapsed)
+[33/41] TD3_00401_1000 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (42.0 min elapsed)
+[34/41] TD3_00401_900 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (43.3 min elapsed)
+[35/41] TD3_00402_1000 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (44.7 min elapsed)
+[36/41] TD3_00402_700 world_5/path1 rep1
+    -> ok success=0 wp=0/5 (45.3 min elapsed)
+[37/41] TD3_00403_1000 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (46.5 min elapsed)
+[38/41] TD3_00403_900 world_5/path1 rep1
+    -> ok success=0 wp=0/5 (47.8 min elapsed)
+[39/41] TD3_00404_1000 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (48.9 min elapsed)
+[40/41] TD3_00404_500 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (50.3 min elapsed)
+[41/41] TD3_00405_1000 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (51.6 min elapsed)
