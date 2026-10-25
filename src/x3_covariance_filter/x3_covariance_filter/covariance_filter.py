@@ -36,12 +36,12 @@ class CovarianceFilter(Node):
                                            0.0, 1.0, 0.0,
                                            0.0, 0.0, 1e-1]
         # angular velocity covariance row majors, in the order of (vroll, vpitch, vyaw)
-        self.imu_angular_velocity_covariance = [1.0, 0.0, 0.0,
-                                                0.0, 1.0, 0.0,
+        self.imu_angular_velocity_covariance = [1e-2, 0.0, 0.0,
+                                                0.0, 1e-2, 0.0,
                                                 0.0, 0.0, 5e-2]
         # linear acceleratioin covariance row majors, in the order of (ax, ay, az)
-        self.imu_linear_acceleration_covariance = [5e-2, 0.0,  0.0,
-                                                   0.0,  5e-2, 0.0,
+        self.imu_linear_acceleration_covariance = [5e-1, 0.0,  0.0,
+                                                   0.0,  5e-1, 0.0,
                                                    0.0,  0.0,  1e-2]
         
         # LiDAR covariances - as per https://docs.ros2.org/foxy/api/nav_msgs/msg/Odometry.html
@@ -121,7 +121,7 @@ def main(args=None):
 
     try:
         rclpy.spin(node)
-    except (KeyboardInterrupt, ExternalShutdownException):
+    except KeyboardInterrupt:
         pass
     finally:
         node.destroy_node()

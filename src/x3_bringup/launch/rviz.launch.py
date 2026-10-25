@@ -41,5 +41,5 @@ def generate_launch_description():
     return LaunchDescription([
         agent_name_arg,
         rviz,
-        image_uncompress_node
+        # image_uncompress_node
     ])
