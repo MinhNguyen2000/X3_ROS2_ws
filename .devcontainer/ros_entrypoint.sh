@@ -4,7 +4,9 @@
 
 export ROS_DOMAIN_ID=6
 export ROS_LOCALHOST_ONLY=0
-export ROS_IP=$(hostname -I | awk '{print $1}')
+# export ROS_IP=$(hostname -I | awk '{print $1}')
+export ROS_IP=$(ip -4 -o addr show | grep 'wlxe' | grep -oP 'inet \K[\d.]+' | head -n1)
+export ROS_IP=${ROS_IP:-$(ip -4 -o addr show | grep -E 'enp|eth' | grep -oP 'inet \K[\d.]+' | head -n1)}
 export LIDAR_TYPE=x3
 
 echo "----------"
