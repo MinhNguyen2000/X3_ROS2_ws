@@ -35,10 +35,27 @@ class DRLPolicyNode(Node):
         self.declare_parameter('goal_tolerance', 0.75)
         self.declare_parameter('obstacle_tolerance', 0.21)
         # self.declare_parameter('model_name', 'TD3_00391_1000')
-        self.declare_parameter('model_name', 'TD3_00388_1000')
-        self.declare_parameter('max_lin_vel', 0.2)
-        self.declare_parameter('max_angular_vel', 0.3)  
+        self.declare_parameter('model_name', 'TD3_00386_1000')
+        self.declare_parameter('max_lin_vel', 0.5)
+        self.declare_parameter('max_angular_vel', 1.0)  
         self.declare_parameter('goal_timeout', 60.0)
+        # True: the policy acts in normalized units and max_*_vel is applied only when publishing (as in the
+        # policies' training setup). False: the action is clipped/accumulated directly in m/s and rad/s.
+        self.declare_parameter('normalized_actions', True)
+        # LiDAR returns closer than this [m] are treated as free space (robot's own antennae); 0 disables
+        self.declare_parameter('antennae_mask_dist', 0.20)
+        # half-width [deg] of the wedge behind the LiDAR set to range_max; 0 disables (use on hardware only)
+        self.declare_parameter('rear_mask_deg', 0.0)
+        # delta mode: bounds of the actor output (the delta action), matching the Nav2D training default
+        # (ROS2_DRL_Navigation nav2d.py: delta_act_linear = delta_act_angular = 0.01 -> [-0.01, 0.01])
+        self.declare_parameter('delta_act_linear', 0.01)
+        self.declare_parameter('delta_act_angular', 0.01)
+        # delta mode: separate gain applied to the actor output before it is accumulated onto the last command.
+        # 5.0 keeps the effective +/-0.05 step per control tick that the Sep 2026 results were collected with.
+        # TODO - verify which delta bounds / control rate TD3_00386-395 were actually trained with (nav2d.py and
+        #        utils.py default to 0.01, but gym_TD3.py / test_TD3.py use 0.05), then revisit these gains.
+        self.declare_parameter('delta_act_scale_linear', 5.0)
+        self.declare_parameter('delta_act_scale_angular', 5.0)
 
         self.agent_name         = self.get_parameter('agent_name').value
         self.goal_tolerance     = self.get_parameter('goal_tolerance').value
@@ -49,6 +66,13 @@ class DRLPolicyNode(Node):
         self.max_lin_vel        = self.get_parameter('max_lin_vel').value
         self.max_angular_vel    = self.get_parameter('max_angular_vel').value
         self.goal_timeout       = self.get_parameter('goal_timeout').value
+        self.normalized_actions = self.get_parameter('normalized_actions').value
+        self.antennae_mask_dist = self.get_parameter('antennae_mask_dist').value
+        self.rear_mask_deg      = self.get_parameter('rear_mask_deg').value
+        self.delta_act_linear   = self.get_parameter('delta_act_linear').value
+        self.delta_act_angular  = self.get_parameter('delta_act_angular').value
+        self.delta_act_scale    = np.array([self.get_parameter('delta_act_scale_linear').value,
+                                            self.get_parameter('delta_act_scale_angular').value], dtype=np.float32)
 
         # determine the action mode
         if 386 <= int(self.model_id) <= 395 or int(self.model_id) == 384:
@@ -123,7 +147,7 @@ class DRLPolicyNode(Node):
         self._cb_group = ReentrantCallbackGroup()
 
         self.odom_sub   = self.create_subscription(Odometry,  f'odom', self.odom_callback, qos, callback_group=self._cb_group)
-        self.lidar_sub  = self.create_subscription(LaserScan, f'scan_filtered', self.lidar_callback, qos, callback_group=self._cb_group)
+        self.lidar_sub  = self.create_subscription(LaserScan, f'scan', self.lidar_callback, qos, callback_group=self._cb_group)
         self.cmd_pub    = self.create_publisher(TwistStamped, f'cmd_vel', 10)
 
         # Broadcast the model name
@@ -164,17 +188,14 @@ class DRLPolicyNode(Node):
         self.action_low = np.array([0.0, -1.0], dtype = np.float32)
         self.action_high = np.array([1.0, 1.0], dtype = np.float32)
 
-        self.action_low = np.array([0.0, -self.max_angular_vel], dtype = np.float32)
-        self.action_high = np.array([self.max_lin_vel, self.max_angular_vel], dtype = np.float32)
+        if not self.normalized_actions:
+            self.action_low = np.array([0.0, -self.max_angular_vel], dtype = np.float32)
+            self.action_high = np.array([self.max_lin_vel, self.max_angular_vel], dtype = np.float32)
 
         if self.action_mode == "direct":    # policy outputs direct velocities
             self.action_space = gym.spaces.Box(low = self.action_low, high = self.action_high, dtype = np.float32)            
         elif self.action_mode == "delta":   # policy outputs change in velocities
-            # TODO - move these to the __init__ and set as configurable parameters
-            self.delta_act_linear = 0.05
-            self.delta_act_angular = 0.05
-
-            # Bounds on the action change
+            # Bounds on the actor output (delta action); scaled separately by delta_act_scale when accumulated
             self.delta_act_low  = np.array([-self.delta_act_linear, -self.delta_act_angular], dtype = np.float32)
             self.delta_act_high = np.array([ self.delta_act_linear,  self.delta_act_angular], dtype = np.float32)
             self.action_space = gym.spaces.Box(low = self.delta_act_low, high = self.delta_act_high, dtype = np.float32)
@@ -195,11 +216,14 @@ class DRLPolicyNode(Node):
         # mask invalid returns
         raw = np.where(np.isfinite(raw), raw, msg.range_max)
         raw[raw < msg.range_min] = msg.range_max
+        if self.antennae_mask_dist > 0.0:
+            raw[raw <= self.antennae_mask_dist] = msg.range_max
 
         # mask behind the LiDAR
-        ang = np.arange(raw.size) * msg.angle_increment
-        rear = np.abs(ang - np.pi) <= np.deg2rad(40.0)
-        raw[rear] = msg.range_max
+        if self.rear_mask_deg > 0.0:
+            ang = np.arange(raw.size) * msg.angle_increment
+            rear = np.abs(ang - np.pi) <= np.deg2rad(self.rear_mask_deg)
+            raw[rear] = msg.range_max
 
         raw = np.clip(raw, 0.0, msg.range_max)
 
@@ -345,12 +369,16 @@ class DRLPolicyNode(Node):
             if self.action_mode == 'direct':
                 self.action = np.clip(self.action, self.action_low, self.action_high)
             elif self.action_mode == 'delta':
-                self.action = np.clip(self.action_last + self.action, self.action_low, self.action_high)
+                self.action = np.clip(self.action_last + self.delta_act_scale * self.action, self.action_low, self.action_high)
 
             self._get_rewards(obs)
 
-            v = float(self.action[0])
-            w = float(self.action[1])
+            if self.normalized_actions:
+                v = float(self.action[0]) * self.max_lin_vel
+                w = float(self.action[1]) * self.max_angular_vel
+            else:
+                v = float(self.action[0])
+                w = float(self.action[1])
 
             # # --- DEBUG prints ---
             self.get_logger().info(
