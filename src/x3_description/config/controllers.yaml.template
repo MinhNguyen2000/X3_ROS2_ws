@@ -23,7 +23,7 @@
     max_wheel_vel: 50.0
 
     # sim time:
-    # use_sim_time: true
+    use_sim_time: true
 
     linear.x.min_velocity: 0.0
     linear.x.max_velocity: 1.0
