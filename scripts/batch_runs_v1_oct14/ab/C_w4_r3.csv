@@ -1,0 +1,2 @@
+model,kind,world,path,rep,status,success,waypoints_completed,total_waypoints,elapsed_s,saved_file,log_file,timestamp
+TD3_00390_800,delta_best,world_4,path1,1,ok,0,4,5,89.9,scripts/recorded_paths/TD3_00390_800/path1_world_4_241026_2324.json,/X3_ROS2_ws/scripts/batch_runs/logs/20261024_232233_TD3_00390_800_world_4_path1_r1_client.log,2026-10-24T23:22:33

@@ -1,0 +1,7 @@
+model,kind,world,path,rep,status,success,waypoints_completed,total_waypoints,elapsed_s,saved_file,log_file,timestamp
+TD3_00390_800,delta_best,world_1,path1,1,ok,0,3,5,29.5,scripts/recorded_paths/TD3_00390_800/path1_world_1_241026_2251.json,/X3_ROS2_ws/scripts/batch_runs/logs/20261024_225028_TD3_00390_800_world_1_path1_r1_client.log,2026-10-24T22:50:28
+TD3_00390_800,delta_best,world_1,path2,1,ok,0,0,6,3.7,scripts/recorded_paths/TD3_00390_800/path2_world_1_241026_2251.json,/X3_ROS2_ws/scripts/batch_runs/logs/20261024_225115_TD3_00390_800_world_1_path2_r1_client.log,2026-10-24T22:51:15
+TD3_00390_800,delta_best,world_1,path3,1,ok,0,1,6,8.4,scripts/recorded_paths/TD3_00390_800/path3_world_1_241026_2251.json,/X3_ROS2_ws/scripts/batch_runs/logs/20261024_225135_TD3_00390_800_world_1_path3_r1_client.log,2026-10-24T22:51:35
+TD3_00390_800,delta_best,world_2,path1,1,ok,0,3,5,21.4,scripts/recorded_paths/TD3_00390_800/path1_world_2_241026_2252.json,/X3_ROS2_ws/scripts/batch_runs/logs/20261024_225201_TD3_00390_800_world_2_path1_r1_client.log,2026-10-24T22:52:01
+TD3_00390_800,delta_best,world_3,path1,1,ok,0,1,5,10.3,scripts/recorded_paths/TD3_00390_800/path1_world_3_241026_2253.json,/X3_ROS2_ws/scripts/batch_runs/logs/20261024_225239_TD3_00390_800_world_3_path1_r1_client.log,2026-10-24T22:52:39
+TD3_00390_800,delta_best,world_4,path1,1,ok,0,4,5,34.3,scripts/recorded_paths/TD3_00390_800/path1_world_4_241026_2253.json,/X3_ROS2_ws/scripts/batch_runs/logs/20261024_225307_TD3_00390_800_world_4_path1_r1_client.log,2026-10-24T22:53:07

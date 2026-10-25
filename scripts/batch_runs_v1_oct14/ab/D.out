@@ -1,0 +1,15 @@
+6 jobs selected (1 DRL policies + APF), 0 already ok, 6 to run
+[1/6] TD3_00390_800 world_1/path1 rep1
+    -> ok success=1 wp=5/5 (1.0 min elapsed)
+[2/6] TD3_00390_800 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (2.2 min elapsed)
+[3/6] TD3_00390_800 world_1/path3 rep1
+    -> ok success=0 wp=1/6 (2.6 min elapsed)
+[4/6] TD3_00390_800 world_2/path1 rep1
+    sim not ready
+    launch failed, retrying once
+    -> ok success=0 wp=3/5 (4.9 min elapsed)
+[5/6] TD3_00390_800 world_3/path1 rep1
+    -> ok success=1 wp=5/5 (5.9 min elapsed)
+[6/6] TD3_00390_800 world_4/path1 rep1
+    -> ok success=1 wp=5/5 (7.0 min elapsed)
