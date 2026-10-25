@@ -1,0 +1,499 @@
+246 jobs selected (36 DRL policies + APF), 0 already ok, 246 to run
+[1/246] APF world_1/path1 rep1
+    -> ok success=1 wp=5/5 (1.1 min elapsed)
+[2/246] APF world_1/path1 rep2
+    -> ok success=1 wp=5/5 (3.0 min elapsed)
+[3/246] APF world_1/path1 rep3
+    -> ok success=1 wp=5/5 (5.0 min elapsed)
+[4/246] APF world_1/path1 rep4
+    -> ok success=1 wp=5/5 (7.0 min elapsed)
+[5/246] APF world_1/path1 rep5
+    -> ok success=1 wp=5/5 (9.0 min elapsed)
+[6/246] APF world_1/path2 rep1
+    -> ok success=1 wp=6/6 (10.2 min elapsed)
+[7/246] APF world_1/path2 rep2
+    -> ok success=1 wp=6/6 (12.1 min elapsed)
+[8/246] APF world_1/path2 rep3
+    -> ok success=1 wp=6/6 (14.1 min elapsed)
+[9/246] APF world_1/path2 rep4
+    -> ok success=1 wp=6/6 (16.1 min elapsed)
+[10/246] APF world_1/path2 rep5
+    -> ok success=1 wp=6/6 (18.1 min elapsed)
+[11/246] APF world_1/path3 rep1
+    -> ok success=1 wp=6/6 (19.2 min elapsed)
+[12/246] APF world_1/path3 rep2
+    -> ok success=1 wp=6/6 (20.9 min elapsed)
+[13/246] APF world_1/path3 rep3
+    -> ok success=1 wp=6/6 (23.0 min elapsed)
+[14/246] APF world_1/path3 rep4
+    -> ok success=1 wp=6/6 (24.9 min elapsed)
+[15/246] APF world_1/path3 rep5
+    -> ok success=1 wp=6/6 (26.9 min elapsed)
+[16/246] APF world_2/path1 rep1
+    -> ok success=1 wp=5/5 (28.0 min elapsed)
+[17/246] APF world_2/path1 rep2
+    -> ok success=1 wp=5/5 (30.0 min elapsed)
+[18/246] APF world_2/path1 rep3
+    -> ok success=1 wp=5/5 (32.0 min elapsed)
+[19/246] APF world_2/path1 rep4
+    -> ok success=1 wp=5/5 (34.0 min elapsed)
+[20/246] APF world_2/path1 rep5
+    -> ok success=1 wp=5/5 (36.0 min elapsed)
+[21/246] APF world_3/path1 rep1
+    -> ok success=1 wp=5/5 (37.0 min elapsed)
+[22/246] APF world_3/path1 rep2
+    -> ok success=1 wp=5/5 (39.0 min elapsed)
+[23/246] APF world_3/path1 rep3
+    -> ok success=1 wp=5/5 (41.0 min elapsed)
+[24/246] APF world_3/path1 rep4
+    sim not ready
+    launch failed, retrying once
+    -> ok success=1 wp=5/5 (44.7 min elapsed)
+[25/246] APF world_3/path1 rep5
+    -> ok success=1 wp=5/5 (46.0 min elapsed)
+[26/246] APF world_4/path1 rep1
+    -> ok success=1 wp=5/5 (47.2 min elapsed)
+[27/246] APF world_4/path1 rep2
+    -> ok success=1 wp=5/5 (49.1 min elapsed)
+[28/246] APF world_4/path1 rep3
+    -> ok success=1 wp=5/5 (51.1 min elapsed)
+[29/246] APF world_4/path1 rep4
+    -> ok success=1 wp=5/5 (53.1 min elapsed)
+[30/246] APF world_4/path1 rep5
+    -> ok success=1 wp=5/5 (55.1 min elapsed)
+[31/246] TD3_00386_1000 world_1/path1 rep1
+    -> ok success=0 wp=3/5 (55.9 min elapsed)
+[32/246] TD3_00386_1000 world_1/path2 rep1
+    -> ok success=0 wp=0/6 (56.3 min elapsed)
+[33/246] TD3_00386_1000 world_1/path3 rep1
+    -> ok success=0 wp=0/6 (56.6 min elapsed)
+[34/246] TD3_00386_1000 world_2/path1 rep1
+    -> ok success=0 wp=3/5 (57.3 min elapsed)
+[35/246] TD3_00386_1000 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (57.7 min elapsed)
+[36/246] TD3_00386_1000 world_4/path1 rep1
+    -> ok success=0 wp=2/5 (58.3 min elapsed)
+[37/246] TD3_00387_1000 world_1/path1 rep1
+    -> ok success=1 wp=5/5 (59.3 min elapsed)
+[38/246] TD3_00387_1000 world_1/path2 rep1
+    -> ok success=0 wp=1/6 (59.8 min elapsed)
+[39/246] TD3_00387_1000 world_1/path3 rep1
+    -> ok success=0 wp=1/6 (60.3 min elapsed)
+[40/246] TD3_00387_1000 world_2/path1 rep1
+    -> ok success=0 wp=4/5 (61.2 min elapsed)
+[41/246] TD3_00387_1000 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (61.6 min elapsed)
+[42/246] TD3_00387_1000 world_4/path1 rep1
+    -> ok success=0 wp=3/5 (62.4 min elapsed)
+[43/246] TD3_00387_500 world_1/path1 rep1
+    -> ok success=0 wp=3/5 (63.2 min elapsed)
+[44/246] TD3_00387_500 world_1/path2 rep1
+    -> ok success=0 wp=0/6 (63.5 min elapsed)
+[45/246] TD3_00387_500 world_1/path3 rep1
+    -> ok success=0 wp=1/6 (64.0 min elapsed)
+[46/246] TD3_00387_500 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (65.0 min elapsed)
+[47/246] TD3_00387_500 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (65.4 min elapsed)
+[48/246] TD3_00387_500 world_4/path1 rep1
+    -> ok success=1 wp=5/5 (66.4 min elapsed)
+[49/246] TD3_00388_1000 world_1/path1 rep1
+    -> ok success=1 wp=5/5 (67.4 min elapsed)
+[50/246] TD3_00388_1000 world_1/path2 rep1
+    -> ok success=0 wp=2/6 (68.2 min elapsed)
+[51/246] TD3_00388_1000 world_1/path3 rep1
+    -> ok success=1 wp=6/6 (69.1 min elapsed)
+[52/246] TD3_00388_1000 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (70.1 min elapsed)
+[53/246] TD3_00388_1000 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (70.5 min elapsed)
+[54/246] TD3_00388_1000 world_4/path1 rep1
+    -> ok success=0 wp=4/5 (71.4 min elapsed)
+[55/246] TD3_00388_900 world_1/path1 rep1
+    -> ok success=0 wp=3/5 (72.4 min elapsed)
+[56/246] TD3_00388_900 world_1/path2 rep1
+    -> ok success=0 wp=2/6 (73.0 min elapsed)
+[57/246] TD3_00388_900 world_1/path3 rep1
+    -> ok success=1 wp=6/6 (74.0 min elapsed)
+[58/246] TD3_00388_900 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (75.0 min elapsed)
+[59/246] TD3_00388_900 world_3/path1 rep1
+    -> ok success=0 wp=3/5 (76.0 min elapsed)
+[60/246] TD3_00388_900 world_4/path1 rep1
+    -> ok success=0 wp=4/5 (76.9 min elapsed)
+[61/246] TD3_00389_1000 world_1/path1 rep1
+    -> ok success=0 wp=3/5 (77.6 min elapsed)
+[62/246] TD3_00389_1000 world_1/path2 rep1
+    -> ok success=0 wp=0/6 (78.0 min elapsed)
+[63/246] TD3_00389_1000 world_1/path3 rep1
+    -> ok success=0 wp=0/6 (78.3 min elapsed)
+[64/246] TD3_00389_1000 world_2/path1 rep1
+    -> ok success=0 wp=3/5 (79.0 min elapsed)
+[65/246] TD3_00389_1000 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (79.4 min elapsed)
+[66/246] TD3_00389_1000 world_4/path1 rep1
+    -> ok success=0 wp=2/5 (80.0 min elapsed)
+[67/246] TD3_00389_900 world_1/path1 rep1
+    -> ok success=0 wp=4/5 (81.0 min elapsed)
+[68/246] TD3_00389_900 world_1/path2 rep1
+    -> ok success=0 wp=0/6 (81.3 min elapsed)
+[69/246] TD3_00389_900 world_1/path3 rep1
+    -> ok success=0 wp=0/6 (81.6 min elapsed)
+[70/246] TD3_00389_900 world_2/path1 rep1
+    -> ok success=0 wp=4/5 (82.5 min elapsed)
+[71/246] TD3_00389_900 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (82.9 min elapsed)
+[72/246] TD3_00389_900 world_4/path1 rep1
+    -> ok success=0 wp=2/5 (83.4 min elapsed)
+[73/246] TD3_00390_1000 world_1/path1 rep1
+    -> ok success=0 wp=3/5 (84.1 min elapsed)
+[74/246] TD3_00390_1000 world_1/path2 rep1
+    sim not ready
+    launch failed, retrying once
+    -> ok success=0 wp=0/6 (86.1 min elapsed)
+[75/246] TD3_00390_1000 world_1/path3 rep1
+    -> ok success=0 wp=0/6 (86.4 min elapsed)
+[76/246] TD3_00390_1000 world_2/path1 rep1
+    -> ok success=0 wp=3/5 (88.0 min elapsed)
+[77/246] TD3_00390_1000 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (88.5 min elapsed)
+[78/246] TD3_00390_1000 world_4/path1 rep1
+    -> ok success=0 wp=2/5 (89.0 min elapsed)
+[79/246] TD3_00390_800 world_1/path1 rep1
+    -> ok success=0 wp=3/5 (89.8 min elapsed)
+[80/246] TD3_00390_800 world_1/path2 rep1
+    -> ok success=0 wp=0/6 (90.1 min elapsed)
+[81/246] TD3_00390_800 world_1/path3 rep1
+    -> ok success=0 wp=1/6 (90.6 min elapsed)
+[82/246] TD3_00390_800 world_2/path1 rep1
+    -> ok success=0 wp=3/5 (91.2 min elapsed)
+[83/246] TD3_00390_800 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (91.7 min elapsed)
+[84/246] TD3_00390_800 world_4/path1 rep1
+    -> ok success=0 wp=4/5 (92.5 min elapsed)
+[85/246] TD3_00391_1000 world_1/path1 rep1
+    -> ok success=0 wp=3/5 (93.3 min elapsed)
+[86/246] TD3_00391_1000 world_1/path2 rep1
+    -> ok success=0 wp=1/6 (93.8 min elapsed)
+[87/246] TD3_00391_1000 world_1/path3 rep1
+    -> ok success=0 wp=1/6 (94.2 min elapsed)
+[88/246] TD3_00391_1000 world_2/path1 rep1
+    -> ok success=0 wp=4/5 (95.1 min elapsed)
+[89/246] TD3_00391_1000 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (95.6 min elapsed)
+[90/246] TD3_00391_1000 world_4/path1 rep1
+    -> ok success=0 wp=4/5 (96.4 min elapsed)
+[91/246] TD3_00391_800 world_1/path1 rep1
+    -> ok success=0 wp=3/5 (97.2 min elapsed)
+[92/246] TD3_00391_800 world_1/path2 rep1
+    -> ok success=0 wp=0/6 (97.5 min elapsed)
+[93/246] TD3_00391_800 world_1/path3 rep1
+    -> ok success=0 wp=1/6 (98.0 min elapsed)
+[94/246] TD3_00391_800 world_2/path1 rep1
+    -> ok success=0 wp=4/5 (98.8 min elapsed)
+[95/246] TD3_00391_800 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (99.3 min elapsed)
+[96/246] TD3_00391_800 world_4/path1 rep1
+    -> ok success=0 wp=2/5 (99.8 min elapsed)
+[97/246] TD3_00392_1000 world_1/path1 rep1
+    -> ok success=1 wp=5/5 (101.1 min elapsed)
+[98/246] TD3_00392_1000 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (102.3 min elapsed)
+[99/246] TD3_00392_1000 world_1/path3 rep1
+    -> ok success=0 wp=4/6 (103.3 min elapsed)
+[100/246] TD3_00392_1000 world_2/path1 rep1
+    -> ok success=0 wp=3/5 (103.9 min elapsed)
+[101/246] TD3_00392_1000 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (104.3 min elapsed)
+[102/246] TD3_00392_1000 world_4/path1 rep1
+    -> ok success=0 wp=2/5 (104.9 min elapsed)
+[103/246] TD3_00392_600 world_1/path1 rep1
+    -> ok success=1 wp=5/5 (105.9 min elapsed)
+[104/246] TD3_00392_600 world_1/path2 rep1
+    -> ok success=0 wp=0/6 (106.3 min elapsed)
+[105/246] TD3_00392_600 world_1/path3 rep1
+    -> ok success=0 wp=0/6 (106.6 min elapsed)
+[106/246] TD3_00392_600 world_2/path1 rep1
+    -> ok success=0 wp=4/5 (107.5 min elapsed)
+[107/246] TD3_00392_600 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (107.9 min elapsed)
+[108/246] TD3_00392_600 world_4/path1 rep1
+    -> ok success=0 wp=2/5 (108.5 min elapsed)
+[109/246] TD3_00393_1000 world_1/path1 rep1
+    -> ok success=0 wp=3/5 (109.2 min elapsed)
+[110/246] TD3_00393_1000 world_1/path2 rep1
+    sim not ready
+    launch failed, retrying once
+    -> ok success=0 wp=0/6 (111.2 min elapsed)
+[111/246] TD3_00393_1000 world_1/path3 rep1
+    -> ok success=0 wp=0/6 (111.5 min elapsed)
+[112/246] TD3_00393_1000 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (112.5 min elapsed)
+[113/246] TD3_00393_1000 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (112.9 min elapsed)
+[114/246] TD3_00393_1000 world_4/path1 rep1
+    -> ok success=0 wp=3/5 (113.6 min elapsed)
+[115/246] TD3_00393_900 world_1/path1 rep1
+    -> ok success=0 wp=3/5 (114.4 min elapsed)
+[116/246] TD3_00393_900 world_1/path2 rep1
+    -> ok success=0 wp=0/6 (114.7 min elapsed)
+[117/246] TD3_00393_900 world_1/path3 rep1
+    -> ok success=0 wp=0/6 (115.1 min elapsed)
+[118/246] TD3_00393_900 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (116.2 min elapsed)
+[119/246] TD3_00393_900 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (116.6 min elapsed)
+[120/246] TD3_00393_900 world_4/path1 rep1
+    -> ok success=0 wp=4/5 (117.5 min elapsed)
+[121/246] TD3_00394_1000 world_1/path1 rep1
+    -> ok success=0 wp=3/5 (118.3 min elapsed)
+[122/246] TD3_00394_1000 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (119.3 min elapsed)
+[123/246] TD3_00394_1000 world_1/path3 rep1
+    -> ok success=0 wp=3/6 (120.0 min elapsed)
+[124/246] TD3_00394_1000 world_2/path1 rep1
+    -> ok success=0 wp=4/5 (120.9 min elapsed)
+[125/246] TD3_00394_1000 world_3/path1 rep1
+    -> ok success=0 wp=3/5 (121.9 min elapsed)
+[126/246] TD3_00394_1000 world_4/path1 rep1
+    -> ok success=0 wp=4/5 (122.8 min elapsed)
+[127/246] TD3_00394_800 world_1/path1 rep1
+    -> ok success=0 wp=3/5 (123.5 min elapsed)
+[128/246] TD3_00394_800 world_1/path2 rep1
+    -> ok success=0 wp=1/6 (124.0 min elapsed)
+[129/246] TD3_00394_800 world_1/path3 rep1
+    -> ok success=0 wp=3/6 (124.7 min elapsed)
+[130/246] TD3_00394_800 world_2/path1 rep1
+    -> ok success=0 wp=4/5 (125.6 min elapsed)
+[131/246] TD3_00394_800 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (126.0 min elapsed)
+[132/246] TD3_00394_800 world_4/path1 rep1
+    -> ok success=0 wp=4/5 (127.0 min elapsed)
+[133/246] TD3_00395_1000 world_1/path1 rep1
+    -> ok success=0 wp=4/5 (127.9 min elapsed)
+[134/246] TD3_00395_1000 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (129.0 min elapsed)
+[135/246] TD3_00395_1000 world_1/path3 rep1
+    -> ok success=1 wp=6/6 (130.2 min elapsed)
+[136/246] TD3_00395_1000 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (131.2 min elapsed)
+[137/246] TD3_00395_1000 world_3/path1 rep1
+    -> ok success=1 wp=5/5 (132.3 min elapsed)
+[138/246] TD3_00395_1000 world_4/path1 rep1
+    -> ok success=0 wp=2/5 (133.8 min elapsed)
+[139/246] TD3_00395_900 world_1/path1 rep1
+    -> ok success=1 wp=5/5 (134.8 min elapsed)
+[140/246] TD3_00395_900 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (135.9 min elapsed)
+[141/246] TD3_00395_900 world_1/path3 rep1
+    -> ok success=1 wp=6/6 (136.9 min elapsed)
+[142/246] TD3_00395_900 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (137.9 min elapsed)
+[143/246] TD3_00395_900 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (138.4 min elapsed)
+[144/246] TD3_00395_900 world_4/path1 rep1
+    -> ok success=0 wp=4/5 (139.2 min elapsed)
+[145/246] TD3_00396_1000 world_1/path1 rep1
+    -> ok success=0 wp=0/5 (139.8 min elapsed)
+[146/246] TD3_00396_1000 world_1/path2 rep1
+    -> ok success=0 wp=1/6 (140.3 min elapsed)
+[147/246] TD3_00396_1000 world_1/path3 rep1
+    -> ok success=0 wp=3/6 (141.4 min elapsed)
+[148/246] TD3_00396_1000 world_2/path1 rep1
+    -> ok success=0 wp=0/5 (141.9 min elapsed)
+[149/246] TD3_00396_1000 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (142.8 min elapsed)
+[150/246] TD3_00396_1000 world_4/path1 rep1
+    -> ok success=0 wp=1/5 (143.4 min elapsed)
+[151/246] TD3_00396_500 world_1/path1 rep1
+    -> ok success=0 wp=0/5 (144.0 min elapsed)
+[152/246] TD3_00396_500 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (145.3 min elapsed)
+[153/246] TD3_00396_500 world_1/path3 rep1
+    -> ok success=0 wp=1/6 (145.7 min elapsed)
+[154/246] TD3_00396_500 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (146.7 min elapsed)
+[155/246] TD3_00396_500 world_3/path1 rep1
+    -> ok success=0 wp=3/5 (147.8 min elapsed)
+[156/246] TD3_00396_500 world_4/path1 rep1
+    -> ok success=1 wp=5/5 (149.0 min elapsed)
+[157/246] TD3_00397_1000 world_1/path1 rep1
+    -> ok success=1 wp=5/5 (150.3 min elapsed)
+[158/246] TD3_00397_1000 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (151.6 min elapsed)
+[159/246] TD3_00397_1000 world_1/path3 rep1
+    -> ok success=1 wp=6/6 (152.6 min elapsed)
+[160/246] TD3_00397_1000 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (153.7 min elapsed)
+[161/246] TD3_00397_1000 world_3/path1 rep1
+    -> ok success=1 wp=5/5 (154.9 min elapsed)
+[162/246] TD3_00397_1000 world_4/path1 rep1
+    -> ok success=1 wp=5/5 (156.1 min elapsed)
+[163/246] TD3_00398_1000 world_1/path1 rep1
+    -> ok success=1 wp=5/5 (158.2 min elapsed)
+[164/246] TD3_00398_1000 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (160.4 min elapsed)
+[165/246] TD3_00398_1000 world_1/path3 rep1
+    -> ok success=0 wp=3/6 (161.6 min elapsed)
+[166/246] TD3_00398_1000 world_2/path1 rep1
+    -> ok success=0 wp=0/5 (162.4 min elapsed)
+[167/246] TD3_00398_1000 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (163.4 min elapsed)
+[168/246] TD3_00398_1000 world_4/path1 rep1
+    -> ok success=0 wp=4/5 (165.2 min elapsed)
+[169/246] TD3_00399_1000 world_1/path1 rep1
+    -> ok success=0 wp=3/5 (166.0 min elapsed)
+[170/246] TD3_00399_1000 world_1/path2 rep1
+    -> ok success=0 wp=1/6 (166.5 min elapsed)
+[171/246] TD3_00399_1000 world_1/path3 rep1
+    -> ok success=1 wp=6/6 (167.5 min elapsed)
+[172/246] TD3_00399_1000 world_2/path1 rep1
+    -> ok success=0 wp=4/5 (168.4 min elapsed)
+[173/246] TD3_00399_1000 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (168.8 min elapsed)
+[174/246] TD3_00399_1000 world_4/path1 rep1
+    -> ok success=0 wp=4/5 (169.6 min elapsed)
+[175/246] TD3_00399_900 world_1/path1 rep1
+    -> ok success=0 wp=2/5 (170.2 min elapsed)
+[176/246] TD3_00399_900 world_1/path2 rep1
+    -> ok success=0 wp=0/6 (170.5 min elapsed)
+[177/246] TD3_00399_900 world_1/path3 rep1
+    -> ok success=0 wp=0/6 (170.8 min elapsed)
+[178/246] TD3_00399_900 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (171.8 min elapsed)
+[179/246] TD3_00399_900 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (172.2 min elapsed)
+[180/246] TD3_00399_900 world_4/path1 rep1
+    -> ok success=0 wp=2/5 (172.7 min elapsed)
+[181/246] TD3_00400_1000 world_1/path1 rep1
+    -> ok success=0 wp=3/5 (173.7 min elapsed)
+[182/246] TD3_00400_1000 world_1/path2 rep1
+    -> ok success=0 wp=0/6 (174.1 min elapsed)
+[183/246] TD3_00400_1000 world_1/path3 rep1
+    -> ok success=1 wp=6/6 (175.1 min elapsed)
+[184/246] TD3_00400_1000 world_2/path1 rep1
+    -> ok success=0 wp=4/5 (176.0 min elapsed)
+[185/246] TD3_00400_1000 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (176.4 min elapsed)
+[186/246] TD3_00400_1000 world_4/path1 rep1
+    -> ok success=0 wp=4/5 (177.3 min elapsed)
+[187/246] TD3_00400_700 world_1/path1 rep1
+    -> ok success=0 wp=3/5 (178.0 min elapsed)
+[188/246] TD3_00400_700 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (179.2 min elapsed)
+[189/246] TD3_00400_700 world_1/path3 rep1
+    -> ok success=1 wp=6/6 (180.1 min elapsed)
+[190/246] TD3_00400_700 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (181.2 min elapsed)
+[191/246] TD3_00400_700 world_3/path1 rep1
+    -> ok success=1 wp=5/5 (182.2 min elapsed)
+[192/246] TD3_00400_700 world_4/path1 rep1
+    -> ok success=1 wp=5/5 (183.6 min elapsed)
+[193/246] TD3_00401_1000 world_1/path1 rep1
+    -> ok success=0 wp=2/5 (184.5 min elapsed)
+[194/246] TD3_00401_1000 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (185.7 min elapsed)
+[195/246] TD3_00401_1000 world_1/path3 rep1
+    -> ok success=1 wp=6/6 (187.2 min elapsed)
+[196/246] TD3_00401_1000 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (188.4 min elapsed)
+[197/246] TD3_00401_1000 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (188.8 min elapsed)
+[198/246] TD3_00401_1000 world_4/path1 rep1
+    -> ok success=1 wp=5/5 (190.3 min elapsed)
+[199/246] TD3_00401_900 world_1/path1 rep1
+    -> ok success=0 wp=0/5 (190.8 min elapsed)
+[200/246] TD3_00401_900 world_1/path2 rep1
+    -> ok success=0 wp=0/6 (191.5 min elapsed)
+[201/246] TD3_00401_900 world_1/path3 rep1
+    -> ok success=0 wp=0/6 (192.0 min elapsed)
+[202/246] TD3_00401_900 world_2/path1 rep1
+    -> ok success=0 wp=2/5 (194.1 min elapsed)
+[203/246] TD3_00401_900 world_3/path1 rep1
+    -> ok success=0 wp=0/5 (194.8 min elapsed)
+[204/246] TD3_00401_900 world_4/path1 rep1
+    -> ok success=0 wp=0/5 (195.3 min elapsed)
+[205/246] TD3_00402_1000 world_1/path1 rep1
+    -> ok success=0 wp=2/5 (196.2 min elapsed)
+[206/246] TD3_00402_1000 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (197.3 min elapsed)
+[207/246] TD3_00402_1000 world_1/path3 rep1
+    -> ok success=1 wp=6/6 (198.3 min elapsed)
+[208/246] TD3_00402_1000 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (199.2 min elapsed)
+[209/246] TD3_00402_1000 world_3/path1 rep1
+    -> ok success=1 wp=5/5 (200.3 min elapsed)
+[210/246] TD3_00402_1000 world_4/path1 rep1
+    -> ok success=0 wp=4/5 (201.2 min elapsed)
+[211/246] TD3_00402_700 world_1/path1 rep1
+    -> ok success=1 wp=5/5 (202.3 min elapsed)
+[212/246] TD3_00402_700 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (203.3 min elapsed)
+[213/246] TD3_00402_700 world_1/path3 rep1
+    -> ok success=1 wp=6/6 (204.4 min elapsed)
+[214/246] TD3_00402_700 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (205.6 min elapsed)
+[215/246] TD3_00402_700 world_3/path1 rep1
+    -> ok success=1 wp=5/5 (206.6 min elapsed)
+[216/246] TD3_00402_700 world_4/path1 rep1
+    -> ok success=0 wp=4/5 (207.8 min elapsed)
+[217/246] TD3_00403_1000 world_1/path1 rep1
+    -> ok success=1 wp=5/5 (208.8 min elapsed)
+[218/246] TD3_00403_1000 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (209.8 min elapsed)
+[219/246] TD3_00403_1000 world_1/path3 rep1
+    -> ok success=0 wp=1/6 (210.2 min elapsed)
+[220/246] TD3_00403_1000 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (211.2 min elapsed)
+[221/246] TD3_00403_1000 world_3/path1 rep1
+    -> ok success=1 wp=5/5 (212.2 min elapsed)
+[222/246] TD3_00403_1000 world_4/path1 rep1
+    -> ok success=0 wp=4/5 (213.1 min elapsed)
+[223/246] TD3_00403_900 world_1/path1 rep1
+    -> ok success=1 wp=5/5 (214.1 min elapsed)
+[224/246] TD3_00403_900 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (215.2 min elapsed)
+[225/246] TD3_00403_900 world_1/path3 rep1
+    -> ok success=1 wp=6/6 (216.1 min elapsed)
+[226/246] TD3_00403_900 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (217.0 min elapsed)
+[227/246] TD3_00403_900 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (217.5 min elapsed)
+[228/246] TD3_00403_900 world_4/path1 rep1
+    -> ok success=1 wp=5/5 (218.5 min elapsed)
+[229/246] TD3_00404_1000 world_1/path1 rep1
+    -> ok success=1 wp=5/5 (219.5 min elapsed)
+[230/246] TD3_00404_1000 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (220.5 min elapsed)
+[231/246] TD3_00404_1000 world_1/path3 rep1
+    -> ok success=1 wp=6/6 (221.5 min elapsed)
+[232/246] TD3_00404_1000 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (222.4 min elapsed)
+[233/246] TD3_00404_1000 world_3/path1 rep1
+    -> ok success=1 wp=5/5 (223.4 min elapsed)
+[234/246] TD3_00404_1000 world_4/path1 rep1
+    -> ok success=0 wp=4/5 (224.3 min elapsed)
+[235/246] TD3_00404_500 world_1/path1 rep1
+    -> ok success=1 wp=5/5 (225.3 min elapsed)
+[236/246] TD3_00404_500 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (226.3 min elapsed)
+[237/246] TD3_00404_500 world_1/path3 rep1
+    -> ok success=1 wp=6/6 (227.3 min elapsed)
+[238/246] TD3_00404_500 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (228.2 min elapsed)
+[239/246] TD3_00404_500 world_3/path1 rep1
+    -> ok success=1 wp=5/5 (229.2 min elapsed)
+[240/246] TD3_00404_500 world_4/path1 rep1
+    -> ok success=0 wp=4/5 (231.0 min elapsed)
+[241/246] TD3_00405_1000 world_1/path1 rep1
+    -> ok success=0 wp=3/5 (231.8 min elapsed)
+[242/246] TD3_00405_1000 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (233.0 min elapsed)
+[243/246] TD3_00405_1000 world_1/path3 rep1
+    -> ok success=1 wp=6/6 (234.0 min elapsed)
+[244/246] TD3_00405_1000 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (235.5 min elapsed)
+[245/246] TD3_00405_1000 world_3/path1 rep1
+    -> ok success=1 wp=5/5 (236.6 min elapsed)
+[246/246] TD3_00405_1000 world_4/path1 rep1
+    -> ok success=1 wp=5/5 (237.8 min elapsed)
