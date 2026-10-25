@@ -52,7 +52,7 @@ class KeyboardControlNode(Node):
         self.settings_ = termios.tcgetattr(sys.stdin)
 
         # Publisher
-        self.vel_pub_ = self.create_publisher(TwistStamped, '/cmd_vel', 10)
+        self.vel_pub_ = self.create_publisher(TwistStamped, 'cmd_vel', 10)
         
         # Node variables
         self.xspeed_switch_ = True

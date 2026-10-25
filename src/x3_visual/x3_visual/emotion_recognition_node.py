@@ -129,7 +129,8 @@ class EmotionRecognitionNode(Node):
             img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # color conversion of MobileViT trained on FER2013
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB) # color conversion of MobileViT trained on FER2013
         else: # rgb
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            pass
 
         img = img.astype(np.float32) / 255.0        # pixel value normalization
 

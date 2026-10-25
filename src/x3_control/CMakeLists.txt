@@ -16,12 +16,6 @@ find_package(action_msgs REQUIRED)
 # Install Python modules
 ament_python_install_package(${PROJECT_NAME})
 
-# Install launch files
-install(DIRECTORY
-  launch
-  DESTINATION share/${PROJECT_NAME}
-)
-
 # Install Python scripts
 install(PROGRAMS
   ${PROJECT_NAME}/x3_keyboard.py
