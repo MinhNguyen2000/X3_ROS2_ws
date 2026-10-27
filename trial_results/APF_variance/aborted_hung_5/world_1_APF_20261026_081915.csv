@@ -1,0 +1,4 @@
+trial_idx,world_name,planner,drl_model_name,goal_x,goal_y,straight_line_distance,success,failure_reason,distance_traveled_odom,distance_traveled_planner,distance_diff_percent,travel_time,final_distance_to_goal,timeseries_log_path,timestamp
+0,world_1,APF,,0.0,0.5,0.5,True,,0.905,0.894,1.182,4.483,0.196,trial_results/APF_variance/run5/timeseries/world_1_APF_trial000.json,2026-10-26T08:19:22.819563
+1,world_1,APF,,0.0,1.0,1.0,True,,2.608,2.605,0.112,12.08,0.199,trial_results/APF_variance/run5/timeseries/world_1_APF_trial001.json,2026-10-26T08:19:38.157290
+2,world_1,APF,,0.0,1.5,1.5,True,,3.993,3.983,0.272,13.007,0.196,trial_results/APF_variance/run5/timeseries/world_1_APF_trial002.json,2026-10-26T08:19:54.384414

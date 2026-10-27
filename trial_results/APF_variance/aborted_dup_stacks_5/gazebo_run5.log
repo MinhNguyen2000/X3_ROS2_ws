@@ -1,0 +1,51 @@
+[INFO] [launch]: All log files can be found below /home/ubuntu/.ros/log/2026-10-26-11-06-24-411524-controlslab-GWB119-172755
+[INFO] [launch]: Default logging verbosity is set to INFO
+Rendered ros2_control YAML file at /tmp/agent0_controllers.yaml
+[INFO] [robot_state_publisher-1]: process started with pid [172759]
+[INFO] [ign gazebo-2]: process started with pid [172761]
+[INFO] [create-3]: process started with pid [172763]
+[INFO] [odom_offset_node.py-4]: process started with pid [172766]
+[INFO] [parameter_bridge-5]: process started with pid [172768]
+[INFO] [spawner-6]: process started with pid [172770]
+[INFO] [spawner-7]: process started with pid [172772]
+[INFO] [odom_to_vel_raw_node.py-8]: process started with pid [172774]
+[create-3] [INFO] [1793023584.802150561] [agent0.ros_gz_sim]: Requesting list of world names.
+[robot_state_publisher-1] [INFO] [1793023584.835776772] [agent0.robot_state_publisher]: got segment agent0_back_left_wheel
+[robot_state_publisher-1] [INFO] [1793023584.835851334] [agent0.robot_state_publisher]: got segment agent0_back_right_wheel
+[robot_state_publisher-1] [INFO] [1793023584.835856242] [agent0.robot_state_publisher]: got segment agent0_base_footprint
+[robot_state_publisher-1] [INFO] [1793023584.835859753] [agent0.robot_state_publisher]: got segment agent0_base_link
+[robot_state_publisher-1] [INFO] [1793023584.835862190] [agent0.robot_state_publisher]: got segment agent0_camera_link
+[robot_state_publisher-1] [INFO] [1793023584.835864515] [agent0.robot_state_publisher]: got segment agent0_camera_link_optical
+[robot_state_publisher-1] [INFO] [1793023584.835867881] [agent0.robot_state_publisher]: got segment agent0_front_left_wheel
+[robot_state_publisher-1] [INFO] [1793023584.835869987] [agent0.robot_state_publisher]: got segment agent0_front_right_wheel
+[robot_state_publisher-1] [INFO] [1793023584.835871838] [agent0.robot_state_publisher]: got segment agent0_imu_link
+[robot_state_publisher-1] [INFO] [1793023584.835873699] [agent0.robot_state_publisher]: got segment agent0_lidar_link
+[spawner-7] [INFO] [1793023584.982232196] [agent0.spawner_joint_broad]: waiting for service /agent0/controller_manager/list_controllers to become available...
+[odom_to_vel_raw_node.py-8] [INFO] [1793023584.989037586] [agent0.odom_to_vel_raw]: odom_to_vel_raw_node started!!
+[create-3] [INFO] [1793023585.004437621] [agent0.ros_gz_sim]: Waiting messages on topic [robot_description].
+[create-3] [INFO] [1793023585.017695807] [agent0.ros_gz_sim]: Requested creation of entity.
+[create-3] [INFO] [1793023585.017750307] [agent0.ros_gz_sim]: OK creation of entity.
+[odom_offset_node.py-4] [INFO] [1793023585.060440536] [agent0.odom_offset]: odom_offset_node started!!
+[odom_offset_node.py-4] [INFO] [1793023585.060714844] [agent0.odom_offset]: x_offset=-3.0, y_offset=-3.0
+[INFO] [create-3]: process has finished cleanly [pid 172763]
+[ign gazebo-2] QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-ubuntu'
+[spawner-7] [WARN] [1793023585.242463996] [agent0.spawner_joint_broad]: [93mController already loaded, skipping load_controller[0m
+[spawner-7] [ERROR] [1793023585.244279751] [agent0.spawner_joint_broad]: [91mFailed to configure controller[0m
+[ERROR] [spawner-7]: process has died [pid 172772, exit code 1, cmd '/opt/ros/humble/lib/controller_manager/spawner joint_broad --ros-args -r __ns:=/agent0'].
+[parameter_bridge-5] [INFO] [1793023585.837010887] [agent0.ros_gz_bridge_ros_control]: Creating GZ->ROS Bridge: [/clock (gz.msgs.Clock) -> /clock (rosgraph_msgs/msg/Clock)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1793023585.893028487] [agent0.ros_gz_bridge_ros_control]: Creating ROS->GZ Bridge: [cmd_vel (geometry_msgs/msg/TwistStamped) -> cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1793023585.895864743] [agent0.ros_gz_bridge_ros_control]: Creating GZ->ROS Bridge: [scan (gz.msgs.LaserScan) -> scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1793023585.898177897] [agent0.ros_gz_bridge_ros_control]: Creating GZ->ROS Bridge: [imu_data (gz.msgs.IMU) -> imu/data_raw (sensor_msgs/msg/Imu)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1793023585.898914790] [agent0.ros_gz_bridge_ros_control]: Creating GZ->ROS Bridge: [odom (gz.msgs.Odometry) -> odom_OP (nav_msgs/msg/Odometry)] (Lazy 0)
+[spawner-6] [WARN] [1793023586.028980721] [agent0.spawner_diff_controller]: [93mController already loaded, skipping load_controller[0m
+[spawner-6] [ERROR] [1793023586.030729413] [agent0.spawner_diff_controller]: [91mFailed to configure controller[0m
+[ERROR] [spawner-6]: process has died [pid 172770, exit code 1, cmd '/opt/ros/humble/lib/controller_manager/spawner diff_controller --ros-args -r __ns:=/agent0'].
+[ign gazebo-2] libEGL warning: egl: failed to create dri2 screen
+[ign gazebo-2] libEGL warning: egl: failed to create dri2 screen
+[ign gazebo-2] libEGL warning: failed to open /dev/dri/renderD129: Permission denied
+[ign gazebo-2] 
+[ign gazebo-2] [1;31m[Err] [UserCommands.cc:1465] [0m[1;31mUnable to update the pose for entity id:[[0m[1;31m0[0m[1;31m], name[[0m[1;31magent0[0m[1;31m][0m[1;31m[0m
+[parameter_bridge-5] [INFO] [1793023647.783752687] [agent0.ros_gz_bridge_ros_control]: Passing message from ROS geometry_msgs/msg/TwistStamped to Gazebo gz.msgs.Twist (showing msg only once per type)
+[ign gazebo-2] [1;31m[Err] [UserCommands.cc:1465] [0m[1;31mUnable to update the pose for entity id:[[0m[1;31m0[0m[1;31m], name[[0m[1;31magent0[0m[1;31m][0m[1;31m[0m
+[ign gazebo-2] [1;31m[Err] [UserCommands.cc:1465] [0m[1;31mUnable to update the pose for entity id:[[0m[1;31m0[0m[1;31m], name[[0m[1;31magent0[0m[1;31m][0m[1;31m[0m
+[ign gazebo-2] [1;31m[Err] [UserCommands.cc:1465] [0m[1;31mUnable to update the pose for entity id:[[0m[1;31m0[0m[1;31m], name[[0m[1;31magent0[0m[1;31m][0m[1;31m[0m

@@ -1,0 +1,123 @@
+[INFO] [launch]: All log files can be found below /home/ubuntu/.ros/log/2026-10-25-20-16-52-969065-controlslab-GWB119-4105706
+[INFO] [launch]: Default logging verbosity is set to INFO
+Rendered ros2_control YAML file at /tmp/agent0_controllers.yaml
+[INFO] [robot_state_publisher-1]: process started with pid [4105716]
+[INFO] [ign gazebo-2]: process started with pid [4105718]
+[INFO] [create-3]: process started with pid [4105720]
+[INFO] [odom_offset_node.py-4]: process started with pid [4105723]
+[INFO] [parameter_bridge-5]: process started with pid [4105725]
+[INFO] [spawner-6]: process started with pid [4105727]
+[INFO] [spawner-7]: process started with pid [4105729]
+[INFO] [odom_to_vel_raw_node.py-8]: process started with pid [4105731]
+[create-3] [INFO] [1792970213.426204026] [agent0.ros_gz_sim]: Requesting list of world names.
+[robot_state_publisher-1] [INFO] [1792970213.451069627] [agent0.robot_state_publisher]: got segment agent0_back_left_wheel
+[robot_state_publisher-1] [INFO] [1792970213.451141773] [agent0.robot_state_publisher]: got segment agent0_back_right_wheel
+[robot_state_publisher-1] [INFO] [1792970213.451145092] [agent0.robot_state_publisher]: got segment agent0_base_footprint
+[robot_state_publisher-1] [INFO] [1792970213.451147204] [agent0.robot_state_publisher]: got segment agent0_base_link
+[robot_state_publisher-1] [INFO] [1792970213.451150727] [agent0.robot_state_publisher]: got segment agent0_camera_link
+[robot_state_publisher-1] [INFO] [1792970213.451152550] [agent0.robot_state_publisher]: got segment agent0_camera_link_optical
+[robot_state_publisher-1] [INFO] [1792970213.451154469] [agent0.robot_state_publisher]: got segment agent0_front_left_wheel
+[robot_state_publisher-1] [INFO] [1792970213.451156183] [agent0.robot_state_publisher]: got segment agent0_front_right_wheel
+[robot_state_publisher-1] [INFO] [1792970213.451157930] [agent0.robot_state_publisher]: got segment agent0_imu_link
+[robot_state_publisher-1] [INFO] [1792970213.451159731] [agent0.robot_state_publisher]: got segment agent0_lidar_link
+[spawner-6] [INFO] [1792970213.559809678] [agent0.spawner_diff_controller]: waiting for service /agent0/controller_manager/list_controllers to become available...
+[spawner-7] [INFO] [1792970213.560937087] [agent0.spawner_joint_broad]: waiting for service /agent0/controller_manager/list_controllers to become available...
+[odom_to_vel_raw_node.py-8] [INFO] [1792970213.586442512] [agent0.odom_to_vel_raw]: odom_to_vel_raw_node started!!
+[odom_offset_node.py-4] [INFO] [1792970213.632026201] [agent0.odom_offset]: odom_offset_node started!!
+[odom_offset_node.py-4] [INFO] [1792970213.632193151] [agent0.odom_offset]: x_offset=-3.0, y_offset=-3.0
+[ign gazebo-2] QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-ubuntu'
+[create-3] [INFO] [1792970213.926132772] [agent0.ros_gz_sim]: Waiting messages on topic [robot_description].
+[create-3] [INFO] [1792970213.937132492] [agent0.ros_gz_sim]: Requested creation of entity.
+[create-3] [INFO] [1792970213.937150656] [agent0.ros_gz_sim]: OK creation of entity.
+[INFO] [create-3]: process has finished cleanly [pid 4105720]
+[parameter_bridge-5] [INFO] [1792970214.436946541] [agent0.ros_gz_bridge_ros_control]: Creating GZ->ROS Bridge: [/clock (gz.msgs.Clock) -> /clock (rosgraph_msgs/msg/Clock)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1792970214.439881797] [agent0.ros_gz_bridge_ros_control]: Creating ROS->GZ Bridge: [cmd_vel (geometry_msgs/msg/TwistStamped) -> cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1792970214.442224201] [agent0.ros_gz_bridge_ros_control]: Creating GZ->ROS Bridge: [scan (gz.msgs.LaserScan) -> scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1792970214.443104901] [agent0.ros_gz_bridge_ros_control]: Creating GZ->ROS Bridge: [imu_data (gz.msgs.IMU) -> imu/data_raw (sensor_msgs/msg/Imu)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1792970214.443328437] [agent0.ros_gz_bridge_ros_control]: Creating GZ->ROS Bridge: [odom (gz.msgs.Odometry) -> odom_OP (nav_msgs/msg/Odometry)] (Lazy 0)
+[ign gazebo-2] libEGL warning: egl: failed to create dri2 screen
+[ign gazebo-2] libEGL warning: egl: failed to create dri2 screen
+[ign gazebo-2] libEGL warning: failed to open /dev/dri/renderD129: Permission denied
+[ign gazebo-2] 
+[ign gazebo-2] [INFO] [1792970215.624866873] [GazeboSimROS2ControlPlugin]: robot_param_node is robot_state_publisher
+[ign gazebo-2] [INFO] [1792970215.624890180] [GazeboSimROS2ControlPlugin]: robot_param_node is robot_description
+[ign gazebo-2] [INFO] [1792970215.984106662] [agent0.gz_ros2_control]: connected to service!! /agent0/robot_state_publisher asking for robot_description
+[ign gazebo-2] [INFO] [1792970215.985093489] [agent0.gz_ros2_control]: Received URDF from param server
+[ign gazebo-2] [INFO] [1792970215.999950530] [agent0.gz_ros2_control]: The position_proportional_gain has been set to: 0.1
+[ign gazebo-2] [INFO] [1792970216.000048076] [agent0.gz_ros2_control]: Loading joint: agent0_front_right_joint
+[ign gazebo-2] [INFO] [1792970216.000065985] [agent0.gz_ros2_control]: 	State:
+[ign gazebo-2] [INFO] [1792970216.000077267] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1792970216.000086514] [agent0.gz_ros2_control]: 		 position
+[ign gazebo-2] [INFO] [1792970216.000094580] [agent0.gz_ros2_control]: 	Command:
+[ign gazebo-2] [INFO] [1792970216.000102293] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1792970216.000125281] [agent0.gz_ros2_control]: Loading joint: agent0_front_left_joint
+[ign gazebo-2] [INFO] [1792970216.000135642] [agent0.gz_ros2_control]: 	State:
+[ign gazebo-2] [INFO] [1792970216.000143346] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1792970216.000150960] [agent0.gz_ros2_control]: 		 position
+[ign gazebo-2] [INFO] [1792970216.000158218] [agent0.gz_ros2_control]: 	Command:
+[ign gazebo-2] [INFO] [1792970216.000165409] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1792970216.000181163] [agent0.gz_ros2_control]: Loading joint: agent0_back_right_joint
+[ign gazebo-2] [INFO] [1792970216.000189706] [agent0.gz_ros2_control]: 	State:
+[ign gazebo-2] [INFO] [1792970216.000196869] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1792970216.000204409] [agent0.gz_ros2_control]: 		 position
+[ign gazebo-2] [INFO] [1792970216.000211732] [agent0.gz_ros2_control]: 	Command:
+[ign gazebo-2] [INFO] [1792970216.000218987] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1792970216.000233797] [agent0.gz_ros2_control]: Loading joint: agent0_back_left_joint
+[ign gazebo-2] [INFO] [1792970216.000242371] [agent0.gz_ros2_control]: 	State:
+[ign gazebo-2] [INFO] [1792970216.000249639] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1792970216.000256833] [agent0.gz_ros2_control]: 		 position
+[ign gazebo-2] [INFO] [1792970216.000263757] [agent0.gz_ros2_control]: 	Command:
+[ign gazebo-2] [INFO] [1792970216.000275134] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1792970216.000380630] [agent0.gz_ros2_control]: Loading sensor: imu_sensor
+[ign gazebo-2] [INFO] [1792970216.000394992] [agent0.gz_ros2_control]: 	State:
+[ign gazebo-2] [WARN] [1792970216.000425411] [agent0.gz_ros2_control]: IMU sensor 'imu_sensor' not found in hardware_info, skipping.
+[ign gazebo-2] [INFO] [1792970216.000496929] [resource_manager]: Initialize hardware 'GazeboSystem' 
+[ign gazebo-2] [INFO] [1792970216.000620969] [resource_manager]: Successful initialization of hardware 'GazeboSystem'
+[ign gazebo-2] [INFO] [1792970216.000687332] [resource_manager]: 'configure' hardware 'GazeboSystem' 
+[ign gazebo-2] [INFO] [1792970216.000696620] [agent0.gz_ros2_control]: System Successfully configured!
+[ign gazebo-2] [INFO] [1792970216.000715595] [resource_manager]: Successful 'configure' of hardware 'GazeboSystem'
+[ign gazebo-2] [INFO] [1792970216.000728042] [resource_manager]: 'activate' hardware 'GazeboSystem' 
+[ign gazebo-2] [INFO] [1792970216.000743157] [resource_manager]: Successful 'activate' of hardware 'GazeboSystem'
+[ign gazebo-2] [INFO] [1792970216.000755791] [agent0.gz_ros2_control]: Loading controller_manager
+[ign gazebo-2] [INFO] [1792970216.065807021] [agent0.controller_manager]: Loading controller 'diff_controller'
+[ign gazebo-2] libEGL warning: egl: failed to create dri2 screen
+[ign gazebo-2] libEGL warning: egl: failed to create dri2 screen
+[ign gazebo-2] libEGL warning: failed to open /dev/dri/renderD129: Permission denied
+[ign gazebo-2] 
+[ign gazebo-2] [INFO] [1792970216.458268964] [agent0.controller_manager]: Loading controller 'joint_broad'
+[spawner-6] [INFO] [1792970216.458718727] [agent0.spawner_diff_controller]: [94mLoaded [1mdiff_controller[0m
+[ign gazebo-2] [INFO] [1792970216.679539662] [agent0.controller_manager]: Configuring controller 'diff_controller'
+[spawner-7] [INFO] [1792970216.682994906] [agent0.spawner_joint_broad]: [94mLoaded [1mjoint_broad[0m
+[ign gazebo-2] [INFO] [1792970216.688044672] [agent0.controller_manager]: Configuring controller 'joint_broad'
+[ign gazebo-2] [INFO] [1792970216.688088001] [agent0.joint_broad]: 'joints' or 'interfaces' parameter is empty. All available state interfaces will be published
+[spawner-6] [INFO] [1792970216.696504280] [agent0.spawner_diff_controller]: [92mConfigured and activated [1mdiff_controller[0m
+[spawner-7] [INFO] [1792970216.697674150] [agent0.spawner_joint_broad]: [92mConfigured and activated [1mjoint_broad[0m
+[INFO] [spawner-6]: process has finished cleanly [pid 4105727]
+[INFO] [spawner-7]: process has finished cleanly [pid 4105729]
+[parameter_bridge-5] [INFO] [1792970276.260718638] [agent0.ros_gz_bridge_ros_control]: Passing message from ROS geometry_msgs/msg/TwistStamped to Gazebo gz.msgs.Twist (showing msg only once per type)
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] [WARN] [1792985393.042848837] [agent0.diff_controller]: Received TwistStamped with zero timestamp, setting it to current time, this message will only be shown once

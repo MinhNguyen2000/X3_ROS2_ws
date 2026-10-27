@@ -1,0 +1,146 @@
+[INFO] [launch]: All log files can be found below /home/ubuntu/.ros/log/2026-10-26-11-14-38-825789-controlslab-GWB119-175773
+[INFO] [launch]: Default logging verbosity is set to INFO
+Rendered ros2_control YAML file at /tmp/agent0_controllers.yaml
+[INFO] [robot_state_publisher-1]: process started with pid [175776]
+[INFO] [ign gazebo-2]: process started with pid [175778]
+[INFO] [create-3]: process started with pid [175780]
+[INFO] [odom_offset_node.py-4]: process started with pid [175783]
+[INFO] [parameter_bridge-5]: process started with pid [175785]
+[INFO] [spawner-6]: process started with pid [175787]
+[INFO] [spawner-7]: process started with pid [175789]
+[INFO] [odom_to_vel_raw_node.py-8]: process started with pid [175791]
+[create-3] [INFO] [1793024079.137584778] [agent0.ros_gz_sim]: Requesting list of world names.
+[robot_state_publisher-1] [INFO] [1793024079.157212344] [agent0.robot_state_publisher]: got segment agent0_back_left_wheel
+[robot_state_publisher-1] [INFO] [1793024079.157268196] [agent0.robot_state_publisher]: got segment agent0_back_right_wheel
+[robot_state_publisher-1] [INFO] [1793024079.157271937] [agent0.robot_state_publisher]: got segment agent0_base_footprint
+[robot_state_publisher-1] [INFO] [1793024079.157274023] [agent0.robot_state_publisher]: got segment agent0_base_link
+[robot_state_publisher-1] [INFO] [1793024079.157275885] [agent0.robot_state_publisher]: got segment agent0_camera_link
+[robot_state_publisher-1] [INFO] [1793024079.157277782] [agent0.robot_state_publisher]: got segment agent0_camera_link_optical
+[robot_state_publisher-1] [INFO] [1793024079.157279651] [agent0.robot_state_publisher]: got segment agent0_front_left_wheel
+[robot_state_publisher-1] [INFO] [1793024079.157281379] [agent0.robot_state_publisher]: got segment agent0_front_right_wheel
+[robot_state_publisher-1] [INFO] [1793024079.157283113] [agent0.robot_state_publisher]: got segment agent0_imu_link
+[robot_state_publisher-1] [INFO] [1793024079.157284841] [agent0.robot_state_publisher]: got segment agent0_lidar_link
+[odom_to_vel_raw_node.py-8] [INFO] [1793024079.278505190] [agent0.odom_to_vel_raw]: odom_to_vel_raw_node started!!
+[spawner-6] [INFO] [1793024079.291187662] [agent0.spawner_diff_controller]: waiting for service /agent0/controller_manager/list_controllers to become available...
+[spawner-7] [INFO] [1793024079.291933854] [agent0.spawner_joint_broad]: waiting for service /agent0/controller_manager/list_controllers to become available...
+[odom_offset_node.py-4] [INFO] [1793024079.331581880] [agent0.odom_offset]: odom_offset_node started!!
+[odom_offset_node.py-4] [INFO] [1793024079.331782665] [agent0.odom_offset]: x_offset=-3.0, y_offset=-3.0
+[ign gazebo-2] QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-ubuntu'
+[create-3] [INFO] [1793024079.595008450] [agent0.ros_gz_sim]: Waiting messages on topic [robot_description].
+[create-3] [INFO] [1793024079.605955092] [agent0.ros_gz_sim]: Requested creation of entity.
+[create-3] [INFO] [1793024079.605970444] [agent0.ros_gz_sim]: OK creation of entity.
+[INFO] [create-3]: process has finished cleanly [pid 175780]
+[parameter_bridge-5] [INFO] [1793024080.150803892] [agent0.ros_gz_bridge_ros_control]: Creating GZ->ROS Bridge: [/clock (gz.msgs.Clock) -> /clock (rosgraph_msgs/msg/Clock)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1793024080.151835447] [agent0.ros_gz_bridge_ros_control]: Creating ROS->GZ Bridge: [cmd_vel (geometry_msgs/msg/TwistStamped) -> cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1793024080.152945633] [agent0.ros_gz_bridge_ros_control]: Creating GZ->ROS Bridge: [scan (gz.msgs.LaserScan) -> scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1793024080.153756598] [agent0.ros_gz_bridge_ros_control]: Creating GZ->ROS Bridge: [imu_data (gz.msgs.IMU) -> imu/data_raw (sensor_msgs/msg/Imu)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1793024080.154180223] [agent0.ros_gz_bridge_ros_control]: Creating GZ->ROS Bridge: [odom (gz.msgs.Odometry) -> odom_OP (nav_msgs/msg/Odometry)] (Lazy 0)
+[ign gazebo-2] libEGL warning: egl: failed to create dri2 screen
+[ign gazebo-2] libEGL warning: egl: failed to create dri2 screen
+[ign gazebo-2] libEGL warning: failed to open /dev/dri/renderD129: Permission denied
+[ign gazebo-2] 
+[ign gazebo-2] [INFO] [1793024081.284978249] [GazeboSimROS2ControlPlugin]: robot_param_node is robot_state_publisher
+[ign gazebo-2] [INFO] [1793024081.284999370] [GazeboSimROS2ControlPlugin]: robot_param_node is robot_description
+[ign gazebo-2] [INFO] [1793024081.296958767] [agent0.gz_ros2_control]: connected to service!! /agent0/robot_state_publisher asking for robot_description
+[ign gazebo-2] [INFO] [1793024081.297216771] [agent0.gz_ros2_control]: Received URDF from param server
+[ign gazebo-2] [INFO] [1793024081.301640667] [agent0.gz_ros2_control]: The position_proportional_gain has been set to: 0.1
+[ign gazebo-2] [INFO] [1793024081.301672723] [agent0.gz_ros2_control]: Loading joint: agent0_front_right_joint
+[ign gazebo-2] [INFO] [1793024081.301677072] [agent0.gz_ros2_control]: 	State:
+[ign gazebo-2] [INFO] [1793024081.301679964] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1793024081.301682866] [agent0.gz_ros2_control]: 		 position
+[ign gazebo-2] [INFO] [1793024081.301685288] [agent0.gz_ros2_control]: 	Command:
+[ign gazebo-2] [INFO] [1793024081.301687386] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1793024081.301694330] [agent0.gz_ros2_control]: Loading joint: agent0_front_left_joint
+[ign gazebo-2] [INFO] [1793024081.301696829] [agent0.gz_ros2_control]: 	State:
+[ign gazebo-2] [INFO] [1793024081.301698869] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1793024081.301701111] [agent0.gz_ros2_control]: 		 position
+[ign gazebo-2] [INFO] [1793024081.301703178] [agent0.gz_ros2_control]: 	Command:
+[ign gazebo-2] [INFO] [1793024081.301705064] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1793024081.301709445] [agent0.gz_ros2_control]: Loading joint: agent0_back_right_joint
+[ign gazebo-2] [INFO] [1793024081.301711719] [agent0.gz_ros2_control]: 	State:
+[ign gazebo-2] [INFO] [1793024081.301713562] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1793024081.301715474] [agent0.gz_ros2_control]: 		 position
+[ign gazebo-2] [INFO] [1793024081.301717387] [agent0.gz_ros2_control]: 	Command:
+[ign gazebo-2] [INFO] [1793024081.301719191] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1793024081.301723290] [agent0.gz_ros2_control]: Loading joint: agent0_back_left_joint
+[ign gazebo-2] [INFO] [1793024081.301725393] [agent0.gz_ros2_control]: 	State:
+[ign gazebo-2] [INFO] [1793024081.301727360] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1793024081.301729221] [agent0.gz_ros2_control]: 		 position
+[ign gazebo-2] [INFO] [1793024081.301731011] [agent0.gz_ros2_control]: 	Command:
+[ign gazebo-2] [INFO] [1793024081.301732878] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1793024081.301766728] [agent0.gz_ros2_control]: Loading sensor: imu_sensor
+[ign gazebo-2] [INFO] [1793024081.301769120] [agent0.gz_ros2_control]: 	State:
+[ign gazebo-2] [WARN] [1793024081.301771499] [agent0.gz_ros2_control]: IMU sensor 'imu_sensor' not found in hardware_info, skipping.
+[ign gazebo-2] [INFO] [1793024081.301789079] [resource_manager]: Initialize hardware 'GazeboSystem' 
+[ign gazebo-2] [INFO] [1793024081.301814687] [resource_manager]: Successful initialization of hardware 'GazeboSystem'
+[ign gazebo-2] [INFO] [1793024081.301830153] [resource_manager]: 'configure' hardware 'GazeboSystem' 
+[ign gazebo-2] [INFO] [1793024081.301831951] [agent0.gz_ros2_control]: System Successfully configured!
+[ign gazebo-2] [INFO] [1793024081.301836498] [resource_manager]: Successful 'configure' of hardware 'GazeboSystem'
+[ign gazebo-2] [INFO] [1793024081.301839158] [resource_manager]: 'activate' hardware 'GazeboSystem' 
+[ign gazebo-2] [INFO] [1793024081.301842227] [resource_manager]: Successful 'activate' of hardware 'GazeboSystem'
+[ign gazebo-2] [INFO] [1793024081.301844853] [agent0.gz_ros2_control]: Loading controller_manager
+[ign gazebo-2] libEGL warning: egl: failed to create dri2 screen
+[ign gazebo-2] libEGL warning: egl: failed to create dri2 screen
+[ign gazebo-2] libEGL warning: failed to open /dev/dri/renderD129: Permission denied
+[ign gazebo-2] 
+[ign gazebo-2] [INFO] [1793024081.545355148] [agent0.controller_manager]: Loading controller 'diff_controller'
+[ign gazebo-2] [INFO] [1793024081.631738676] [agent0.controller_manager]: Loading controller 'joint_broad'
+[spawner-6] [INFO] [1793024081.632506792] [agent0.spawner_diff_controller]: [94mLoaded [1mdiff_controller[0m
+[ign gazebo-2] [INFO] [1793024081.819570179] [agent0.controller_manager]: Configuring controller 'diff_controller'
+[spawner-7] [INFO] [1793024081.820324555] [agent0.spawner_joint_broad]: [94mLoaded [1mjoint_broad[0m
+[ign gazebo-2] [INFO] [1793024081.823386070] [agent0.controller_manager]: Configuring controller 'joint_broad'
+[ign gazebo-2] [INFO] [1793024081.823445135] [agent0.joint_broad]: 'joints' or 'interfaces' parameter is empty. All available state interfaces will be published
+[spawner-6] [INFO] [1793024081.831143073] [agent0.spawner_diff_controller]: [92mConfigured and activated [1mdiff_controller[0m
+[spawner-7] [INFO] [1793024081.832576084] [agent0.spawner_joint_broad]: [92mConfigured and activated [1mjoint_broad[0m
+[INFO] [spawner-6]: process has finished cleanly [pid 175787]
+[INFO] [spawner-7]: process has finished cleanly [pid 175789]
+[parameter_bridge-5] [INFO] [1793024142.287650211] [agent0.ros_gz_bridge_ros_control]: Passing message from ROS geometry_msgs/msg/TwistStamped to Gazebo gz.msgs.Twist (showing msg only once per type)
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[ign gazebo-2] NodeShared::RecvSrvRequest() error sending response: Host unreachable
+[robot_state_publisher-1] [INFO] [1793027143.416704623] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[parameter_bridge-5] [INFO] [1793027143.416704825] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[odom_to_vel_raw_node.py-8] Traceback (most recent call last):
+[odom_to_vel_raw_node.py-8]   File "/X3_ROS2_ws/install/x3_description/lib/x3_description/odom_to_vel_raw_node.py", line 42, in <module>
+[odom_to_vel_raw_node.py-8]     main()
+[odom_to_vel_raw_node.py-8]   File "/X3_ROS2_ws/install/x3_description/lib/x3_description/odom_to_vel_raw_node.py", line 36, in main
+[odom_to_vel_raw_node.py-8]     rclpy.spin_once(node, timeout_sec=0.1)
+[odom_to_vel_raw_node.py-8]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 208, in spin_once
+[odom_to_vel_raw_node.py-8]     executor.spin_once(timeout_sec=timeout_sec)
+[odom_to_vel_raw_node.py-8]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 812, in spin_once
+[odom_to_vel_raw_node.py-8]     self._spin_once_impl(timeout_sec)
+[odom_to_vel_raw_node.py-8]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 801, in _spin_once_impl
+[odom_to_vel_raw_node.py-8]     handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+[odom_to_vel_raw_node.py-8]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 784, in wait_for_ready_callbacks
+[odom_to_vel_raw_node.py-8]     return next(self._cb_iter)
+[odom_to_vel_raw_node.py-8]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 685, in _wait_for_ready_callbacks
+[odom_to_vel_raw_node.py-8]     raise ExternalShutdownException()
+[odom_to_vel_raw_node.py-8] rclpy.executors.ExternalShutdownException
+[odom_offset_node.py-4] Traceback (most recent call last):
+[odom_offset_node.py-4]   File "/X3_ROS2_ws/install/x3_description/lib/x3_description/odom_offset_node.py", line 66, in <module>
+[odom_offset_node.py-4]     main()
+[odom_offset_node.py-4]   File "/X3_ROS2_ws/install/x3_description/lib/x3_description/odom_offset_node.py", line 63, in main
+[odom_offset_node.py-4]     rclpy.shutdown()
+[odom_offset_node.py-4]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+[odom_offset_node.py-4]     _shutdown(context=context)
+[odom_offset_node.py-4]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+[odom_offset_node.py-4]     return context.shutdown()
+[odom_offset_node.py-4]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+[odom_offset_node.py-4]     self.__context.shutdown()
+[odom_offset_node.py-4] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241
+[INFO] [robot_state_publisher-1]: process has finished cleanly [pid 175776]
+[INFO] [parameter_bridge-5]: process has finished cleanly [pid 175785]
+[ERROR] [odom_to_vel_raw_node.py-8]: process has died [pid 175791, exit code 1, cmd '/X3_ROS2_ws/install/x3_description/lib/x3_description/odom_to_vel_raw_node.py --ros-args -r __node:=odom_to_vel_raw -r __ns:=/agent0 --params-file /tmp/launch_params_f_38otrv'].
+[ERROR] [odom_offset_node.py-4]: process has died [pid 175783, exit code 1, cmd '/X3_ROS2_ws/install/x3_description/lib/x3_description/odom_offset_node.py --ros-args -r __node:=odom_offset -r __ns:=/agent0 --params-file /tmp/launch_params_ie44w67d'].
+[ign gazebo-2] [INFO] [1793027143.636320717] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[ign gazebo-2] [INFO] [1793027143.636392902] [agent0.controller_manager]: Shutdown request received....
+[ign gazebo-2] [INFO] [1793027143.636450185] [agent0.controller_manager]: Shutting down all controllers in the controller manager.
+[ign gazebo-2] [INFO] [1793027143.636472767] [agent0.controller_manager]: Deactivating controller 'diff_controller'
+[ign gazebo-2] [INFO] [1793027143.636514971] [agent0.controller_manager]: Shutting down controller 'diff_controller'
+[ign gazebo-2] [INFO] [1793027143.636543734] [agent0.controller_manager]: Deactivating controller 'joint_broad'
+[ign gazebo-2] [INFO] [1793027143.636564562] [agent0.controller_manager]: Shutting down controller 'joint_broad'
+[ign gazebo-2] [INFO] [1793027143.636599110] [resource_manager]: 'deactivate' hardware 'GazeboSystem' 
+[ign gazebo-2] [INFO] [1793027143.636613132] [resource_manager]: Successful 'deactivate' of hardware 'GazeboSystem'
+[ign gazebo-2] [INFO] [1793027143.636617219] [resource_manager]: 'shutdown' hardware 'GazeboSystem' 
+[ign gazebo-2] [INFO] [1793027143.636621481] [resource_manager]: Successful 'shutdown' of hardware 'GazeboSystem'
+[ign gazebo-2] [INFO] [1793027143.636624855] [agent0.controller_manager]: Shutting down the controller manager.
+[INFO] [ign gazebo-2]: process has finished cleanly [pid 175778]

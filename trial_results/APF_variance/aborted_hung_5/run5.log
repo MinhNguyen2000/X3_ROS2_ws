@@ -1,0 +1,1495 @@
+[INFO] [1793013555.159963281] [trial_orchestrator]: Teleporting agent to start pose
+data: true
+
+[INFO] [1793013556.424982197] [trial_orchestrator]: Stopping the odometry stack
+[INFO] [1793013556.425314397] [trial_orchestrator]: Stopping navigation planner
+[INFO] [1793013556.425602095] [trial_orchestrator]: Starting the odometry stack
+[INFO] [launch]: All log files can be found below /home/ubuntu/.ros/log/2026-10-26-08-19-16-567501-controlslab-GWB119-132593
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [rf2o_laser_odometry_node-1]: process started with pid [132597]
+[INFO] [covariance_filter_node-2]: process started with pid [132599]
+[INFO] [ekf_node-3]: process started with pid [132601]
+[rf2o_laser_odometry_node-1] [WARN] [1793013556.697479179] [rcl.logging_rosout]: Publisher already registered for provided node name. If this is due to multiple nodes with the same name then all logs for that logger name will go out over the existing publisher. As soon as any node with that name is destructed it will unregister the publisher, preventing any further logs for that name from being published on the rosout topic.
+[ekf_node-3] Both odom0_differential and odom0_relative were set to true. Using differential mode.
+[rf2o_laser_odometry_node-1] [ERROR] [1793013556.720986094] [agent0.rf2o_laser_odometry]: "agent0_lidar_link" passed to lookupTransform argument source_frame does not exist. 
+[INFO] [1793013556.830834733] [trial_orchestrator]: Starting navigation planner
+[covariance_filter_node-2] [INFO] [1793013556.892955935] [agent0.covariance_filter]: Covariance filter node is running
+[INFO] [1793013557.164132618] [agent0.apf_planner_server]: apf_planner_server started!
+[INFO] [1793013558.335759409] [trial_orchestrator]: Goal [1/139] | Planner=APF | goal=( 0.00, 0.50)
+[INFO] [1793013558.336965465] [agent0.apf_planner_server]: New goal received at: ( 0.000, 0.500)
+[INFO] [1793013562.818792533] [agent0.apf_planner_server]: Goal reached.
+[INFO] [1793013562.819432747] [trial_orchestrator]: Total distance traveled:  0.894
+[INFO] [1793013562.826012438] [trial_orchestrator]: Teleporting agent to start pose
+data: true
+
+[INFO] [1793013564.088649894] [trial_orchestrator]: Stopping the odometry stack
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [ekf_node-3]: sending signal 'SIGINT' to process[ekf_node-3]
+[INFO] [covariance_filter_node-2]: sending signal 'SIGINT' to process[covariance_filter_node-2]
+[INFO] [rf2o_laser_odometry_node-1]: sending signal 'SIGINT' to process[rf2o_laser_odometry_node-1]
+[rf2o_laser_odometry_node-1] [INFO] [1793013564.088730625] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[ekf_node-3] [INFO] [1793013564.088731483] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[rf2o_laser_odometry_node-1] [INFO] [1793013564.090861661] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[covariance_filter_node-2] Traceback (most recent call last):
+[covariance_filter_node-2]   File "/X3_ROS2_ws/install/x3_covariance_filter/lib/x3_covariance_filter/covariance_filter_node", line 33, in <module>
+[covariance_filter_node-2]     sys.exit(load_entry_point('x3-covariance-filter', 'console_scripts', 'covariance_filter_node')())
+[covariance_filter_node-2]   File "/X3_ROS2_ws/build/x3_covariance_filter/x3_covariance_filter/covariance_filter.py", line 127, in main
+[covariance_filter_node-2]     node.destroy_node()
+[covariance_filter_node-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py", line 1691, in destroy_node
+[covariance_filter_node-2]     self.destroy_service(self._services[0])
+[covariance_filter_node-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py", line 1615, in destroy_service
+[covariance_filter_node-2]     service.destroy()
+[covariance_filter_node-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/service.py", line 93, in destroy
+[covariance_filter_node-2]     self.__service.destroy_when_not_in_use()
+[covariance_filter_node-2] KeyboardInterrupt
+[ERROR] [ekf_node-3]: process has died [pid 132601, exit code -2, cmd '/opt/ros/humble/lib/robot_localization/ekf_node --ros-args -r __node:=ekf_filter_node -r __ns:=/agent0 --params-file /tmp/launch_params_3d4aicno --params-file /tmp/launch_params_c1_636lm -r odometry/filtered:=odom_ekf'].
+[ERROR] [covariance_filter_node-2]: process has died [pid 132599, exit code -2, cmd '/X3_ROS2_ws/install/x3_covariance_filter/lib/x3_covariance_filter/covariance_filter_node --ros-args -r __node:=covariance_filter -r __ns:=/agent0 --params-file /tmp/launch_params_7k6zdbj3'].
+[INFO] [rf2o_laser_odometry_node-1]: process has finished cleanly [pid 132597]
+[INFO] [1793013564.252601597] [trial_orchestrator]: Stopping navigation planner
+[INFO] [1793013564.567434846] [trial_orchestrator]: Starting the odometry stack
+[INFO] [1793013564.572612330] [trial_orchestrator]: Starting navigation planner
+[INFO] [launch]: All log files can be found below /home/ubuntu/.ros/log/2026-10-26-08-19-24-699878-controlslab-GWB119-132689
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [rf2o_laser_odometry_node-1]: process started with pid [132695]
+[INFO] [covariance_filter_node-2]: process started with pid [132697]
+[INFO] [ekf_node-3]: process started with pid [132699]
+[rf2o_laser_odometry_node-1] [WARN] [1793013564.818038522] [rcl.logging_rosout]: Publisher already registered for provided node name. If this is due to multiple nodes with the same name then all logs for that logger name will go out over the existing publisher. As soon as any node with that name is destructed it will unregister the publisher, preventing any further logs for that name from being published on the rosout topic.
+[ekf_node-3] Both odom0_differential and odom0_relative were set to true. Using differential mode.
+[INFO] [1793013564.871944933] [agent0.apf_planner_server]: apf_planner_server started!
+[covariance_filter_node-2] [INFO] [1793013565.011187427] [agent0.covariance_filter]: Covariance filter node is running
+[rf2o_laser_odometry_node-1] [ERROR] [1793013565.173569489] [agent0.rf2o_laser_odometry]: "agent0_base_footprint" passed to lookupTransform argument target_frame does not exist. 
+[INFO] [1793013566.076756113] [trial_orchestrator]: Goal [2/139] | Planner=APF | goal=( 0.00, 1.00)
+[INFO] [1793013566.077890176] [agent0.apf_planner_server]: New goal received at: ( 0.000, 1.000)
+[INFO] [1793013578.156329302] [agent0.apf_planner_server]: Goal reached.
+[INFO] [1793013578.157023088] [trial_orchestrator]: Total distance traveled:  2.605
+[INFO] [1793013578.173689918] [trial_orchestrator]: Teleporting agent to start pose
+data: true
+
+[INFO] [1793013579.435651580] [trial_orchestrator]: Stopping the odometry stack
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [ekf_node-3]: sending signal 'SIGINT' to process[ekf_node-3]
+[INFO] [covariance_filter_node-2]: sending signal 'SIGINT' to process[covariance_filter_node-2]
+[INFO] [rf2o_laser_odometry_node-1]: sending signal 'SIGINT' to process[rf2o_laser_odometry_node-1]
+[rf2o_laser_odometry_node-1] [INFO] [1793013579.435735422] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[ekf_node-3] [INFO] [1793013579.435736352] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[covariance_filter_node-2] Traceback (most recent call last):
+[covariance_filter_node-2]   File "/X3_ROS2_ws/install/x3_covariance_filter/lib/x3_covariance_filter/covariance_filter_node", line 33, in <module>
+[rf2o_laser_odometry_node-1] [INFO] [1793013579.437938081] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[covariance_filter_node-2]     sys.exit(load_entry_point('x3-covariance-filter', 'console_scripts', 'covariance_filter_node')())
+[covariance_filter_node-2]   File "/X3_ROS2_ws/build/x3_covariance_filter/x3_covariance_filter/covariance_filter.py", line 127, in main
+[covariance_filter_node-2]     node.destroy_node()
+[covariance_filter_node-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py", line 1691, in destroy_node
+[covariance_filter_node-2]     self.destroy_service(self._services[0])
+[covariance_filter_node-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py", line 1615, in destroy_service
+[covariance_filter_node-2]     service.destroy()
+[covariance_filter_node-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/service.py", line 93, in destroy
+[covariance_filter_node-2]     self.__service.destroy_when_not_in_use()
+[covariance_filter_node-2] KeyboardInterrupt
+[ERROR] [ekf_node-3]: process has died [pid 132699, exit code -2, cmd '/opt/ros/humble/lib/robot_localization/ekf_node --ros-args -r __node:=ekf_filter_node -r __ns:=/agent0 --params-file /tmp/launch_params_iblt0jv5 --params-file /tmp/launch_params__k6hp53o -r odometry/filtered:=odom_ekf'].
+[ERROR] [covariance_filter_node-2]: process has died [pid 132697, exit code -2, cmd '/X3_ROS2_ws/install/x3_covariance_filter/lib/x3_covariance_filter/covariance_filter_node --ros-args -r __node:=covariance_filter -r __ns:=/agent0 --params-file /tmp/launch_params_61p_if1v'].
+[INFO] [rf2o_laser_odometry_node-1]: process has finished cleanly [pid 132695]
+[INFO] [1793013579.599803023] [trial_orchestrator]: Stopping navigation planner
+[INFO] [1793013579.864060750] [trial_orchestrator]: Starting the odometry stack
+[INFO] [1793013579.867977545] [trial_orchestrator]: Starting navigation planner
+[INFO] [launch]: All log files can be found below /home/ubuntu/.ros/log/2026-10-26-08-19-40-005197-controlslab-GWB119-132816
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [rf2o_laser_odometry_node-1]: process started with pid [132819]
+[INFO] [covariance_filter_node-2]: process started with pid [132821]
+[INFO] [ekf_node-3]: process started with pid [132823]
+[rf2o_laser_odometry_node-1] [WARN] [1793013580.085160260] [rcl.logging_rosout]: Publisher already registered for provided node name. If this is due to multiple nodes with the same name then all logs for that logger name will go out over the existing publisher. As soon as any node with that name is destructed it will unregister the publisher, preventing any further logs for that name from being published on the rosout topic.
+[ekf_node-3] Both odom0_differential and odom0_relative were set to true. Using differential mode.
+[INFO] [1793013580.164304058] [agent0.apf_planner_server]: apf_planner_server started!
+[covariance_filter_node-2] [INFO] [1793013580.278648818] [agent0.covariance_filter]: Covariance filter node is running
+[INFO] [1793013581.372940717] [trial_orchestrator]: Goal [3/139] | Planner=APF | goal=( 0.00, 1.50)
+[INFO] [1793013581.378338746] [agent0.apf_planner_server]: New goal received at: ( 0.000, 1.500)
+[rf2o_laser_odometry_node-1] [ERROR] [1793013581.672917656] [agent0.rf2o_laser_odometry]: "agent0_lidar_link" passed to lookupTransform argument source_frame does not exist. 
+[INFO] [1793013594.382717116] [agent0.apf_planner_server]: Goal reached.
+[INFO] [1793013594.383704538] [trial_orchestrator]: Total distance traveled:  3.983
+[INFO] [1793013594.411428385] [trial_orchestrator]: Teleporting agent to start pose
+data: true
+
+[INFO] [1793013595.680715523] [trial_orchestrator]: Stopping the odometry stack
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [ekf_node-3]: sending signal 'SIGINT' to process[ekf_node-3]
+[INFO] [covariance_filter_node-2]: sending signal 'SIGINT' to process[covariance_filter_node-2]
+[INFO] [rf2o_laser_odometry_node-1]: sending signal 'SIGINT' to process[rf2o_laser_odometry_node-1]
+[rf2o_laser_odometry_node-1] [INFO] [1793013595.680798258] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[ekf_node-3] [INFO] [1793013595.680799181] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[rf2o_laser_odometry_node-1] [INFO] [1793013595.682309981] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[ERROR] [ekf_node-3]: process has died [pid 132823, exit code -2, cmd '/opt/ros/humble/lib/robot_localization/ekf_node --ros-args -r __node:=ekf_filter_node -r __ns:=/agent0 --params-file /tmp/launch_params_kabmogdq --params-file /tmp/launch_params_8ll4hu2s -r odometry/filtered:=odom_ekf'].
+[INFO] [rf2o_laser_odometry_node-1]: process has finished cleanly [pid 132819]
+[covariance_filter_node-2] Traceback (most recent call last):
+[covariance_filter_node-2]   File "/X3_ROS2_ws/install/x3_covariance_filter/lib/x3_covariance_filter/covariance_filter_node", line 33, in <module>
+[covariance_filter_node-2]     sys.exit(load_entry_point('x3-covariance-filter', 'console_scripts', 'covariance_filter_node')())
+[covariance_filter_node-2]   File "/X3_ROS2_ws/build/x3_covariance_filter/x3_covariance_filter/covariance_filter.py", line 127, in main
+[covariance_filter_node-2]     node.destroy_node()
+[covariance_filter_node-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py", line 1691, in destroy_node
+[covariance_filter_node-2]     self.destroy_service(self._services[0])
+[covariance_filter_node-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py", line 1615, in destroy_service
+[covariance_filter_node-2]     service.destroy()
+[covariance_filter_node-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/service.py", line 93, in destroy
+[covariance_filter_node-2]     self.__service.destroy_when_not_in_use()
+[covariance_filter_node-2] KeyboardInterrupt
+[ERROR] [covariance_filter_node-2]: process has died [pid 132821, exit code -2, cmd '/X3_ROS2_ws/install/x3_covariance_filter/lib/x3_covariance_filter/covariance_filter_node --ros-args -r __node:=covariance_filter -r __ns:=/agent0 --params-file /tmp/launch_params_b7v516n1'].
+[INFO] [1793013600.102003502] [trial_orchestrator]: Stopping navigation planner
+[INFO] [1793013605.104763246] [trial_orchestrator]: Starting the odometry stack
+[INFO] [1793013605.112502295] [trial_orchestrator]: Starting navigation planner
+[INFO] [launch]: All log files can be found below /home/ubuntu/.ros/log/2026-10-26-08-20-05-251489-controlslab-GWB119-132977
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [rf2o_laser_odometry_node-1]: process started with pid [132980]
+[INFO] [covariance_filter_node-2]: process started with pid [132982]
+[INFO] [ekf_node-3]: process started with pid [132984]
+[rf2o_laser_odometry_node-1] [WARN] [1793013605.342604479] [rcl.logging_rosout]: Publisher already registered for provided node name. If this is due to multiple nodes with the same name then all logs for that logger name will go out over the existing publisher. As soon as any node with that name is destructed it will unregister the publisher, preventing any further logs for that name from being published on the rosout topic.
+[37;1m2026-10-26 08:20:06.079 [31;1m[[37;1mRTPS_TRANSPORT_SHM[31;1m Error] [37mFailed init_port fastrtps_port23929: open_and_lock_file failed[34;1m -> Function [36mopen_port_internal[m
+[ekf_node-3] Both odom0_differential and odom0_relative were set to true. Using differential mode.
+[INFO] [1793013606.118755564] [trial_orchestrator]: Goal [4/139] | Planner=APF | goal=( 0.00, 2.00)
+[WARN] [1793013606.121583711] [trial_orchestrator]: odom: non-monotonic header stamp detected ( 97.0200 <  97.4800)
+[INFO] [1793013606.129835621] [agent0.apf_planner_server]: apf_planner_server started!
+[covariance_filter_node-2] [INFO] [1793013606.140233209] [agent0.covariance_filter]: Covariance filter node is running
+[WARN] [1793013608.107652996] [trial_orchestrator]: vel_raw: non-monotonic header stamp detected ( 104.5590 <  107.0190)
+[ekf_node-3] [WARN] [1793013616.246152765] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.248965176] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.249907086] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.250301245] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.251248156] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.252477611] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.254863530] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.255235429] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.255938075] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.256195099] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.256778507] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.256952409] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.257093120] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.257348173] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.257543619] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.257976502] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.258294475] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.258785317] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.259310193] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.259777862] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.260976704] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.261744277] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.262114485] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.262347903] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.262454784] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.262516660] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.262736111] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.262827488] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.263148946] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.263245740] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.263481989] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.263668468] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.263758503] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.263821906] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.263895865] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.263999937] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.264105734] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.264227800] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.264366061] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.264508451] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.264717003] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.264778789] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.264865152] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.265012415] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.265335600] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.265668967] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.265949170] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.266151625] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.266226197] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.266414492] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.266455922] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.266513509] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.266564571] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.266623806] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.266659810] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.266683959] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.266733887] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.266758895] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.266861279] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.266908970] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.266949232] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.266994857] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.267035918] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.267091197] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.267117388] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.267225872] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.267279604] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.267333158] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.267351066] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.267420006] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.267438005] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.267472424] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.267508009] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.267536267] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.267552501] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.267569366] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.267601922] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.267680910] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.267740017] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.267833817] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.267879795] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.268037176] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.268050947] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.268063075] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.268086335] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.268116678] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.268143318] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.268157527] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.268179733] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.268264278] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.268521671] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.268596762] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.268630082] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.268663618] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.268794383] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.268842351] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.268890432] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.268930266] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.268967623] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.268997249] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269006921] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269024625] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269053115] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269156998] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269204762] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269223026] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269238930] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269252921] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269273662] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269287448] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269342573] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269379552] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269390859] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269477100] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269492287] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269510838] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269545230] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269562698] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269618901] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269632560] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269669132] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269684120] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269720719] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269753885] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269797389] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269847256] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269895443] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269928629] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.269960948] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270028205] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270139197] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270192870] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270240612] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270259025] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270305893] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270324837] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270339862] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270396989] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270478294] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270495326] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270528885] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270546078] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270578576] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270593524] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270627594] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270663059] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270680301] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270698148] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270713534] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270757690] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270774757] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270808299] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270861462] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270892729] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270911736] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270947619] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.270965710] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.271082041] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.271514918] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.272035739] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.272100829] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.272300401] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.272388719] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.272662403] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.272721286] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.272914552] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.273211029] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.273516336] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.273970652] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.274069310] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.274136316] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.274813462] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.275059188] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.275246863] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.275326000] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.275638956] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.275796198] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.275937584] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.276138300] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.276350249] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.276468891] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.276574247] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.277009025] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.277260023] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.277397155] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.277566700] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.278039561] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.278209802] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.278486620] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.279189146] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.279319735] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.279499129] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.279637109] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.279873453] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.280251940] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.280337720] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.280873643] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.281122008] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.281727439] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.281827145] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.281944108] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.282231876] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.282329107] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.282594127] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.282871489] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.283109325] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.283398745] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.284139524] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.284306787] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.284365360] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.284592551] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.284760851] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.284865577] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.285081212] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.285139043] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.285197984] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.285261845] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.285474785] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.286808805] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.286923131] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.287059497] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.287235479] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.287295354] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.287390092] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.287433541] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.287544864] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.287621514] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.287667440] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.287850227] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.287966459] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.288321518] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.288489987] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.288636226] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.288930634] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.289004275] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.289106573] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.289633663] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.289925421] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.290194654] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.290685674] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.290902742] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.291161559] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.291562124] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.291802700] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.291987504] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.292101601] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.292490675] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.292589871] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.292952422] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.293112868] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.293208355] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.293447083] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.293773032] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.293974640] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.294338652] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.294691523] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.295090806] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.295198610] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.295252793] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.295547774] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.295637428] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.295941019] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.296132719] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.296444864] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.296613490] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.296827426] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.297066681] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.297317318] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.297506118] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.297671802] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.297755486] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.297855584] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.298026122] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.298155602] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.298517493] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.298574836] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.298628773] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.298666317] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.298775385] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.298865209] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.299064667] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.299103715] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.299248738] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.299563969] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.299648405] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.299867509] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.299949357] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.300024973] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.300083749] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.300151358] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.300239040] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.300591395] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.300794384] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.300996895] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.301331508] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.301421188] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.301459955] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.301616424] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.301709272] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.301775390] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.301958075] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.302028016] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.302148063] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.302372772] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.302534371] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.302587853] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.302830824] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.302868510] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.302905504] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.303122900] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.303228828] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.303301039] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.303433034] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.303539501] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.303620894] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.303717385] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.303775693] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.303891411] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.303966833] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.304181570] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.304249694] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.304431150] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.304483234] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.304640804] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.304755614] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.304786570] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.304819658] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.304849517] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.304882769] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.305211030] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.305493927] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.305577255] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.305801592] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.305951089] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.306044436] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.306102936] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.306170462] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.306206991] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.306326758] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.306358013] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.306390175] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.306428561] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.306471505] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.306502065] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.306537259] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.306749383] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.306815125] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.306884351] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.307063981] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.307300057] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.307368790] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.307438320] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.307665210] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.307899039] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.308002690] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.308079137] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.308401541] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.308600553] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.308643745] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.308744812] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.308805462] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.309019532] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.309094835] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.309164124] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.309194741] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.309228077] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.309289577] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.309591601] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.309677600] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.309881729] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.310026423] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.310283089] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.310487539] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.310554390] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.310641964] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.310807987] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.310866629] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.310943920] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.311099130] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.311148647] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.311182163] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.311215058] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.311247654] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.311275552] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.311336626] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.311429702] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.311521473] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.311635615] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.311670065] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.311702954] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.311736403] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.311838996] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.311906964] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.311987462] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.312060302] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.312118417] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.312199418] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.312316099] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.312345853] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.312480730] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.312742548] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.312850232] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.312961574] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.313134793] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.313322106] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.313532339] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.313610234] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.313708285] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.313772549] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.313884547] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.314141140] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.314172672] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.314338946] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.314509454] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.314577303] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.314705974] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.314857258] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.314910045] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.315059226] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.315172589] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.315284919] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.315368422] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.315419868] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.315466707] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.315579425] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.315749729] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.315836543] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.316084064] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.316301064] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.316364036] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.316719715] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.316753866] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.316922022] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.316984757] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.317110259] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.317218184] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.317247106] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.317305562] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.317351054] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.317415822] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.317563996] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.317693485] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.317727725] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.317848874] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.317912278] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.317951436] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.318021607] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.318078732] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.318103940] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.318139380] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.318170983] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.318253904] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.318287323] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.318326895] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.318464471] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.318542908] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.318619307] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.318676631] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.318758708] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.318896445] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.318960490] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.319005294] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.319210587] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.319234328] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.319269009] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.319334520] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.319360566] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.319576629] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.319643554] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.319846430] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.319899137] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.320043508] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.320099719] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.320267190] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.320294802] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.320505952] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.320565724] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.320639697] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.320684156] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.320706559] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.320788540] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.320962457] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.320988509] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.321028386] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.321044074] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.321084040] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.321187708] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.321254083] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.321291043] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.321350579] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.321490235] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.321663197] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.321732679] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.321797269] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.321921957] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.322267948] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.322336625] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.322400707] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.322511634] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.322573837] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.322738894] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.322832147] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.322876736] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.322925267] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.322960630] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.323026649] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.323227988] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.323275086] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.323321867] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.323384743] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.323424251] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.323450822] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.323589756] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.323666125] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.323748239] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.323774464] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.323873156] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.323908390] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.323978009] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.324019820] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.324123576] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.324196976] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.324283926] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.324319385] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.324446007] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.324481870] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.324514791] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.324643097] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.324714668] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.324819266] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.324885553] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.324928055] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.324954164] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.324991376] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.325024998] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.325159149] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.325218646] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.325267809] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.325380445] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.325467767] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.325549513] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.325592616] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.325617744] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.325712244] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.325797321] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.325885854] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.325917738] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.326073565] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.326118965] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.326254639] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.326341336] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.326372893] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.326399938] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.326425194] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.326442116] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.326477971] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.326507277] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.326537121] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.326566744] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.326591247] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.326713654] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.326762861] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.326868768] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.326926190] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.326962025] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.327029602] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.327231835] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.327262582] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.327348519] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.327374508] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.327388242] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.327502587] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.327620012] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.327677211] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.327738587] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.327785676] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.327839661] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.327876053] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.327919910] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.327975715] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.328073237] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.328147662] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.328182156] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.328216632] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.328250503] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.328288412] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.328298074] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.328329913] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.328355781] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.328472151] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.328533187] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.328553605] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.328597844] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] Failed to meet update rate! Took 0.53600000000000003197seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-3] [WARN] [1793013616.328630462] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.328664303] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.328687992] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.328777839] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.328790817] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.328864970] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.328897631] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.328998227] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329092354] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329125199] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329154388] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329252744] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329302842] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329326049] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329428246] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329449669] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329496475] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329513054] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329567607] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329645646] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329673011] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329687521] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329704566] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329774079] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329803399] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329825676] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329859909] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329890870] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329937429] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329958252] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.329975186] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.330020327] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.330081037] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.330160208] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.330179026] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.330214802] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.330232865] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.330262795] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.330299215] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.330363402] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.330396593] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.330486469] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.330531930] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.330558761] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.330589498] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.330643889] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.330674313] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.330737261] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.330752500] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.330804879] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.330836006] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.331001542] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.331039629] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.331074592] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.331120390] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.331135321] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.331148780] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.331250127] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.331457905] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.331492011] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.331511903] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.331526303] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.331606081] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.331648782] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.331678048] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.331810771] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] Failed to meet update rate! Took 0.36899999999999999467seconds. Try decreasing the rate, limiting sensor output frequency, or limiting the number of sensors.
+[ekf_node-3] [WARN] [1793013616.331865992] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.331946989] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.332014921] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.332122319] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.332198199] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.332214973] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.332247193] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.332286671] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.332365875] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.332417160] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.332508203] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.332570993] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.332666378] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.332788421] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.332817963] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.332835128] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.332873399] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.332944558] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.332993929] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.333024605] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.333063719] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.333123803] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.333152679] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.333426786] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.333476944] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.333486841] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.333511226] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.333544974] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.333606057] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.333692937] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.333701797] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.333717761] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.333776503] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.333827381] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.333885414] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.333930951] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.333961994] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334031659] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334183939] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334209552] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334238859] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334266201] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334279876] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334369075] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334399788] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334425023] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334536469] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334558799] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334577775] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334644252] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334655522] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334698002] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334709399] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334743817] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334825058] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334895335] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334942373] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334953833] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334970950] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.334997243] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335015380] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335045703] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335107921] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335153880] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335171540] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335194667] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335269649] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335295271] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335316394] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335370108] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335396165] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335460086] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335501797] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335541434] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335559547] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335609379] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335624673] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335659090] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335683514] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335699576] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335770750] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335815629] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335860020] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335877631] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335916603] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.335990817] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336027599] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336086273] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336115325] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336177592] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336214458] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336269155] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336330077] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336393998] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336421884] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336463343] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336481550] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336525774] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336649058] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336694026] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336702762] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336721605] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336733228] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336778870] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336804611] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336814107] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336837948] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336905811] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336923851] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336974274] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.336986965] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337035981] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337056768] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337138578] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337211265] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337250781] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337281423] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337293760] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337364997] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337385954] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337409206] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337438253] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337455084] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337466843] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337499920] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337526907] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337558638] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337573831] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337595118] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337637249] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337648500] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337697184] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337753098] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337779759] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337842919] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337882223] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337900138] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.337967750] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.338121293] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.338212945] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.338279393] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.338307874] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.338351794] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.338441721] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.338484572] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.338509343] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.338575081] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.338597006] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.338667855] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.338756164] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.338856620] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.338886043] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.338930554] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.338967486] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.339092122] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.339149340] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.339168478] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.339235709] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.339281008] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.339305806] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.339394880] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.339447942] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.339464508] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.339560689] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.339591111] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.339613596] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.339630600] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.339679948] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.339804997] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.339833742] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.339873004] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.339897954] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.339929854] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.339957729] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.339985038] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340013803] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340106238] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340118667] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340183219] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340195267] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340210484] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340240502] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340254037] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340308397] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340320833] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340334603] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340398226] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340455501] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340483110] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340522260] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340555389] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340597945] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340623250] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340651918] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340675287] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340711736] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340728562] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340787368] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340851146] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340864935] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340897246] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340937254] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.340990954] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341073573] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341123302] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341151854] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341179621] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341207952] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341235493] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341304524] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341331981] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341375470] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341405161] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341420680] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341497223] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341508183] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341565694] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341660921] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341688508] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341717206] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341730510] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341756819] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341891232] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341919116] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341943824] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341971390] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.341999650] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342015983] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342044282] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342096752] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342182644] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342211134] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342236183] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342265784] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342281103] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342295750] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342322312] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342361366] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342379857] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342396400] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342428379] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342453391] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342514431] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342546265] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342559908] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342575022] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342592466] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342627869] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342692883] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342798767] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342839369] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342877211] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342916921] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342954177] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342988046] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.342999334] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343048166] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343065449] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343082986] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343103825] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343114917] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343125897] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343204984] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343257032] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343297708] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343341685] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343359357] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343373250] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343384445] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343424866] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343440389] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343456979] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343494897] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343512668] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343562683] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343619224] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343667851] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343708724] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343735103] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343758967] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343823005] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343845348] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343880995] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.343927546] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.344000296] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.344035513] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.344074907] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.344091449] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.344168723] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.344185873] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.344225920] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.344243423] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.344415426] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.344457629] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.344473480] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.344514686] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.344546881] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.344626788] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.344742650] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.344781885] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.344832043] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.344858198] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.344869842] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.344896542] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.344922754] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.344965478] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345028179] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345061663] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345107315] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345123155] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345156690] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345187990] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345228676] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345299150] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345380365] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345431831] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345479260] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345557668] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345581935] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345620073] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345673517] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345701103] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345726543] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345784174] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345831228] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345861582] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345881423] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345893176] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.345952760] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346050922] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346096952] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346114849] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346154696] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346166327] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346181933] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346195906] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346220804] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346292880] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346323315] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346363132] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346374303] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346396049] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346503218] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346512435] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346528405] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346552591] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346650387] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346682985] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346720604] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346735323] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346746169] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346756059] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346790259] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346823973] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346838179] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346871479] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346904558] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346930082] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346954099] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346969350] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346985109] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.346997072] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347057011] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347083922] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347127511] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347158232] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347186343] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347214190] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347248006] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347272872] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347294289] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347313057] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347348627] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347407154] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347420669] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347428984] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347446274] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347463510] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347475298] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347489350] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347527390] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347586434] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347646541] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347664383] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347737588] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347785673] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347824278] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347863242] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347900689] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347923146] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347954140] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.347988866] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348021381] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348050738] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348085108] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348104338] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348123884] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348141764] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348261136] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348330189] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348351372] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348382219] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348462367] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348525422] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348561685] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348583618] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348614622] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348682786] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348739914] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348754475] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348789979] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348804939] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348866549] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348881775] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348904230] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.348985838] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349038432] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349076685] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349084701] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349108494] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349146391] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349164448] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349186451] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349219923] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349242033] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349253186] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349309392] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349376114] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349393892] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349406769] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349445216] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349467472] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349512777] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349551567] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349580568] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349601647] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349641082] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349651841] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349681335] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349687612] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349695722] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349721649] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349852401] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349871417] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349921066] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349960335] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.349972062] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350003499] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350052844] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350080501] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350115094] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350134442] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350163442] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350196853] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350244153] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350268659] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350284625] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350347043] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350396980] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350436960] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350454980] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350475693] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350506785] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350520147] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350544509] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350556409] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350604752] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350618722] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350647475] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350666290] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350698405] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013616.350735946] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.600000 according to authority Authority undetectable
+[ekf_node-3] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[ekf_node-3]          at line 294 in ./src/buffer_core.cpp
+[rf2o_laser_odometry_node-1] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.600000 according to authority Authority undetectable
+[rf2o_laser_odometry_node-1] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[rf2o_laser_odometry_node-1]          at line 294 in ./src/buffer_core.cpp
+[ekf_node-3] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.620000 according to authority Authority undetectable
+[ekf_node-3] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[ekf_node-3]          at line 294 in ./src/buffer_core.cpp
+[rf2o_laser_odometry_node-1] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.620000 according to authority Authority undetectable
+[rf2o_laser_odometry_node-1] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[rf2o_laser_odometry_node-1]          at line 294 in ./src/buffer_core.cpp
+[ekf_node-3] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.620000 according to authority Authority undetectable
+[ekf_node-3] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[ekf_node-3]          at line 294 in ./src/buffer_core.cpp
+[rf2o_laser_odometry_node-1] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.620000 according to authority Authority undetectable
+[rf2o_laser_odometry_node-1] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[rf2o_laser_odometry_node-1]          at line 294 in ./src/buffer_core.cpp
+[ekf_node-3] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.640000 according to authority Authority undetectable
+[ekf_node-3] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[ekf_node-3]          at line 294 in ./src/buffer_core.cpp
+[rf2o_laser_odometry_node-1] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.640000 according to authority Authority undetectable
+[rf2o_laser_odometry_node-1] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[rf2o_laser_odometry_node-1]          at line 294 in ./src/buffer_core.cpp
+[ekf_node-3] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.660000 according to authority Authority undetectable
+[ekf_node-3] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[ekf_node-3]          at line 294 in ./src/buffer_core.cpp
+[ekf_node-3] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.660000 according to authority Authority undetectable
+[ekf_node-3] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[ekf_node-3]          at line 294 in ./src/buffer_core.cpp
+[rf2o_laser_odometry_node-1] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.660000 according to authority Authority undetectable
+[rf2o_laser_odometry_node-1] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[rf2o_laser_odometry_node-1]          at line 294 in ./src/buffer_core.cpp
+[rf2o_laser_odometry_node-1] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.660000 according to authority Authority undetectable
+[rf2o_laser_odometry_node-1] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[rf2o_laser_odometry_node-1]          at line 294 in ./src/buffer_core.cpp
+[ekf_node-3] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.720000 according to authority Authority undetectable
+[ekf_node-3] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[ekf_node-3]          at line 294 in ./src/buffer_core.cpp
+[ekf_node-3] [WARN] [1793013616.353688543] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[rf2o_laser_odometry_node-1] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.720000 according to authority Authority undetectable
+[rf2o_laser_odometry_node-1] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[rf2o_laser_odometry_node-1]          at line 294 in ./src/buffer_core.cpp
+[rf2o_laser_odometry_node-1] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.720000 according to authority Authority undetectable
+[rf2o_laser_odometry_node-1] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[rf2o_laser_odometry_node-1]          at line 294 in ./src/buffer_core.cpp
+[rf2o_laser_odometry_node-1] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.760000 according to authority Authority undetectable
+[rf2o_laser_odometry_node-1] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[rf2o_laser_odometry_node-1]          at line 294 in ./src/buffer_core.cpp
+[rf2o_laser_odometry_node-1] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.780000 according to authority Authority undetectable
+[rf2o_laser_odometry_node-1] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[rf2o_laser_odometry_node-1]          at line 294 in ./src/buffer_core.cpp
+[rf2o_laser_odometry_node-1] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.820000 according to authority Authority undetectable
+[rf2o_laser_odometry_node-1] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[rf2o_laser_odometry_node-1]          at line 294 in ./src/buffer_core.cpp
+[rf2o_laser_odometry_node-1] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.860000 according to authority Authority undetectable
+[rf2o_laser_odometry_node-1] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[rf2o_laser_odometry_node-1]          at line 294 in ./src/buffer_core.cpp
+[rf2o_laser_odometry_node-1] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.920000 according to authority Authority undetectable
+[rf2o_laser_odometry_node-1] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[rf2o_laser_odometry_node-1]          at line 294 in ./src/buffer_core.cpp
+[rf2o_laser_odometry_node-1] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.960000 according to authority Authority undetectable
+[rf2o_laser_odometry_node-1] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[rf2o_laser_odometry_node-1]          at line 294 in ./src/buffer_core.cpp
+[rf2o_laser_odometry_node-1] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.960000 according to authority Authority undetectable
+[rf2o_laser_odometry_node-1] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[rf2o_laser_odometry_node-1]          at line 294 in ./src/buffer_core.cpp
+[rf2o_laser_odometry_node-1] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.980000 according to authority Authority undetectable
+[rf2o_laser_odometry_node-1] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[rf2o_laser_odometry_node-1]          at line 294 in ./src/buffer_core.cpp
+[rf2o_laser_odometry_node-1] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 101.980000 according to authority Authority undetectable
+[rf2o_laser_odometry_node-1] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[rf2o_laser_odometry_node-1]          at line 294 in ./src/buffer_core.cpp
+[rf2o_laser_odometry_node-1] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 102.000000 according to authority Authority undetectable
+[rf2o_laser_odometry_node-1] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[rf2o_laser_odometry_node-1]          at line 294 in ./src/buffer_core.cpp
+[rf2o_laser_odometry_node-1] Warning: TF_OLD_DATA ignoring data from the past for frame agent0_base_footprint at time 102.000000 according to authority Authority undetectable
+[rf2o_laser_odometry_node-1] Possible reasons are listed at http://wiki.ros.org/tf/Errors%20explained
+[rf2o_laser_odometry_node-1]          at line 294 in ./src/buffer_core.cpp
+[ekf_node-3] [WARN] [1793013681.618798345] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793013710.662546515] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793014074.530477618] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793014078.226531348] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793014081.625480615] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793014349.179330352] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793014517.820808798] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793014693.515508190] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793014929.263464438] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793015169.619481358] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793015377.209645109] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793015651.985892471] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793015730.641492321] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793015857.312905251] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793015919.936498705] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793015950.084466377] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793016138.706509488] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793016287.776971222] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793016609.143453551] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793016670.707098299] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793016718.634543265] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793016967.063853426] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793016991.493690360] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793017036.727439609] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793017116.942556236] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793017764.870999838] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793017870.149477642] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793018313.450458886] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793018581.611457311] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793018847.003449039] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793018923.721056168] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793019086.068732785] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793019121.192480024] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793019263.421569251] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793019276.473582279] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793019545.501940889] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793019586.545446355] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793019865.469654986] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793019891.325605064] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793020160.291454926] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793020181.000109400] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793020215.074948697] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793020336.387782699] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793020357.800446485] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793020468.720534874] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793020471.312679059] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793020617.658450365] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793020679.325451026] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793020802.340581943] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793020858.118061791] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793021133.914499552] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793021429.316056885] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793021509.534016316] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793021540.321178883] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793021696.496174068] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793021747.522584968] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793022005.382496235] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793022093.213522407] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793022113.959546277] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793022293.074475353] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793022384.601542504] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793022384.630610867] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793022582.137088968] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793022583.133534959] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793022641.442487010] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793022692.388810122] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793022692.460510354] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793022943.519439262] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793023091.524651256] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793023246.899447980] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793023339.178211231] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793023394.449678414] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793023474.306475035] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793023541.256612141] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793023548.010437892] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793023604.755909810] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[ekf_node-3] [WARN] [1793023630.546577669] [tf2_buffer]: Detected jump back in time. Clearing TF buffer.
+[INFO] [1793023647.778268174] [agent0.apf_planner_server]: New goal received at: ( 0.000, 0.500)
+[WARN] [1793023737.787549765] [agent0.apf_planner_server]: Goal timed out after 90.0s
+[WARN] [1793023739.341446408] [trial_orchestrator]: cmd_vel: header stamp is zero/unset
+[WARN] [1793023739.342789401] [trial_orchestrator]: cmd_vel: non-monotonic header stamp detected ( 0.0000 <  10120.9220)
+[INFO] [1793023740.650158336] [agent0.apf_planner_server]: New goal received at: ( 0.000, 1.000)
+[WARN] [1793023830.659738681] [agent0.apf_planner_server]: Goal timed out after 90.0s
+[INFO] [1793023833.522833002] [agent0.apf_planner_server]: New goal received at: ( 0.000, 1.500)
+[WARN] [1793023923.529188629] [agent0.apf_planner_server]: Goal timed out after 90.0s
+[INFO] [1793023927.489433898] [agent0.apf_planner_server]: New goal received at: ( 0.000, 2.000)
+[WARN] [1793024012.753270272] [agent0.apf_planner_server]: Goal state not set, assuming aborted. Goal ID: [ 77  17 102 101 197  55  74 103 156 126 169 253 233  69 217 226]
+The following exception was never retrieved: Failed get goal status array: feedback publisher is invalid, at ./src/rcl_action/action_server.c:919
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [ekf_node-3]: sending signal 'SIGINT' to process[ekf_node-3]
+[INFO] [covariance_filter_node-2]: sending signal 'SIGINT' to process[covariance_filter_node-2]
+[INFO] [rf2o_laser_odometry_node-1]: sending signal 'SIGINT' to process[rf2o_laser_odometry_node-1]
+[ekf_node-3] [INFO] [1793024012.949502214] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[rf2o_laser_odometry_node-1] [INFO] [1793024012.949514143] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[rf2o_laser_odometry_node-1] [INFO] [1793024012.955937068] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[ERROR] [ekf_node-3]: process has died [pid 132984, exit code -2, cmd '/opt/ros/humble/lib/robot_localization/ekf_node --ros-args -r __node:=ekf_filter_node -r __ns:=/agent0 --params-file /tmp/launch_params_9cthgtv3 --params-file /tmp/launch_params_zgjz12ys -r odometry/filtered:=odom_ekf'].
+[ERROR] [covariance_filter_node-2]: process has died [pid 132982, exit code -2, cmd '/X3_ROS2_ws/install/x3_covariance_filter/lib/x3_covariance_filter/covariance_filter_node --ros-args -r __node:=covariance_filter -r __ns:=/agent0 --params-file /tmp/launch_params_kg54v_zm'].
+[INFO] [rf2o_laser_odometry_node-1]: process has finished cleanly [pid 132980]
+Traceback (most recent call last):
+  File "/X3_ROS2_ws/build/x3_experiment_runner/x3_experiment_runner/trial_orchestrator.py", line 722, in main
+    node.run_batch(goals)
+  File "/X3_ROS2_ws/build/x3_experiment_runner/x3_experiment_runner/trial_orchestrator.py", line 663, in run_batch
+    result = self.run_single_trial(idx, goal["x"], goal["y"])
+  File "/X3_ROS2_ws/build/x3_experiment_runner/x3_experiment_runner/trial_orchestrator.py", line 497, in run_single_trial
+    rclpy.spin_until_future_complete(self, send_future)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 256, in spin_until_future_complete
+    executor.spin_until_future_complete(future, timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 337, in spin_until_future_complete
+    self.spin_once_until_future_complete(future, timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 819, in spin_once_until_future_complete
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 801, in _spin_once_impl
+    handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 784, in wait_for_ready_callbacks
+    return next(self._cb_iter)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 681, in _wait_for_ready_callbacks
+    wait_set.wait(timeout_nsec)
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/X3_ROS2_ws/install/x3_experiment_runner/lib/x3_experiment_runner/trial_orchestrator", line 33, in <module>
+    sys.exit(load_entry_point('x3-experiment-runner', 'console_scripts', 'trial_orchestrator')())
+  File "/X3_ROS2_ws/build/x3_experiment_runner/x3_experiment_runner/trial_orchestrator.py", line 727, in main
+    rclpy.shutdown()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+    _shutdown(context=context)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+    return context.shutdown()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+    self.__context.shutdown()
+rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241
+[ros2run]: Process exited with failure 1

@@ -1,0 +1,215 @@
+[INFO] [launch]: All log files can be found below /home/ubuntu/.ros/log/2026-10-26-08-18-14-658381-controlslab-GWB119-131885
+[INFO] [launch]: Default logging verbosity is set to INFO
+Rendered ros2_control YAML file at /tmp/agent0_controllers.yaml
+[INFO] [robot_state_publisher-1]: process started with pid [131895]
+[INFO] [ign gazebo-2]: process started with pid [131897]
+[INFO] [create-3]: process started with pid [131899]
+[INFO] [odom_offset_node.py-4]: process started with pid [131902]
+[INFO] [parameter_bridge-5]: process started with pid [131904]
+[INFO] [spawner-6]: process started with pid [131906]
+[INFO] [spawner-7]: process started with pid [131908]
+[INFO] [odom_to_vel_raw_node.py-8]: process started with pid [131910]
+[create-3] [INFO] [1793013494.976098387] [agent0.ros_gz_sim]: Requesting list of world names.
+[robot_state_publisher-1] [INFO] [1793013494.998175980] [agent0.robot_state_publisher]: got segment agent0_back_left_wheel
+[robot_state_publisher-1] [INFO] [1793013494.998241187] [agent0.robot_state_publisher]: got segment agent0_back_right_wheel
+[robot_state_publisher-1] [INFO] [1793013494.998244861] [agent0.robot_state_publisher]: got segment agent0_base_footprint
+[robot_state_publisher-1] [INFO] [1793013494.998247107] [agent0.robot_state_publisher]: got segment agent0_base_link
+[robot_state_publisher-1] [INFO] [1793013494.998249286] [agent0.robot_state_publisher]: got segment agent0_camera_link
+[robot_state_publisher-1] [INFO] [1793013494.998251233] [agent0.robot_state_publisher]: got segment agent0_camera_link_optical
+[robot_state_publisher-1] [INFO] [1793013494.998253222] [agent0.robot_state_publisher]: got segment agent0_front_left_wheel
+[robot_state_publisher-1] [INFO] [1793013494.998255045] [agent0.robot_state_publisher]: got segment agent0_front_right_wheel
+[robot_state_publisher-1] [INFO] [1793013494.998256840] [agent0.robot_state_publisher]: got segment agent0_imu_link
+[robot_state_publisher-1] [INFO] [1793013494.998258797] [agent0.robot_state_publisher]: got segment agent0_lidar_link
+[odom_to_vel_raw_node.py-8] [INFO] [1793013495.124667262] [agent0.odom_to_vel_raw]: odom_to_vel_raw_node started!!
+[spawner-7] [INFO] [1793013495.126464950] [agent0.spawner_joint_broad]: waiting for service /agent0/controller_manager/list_controllers to become available...
+[spawner-6] [INFO] [1793013495.126476170] [agent0.spawner_diff_controller]: waiting for service /agent0/controller_manager/list_controllers to become available...
+[odom_offset_node.py-4] [INFO] [1793013495.166250143] [agent0.odom_offset]: odom_offset_node started!!
+[odom_offset_node.py-4] [INFO] [1793013495.166411703] [agent0.odom_offset]: x_offset=-3.0, y_offset=-3.0
+[ign gazebo-2] QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-ubuntu'
+[create-3] [INFO] [1793013495.455863237] [agent0.ros_gz_sim]: Waiting messages on topic [robot_description].
+[create-3] [INFO] [1793013495.467480663] [agent0.ros_gz_sim]: Requested creation of entity.
+[create-3] [INFO] [1793013495.467513189] [agent0.ros_gz_sim]: OK creation of entity.
+[INFO] [create-3]: process has finished cleanly [pid 131899]
+[parameter_bridge-5] [INFO] [1793013496.010549962] [agent0.ros_gz_bridge_ros_control]: Creating GZ->ROS Bridge: [/clock (gz.msgs.Clock) -> /clock (rosgraph_msgs/msg/Clock)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1793013496.012874585] [agent0.ros_gz_bridge_ros_control]: Creating ROS->GZ Bridge: [cmd_vel (geometry_msgs/msg/TwistStamped) -> cmd_vel (gz.msgs.Twist)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1793013496.015021803] [agent0.ros_gz_bridge_ros_control]: Creating GZ->ROS Bridge: [scan (gz.msgs.LaserScan) -> scan (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1793013496.016318003] [agent0.ros_gz_bridge_ros_control]: Creating GZ->ROS Bridge: [imu_data (gz.msgs.IMU) -> imu/data_raw (sensor_msgs/msg/Imu)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1793013496.016575444] [agent0.ros_gz_bridge_ros_control]: Creating GZ->ROS Bridge: [odom (gz.msgs.Odometry) -> odom_OP (nav_msgs/msg/Odometry)] (Lazy 0)
+[ign gazebo-2] libEGL warning: egl: failed to create dri2 screen
+[ign gazebo-2] libEGL warning: egl: failed to create dri2 screen
+[ign gazebo-2] libEGL warning: failed to open /dev/dri/renderD129: Permission denied
+[ign gazebo-2] 
+[ign gazebo-2] [INFO] [1793013497.161017446] [GazeboSimROS2ControlPlugin]: robot_param_node is robot_state_publisher
+[ign gazebo-2] [INFO] [1793013497.161035733] [GazeboSimROS2ControlPlugin]: robot_param_node is robot_description
+[ign gazebo-2] [INFO] [1793013497.643779520] [agent0.gz_ros2_control]: connected to service!! /agent0/robot_state_publisher asking for robot_description
+[ign gazebo-2] [INFO] [1793013497.715290472] [agent0.gz_ros2_control]: Received URDF from param server
+[ign gazebo-2] [INFO] [1793013497.728341941] [agent0.gz_ros2_control]: The position_proportional_gain has been set to: 0.1
+[ign gazebo-2] [INFO] [1793013497.728509958] [agent0.gz_ros2_control]: Loading joint: agent0_front_right_joint
+[ign gazebo-2] [INFO] [1793013497.728547525] [agent0.gz_ros2_control]: 	State:
+[ign gazebo-2] [INFO] [1793013497.728574244] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1793013497.728596938] [agent0.gz_ros2_control]: 		 position
+[ign gazebo-2] [INFO] [1793013497.728617074] [agent0.gz_ros2_control]: 	Command:
+[ign gazebo-2] [INFO] [1793013497.728636242] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1793013497.728677082] [agent0.gz_ros2_control]: Loading joint: agent0_front_left_joint
+[ign gazebo-2] [INFO] [1793013497.728701324] [agent0.gz_ros2_control]: 	State:
+[ign gazebo-2] [INFO] [1793013497.728720694] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1793013497.728740073] [agent0.gz_ros2_control]: 		 position
+[ign gazebo-2] [INFO] [1793013497.728758736] [agent0.gz_ros2_control]: 	Command:
+[ign gazebo-2] [INFO] [1793013497.728781206] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1793013497.728816685] [agent0.gz_ros2_control]: Loading joint: agent0_back_right_joint
+[ign gazebo-2] [INFO] [1793013497.728838872] [agent0.gz_ros2_control]: 	State:
+[ign gazebo-2] [INFO] [1793013497.728857941] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1793013497.728877397] [agent0.gz_ros2_control]: 		 position
+[ign gazebo-2] [INFO] [1793013497.728896503] [agent0.gz_ros2_control]: 	Command:
+[ign gazebo-2] [INFO] [1793013497.728914810] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1793013497.728948924] [agent0.gz_ros2_control]: Loading joint: agent0_back_left_joint
+[ign gazebo-2] [INFO] [1793013497.728972313] [agent0.gz_ros2_control]: 	State:
+[ign gazebo-2] [INFO] [1793013497.728991190] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1793013497.729032522] [agent0.gz_ros2_control]: 		 position
+[ign gazebo-2] [INFO] [1793013497.729050766] [agent0.gz_ros2_control]: 	Command:
+[ign gazebo-2] [INFO] [1793013497.729070002] [agent0.gz_ros2_control]: 		 velocity
+[ign gazebo-2] [INFO] [1793013497.729227878] [agent0.gz_ros2_control]: Loading sensor: imu_sensor
+[ign gazebo-2] [INFO] [1793013497.729253132] [agent0.gz_ros2_control]: 	State:
+[ign gazebo-2] [WARN] [1793013497.729273675] [agent0.gz_ros2_control]: IMU sensor 'imu_sensor' not found in hardware_info, skipping.
+[ign gazebo-2] [INFO] [1793013497.729364156] [resource_manager]: Initialize hardware 'GazeboSystem' 
+[ign gazebo-2] [INFO] [1793013497.729507661] [resource_manager]: Successful initialization of hardware 'GazeboSystem'
+[ign gazebo-2] [INFO] [1793013497.729586486] [resource_manager]: 'configure' hardware 'GazeboSystem' 
+[ign gazebo-2] [INFO] [1793013497.729599603] [agent0.gz_ros2_control]: System Successfully configured!
+[ign gazebo-2] [INFO] [1793013497.729628523] [resource_manager]: Successful 'configure' of hardware 'GazeboSystem'
+[ign gazebo-2] [INFO] [1793013497.729645485] [resource_manager]: 'activate' hardware 'GazeboSystem' 
+[ign gazebo-2] [INFO] [1793013497.729663877] [resource_manager]: Successful 'activate' of hardware 'GazeboSystem'
+[ign gazebo-2] [INFO] [1793013497.729680358] [agent0.gz_ros2_control]: Loading controller_manager
+[ign gazebo-2] [INFO] [1793013497.881104433] [agent0.controller_manager]: Loading controller 'joint_broad'
+[ign gazebo-2] libEGL warning: egl: failed to create dri2 screen
+[ign gazebo-2] libEGL warning: egl: failed to create dri2 screen
+[ign gazebo-2] libEGL warning: failed to open /dev/dri/renderD129: Permission denied
+[ign gazebo-2] 
+[ign gazebo-2] [INFO] [1793013498.135068264] [agent0.controller_manager]: Loading controller 'diff_controller'
+[spawner-7] [INFO] [1793013498.135453125] [agent0.spawner_joint_broad]: [94mLoaded [1mjoint_broad[0m
+[ign gazebo-2] [INFO] [1793013498.336143868] [agent0.controller_manager]: Configuring controller 'joint_broad'
+[ign gazebo-2] [INFO] [1793013498.336258466] [agent0.joint_broad]: 'joints' or 'interfaces' parameter is empty. All available state interfaces will be published
+[spawner-6] [INFO] [1793013498.336564670] [agent0.spawner_diff_controller]: [94mLoaded [1mdiff_controller[0m
+[ign gazebo-2] [INFO] [1793013498.340909142] [agent0.controller_manager]: Configuring controller 'diff_controller'
+[spawner-7] [INFO] [1793013498.347240467] [agent0.spawner_joint_broad]: [92mConfigured and activated [1mjoint_broad[0m
+[spawner-6] [INFO] [1793013498.349234036] [agent0.spawner_diff_controller]: [92mConfigured and activated [1mdiff_controller[0m
+[INFO] [spawner-7]: process has finished cleanly [pid 131908]
+[INFO] [spawner-6]: process has finished cleanly [pid 131906]
+[robot_state_publisher-1] [WARN] [1793013514.744300233] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013514.748349036] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013514.751311916] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013514.753317371] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013514.756323408] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013514.766330545] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013516.771545029] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013516.774689826] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013516.778795407] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013516.783469443] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013516.791333472] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013516.794219007] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013516.796204237] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013516.802210636] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013518.806066965] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013518.815320889] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013518.817341026] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013518.821744475] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013518.823725044] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013518.826308963] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013518.830635983] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013518.832109852] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013518.841043693] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013518.843036639] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013518.846055920] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013518.850049429] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[parameter_bridge-5] [INFO] [1793013558.338261122] [agent0.ros_gz_bridge_ros_control]: Passing message from ROS geometry_msgs/msg/TwistStamped to Gazebo gz.msgs.Twist (showing msg only once per type)
+[robot_state_publisher-1] [WARN] [1793013598.008964188] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013598.011958085] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013598.018015824] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013598.022954109] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013598.024931586] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013598.026950237] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013600.032969001] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013600.037830717] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013600.040046699] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013600.043634928] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013600.048554457] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013600.053611774] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013600.058013081] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013600.059589846] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013600.061879610] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013600.063815036] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013600.065715960] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013600.067621853] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013606.084085794] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013606.089188405] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013606.093059968] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013606.096129535] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013606.103127544] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013608.104961207] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013608.110436783] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013608.114090671] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013608.117513377] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013608.119161526] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013608.123727751] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013608.127331417] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013608.131274026] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013608.133277229] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013608.135163746] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013608.138051029] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013608.140232371] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013608.145956935] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013608.147790962] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013608.154538900] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013608.158630047] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013612.182823047] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013614.194261538] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013614.198630362] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013614.200476481] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013614.202008476] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013614.204599178] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013614.209544090] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013614.212656245] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013614.215292087] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013614.217028988] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013614.219150870] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013614.223788872] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013614.227022283] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013614.231087867] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013614.235705193] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013614.238522404] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013614.241187206] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013616.244002318] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013616.253704127] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013616.271780051] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013616.277832091] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013616.279480544] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013616.282542460] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013616.290918048] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013616.294324488] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013616.305256918] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013616.307956954] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013616.310037787] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013616.311995080] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013616.319004619] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013616.322033481] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013616.325991668] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013616.330804986] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013616.334889098] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793013616.341832546] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[robot_state_publisher-1] [WARN] [1793019891.325657277] [agent0.robot_state_publisher]: Moved backwards in time, re-publishing joint transforms!
+[ign gazebo-2] [INFO] [1793023585.243557725] [agent0.controller_manager]: Configuring controller 'joint_broad'
+[ign gazebo-2] [ERROR] [1793023585.243633670] [agent0.controller_manager]: Controller 'joint_broad' can not be configured from 'active' state.
+[ign gazebo-2] [INFO] [1793023586.030179177] [agent0.controller_manager]: Configuring controller 'diff_controller'
+[ign gazebo-2] [ERROR] [1793023586.030228599] [agent0.controller_manager]: Controller 'diff_controller' can not be configured from 'active' state.
+[ign gazebo-2] [INFO] [1793023638.884470962] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[ign gazebo-2] [INFO] [1793023638.884553217] [agent0.controller_manager]: Shutdown request received....
+[ign gazebo-2] [INFO] [1793023638.884614778] [agent0.controller_manager]: Shutting down all controllers in the controller manager.
+[ign gazebo-2] [INFO] [1793023638.884637231] [agent0.controller_manager]: Deactivating controller 'joint_broad'
+[ign gazebo-2] [INFO] [1793023638.885534953] [agent0.controller_manager]: Shutting down controller 'joint_broad'
+[ign gazebo-2] [INFO] [1793023638.885985483] [agent0.controller_manager]: Deactivating controller 'diff_controller'
+[ign gazebo-2] [INFO] [1793023638.887140711] [agent0.controller_manager]: Shutting down controller 'diff_controller'
+[ign gazebo-2] [INFO] [1793023638.887992410] [resource_manager]: 'deactivate' hardware 'GazeboSystem' 
+[ign gazebo-2] [INFO] [1793023638.888169203] [resource_manager]: Successful 'deactivate' of hardware 'GazeboSystem'
+[ign gazebo-2] [INFO] [1793023638.888177532] [resource_manager]: 'shutdown' hardware 'GazeboSystem' 
+[ign gazebo-2] [INFO] [1793023638.888194878] [resource_manager]: Successful 'shutdown' of hardware 'GazeboSystem'
+[ign gazebo-2] [INFO] [1793023638.888197391] [agent0.controller_manager]: Shutting down the controller manager.
+[INFO] [ign gazebo-2]: process has finished cleanly [pid 131897]
