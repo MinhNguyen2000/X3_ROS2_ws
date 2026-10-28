@@ -76,7 +76,7 @@ def code_commit():
     try:
         head = subprocess.run(['git', '-C', REPO, 'rev-parse', '--short', 'HEAD'],
                               capture_output=True, text=True, timeout=10).stdout.strip()
-        dirty = subprocess.run(['git', '-C', REPO, 'status', '--porcelain', '--', 'scripts/metrics'],
+        dirty = subprocess.run(['git', '-C', REPO, 'status', '--porcelain', '--', 'scripts/metrics/*.py'],
                                capture_output=True, text=True, timeout=10).stdout.strip()
         return head + ('+dirty' if dirty else '')
     except Exception:
