@@ -190,7 +190,7 @@ def generate_launch_description():
             'max_angular_vel':  0.3,
             'goal_timeout':     90.0,
             'antennae_mask_dist': 0.0,          # no direction-blind short-range mask; the rear wedge is masked by angle
-            'rear_mask_deg':    45.8,           # PROVISIONAL: the old mask node's +-0.80 rad, until antenna_sector.py is run on a static scan
+            'rear_mask_deg':    40.0,           # static scan 2026-10-28 (scripts/sim2real/static_scan_20261028.json): self returns span -29.1..+36.9 deg behind the sensor, +3 deg margin
             'rear_mask_fill':   'train_mean',
             'range_clip':       11.10,          # observation bound of the training environment
         }]
