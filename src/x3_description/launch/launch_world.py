@@ -22,9 +22,11 @@ def generate_launch_description():
     )
 
     # define the nodes to be launched:
+    # GZ_HEADLESS=1: server only with headless rendering (batch runs in a container without a display)
+    gz_flags = "-s --headless-rendering -r -v1 " if os.environ.get("GZ_HEADLESS") == "1" else f"--gui-config {gui_path} -r -v1 "
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([gazebo_launch_file_dir]),
-        launch_arguments={"gz_args": [f"--gui-config {gui_path} -r -v1 ", world]}.items()
+        launch_arguments={"gz_args": [gz_flags, world]}.items()
         # launch_arguments={"gz_args": ["-r -v1 ", world]}.items()
     )
 
