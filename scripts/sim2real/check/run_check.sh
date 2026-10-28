@@ -1,6 +1,6 @@
 #!/bin/bash
 # Gazebo acceptance check of the deployment config (P10). Runs inside the x3_ros2_ws image, headless, on this worktree.
-# usage: run_check.sh <config a|b|c|smoke> [extra batch_multigoal.py args]
+# usage: run_check.sh <config a|b|c|smoke|frozen> [extra batch_multigoal.py args]
 set -e
 CFG=$1; shift
 WT=/home/controlslab/X3_ROS2_ws_p1check
@@ -8,6 +8,7 @@ IMG=$(docker ps --format '{{.Image}}' | grep '^vsc-x3' | head -1)
 COMMON="-p max_lin_vel:=0.2 -p max_angular_vel:=0.3 -p normalized_actions:=true -p goal_timeout:=90.0"
 case $CFG in
   a|smoke) PARAMS="$COMMON -p antennae_mask_dist:=0.0 -p rear_mask_deg:=45.8 -p rear_mask_fill:=train_mean -p range_clip:=11.10" ;;
+  frozen)  PARAMS="$COMMON -p antennae_mask_dist:=0.0 -p rear_mask_deg:=40.0 -p rear_mask_fill:=train_mean -p range_clip:=11.10" ;;   # = robot.launch.py
   b)       PARAMS="$COMMON -p antennae_mask_dist:=0.0 -p rear_mask_deg:=45.8 -p rear_mask_fill:=range_max -p range_clip:=11.10" ;;
   c)       PARAMS="$COMMON" ;;
   *) echo "unknown config $CFG"; exit 1 ;;
