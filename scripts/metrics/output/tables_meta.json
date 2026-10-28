@@ -1,0 +1,18 @@
+{
+  "script": "scripts/metrics/make_tables.py",
+  "code_commit": "be5e99e",
+  "generated": "2026-10-28T14:55:59",
+  "inputs": [
+    "output/g2g_units.csv",
+    "output/multigoal_units.csv",
+    "scripts/sim2real/seed_selection_bm.csv"
+  ],
+  "outputs": [
+    "table_deployed.tex",
+    "table_failure_modes.tex",
+    "table_g2g.tex",
+    "table_multigoal.tex",
+    "fig_multigoal_seeds.pdf",
+    "fig_multigoal_seeds.png"
+  ]
+}
