@@ -1,0 +1,17 @@
+[INFO] [1793208745.497559568] [agent0.goal_sequence_client]: Path 'path1_world_5' selected with 5 waypoints | tolerance=0.3m | stop_on_failure=True
+[INFO] [1793208745.516140819] [agent0.goal_sequence_client]: Waiting for goal sequence server...
+[INFO] [1793208746.517867677] [agent0.goal_sequence_client]: Sending path: 'path1_world_5' to the goal sequence server...
+[INFO] [1793208746.519388806] [agent0.goal_sequence_client]: Sequence goal accepted
+[INFO] [1793208747.528496985] [agent0.goal_sequence_client]:  Time:   1.01 | Waypoint 1/5 | current goal dist:  3.003m
+[INFO] [1793208748.531795585] [agent0.goal_sequence_client]:  Time:   2.01 | Waypoint 1/5 | current goal dist:  2.969m
+[INFO] [1793208749.534968791] [agent0.goal_sequence_client]:  Time:   3.02 | Waypoint 1/5 | current goal dist:  2.900m
+[INFO] [1793208750.538830772] [agent0.goal_sequence_client]:  Time:   4.02 | Waypoint 1/5 | current goal dist:  2.803m
+[INFO] [1793208751.542525912] [agent0.goal_sequence_client]:  Time:   5.02 | Waypoint 1/5 | current goal dist:  2.688m
+[INFO] [1793208752.546747432] [agent0.goal_sequence_client]:  Time:   6.03 | Waypoint 1/5 | current goal dist:  2.555m
+[INFO] [1793208753.549913941] [agent0.goal_sequence_client]:  Time:   7.03 | Waypoint 1/5 | current goal dist:  2.403m
+[INFO] [1793208754.552864870] [agent0.goal_sequence_client]:  Time:   8.03 | Waypoint 1/5 | current goal dist:  2.262m
+[INFO] [1793208755.557001359] [agent0.goal_sequence_client]:  Time:   9.04 | Waypoint 1/5 | current goal dist:  2.216m
+[INFO] [1793208756.560286700] [agent0.goal_sequence_client]:  Time:  10.04 | Waypoint 1/5 | current goal dist:  2.167m
+[INFO] [1793208757.564373854] [agent0.goal_sequence_client]:  Time:  11.04 | Waypoint 1/5 | current goal dist:  2.116m
+[INFO] [1793208758.567031153] [agent0.goal_sequence_client]:  Time:  12.05 | Waypoint 1/5 | current goal dist:  2.058m
+[INFO] [1793208759.830683483] [agent0.goal_sequence_client]: [FAILED] Stopped at waypoint 1: Obstacle hit with distance  0.204, index 2. Mission aborted. | Completed 0 waypoint(s) | Total distance:  0.096m
