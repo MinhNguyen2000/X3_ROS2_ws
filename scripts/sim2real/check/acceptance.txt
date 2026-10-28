@@ -1,0 +1,2 @@
+8-policy mean waypoint ratio over 6 scenarios (48 cells each): (a) 0.8958  (b) 0.2514  (c) 0.9215
+acceptance rule: adopt (a) if (a) >= (c) - 0.05  ->  0.8958 >= 0.8715 : PASS (margin +0.0243)
