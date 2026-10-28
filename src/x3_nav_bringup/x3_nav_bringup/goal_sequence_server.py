@@ -15,7 +15,7 @@ from std_srvs.srv import Trigger
 from geometry_msgs.msg import TwistStamped, PoseStamped, Quaternion
 from nav_msgs.msg import Odometry
 
-import os, json
+import os, json, subprocess
 import time
 from datetime import datetime
 import numpy as np
@@ -69,6 +69,8 @@ class GoalSequenceServer(Node):
             durability=QoSDurabilityPolicy.TRANSIENT_LOCAL
         )
         self._planner_id_sub = self.create_subscription(String, 'active_planner', self._planner_id_callback, planner_id_qos)
+        self._planner_config = None
+        self._config_sub = self.create_subscription(String, 'planner_config', self._planner_config_callback, planner_id_qos)
 
         # Subscribe to the commanded velocity actually sent to the robot,
         # published by whichever planner (DRL/APF) is currently active.
@@ -89,6 +91,8 @@ class GoalSequenceServer(Node):
         self._actual_vel_buffer = []    # clear the executed velocity trajectory
         self._elapsed_time = 0.0
         self._total_distance = 0.0
+        self._last_result = {}          # waypoints_completed, success, message of the last sequence
+        self._goal_results = []         # per goal: index, success, the policy node's message (decision-time distance)
 
         # Duration without logging velocities after goal send to avoid acceleration spike
         self._settle_until = 0.0
@@ -126,6 +130,7 @@ class GoalSequenceServer(Node):
         '''
 
         # Reset buffers
+        self._goal_results = []
         self._pose_buffer = []       
         self._gt_pose_buffer = []    
         self._cmd_vel_buffer = []    
@@ -166,7 +171,7 @@ class GoalSequenceServer(Node):
                 seq_goal_handle.canceled()
                 result_msg.success = False
                 result_msg.message = f'Cancelled before reaching waypoint {idx}'
-                return result_msg
+                return self._finish(result_msg, total)
 
             self.get_logger().info(
                 f'Navigating to waypoint {idx + 1: 2d}/{total: 2d}: '
@@ -196,7 +201,7 @@ class GoalSequenceServer(Node):
                     seq_goal_handle.abort()
                     result_msg.success = False
                     result_msg.message = f'Waypoint {idx + 1} rejected'
-                    return result_msg
+                    return self._finish(result_msg, total)
                 continue    # skip to the next waypoint
 
             # --- Wait for the current goal to finish ---
@@ -204,6 +209,7 @@ class GoalSequenceServer(Node):
             nav_result      = result_future.result
             self._elapsed_time = time.time() - start
             result_msg.total_distance += nav_result.total_distance
+            self._goal_results.append(dict(goal=idx + 1, success=bool(nav_result.success), message=nav_result.message))
             self._total_distance = result_msg.total_distance
 
             # --- Check for navigation success (1 goal) --- 
@@ -216,7 +222,7 @@ class GoalSequenceServer(Node):
                     seq_goal_handle.abort()
                     result_msg.success = False
                     result_msg.message = f'Stopped at waypoint {idx + 1}: {nav_result.message}'
-                    return result_msg
+                    return self._finish(result_msg, total)
             
         self.get_logger().info(f"Elapsed time: {self._elapsed_time}")
 
@@ -225,7 +231,16 @@ class GoalSequenceServer(Node):
         seq_goal_handle.succeed()
         result_msg.success = all_waypoints
         result_msg.message = 'All waypoints completed' if all_waypoints else f'Completed {result_msg.waypoints_completed}/{total} waypoints.'
+        return self._finish(result_msg, total)
+
+    def _finish(self, result_msg, total):
+        '''Remember the outcome of the sequence so _save_callback can write it into the JSON.'''
+        self._last_result = dict(waypoints_completed=int(result_msg.waypoints_completed), total_waypoints=int(total),
+                                 success=bool(result_msg.success), message=result_msg.message)
         return result_msg
+
+    def _planner_config_callback(self, msg: String):
+        self._planner_config = msg.data
 
     def _relay_feedback(self, 
                         nav_feedback_handle,
@@ -309,7 +324,7 @@ class GoalSequenceServer(Node):
             "t":    round(t, 4),
             "x":    round(msg.pose.pose.position.x, 3),
             "y":    round(msg.pose.pose.position.y, 3),
-            "yaw":  round(msg.pose.pose.orientation.z, 3),
+            "yaw":  round(self._yaw_from_quaternion(msg.pose.pose.orientation), 3),   # radians (files before 2026-10-28 hold orientation.z)
         })
 
     def _planner_id_callback(self, msg: String):
@@ -339,7 +354,13 @@ class GoalSequenceServer(Node):
             "poses":            self._pose_buffer,
             "poses_gt":         self._gt_pose_buffer,
             "velocities":       self._cmd_vel_buffer,
-            "actual_velocities": self._actual_vel_buffer
+            "actual_velocities": self._actual_vel_buffer,
+            # added 2026-10-28: the online outcome and the settings of the run (older files have none of these)
+            "result":           self._last_result,
+            "goal_results":     self._goal_results,
+            "planner_config":   json.loads(self._planner_config) if self._planner_config else None,
+            "code":             self._code_hash(ws_dir),
+            "gt_yaw_unit":      "rad",
         }
         
         with open(save_path, 'w') as f:
@@ -353,6 +374,14 @@ class GoalSequenceServer(Node):
         self.get_logger().info(response.message)
         return response
     
+    @staticmethod
+    def _code_hash(ws_dir):
+        try:
+            return subprocess.run(['git', '-C', ws_dir, 'rev-parse', '--short', 'HEAD'], capture_output=True,
+                                  text=True, timeout=5).stdout.strip() or None
+        except Exception:
+            return None
+
     def _yaw_from_quaternion(self, q: Quaternion) -> float:
         siny_cosp = 2.0 * (q.w * q.z + q.x * q.y)
         cosy_cosp = 1.0 - 2.0 * (q.y**2 + q.z**2)

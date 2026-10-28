@@ -183,9 +183,16 @@ def generate_launch_description():
             'agent_name':       agent_name,
             'goal_tolerance':   0.75,
             'obstacle_tolerance': 0.205,
+            # hardware config of the confirmatory runs (notes/seed_selection_protocol_20261028.md, section 3):
+            # 0.2 m/s and 0.3 rad/s reproduce the per-step motion of the 500 Hz, 2 m/s, 3 rad/s training at 50 Hz
+            'normalized_actions': True,
             'max_lin_vel':      0.2,
-            'max_angular_vel':  0.5,
-            'goal_timeout':     30.0
+            'max_angular_vel':  0.3,
+            'goal_timeout':     90.0,
+            'antennae_mask_dist': 0.0,          # no direction-blind short-range mask; the rear wedge is masked by angle
+            'rear_mask_deg':    40.0,           # static scan 2026-10-28 (scripts/sim2real/static_scan_20261028.json): self returns span -29.1..+36.9 deg behind the sensor, +3 deg margin
+            'rear_mask_fill':   'train_mean',
+            'range_clip':       11.10,          # observation bound of the training environment
         }]
     )
 

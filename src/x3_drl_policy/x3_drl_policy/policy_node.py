@@ -11,6 +11,7 @@ from rclpy.executors import MultiThreadedExecutor       # to prevent blocking co
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSDurabilityPolicy
 from rclpy.time import Time
 from x3_nav_interfaces.action import NavigateToGoal
+from x3_drl_policy.lidar_processing import preprocess_scan, pool_groups
 
 import numpy as np
 # TODO - import torch related packages for DRL inference (torch and torch.nn)
@@ -46,6 +47,12 @@ class DRLPolicyNode(Node):
         self.declare_parameter('antennae_mask_dist', 0.20)
         # half-width [deg] of the wedge behind the LiDAR set to range_max; 0 disables (use on hardware only)
         self.declare_parameter('rear_mask_deg', 0.0)
+        # 'range_max': masked beams are set to the maximum range. 'train_mean': masked beams are ignored when
+        # pooling, and a fully masked group takes this policy's training mean for that group (norm_stats.npz)
+        self.declare_parameter('rear_mask_fill', 'range_max')
+        # maximum range [m] the policy sees; 0 uses the sensor's range_max. 11.10 is the observation bound of
+        # the training environment; invalid and masked returns are set to it as well
+        self.declare_parameter('range_clip', 0.0)
         # delta mode: bounds of the actor output (the delta action), matching the Nav2D training default
         # (ROS2_DRL_Navigation nav2d.py: delta_act_linear = delta_act_angular = 0.01 -> [-0.01, 0.01])
         self.declare_parameter('delta_act_linear', 0.01)
@@ -69,7 +76,9 @@ class DRLPolicyNode(Node):
         self.normalized_actions = self.get_parameter('normalized_actions').value
         self.antennae_mask_dist = self.get_parameter('antennae_mask_dist').value
         self.rear_mask_deg      = self.get_parameter('rear_mask_deg').value
-        self.delta_act_linear   = self.get_parameter('delta_act_linear').value
+        self.rear_mask_fill     = self.get_parameter('rear_mask_fill').value
+        self.range_clip         = self.get_parameter('range_clip').value
+        self.delta_act_linear  = self.get_parameter('delta_act_linear').value
         self.delta_act_angular  = self.get_parameter('delta_act_angular').value
         self.delta_act_scale    = np.array([self.get_parameter('delta_act_scale_linear').value,
                                             self.get_parameter('delta_act_scale_angular').value], dtype=np.float32)
@@ -159,6 +168,17 @@ class DRLPolicyNode(Node):
         self._planner_id_pub = self.create_publisher(String, 'active_planner', planner_id_qos)
         self._planner_id_pub.publish(String(data=f'{self.model_name}'))
 
+        # the run's processing/action config, latched, so the sequence server can save it with the trajectory
+        self._config_pub = self.create_publisher(String, 'planner_config', planner_id_qos)
+        self._config_pub.publish(String(data=json.dumps(dict(
+            model_name=self.model_name, action_mode=self.action_mode, normalized_actions=self.normalized_actions,
+            max_lin_vel=self.max_lin_vel, max_angular_vel=self.max_angular_vel,
+            antennae_mask_dist=self.antennae_mask_dist, rear_mask_deg=self.rear_mask_deg,
+            rear_mask_fill=self.rear_mask_fill, range_clip=self.range_clip,
+            obstacle_tolerance=self.obstacle_tolerance, goal_timeout=self.goal_timeout,
+            delta_act_bounds=[self.delta_act_linear, self.delta_act_angular],
+            delta_act_scale=self.delta_act_scale.tolist()))))
+
         # --- Active goal handle ---
         self._current_goal_handle: ServerGoalHandle | None = None
 
@@ -174,6 +194,11 @@ class DRLPolicyNode(Node):
 
         self.get_logger().info(f"Running DRL policy - {self.model_name}")
         self.get_logger().info(f'Action mode {self.action_mode}')
+        self.get_logger().info(
+            f'Config: normalized_actions={self.normalized_actions} max_lin_vel={self.max_lin_vel} '
+            f'max_angular_vel={self.max_angular_vel} antennae_mask_dist={self.antennae_mask_dist} '
+            f'rear_mask_deg={self.rear_mask_deg} rear_mask_fill={self.rear_mask_fill} range_clip={self.range_clip} '
+            f'delta_act=({self.delta_act_linear}, {self.delta_act_angular}) x {self.delta_act_scale.tolist()}')
 
     def _reset_states(self):
         self.action_last = np.zeros(2)
@@ -207,29 +232,15 @@ class DRLPolicyNode(Node):
         self.latest_odom = msg
 
     def lidar_callback(self, msg: LaserScan):
-        ranges = np.asarray(msg.ranges, dtype=np.float32)
-
-        # (-π, π) -> (0, 2π), index 0 = forward
-        zero_idx = round(-msg.angle_min / msg.angle_increment)
-        raw = np.roll(ranges, -zero_idx)
-
-        # mask invalid returns
-        raw = np.where(np.isfinite(raw), raw, msg.range_max)
-        raw[raw < msg.range_min] = msg.range_max
-        if self.antennae_mask_dist > 0.0:
-            raw[raw <= self.antennae_mask_dist] = msg.range_max
-
-        # mask behind the LiDAR
-        if self.rear_mask_deg > 0.0:
-            ang = np.arange(raw.size) * msg.angle_increment
-            rear = np.abs(ang - np.pi) <= np.deg2rad(self.rear_mask_deg)
-            raw[rear] = msg.range_max
-
-        raw = np.clip(raw, 0.0, msg.range_max)
+        ranges, rear_mask = preprocess_scan(
+            msg.ranges, msg.angle_min, msg.angle_increment, msg.range_min, msg.range_max,
+            antennae_mask_dist=self.antennae_mask_dist, rear_mask_deg=self.rear_mask_deg,
+            rear_fill=self.rear_mask_fill, range_clip=self.range_clip)
 
         self.latest_scan = copy.deepcopy(msg)
         # self.latest_scan.ranges = ranges_drl.tolist()
-        self.latest_ranges = np.flip(raw).copy()
+        self.latest_ranges = ranges
+        self.latest_rear_mask = rear_mask
 
     def goal_callback(self, goal_request: NavigateToGoal):
         '''
@@ -347,7 +358,8 @@ class DRLPolicyNode(Node):
                 self._publish_cmd(0.0, 0.0)
                 self.action_last = np.zeros(2)
                 result_msg.success=True
-                result_msg.message='Goal reached.'
+                # the pose of this tick is not logged afterwards, so keep its distance to the goal in the result
+                result_msg.message=f'Goal reached. Distance to goal {d_goal:.3f}'
                 result_msg.total_distance=float(total_distance)
                 self.get_logger().info(f'Goal reached. Distance to goal {d_goal}')
                 return result_msg
@@ -477,10 +489,9 @@ class DRLPolicyNode(Node):
         # # raw = np.clip(raw, 0.0, scan.range_max)
         # raw = np.clip(raw, scan.range_min, scan.range_max)
         # raw = np.flip(raw)
-        raw = self.latest_ranges
         n_groups = 18           # TODO - dynamically modify this according to the model loaded
-        lidar_groups    = np.array_split(raw, n_groups)
-        lidar_obs       = np.array([g.min() for g in lidar_groups], dtype=np.float32)
+        lidar_obs = pool_groups(self.latest_ranges, self.latest_rear_mask, n_groups,
+                                fill_values=self.obs_mean[9:9 + n_groups])
 
         self._obs_buffer[0:3] = dx, dy, dgoal
         self._obs_buffer[3:5] = c_heading, s_heading
