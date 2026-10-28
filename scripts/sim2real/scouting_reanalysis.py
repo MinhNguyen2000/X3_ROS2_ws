@@ -3,7 +3,7 @@
 
 For every scripts/recorded_paths/<model>/path{1,2}_world_lab_<DDMMYY>_<HHMM>.json:
   - k_odom: goals reached according to `poses` (the policy's own odometry; this is what the goal-sequence
-            server counted online), sequential, tolerance 0.3 m
+            server counted online), sequential, tolerance 0.3 m plus 0.01 m slack (see SLACK)
   - k_gt:   goals reached according to `poses_gt` (ceiling camera tracker, only when recorded), mapped into
             the start-relative frame the waypoints are defined in:
             p_odom_frame = R(-yaw0) (p_gt - p_gt[0]), with yaw0 = 2 asin(logged "yaw") because the recorder
@@ -34,9 +34,13 @@ WS = os.path.abspath(os.path.join(HERE, '..', '..'))
 WAYPOINTS = os.path.join(WS, 'src', 'x3_nav_bringup', 'paths', 'paths_world_lab.json')
 RUNS = os.path.join(WS, 'scripts', 'recorded_paths')
 TOL = 0.3
+# The policy node decides 'goal reached' on the pose of the control tick that is not logged afterwards (the last
+# logged pose is one tick, ~4 mm at 0.2 m/s, earlier). Recounting from logged poses with exactly TOL therefore misses
+# the last goal of a run that reached it (Gazebo: logged last pose 0.301-0.303 m from a goal reported as reached).
+SLACK = 0.01
 
 
-def goals_reached(xy, waypoints, tol=TOL):
+def goals_reached(xy, waypoints, tol=TOL + SLACK):
     k, closest = 0, np.inf
     for p in xy:
         if k == len(waypoints):

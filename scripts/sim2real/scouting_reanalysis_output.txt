@@ -2,50 +2,50 @@
 runs per day / has_gt: [(('13', True), 28), (('14', False), 73), (('14', True), 62), (('15', True), 119)]
 first commanded vx, delta models only, by day: [(('13', 0.01), 23), (('13', 0.02), 1), (('13', 0.05), 4), (('14', 0.05), 25), (('14', 0.2), 34), (('15', 0.05), 62)]
 vyaw cap by day: [(('13', 0.3), 22), (('13', 0.4), 2), (('14', 0.3), 55), (('14', 0.4), 80), (('15', 0.3), 80), (('15', 0.4), 39)]
-path1: 21 runs where the odometry count reached every goal, median elapsed 44 s (all 183 runs: median 20 s)
-path2: 21 runs where the odometry count reached every goal, median elapsed 31 s (all 99 runs: median 28 s)
+path1: 40 runs where the odometry count reached every goal, median elapsed 43 s (all 183 runs: median 20 s)
+path2: 34 runs where the odometry count reached every goal, median elapsed 30 s (all 99 runs: median 28 s)
 
-odom vs start-yaw-aligned camera gt, 209 runs with both: mean k_odom - k_gt = +0.37 goals; odom counts more goals than gt in 56, fewer in 8; median end-position disagreement 0.30 m
-  path1: k_gt histogram [(0, 6), (1, 36), (2, 20), (3, 12), (4, 35), (5, 1)], k_odom histogram [(0, 8), (1, 31), (2, 19), (3, 12), (4, 21), (5, 19)]
-  path1: closest approach to the first missed goal (gt): median 0.66 m, 30/109 within 0.5 m
-  path2: k_gt histogram [(0, 29), (1, 31), (2, 14), (3, 21), (4, 4)], k_odom histogram [(0, 29), (1, 12), (2, 18), (3, 19), (4, 21)]
-  path2: closest approach to the first missed goal (gt): median 0.63 m, 31/95 within 0.5 m
+odom vs start-yaw-aligned camera gt, 209 runs with both: mean k_odom - k_gt = +0.49 goals; odom counts more goals than gt in 80, fewer in 6; median end-position disagreement 0.30 m
+  path1: k_gt histogram [(0, 6), (1, 35), (2, 21), (3, 12), (4, 35), (5, 1)], k_odom histogram [(0, 8), (1, 31), (2, 19), (3, 12), (4, 5), (5, 35)]
+  path1: closest approach to the first missed goal (gt): median 0.67 m, 29/109 within 0.5 m
+  path2: k_gt histogram [(0, 29), (1, 29), (2, 13), (3, 24), (4, 4)], k_odom histogram [(0, 28), (1, 12), (2, 19), (3, 6), (4, 34)]
+  path2: closest approach to the first missed goal (gt): median 0.63 m, 28/95 within 0.5 m
 
 frame check, 188 runs with a usable gt track: RMS odom-vs-gt after best-fit rotation+translation median 0.07 m (start-pose mapping used for the counts: 0.22 m); fitted rotation minus start-yaw alignment median +2.7 deg (IQR +0.6..+5.2); gt/odom extent ratio median 1.04
 
 sim wp_ratio vs per-model mean goal fraction on one path (Spearman, models with >=1 run)
   odompath1 all runs      pooled rho=+0.08 p=0.64 n=36
       delta_best rho=-0.49 p=0.18 n=9 | delta_final rho=+0.13 p=0.72 n=10 | direct_best rho=+0.80 p=0.03 n=7 | direct_final rho=+0.57 p=0.09 n=10
-  odompath1 vyaw cap 0.3  pooled rho=+0.09 p=0.60 n=36
-      delta_best rho=-0.49 p=0.18 n=9 | delta_final rho=+0.18 p=0.62 n=10 | direct_best rho=+0.80 p=0.03 n=7 | direct_final rho=+0.56 p=0.09 n=10
+  odompath1 vyaw cap 0.3  pooled rho=+0.09 p=0.59 n=36
+      delta_best rho=-0.49 p=0.18 n=9 | delta_final rho=+0.22 p=0.53 n=10 | direct_best rho=+0.80 p=0.03 n=7 | direct_final rho=+0.56 p=0.09 n=10
   odompath1 vyaw cap 0.4  pooled rho=+0.06 p=0.72 n=36
       delta_best rho=-0.44 p=0.23 n=9 | delta_final rho=+0.04 p=0.91 n=10 | direct_best rho=+0.72 p=0.07 n=7 | direct_final rho=+0.58 p=0.08 n=10
-  odompath2 all runs      pooled rho=-0.01 p=0.93 n=36
-      delta_best rho=-0.38 p=0.32 n=9 | delta_final rho=+0.05 p=0.90 n=10 | direct_best rho=+0.92 p=0.00 n=7 | direct_final rho=+0.43 p=0.22 n=10
-  odompath2 vyaw cap 0.3  pooled rho=-0.04 p=0.80 n=36
-      delta_best rho=-0.51 p=0.16 n=9 | delta_final rho=+0.02 p=0.95 n=10 | direct_best rho=+0.82 p=0.03 n=7 | direct_final rho=+0.32 p=0.37 n=10
-  odompath2 vyaw cap 0.4  pooled rho=-0.02 p=0.89 n=36
-      delta_best rho=-0.13 p=0.74 n=9 | delta_final rho=-0.42 p=0.22 n=10 | direct_best rho=+0.92 p=0.00 n=7 | direct_final rho=+0.35 p=0.33 n=10
-  gt  path1 all runs      pooled rho=+0.12 p=0.49 n=36
-      delta_best rho=-0.28 p=0.47 n=9 | delta_final rho=+0.28 p=0.43 n=10 | direct_best rho=+0.82 p=0.02 n=7 | direct_final rho=+0.55 p=0.10 n=10
+  odompath2 all runs      pooled rho=-0.01 p=0.94 n=36
+      delta_best rho=-0.37 p=0.32 n=9 | delta_final rho=+0.04 p=0.90 n=10 | direct_best rho=+0.92 p=0.00 n=7 | direct_final rho=+0.43 p=0.22 n=10
+  odompath2 vyaw cap 0.3  pooled rho=-0.05 p=0.78 n=36
+      delta_best rho=-0.51 p=0.16 n=9 | delta_final rho=+0.02 p=0.95 n=10 | direct_best rho=+0.82 p=0.03 n=7 | direct_final rho=+0.29 p=0.41 n=10
+  odompath2 vyaw cap 0.4  pooled rho=-0.02 p=0.93 n=36
+      delta_best rho=-0.07 p=0.86 n=9 | delta_final rho=-0.42 p=0.23 n=10 | direct_best rho=+0.92 p=0.00 n=7 | direct_final rho=+0.35 p=0.33 n=10
+  gt  path1 all runs      pooled rho=+0.10 p=0.55 n=36
+      delta_best rho=-0.28 p=0.47 n=9 | delta_final rho=+0.27 p=0.45 n=10 | direct_best rho=+0.82 p=0.02 n=7 | direct_final rho=+0.55 p=0.10 n=10
   gt  path1 vyaw cap 0.3  pooled rho=-0.01 p=0.97 n=34
       delta_best rho=-0.26 p=0.54 n=8 | delta_final rho=+0.28 p=0.44 n=10 | direct_best rho=+0.82 p=0.02 n=7 | direct_final rho=+0.21 p=0.59 n=9
-  gt  path1 vyaw cap 0.4  pooled rho=+0.12 p=0.50 n=35
-      delta_best rho=-0.28 p=0.47 n=9 | delta_final rho=+0.18 p=0.62 n=10 | direct_best rho=+0.77 p=0.04 n=7 | direct_final rho=+0.47 p=0.20 n=9
-  gt  path2 all runs      pooled rho=+0.07 p=0.69 n=36
-      delta_best rho=-0.62 p=0.08 n=9 | delta_final rho=+0.25 p=0.49 n=10 | direct_best rho=+0.92 p=0.00 n=7 | direct_final rho=+0.48 p=0.16 n=10
+  gt  path1 vyaw cap 0.4  pooled rho=+0.08 p=0.63 n=35
+      delta_best rho=-0.28 p=0.47 n=9 | delta_final rho=+0.20 p=0.58 n=10 | direct_best rho=+0.77 p=0.04 n=7 | direct_final rho=+0.47 p=0.20 n=9
+  gt  path2 all runs      pooled rho=+0.05 p=0.75 n=36
+      delta_best rho=-0.62 p=0.08 n=9 | delta_final rho=+0.20 p=0.57 n=10 | direct_best rho=+0.92 p=0.00 n=7 | direct_final rho=+0.48 p=0.16 n=10
   gt  path2 vyaw cap 0.3  pooled rho=+0.04 p=0.80 n=36
       delta_best rho=-0.59 p=0.10 n=9 | delta_final rho=+0.07 p=0.86 n=10 | direct_best rho=+0.82 p=0.03 n=7 | direct_final rho=+0.38 p=0.27 n=10
-  gt  path2 vyaw cap 0.4  pooled rho=+0.05 p=0.76 n=36
-      delta_best rho=-0.54 p=0.14 n=9 | delta_final rho=+0.11 p=0.75 n=10 | direct_best rho=+0.92 p=0.00 n=7 | direct_final rho=+0.43 p=0.21 n=10
+  gt  path2 vyaw cap 0.4  pooled rho=+0.03 p=0.88 n=36
+      delta_best rho=-0.54 p=0.14 n=9 | delta_final rho=+0.00 p=0.99 n=10 | direct_best rho=+0.92 p=0.00 n=7 | direct_final rho=+0.43 p=0.21 n=10
 
 delta models, first commanded vx vs mean goal fraction (a normalized 0.2 m/s controller starts at 0.01)
-  path1 first_vx=0.01: 23 runs over 19 models, odom goal fraction 0.52, gt goal fraction 0.48 (n=23), median elapsed 24 s
+  path1 first_vx=0.01: 23 runs over 19 models, odom goal fraction 0.56, gt goal fraction 0.48 (n=23), median elapsed 24 s
   path1 first_vx=0.02: 1 runs over 1 models, odom goal fraction 0.80, gt goal fraction 0.80 (n=1), median elapsed 23 s
-  path1 first_vx=0.05: 39 runs over 19 models, odom goal fraction 0.57, gt goal fraction 0.49 (n=35), median elapsed 16 s
-  path1 first_vx=0.2: 34 runs over 19 models, odom goal fraction 0.50, gt goal fraction nan (n=0), median elapsed 19 s
-  path2 first_vx=0.05: 52 runs over 19 models, odom goal fraction 0.56, gt goal fraction 0.37 (n=52), median elapsed 26 s
+  path1 first_vx=0.05: 39 runs over 19 models, odom goal fraction 0.61, gt goal fraction 0.50 (n=35), median elapsed 16 s
+  path1 first_vx=0.2: 34 runs over 19 models, odom goal fraction 0.51, gt goal fraction nan (n=0), median elapsed 19 s
+  path2 first_vx=0.05: 52 runs over 19 models, odom goal fraction 0.60, gt goal fraction 0.38 (n=52), median elapsed 26 s
 
 old note: 35 models parsed; does the recorded count appear among the runs of that model?
   odom: 66/70 model-path entries have a run with exactly that count
-  gt: 45/70 model-path entries have a run with exactly that count
+  gt: 44/70 model-path entries have a run with exactly that count
