@@ -1,0 +1,14 @@
+\begin{tabular}{ll|cc|cc|c}
+\midrule[1.5pt]
+ & & \multicolumn{2}{c|}{\textbf{Success Rate (\%)}} & \multicolumn{2}{c|}{\textbf{SPL (shortest path)}} & \textbf{SPL (straight line)} \\
+\textbf{Planner} & \textbf{} & Mean $\pm$ SD & Median [Q1, Q3] & Mean $\pm$ SD & Median [Q1, Q3] & Median [Q1, Q3] \\
+\midrule[1.5pt]
+APF & --- & $93.38 \pm 0.94$ & 93.53 [92.81, 94.24] & $0.766 \pm 0.006$ & 0.767 [0.760, 0.770] & 0.758 [0.751, 0.760] \\
+\midrule
+\multirow{2}{*}{TD3\_direct} & Final & $93.53 \pm 2.94$ & 94.24 [92.27, 95.50] & $0.840 \pm 0.032$ & 0.845 [0.824, 0.851] & 0.834 [0.814, 0.841] \\
+                             & Best  & $94.89 \pm 3.12$ & 95.68 [93.17, 96.40] & $0.857 \pm 0.033$ & 0.853 [0.837, 0.881] & 0.842 [0.827, 0.871] \\
+\midrule
+\multirow{2}{*}{TD3\_delta}  & Final & $83.60 \pm 19.77$ & 89.57 [86.51, 91.19] & $0.718 \pm 0.167$ & 0.759 [0.750, 0.784] & 0.750 [0.742, 0.775] \\
+                             & Best  & $92.30 \pm 6.41$ & 94.96 [87.77, 97.12] & $0.796 \pm 0.060$ & 0.806 [0.753, 0.846] & 0.797 [0.744, 0.836] \\
+\midrule[1.5pt]
+\end{tabular}

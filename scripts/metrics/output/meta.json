@@ -1,0 +1,21 @@
+{
+  "script": "scripts/metrics/extract_leg_metrics.py",
+  "code_commit": "c7f5e24",
+  "generated": "2026-10-28T11:25:19",
+  "data_root": "/home/controlslab/X3_ROS2_ws",
+  "radius_m": 0.21,
+  "n_boot": 10000,
+  "bootstrap_rng_seed": 0,
+  "excluded_scenarios": [
+    "world_4/path1"
+  ],
+  "outputs": [
+    "g2g_summary.csv",
+    "g2g_trials.csv",
+    "g2g_units.csv",
+    "multigoal_legs.csv",
+    "multigoal_runs.csv",
+    "multigoal_summary.csv",
+    "multigoal_units.csv"
+  ]
+}

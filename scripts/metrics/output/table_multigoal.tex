@@ -1,0 +1,15 @@
+\begin{tabular}{ll|cc|cc|cc}
+\midrule[1.5pt]
+ & & \multicolumn{2}{c|}{\textbf{Runs}} & \multicolumn{2}{c|}{\textbf{Goal completion (\%)}} & \multicolumn{2}{c}{\textbf{SPL (shortest path)}} \\
+\textbf{Planner} & \textbf{} & Successful & Policies 6/6 & Mean $\pm$ SD & Median [Q1, Q3] & All legs & Reached legs \\
+ & & & & & & \multicolumn{2}{c}{Median [Q1, Q3]} \\
+\midrule[1.5pt]
+APF & --- & 30/30 & --- & $100.0 \pm 0.0$ & 100.0 [100.0, 100.0] & 0.886 [0.885, 0.886] & 0.884 [0.884, 0.885] \\
+\midrule
+\multirow{2}{*}{TD3\_direct} & Final & 55/60 & 6/10 & $94.7 \pm 7.9$ & 100.0 [91.4, 100.0] & 0.894 [0.813, 0.904] & 0.902 [0.892, 0.909] \\
+                             & Best  & 53/60 & 3/10 & $93.4 \pm 6.3$ & 95.3 [88.3, 99.2] & 0.856 [0.784, 0.892] & 0.900 [0.894, 0.910] \\
+\midrule
+\multirow{2}{*}{TD3\_delta}  & Final & 44/60 & 2/10 & $82.5 \pm 20.8$ & 85.9 [82.0, 96.1] & 0.759 [0.703, 0.839] & 0.872 [0.864, 0.876] \\
+                             & Best  & 58/60 & 8/10 & $97.2 \pm 6.0$ & 100.0 [100.0, 100.0] & 0.873 [0.855, 0.885] & 0.874 [0.870, 0.886] \\
+\midrule[1.5pt]
+\end{tabular}
