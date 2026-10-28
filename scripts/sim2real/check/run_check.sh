@@ -1,0 +1,19 @@
+#!/bin/bash
+# Gazebo acceptance check of the deployment config (P10). Runs inside the x3_ros2_ws image, headless, on this worktree.
+# usage: run_check.sh <config a|b|c|smoke> [extra batch_multigoal.py args]
+set -e
+CFG=$1; shift
+WT=/home/controlslab/X3_ROS2_ws_p1check
+IMG=$(docker ps --format '{{.Image}}' | grep '^vsc-x3' | head -1)
+COMMON="-p max_lin_vel:=0.2 -p max_angular_vel:=0.3 -p normalized_actions:=true -p goal_timeout:=90.0"
+case $CFG in
+  a|smoke) PARAMS="$COMMON -p antennae_mask_dist:=0.0 -p rear_mask_deg:=45.8 -p rear_mask_fill:=train_mean -p range_clip:=11.10" ;;
+  b)       PARAMS="$COMMON -p antennae_mask_dist:=0.0 -p rear_mask_deg:=45.8 -p rear_mask_fill:=range_max -p range_clip:=11.10" ;;
+  c)       PARAMS="$COMMON" ;;
+  *) echo "unknown config $CFG"; exit 1 ;;
+esac
+ARGS=""
+for p in $PARAMS; do [ "$p" = "-p" ] || ARGS="$ARGS --planner-param $p"; done
+docker run --rm --name p1check-$CFG --gpus all -e NVIDIA_DRIVER_CAPABILITIES=all,graphics -e GZ_HEADLESS=1 \
+  -v $WT:/X3_ROS2_ws -v /home/controlslab/X3_ROS2_ws/.git:/home/controlslab/X3_ROS2_ws/.git:ro -w /X3_ROS2_ws "$IMG" \
+  bash -lc "git config --global --add safe.directory '*' >/dev/null 2>&1; python3 scripts/batch_multigoal.py --skip-apf --ros-domain-id 67 --manifest scripts/sim2real/check/manifest_$CFG.csv $ARGS $*"

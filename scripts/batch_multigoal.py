@@ -155,6 +155,14 @@ def teardown():
     subprocess.run(['pkill', '-f', '[g]z sim'], stderr=subprocess.DEVNULL)
     subprocess.run(['pkill', '-f', '[i]gn gazebo'], stderr=subprocess.DEVNULL)
     time.sleep(2.0)
+    # a Gazebo server hung in start-up can ignore SIGTERM and then poisons every later launch (two servers on the
+    # same transport: wrong world, 'sim not ready'); found 2026-10-28 in the container batch, so kill it for good
+    if gz_running():
+        subprocess.run(['pkill', '-9', '-f', '[g]z sim'], stderr=subprocess.DEVNULL)
+        subprocess.run(['pkill', '-9', '-f', '[i]gn gazebo'], stderr=subprocess.DEVNULL)
+        time.sleep(2.0)
+        if gz_running():
+            print('    WARNING: a Gazebo process survived SIGKILL')
 
 
 def gz_running():
