@@ -92,6 +92,7 @@ class GoalSequenceServer(Node):
         self._elapsed_time = 0.0
         self._total_distance = 0.0
         self._last_result = {}          # waypoints_completed, success, message of the last sequence
+        self._goal_results = []         # per goal: index, success, the policy node's message (decision-time distance)
 
         # Duration without logging velocities after goal send to avoid acceleration spike
         self._settle_until = 0.0
@@ -129,6 +130,7 @@ class GoalSequenceServer(Node):
         '''
 
         # Reset buffers
+        self._goal_results = []
         self._pose_buffer = []       
         self._gt_pose_buffer = []    
         self._cmd_vel_buffer = []    
@@ -207,6 +209,7 @@ class GoalSequenceServer(Node):
             nav_result      = result_future.result
             self._elapsed_time = time.time() - start
             result_msg.total_distance += nav_result.total_distance
+            self._goal_results.append(dict(goal=idx + 1, success=bool(nav_result.success), message=nav_result.message))
             self._total_distance = result_msg.total_distance
 
             # --- Check for navigation success (1 goal) --- 
@@ -354,6 +357,7 @@ class GoalSequenceServer(Node):
             "actual_velocities": self._actual_vel_buffer,
             # added 2026-10-28: the online outcome and the settings of the run (older files have none of these)
             "result":           self._last_result,
+            "goal_results":     self._goal_results,
             "planner_config":   json.loads(self._planner_config) if self._planner_config else None,
             "code":             self._code_hash(ws_dir),
             "gt_yaw_unit":      "rad",

@@ -358,7 +358,8 @@ class DRLPolicyNode(Node):
                 self._publish_cmd(0.0, 0.0)
                 self.action_last = np.zeros(2)
                 result_msg.success=True
-                result_msg.message='Goal reached.'
+                # the pose of this tick is not logged afterwards, so keep its distance to the goal in the result
+                result_msg.message=f'Goal reached. Distance to goal {d_goal:.3f}'
                 result_msg.total_distance=float(total_distance)
                 self.get_logger().info(f'Goal reached. Distance to goal {d_goal}')
                 return result_msg
