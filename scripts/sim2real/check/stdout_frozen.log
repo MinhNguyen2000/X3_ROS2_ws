@@ -1,0 +1,21 @@
+----------
+ROS_DOMAIN_ID:[32m6[0m | ROS_IP:[32m172.17.0.2[0m
+LIDAR_TYPE: [32mx3[0m
+----------
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/X3_ROS2_ws_p1check/modules/src/fisheye_calibration'
+Failed to clone 'src/fisheye_calibration'. Retry scheduled
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/X3_ROS2_ws_p1check/modules/src/rf2o_laser_odometry'
+Failed to clone 'src/rf2o_laser_odometry'. Retry scheduled
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/X3_ROS2_ws_p1check/modules/src/rplidar_ros'
+Failed to clone 'src/rplidar_ros'. Retry scheduled
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/X3_ROS2_ws_p1check/modules/src/fisheye_calibration'
+Failed to clone 'src/fisheye_calibration' a second time, aborting
+4 jobs selected (2 DRL policies + APF), 0 already ok, 4 to run
+[1/4] TD3_00388_900 world_1/path1 rep1
+    -> ok success=1 wp=5/5 (2.3 min elapsed)
+[2/4] TD3_00388_900 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (5.7 min elapsed)
+[3/4] TD3_00399_900 world_1/path1 rep1
+    -> ok success=1 wp=5/5 (8.1 min elapsed)
+[4/4] TD3_00399_900 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (10.7 min elapsed)
