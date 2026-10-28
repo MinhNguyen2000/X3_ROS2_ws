@@ -168,6 +168,17 @@ class DRLPolicyNode(Node):
         self._planner_id_pub = self.create_publisher(String, 'active_planner', planner_id_qos)
         self._planner_id_pub.publish(String(data=f'{self.model_name}'))
 
+        # the run's processing/action config, latched, so the sequence server can save it with the trajectory
+        self._config_pub = self.create_publisher(String, 'planner_config', planner_id_qos)
+        self._config_pub.publish(String(data=json.dumps(dict(
+            model_name=self.model_name, action_mode=self.action_mode, normalized_actions=self.normalized_actions,
+            max_lin_vel=self.max_lin_vel, max_angular_vel=self.max_angular_vel,
+            antennae_mask_dist=self.antennae_mask_dist, rear_mask_deg=self.rear_mask_deg,
+            rear_mask_fill=self.rear_mask_fill, range_clip=self.range_clip,
+            obstacle_tolerance=self.obstacle_tolerance, goal_timeout=self.goal_timeout,
+            delta_act_bounds=[self.delta_act_linear, self.delta_act_angular],
+            delta_act_scale=self.delta_act_scale.tolist()))))
+
         # --- Active goal handle ---
         self._current_goal_handle: ServerGoalHandle | None = None
 
