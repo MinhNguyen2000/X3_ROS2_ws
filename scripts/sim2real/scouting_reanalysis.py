@@ -6,7 +6,8 @@ For every scripts/recorded_paths/<model>/path{1,2}_world_lab_<DDMMYY>_<HHMM>.jso
             server counted online), sequential, tolerance 0.3 m
   - k_gt:   goals reached according to `poses_gt` (ceiling camera tracker, only when recorded), mapped into
             the start-relative frame the waypoints are defined in:
-            p_odom_frame = R(-yaw0) (p_gt - p_gt[0])
+            p_odom_frame = R(-yaw0) (p_gt - p_gt[0]), with yaw0 = 2 asin(logged "yaw") because the recorder
+            stores the quaternion z component under that key
   - pipeline signature: day, max |vyaw| and |vx| of the commanded velocities, first commanded vx (a delta
     policy's first step: 0.01 = normalized actions at 0.2 m/s, 0.05 = increments applied in m/s, 0.2 = saturated)
   - closest approach of the gt track to the first goal it missed
@@ -61,6 +62,10 @@ def analyse_run(f, wp_all):
     W = np.array(wp_all[path + '_world_lab'])
     odom = np.array([[q['x'], q['y']] for q in d['poses']]) if d['poses'] else np.zeros((0, 2))
     gt = np.array([[q['t'], q['x'], q['y'], q['yaw']] for q in d['poses_gt']]) if d['poses_gt'] else None
+    if gt is not None:
+        # goal_sequence_server logs `orientation.z` of the camera pose under the key "yaw": the sine of half the
+        # yaw, not the angle. For a planar pose yaw = 2 asin(z).
+        gt[:, 3] = 2.0 * np.arcsin(np.clip(gt[:, 3], -1.0, 1.0))
     vel = d['velocities'] or []
     stamp = datetime.datetime.strptime(base[:-5].split('_', 3)[3], '%d%m%y_%H%M')
     k_odom, _ = goals_reached(odom, W)
@@ -69,7 +74,7 @@ def analyse_run(f, wp_all):
                vyaw_cap=round(max((abs(v['vyaw']) for v in vel), default=0.0), 2),
                vx_cap=round(max((abs(v['vx']) for v in vel), default=0.0), 2),
                first_vx=round(vel[0]['vx'], 3) if vel else '', has_gt=gt is not None,
-               k_gt='', gt_closest_to_missed_m='', odom_gt_end_err_m='', fit_rms_m='', fit_rot_deg='', fit_extent_ratio='')
+               k_gt='', gt_closest_to_missed_m='', odom_gt_end_err_m='', fit_rms_m='', fit_rot_deg='', fit_extent_ratio='', start_map_rms_m='')
     if gt is not None and len(gt) > 1:
         g = gt_to_start_frame(gt)
         k_gt, closest = goals_reached(g, W)
@@ -77,13 +82,15 @@ def analyse_run(f, wp_all):
                    odom_gt_end_err_m=round(float(np.hypot(*(g[-1] - odom[-1]))), 2))
         fit = fit_gt_to_odom(np.array([q['t'] for q in d['poses']]), odom, gt)
         if fit:
-            row.update(fit_rms_m=round(fit[0], 3), fit_rot_deg=round(fit[1], 1), fit_extent_ratio=round(fit[2], 3))
+            row.update(fit_rms_m=round(fit[0], 3), fit_rot_deg=round(fit[1], 1), fit_extent_ratio=round(fit[2], 3),
+                       start_map_rms_m=round(fit[3], 3))
     return row
 
 
 def fit_gt_to_odom(odom_t, odom_xy, gt):
     """Best-fit rigid transform (Kabsch) of the gt track onto the odometry track over the common time span.
-    Returns (rms residual [m], fitted rotation minus start-yaw rotation [deg], gt/odom extent ratio) or None."""
+    Returns (rms residual [m], fitted rotation minus start-yaw rotation [deg], gt/odom extent ratio,
+    rms residual [m] of the start-pose mapping used for the goal counts) or None."""
     tg = gt[:, 0] - gt[0, 0]
     to = odom_t - odom_t[0]
     m = tg <= to[-1]
@@ -99,9 +106,13 @@ def fit_gt_to_odom(odom_t, odom_xy, gt):
         Vt[-1] *= -1
     R = Vt.T @ U.T
     rms = float(np.sqrt(np.mean(np.sum(((R @ Gc.T).T - Oc) ** 2, 1))))
+    th = gt[0, 3]
+    A = G - G[0]
+    A = np.c_[np.cos(-th) * A[:, 0] - np.sin(-th) * A[:, 1], np.sin(-th) * A[:, 0] + np.cos(-th) * A[:, 1]]
+    rms_start = float(np.sqrt(np.mean(np.sum((A - O) ** 2, 1))))
     rot = float(np.degrees(np.arctan2(R[1, 0], R[0, 0]) + gt[0, 3]))
     ext = float(np.linalg.norm(Gc, axis=1).sum() / max(np.linalg.norm(Oc, axis=1).sum(), 1e-9))
-    return rms, (rot + 180) % 360 - 180, ext
+    return rms, (rot + 180) % 360 - 180, ext, rms_start
 
 
 def parse_old_note(path):
@@ -178,7 +189,8 @@ def main():
 
     fits = [r for r in rows if r['fit_rms_m'] != '']
     print(f'\nframe check, {len(fits)} runs with a usable gt track: RMS odom-vs-gt after best-fit rotation+translation '
-          f'median {np.median([r["fit_rms_m"] for r in fits]):.2f} m; fitted rotation minus start-yaw alignment '
+          f'median {np.median([r["fit_rms_m"] for r in fits]):.2f} m (start-pose mapping used for the counts: '
+          f'{np.median([r["start_map_rms_m"] for r in fits]):.2f} m); fitted rotation minus start-yaw alignment '
           f'median {np.median([r["fit_rot_deg"] for r in fits]):+.1f} deg (IQR {np.percentile([r["fit_rot_deg"] for r in fits], 25):+.1f}'
           f'..{np.percentile([r["fit_rot_deg"] for r in fits], 75):+.1f}); gt/odom extent ratio '
           f'median {np.median([r["fit_extent_ratio"] for r in fits]):.2f}')
