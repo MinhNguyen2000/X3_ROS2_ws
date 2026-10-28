@@ -53,3 +53,16 @@ Not ROS packages. `scripts/viz/` plots recorded runs. `run_registry.py` lists ru
 - All `x3_*` `package.xml` descriptions are still `TODO`.
 - `x3_bringup/launch/robot.launch.py` references an undeclared `orbbec_cameracamera_name` argument, only launches the DRL planner, and includes `odom.launch.py` without forwarding `agent_name`.
 - `build/`, `install/`, `log/`, `robot_ws/gpu_libs` and `*.engine` are gitignored.
+
+## Project context
+
+At the start of a session, read `../personal_hub/CLAUDE.md`, `../personal_hub/projects/springer_autonomous_robots_2026/tasks.md` and the notes index `../personal_hub/projects/springer_autonomous_robots_2026/notes/README.md`. Open an individual note only when the task needs it. Task updates and wrap-up go in tasks.md, following personal_hub/CLAUDE.md. This workspace feeds the paper in `../springer_autonomous_robots_2026`.
+
+Write research notes (findings, design advice, selection rationale) to `../personal_hub/projects/springer_autonomous_robots_2026/notes/`, never inside this repo. This repo holds code, configs and experiment data only.
+
+## Experiment integrity
+
+- Don't modify trained policies (`actor_weights.pt`, `norm_stats.npz`) or the contents of `scripts/recorded_paths/` and `trial_results/`. Ask before deleting a log, even an invalid one.
+- Analysis scripts and notebooks read logs and write new output files. Each output records the git commit hash and date, so the paper's tables and figures can be traced under Provenance in the project's tasks.md.
+- Seed and checkpoint selection is defined on simulation data only, before any real-world deployment. Never select seeds or checkpoints using real-world outcomes.
+- Don't start Gazebo, `trial_orchestrator`, planner nodes, training, or anything in `x3_bringup` (hardware) without asking me first.
