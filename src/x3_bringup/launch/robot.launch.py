@@ -2,6 +2,7 @@ from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, GroupAction, OpaqueFunction
 from launch.launch_description_sources import PythonLaunchDescriptionSource, AnyLaunchDescriptionSource
 from launch.substitutions import Command, LaunchConfiguration, PythonExpression
+from launch.conditions import IfCondition
 
 from launch_ros.actions import Node 
 from launch_ros.actions import ComposableNodeContainer
@@ -58,6 +59,24 @@ def generate_launch_description():
         description="Whether to load Gazebo-specific plugins/properties"
     )
 
+    policy_model_arg = DeclareLaunchArgument(
+        "policy_model",
+        default_value="TD3_00386_1000",
+        description="Policy folder the DRL policy node loads (x3_drl_policy/policies)"
+    )
+
+    start_policy_arg = DeclareLaunchArgument(
+        "start_policy",
+        default_value="true",
+        description="Start the DRL policy node with this launch; false lets scripts/sim2real/run_robot_schedule.py manage it"
+    )
+
+    enable_face_emotion_arg = DeclareLaunchArgument(
+        "enable_face_emotion",
+        default_value="true",
+        description="Start the face detection and emotion recognition nodes (false saves battery for pure navigation runs)"
+    )
+
     robot_model = LaunchConfiguration("robot_model")
     camera_name = LaunchConfiguration("orbbec_cameracamera_name")
 
@@ -99,12 +118,14 @@ def generate_launch_description():
             "--ros-args", "--log-level", 
             PythonExpression(["'", agent_name, ".face_detection_node:=error'"])
         ],
+        condition=IfCondition(LaunchConfiguration("enable_face_emotion")),
     )
 
     emotion_recognition_node = Node(
         package = "x3_visual",
         executable="emotion_recognition_node",
         namespace=agent_name,
+        condition=IfCondition(LaunchConfiguration("enable_face_emotion")),
     )
 
     # image transport republisher
@@ -175,30 +196,19 @@ def generate_launch_description():
         }]
     )  
 
-    drl_ctrl_node = Node(
-        package='x3_drl_policy',
-        executable='policy_node',
-        namespace=agent_name,
-        parameters=[{
-            'agent_name':       agent_name,
-            'goal_tolerance':   0.75,
-            'obstacle_tolerance': 0.205,
-            # hardware config of the confirmatory runs (notes/seed_selection_protocol_20261028.md, section 3):
-            # 0.2 m/s and 0.3 rad/s reproduce the per-step motion of the 500 Hz, 2 m/s, 3 rad/s training at 50 Hz
-            'normalized_actions': True,
-            'max_lin_vel':      0.2,
-            'max_angular_vel':  0.3,
-            'goal_timeout':     90.0,
-            'antennae_mask_dist': 0.0,          # no direction-blind short-range mask; the rear wedge is masked by angle
-            'rear_mask_deg':    40.0,           # static scan 2026-10-28 (scripts/sim2real/static_scan_20261028.json): self returns span -29.1..+36.9 deg behind the sensor, +3 deg margin
-            'rear_mask_fill':   'train_mean',
-            'range_clip':       11.10,          # observation bound of the training environment
-        }]
+    # DRL policy node with the frozen hardware config: parameters live in drl_policy.launch.py
+    drl_ctrl_node = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(bringup_pkg_dir, "launch", "drl_policy.launch.py")]),
+        launch_arguments={"agent_name": agent_name, "model_name": LaunchConfiguration("policy_model")}.items(),
+        condition=IfCondition(LaunchConfiguration("start_policy"))
     )
 
     return LaunchDescription([
         agent_name_arg,
         model_arg,
+        policy_model_arg,
+        start_policy_arg,
+        enable_face_emotion_arg,
         camera_name_arg,
         is_gazebo_arg,
         robot_state_publisher_node,

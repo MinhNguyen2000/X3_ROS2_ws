@@ -21,6 +21,13 @@ numpy 2; the anaconda interpreter works).
 | `antenna_sector.py` | Finds the scan sector that is the robot's own structure from a static scan in open space. `--topic /agent0/scan --scans 30 --save scan.json` on the robot, or `--json scan.json`. Reports the rear half-width, the sector and the touched observation groups. |
 | `static_scan_20261028.json` | The static scan of 2026-10-28 behind the 40-degree rear mask (30 scans, 1800 beams; `range_max` is not stored). |
 
+## Robot runs (P7)
+| File | What it is |
+|---|---|
+| `run_robot_schedule.py` | Robot-side runner for `schedule.csv`: after the operator places the robot on the start marks it relaunches the bringup (new odometry origin), starts the policy node (`drl_policy.launch.py`, model per run), checks the policy's published config against the frozen one and that the run started at the odometry origin, starts the sequence server and client, reads the online result from the saved JSON, asks the operator for a fault, repeats faulted runs, resumes from `robot/manifest_robot.csv`. Operator steps: `docs/real_robot_run_protocol.md`. `--dry-run` lists the pending runs. |
+| `test_run_robot_schedule.py` | Unit tests of its pure logic (schedule, resume, config check, result parsing): `cd scripts/sim2real && PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python3 -m pytest -q test_run_robot_schedule.py`. |
+| `test_runner_in_gazebo.sh` | Functional test without a robot: Gazebo's empty world in the devcontainer image plays the robot and the runner performs the first N runs with `--auto --no-bringup`. Needs this worktree built with colcon. The simulated robot is not put back on the start marks between runs, so a run can start away from the origin. |
+
 ## Scouting re-analysis
 | File | What it is |
 |---|---|
