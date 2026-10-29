@@ -5,7 +5,8 @@ Prerequisites (operator): a shell with ROS 2 and this workspace sourced. The odo
 the goals are relative to it, so before EVERY run the robot is put on the start marks and the whole bringup is relaunched (what the
 2026-10 scouting runs did). The script therefore, per run:
   1. stops client, server, policy node and bringup, then asks the operator to place the robot on the start marks (Enter);
-  2. starts the bringup (ros2 launch x3_bringup robot.launch.py start_policy:=false) and waits until /<agent>/odom publishes;
+  2. starts the bringup (ros2 launch x3_bringup robot.launch.py start_policy:=false enable_face_emotion:=false), waits until
+     /<agent>/odom publishes and sends the battery light cue (Int32 6 on /<agent>/RGBLight); the battery voltage is logged per run;
   3. starts the policy node (ros2 launch x3_bringup drl_policy.launch.py model_name:=<model>) and checks that its `Config:` line
      is the frozen hardware config (FROZEN below), then a goal_sequence_server for that model;
   4. starts goal_sequence_client (world_lab, path1|path2, tolerance 0.3, stop on failure);
@@ -44,7 +45,7 @@ FROZEN = dict(normalized_actions=True, max_lin_vel=0.2, max_angular_vel=0.3, ant
               rear_mask_fill='train_mean', range_clip=11.1, goal_timeout=90.0, obstacle_tolerance=0.205)
 
 COLS = ['run', 'attempt', 'stretch', 'block', 'variant', 'tier', 'model', 'path', 'status', 'waypoints_completed',
-        'total_waypoints', 'success', 'elapsed_s', 'saved_file', 'code', 'config_ok', 'start_ok', 'fault', 'timestamp']
+        'total_waypoints', 'success', 'elapsed_s', 'battery_v', 'saved_file', 'code', 'config_ok', 'start_ok', 'fault', 'timestamp']
 
 
 # ----------------------------------------------------------------------------- pure logic (unit tested)
@@ -156,12 +157,26 @@ def wait_odom(args, timeout):
 def start_bringup(args, tag):
     """Relaunch the robot bringup (new odometry origin) without a policy node; True when odometry is publishing."""
     log = os.path.join(LOG_DIR, f'{tag}_bringup.log')
-    spawn('bringup', ['ros2', 'launch', 'x3_bringup', 'robot.launch.py', 'start_policy:=false'], log)
+    # no face detection / emotion recognition: they are not needed here and drain the battery faster
+    spawn('bringup', ['ros2', 'launch', 'x3_bringup', 'robot.launch.py', 'start_policy:=false', 'enable_face_emotion:=false'], log)
     if not wait_odom(args, args.bringup_timeout):
         print('    bringup: no odometry within', args.bringup_timeout, 's (see', log + ')')
         return False
     time.sleep(args.settle)
+    if not args.no_battery_light:       # the driver's LED effect 6 is the battery indicator the operator watches
+        subprocess.run(['ros2', 'topic', 'pub', '--once', f'/{args.agent}/RGBLight', 'std_msgs/msg/Int32', '{data: 6}'],
+                       capture_output=True, timeout=20)
     return True
+
+
+def read_voltage(args):
+    """Battery voltage from the driver topic /<agent>/voltage (one message), or '' when unavailable."""
+    try:
+        r = subprocess.run(['ros2', 'topic', 'echo', '--once', '--field', 'data', f'/{args.agent}/voltage'],
+                           capture_output=True, text=True, timeout=8)
+        return str(round(float(r.stdout.strip().splitlines()[0]), 2)) if r.stdout.strip() else ''
+    except (subprocess.TimeoutExpired, ValueError, IndexError):
+        return ''
 
 
 def start_model(model, args, tag):
@@ -184,12 +199,13 @@ def start_model(model, args, tag):
 def run_one(run, args, tag):
     row = dict(run=run['run'], attempt='', stretch=run['stretch'], block=run['block'], variant=run['variant'], tier=run['tier'],
                model=run['model'], path=run['path'], status='launch_fail', waypoints_completed='', total_waypoints='',
-               success='', elapsed_s='', saved_file='', code='', config_ok='0', start_ok='0', fault='',
+               success='', elapsed_s='', battery_v='', saved_file='', code='', config_ok='0', start_ok='0', fault='',
                timestamp=datetime.now().isoformat(timespec='seconds'))
     path = run['path'].split('_')[0]                    # path1_world_lab -> path1
     client_log = os.path.join(LOG_DIR, f'{tag}_client.log')
     planner_dir = os.path.join(RECORDED, run['model'])
     os.makedirs(planner_dir, exist_ok=True)
+    row['battery_v'] = read_voltage(args)
     t_start = time.time()
     client = spawn('client', ['ros2', 'run', 'x3_nav_bringup', 'goal_sequence_client', '--ros-args', '-p', f'world:={args.world}',
                               '-p', f'path:={path}', '-p', 'goal_tolerance:=0.3', '-p', 'stop_on_failure:=true',
@@ -245,6 +261,7 @@ def main():
     ap.add_argument('--seq-timeout', type=float, default=300)
     ap.add_argument('--no-bringup', action='store_true', help='do not manage the bringup (simulation tests): policy and server are reused per model')
     ap.add_argument('--bringup-timeout', type=float, default=180)
+    ap.add_argument('--no-battery-light', action='store_true', help='do not send the battery light cue (RGBLight 6) after the bringup')
     ap.add_argument('--settle', type=float, default=5, help='wait after the odometry is up [s]')
     ap.add_argument('--schedule', default=SCHEDULE)
     args = ap.parse_args()
