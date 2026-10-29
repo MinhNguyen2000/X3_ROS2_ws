@@ -1,0 +1,20 @@
+config (a) 48 ok runs, config (a40) 48 ok runs, 48 paired cells (dropped: 0)
+
+1. cells: (a40) worse than (a) in 2, equal in 44, better in 2; mean (a40) - (a) = +0.013; sign test p = 1
+2. policies: mean difference per policy, (a40) worse in 1, better in 2 of 8; sign test p = 1
+   bootstrap 95% CI of the mean difference: resampling policies [-0.041, +0.069], resampling scenarios [-0.050, +0.076]
+3. every goal reached: (a) 39/48, (a40) 39/48; discordant cells 2 only in (a), 2 only in (a40); McNemar exact p = 1
+4. outcomes: (a) collision 8, complete 39, timeout 1; (a40) collision 9, complete 39
+
+5. per policy (variant, tier): mean waypoint ratio (a) -> (a40), difference
+   delta_best    B  TD3_00391_800   0.700 -> 0.867  (+0.167)
+   delta_best    M  TD3_00388_900   1.000 -> 1.000  (+0.000)
+   delta_final   B  TD3_00390_1000  0.878 -> 0.878  (+0.000)
+   delta_final   M  TD3_00395_1000  0.828 -> 0.828  (+0.000)
+   direct_best   B  TD3_00399_900   1.000 -> 1.000  (+0.000)
+   direct_best   M  TD3_00401_900   0.900 -> 0.900  (+0.000)
+   direct_final  B  TD3_00400_1000  1.000 -> 0.867  (-0.133)
+   direct_final  M  TD3_00402_1000  0.861 -> 0.933  (+0.072)
+   8-policy mean: 0.896 -> 0.909
+
+   per scenario (world/path): 1/1: 0.93->0.93  1/2: 0.88->1.00  1/3: 0.75->0.85  2/1: 0.97->0.97  3/1: 0.85->0.75  5/1: 1.00->0.95

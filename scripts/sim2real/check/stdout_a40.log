@@ -1,0 +1,111 @@
+----------
+ROS_DOMAIN_ID:[32m6[0m | ROS_IP:[32m172.17.0.2[0m
+LIDAR_TYPE: [32mx3[0m
+----------
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/p10-check-a40/modules/src/fisheye_calibration'
+Failed to clone 'src/fisheye_calibration'. Retry scheduled
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/p10-check-a40/modules/src/rf2o_laser_odometry'
+Failed to clone 'src/rf2o_laser_odometry'. Retry scheduled
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/p10-check-a40/modules/src/rplidar_ros'
+Failed to clone 'src/rplidar_ros'. Retry scheduled
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/p10-check-a40/modules/src/fisheye_calibration'
+Failed to clone 'src/fisheye_calibration' a second time, aborting
+48 jobs selected (8 DRL policies + APF), 0 already ok, 48 to run
+[1/48] TD3_00388_900 world_1/path1 rep1
+    -> ok success=1 wp=5/5 (2.3 min elapsed)
+[2/48] TD3_00388_900 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (4.7 min elapsed)
+[3/48] TD3_00388_900 world_1/path3 rep1
+    -> ok success=1 wp=6/6 (6.7 min elapsed)
+[4/48] TD3_00388_900 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (8.7 min elapsed)
+[5/48] TD3_00388_900 world_3/path1 rep1
+    -> ok success=1 wp=5/5 (11.0 min elapsed)
+[6/48] TD3_00388_900 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (14.4 min elapsed)
+[7/48] TD3_00390_1000 world_1/path1 rep1
+    -> ok success=1 wp=5/5 (17.0 min elapsed)
+[8/48] TD3_00390_1000 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (19.5 min elapsed)
+[9/48] TD3_00390_1000 world_1/path3 rep1
+    -> ok success=0 wp=4/6 (21.5 min elapsed)
+[10/48] TD3_00390_1000 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (23.5 min elapsed)
+[11/48] TD3_00390_1000 world_3/path1 rep1
+    -> ok success=0 wp=3/5 (25.6 min elapsed)
+[12/48] TD3_00390_1000 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (28.3 min elapsed)
+[13/48] TD3_00391_800 world_1/path1 rep1
+    -> ok success=1 wp=5/5 (30.6 min elapsed)
+[14/48] TD3_00391_800 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (33.2 min elapsed)
+[15/48] TD3_00391_800 world_1/path3 rep1
+    -> ok success=1 wp=6/6 (35.2 min elapsed)
+[16/48] TD3_00391_800 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (37.2 min elapsed)
+[17/48] TD3_00391_800 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (37.8 min elapsed)
+[18/48] TD3_00391_800 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (40.6 min elapsed)
+[19/48] TD3_00395_1000 world_1/path1 rep1
+    -> ok success=0 wp=4/5 (42.7 min elapsed)
+[20/48] TD3_00395_1000 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (45.1 min elapsed)
+[21/48] TD3_00395_1000 world_1/path3 rep1
+    -> ok success=0 wp=1/6 (45.8 min elapsed)
+[22/48] TD3_00395_1000 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (47.9 min elapsed)
+[23/48] TD3_00395_1000 world_3/path1 rep1
+    -> ok success=1 wp=5/5 (50.5 min elapsed)
+[24/48] TD3_00395_1000 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (53.5 min elapsed)
+[25/48] TD3_00399_900 world_1/path1 rep1
+    -> ok success=1 wp=5/5 (56.1 min elapsed)
+[26/48] TD3_00399_900 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (59.1 min elapsed)
+[27/48] TD3_00399_900 world_1/path3 rep1
+    -> ok success=1 wp=6/6 (61.0 min elapsed)
+[28/48] TD3_00399_900 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (63.1 min elapsed)
+[29/48] TD3_00399_900 world_3/path1 rep1
+    -> ok success=1 wp=5/5 (65.4 min elapsed)
+[30/48] TD3_00399_900 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (68.0 min elapsed)
+[31/48] TD3_00400_1000 world_1/path1 rep1
+    -> ok success=1 wp=5/5 (70.4 min elapsed)
+[32/48] TD3_00400_1000 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (72.8 min elapsed)
+[33/48] TD3_00400_1000 world_1/path3 rep1
+    -> ok success=1 wp=6/6 (74.8 min elapsed)
+[34/48] TD3_00400_1000 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (76.8 min elapsed)
+[35/48] TD3_00400_1000 world_3/path1 rep1
+    -> ok success=0 wp=1/5 (77.6 min elapsed)
+[36/48] TD3_00400_1000 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (80.5 min elapsed)
+[37/48] TD3_00401_900 world_1/path1 rep1
+    -> ok success=0 wp=3/5 (82.1 min elapsed)
+[38/48] TD3_00401_900 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (84.6 min elapsed)
+[39/48] TD3_00401_900 world_1/path3 rep1
+    -> ok success=1 wp=6/6 (86.7 min elapsed)
+[40/48] TD3_00401_900 world_2/path1 rep1
+    -> ok success=0 wp=4/5 (88.6 min elapsed)
+[41/48] TD3_00401_900 world_3/path1 rep1
+    -> ok success=1 wp=5/5 (90.9 min elapsed)
+[42/48] TD3_00401_900 world_5/path1 rep1
+    -> ok success=1 wp=5/5 (93.7 min elapsed)
+[43/48] TD3_00402_1000 world_1/path1 rep1
+    -> ok success=1 wp=5/5 (95.8 min elapsed)
+[44/48] TD3_00402_1000 world_1/path2 rep1
+    -> ok success=1 wp=6/6 (98.5 min elapsed)
+[45/48] TD3_00402_1000 world_1/path3 rep1
+    sim not ready
+    launch failed, retrying once
+    -> ok success=1 wp=6/6 (102.2 min elapsed)
+[46/48] TD3_00402_1000 world_2/path1 rep1
+    -> ok success=1 wp=5/5 (104.2 min elapsed)
+[47/48] TD3_00402_1000 world_3/path1 rep1
+    -> ok success=1 wp=5/5 (106.6 min elapsed)
+[48/48] TD3_00402_1000 world_5/path1 rep1
+    -> ok success=0 wp=3/5 (109.4 min elapsed)
