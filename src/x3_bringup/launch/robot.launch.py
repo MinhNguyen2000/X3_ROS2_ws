@@ -71,6 +71,12 @@ def generate_launch_description():
         description="Start the DRL policy node with this launch; false lets scripts/sim2real/run_robot_schedule.py manage it"
     )
 
+    enable_face_emotion_arg = DeclareLaunchArgument(
+        "enable_face_emotion",
+        default_value="true",
+        description="Start the face detection and emotion recognition nodes (false saves battery for pure navigation runs)"
+    )
+
     robot_model = LaunchConfiguration("robot_model")
     camera_name = LaunchConfiguration("orbbec_cameracamera_name")
 
@@ -112,12 +118,14 @@ def generate_launch_description():
             "--ros-args", "--log-level", 
             PythonExpression(["'", agent_name, ".face_detection_node:=error'"])
         ],
+        condition=IfCondition(LaunchConfiguration("enable_face_emotion")),
     )
 
     emotion_recognition_node = Node(
         package = "x3_visual",
         executable="emotion_recognition_node",
         namespace=agent_name,
+        condition=IfCondition(LaunchConfiguration("enable_face_emotion")),
     )
 
     # image transport republisher
@@ -200,6 +208,7 @@ def generate_launch_description():
         model_arg,
         policy_model_arg,
         start_policy_arg,
+        enable_face_emotion_arg,
         camera_name_arg,
         is_gazebo_arg,
         robot_state_publisher_node,
