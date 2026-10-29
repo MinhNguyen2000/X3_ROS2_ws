@@ -45,7 +45,7 @@ FROZEN = dict(normalized_actions=True, max_lin_vel=0.2, max_angular_vel=0.3, ant
               rear_mask_fill='train_mean', range_clip=11.1, goal_timeout=90.0, obstacle_tolerance=0.205)
 
 COLS = ['run', 'attempt', 'stretch', 'block', 'variant', 'tier', 'model', 'path', 'status', 'waypoints_completed',
-        'total_waypoints', 'success', 'elapsed_s', 'battery_v', 'saved_file', 'code', 'config_ok', 'start_ok', 'fault', 'timestamp']
+        'total_waypoints', 'success', 'elapsed_s', 'battery_v', 'saved_file', 'code', 'dirty', 'config_ok', 'start_ok', 'fault', 'timestamp']
 
 
 # ----------------------------------------------------------------------------- pure logic (unit tested)
@@ -199,7 +199,7 @@ def start_model(model, args, tag):
 def run_one(run, args, tag):
     row = dict(run=run['run'], attempt='', stretch=run['stretch'], block=run['block'], variant=run['variant'], tier=run['tier'],
                model=run['model'], path=run['path'], status='launch_fail', waypoints_completed='', total_waypoints='',
-               success='', elapsed_s='', battery_v='', saved_file='', code='', config_ok='0', start_ok='0', fault='',
+               success='', elapsed_s='', battery_v='', saved_file='', code='', dirty='', config_ok='0', start_ok='0', fault='',
                timestamp=datetime.now().isoformat(timespec='seconds'))
     path = run['path'].split('_')[0]                    # path1_world_lab -> path1
     client_log = os.path.join(LOG_DIR, f'{tag}_client.log')
@@ -228,9 +228,12 @@ def run_one(run, args, tag):
     r = d.get('result') or {}
     row.update(status='ok' if d.get('poses') and d.get('velocities') and r else 'no_output', saved_file=os.path.relpath(saved[-1], WS),
                waypoints_completed=r.get('waypoints_completed', res[1]), total_waypoints=r.get('total_waypoints', ''),
-               success=int(r.get('success', res[0])), code=d.get('code') or '')
+               success=int(r.get('success', res[0])), code=d.get('code') or '',
+               dirty=int('+dirty' in (d.get('code') or '')))
     bad = config_mismatches(d.get('planner_config'))
     row['config_ok'] = '0' if bad else '1'
+    if row['dirty']:
+        print('    NOTE: the source tree had uncommitted changes (code %s); the run is kept, the diff hash identifies the changes' % row['code'])
     off = start_offset(d.get('poses'))
     row['start_ok'] = '1' if off and off[0] <= START_TOL[0] and off[1] <= START_TOL[1] else '0'
     if row['start_ok'] == '0':

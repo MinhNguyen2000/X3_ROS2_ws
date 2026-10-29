@@ -18,6 +18,9 @@ Owner decisions of 2026-10-29: all 160 runs are collected with the frozen config
    are covered by the 40 degree wedge), the saved JSON has `result`, `planner_config`, `goal_results` and `code` = the frozen commit, and the
    runner reports no config mismatch.
 
+6. **Odometry scale check (gate for stretch 1).** The runs are scored by the odometry, so measure its error first: with the frozen bringup running, `python3 scripts/sim2real/odom_scale_check.py --kind straight --note "<setup>"` (about 3 m at 0.2 m/s along a taped line, tape-measured distance), and one `--kind turn` run if easy. Note in `--note` which scan rf2o reads (the robot-local change feeds rf2o and the EKF from `scan_filtered`; rf2o on the raw scan underestimates linear motion because of the robot's own parts behind the LiDAR). **DECIDE: the acceptable error (a few percent suggested).** The result goes into the notes and the paper's limitations.
+7. **Uncommitted changes on the robot.** The saved run JSON and the manifest mark runs made with uncommitted changes under `src` (`code` = `<hash>+dirty:<diff hash>`, `dirty` = 1). Commit the robot-local changes to a branch in the repository before stretch 1 so that the diff hash can be matched to a commit.
+
 ## 2. Start of every stretch (pre-flight)
 - LiDAR and antennae mounted as in the static scan of 2026-10-28. If anything was moved or replaced, repeat
   `scripts/sim2real/antenna_sector.py --topic /agent0/scan --scans 30 --save scan.json` in open space and re-derive `rear_mask_deg`

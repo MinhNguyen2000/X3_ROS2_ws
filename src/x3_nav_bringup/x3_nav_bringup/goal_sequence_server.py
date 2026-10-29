@@ -14,8 +14,9 @@ from std_msgs.msg import String
 from std_srvs.srv import Trigger
 from geometry_msgs.msg import TwistStamped, PoseStamped, Quaternion
 from nav_msgs.msg import Odometry
+from x3_nav_bringup.code_state import code_state
 
-import os, json, subprocess
+import os, json
 import time
 from datetime import datetime
 import numpy as np
@@ -359,7 +360,7 @@ class GoalSequenceServer(Node):
             "result":           self._last_result,
             "goal_results":     self._goal_results,
             "planner_config":   json.loads(self._planner_config) if self._planner_config else None,
-            "code":             self._code_hash(ws_dir),
+            "code":             self._code_hash(ws_dir),     # git hash; +dirty:<diff hash> when src/ differs from HEAD
             "gt_yaw_unit":      "rad",
         }
         
@@ -376,11 +377,7 @@ class GoalSequenceServer(Node):
     
     @staticmethod
     def _code_hash(ws_dir):
-        try:
-            return subprocess.run(['git', '-C', ws_dir, 'rev-parse', '--short', 'HEAD'], capture_output=True,
-                                  text=True, timeout=5).stdout.strip() or None
-        except Exception:
-            return None
+        return code_state(ws_dir)      # hash, or hash+dirty:<diff hash> when src/ has uncommitted changes
 
     def _yaw_from_quaternion(self, q: Quaternion) -> float:
         siny_cosp = 2.0 * (q.w * q.z + q.x * q.y)
