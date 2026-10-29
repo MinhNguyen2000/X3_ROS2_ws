@@ -66,7 +66,11 @@ from `poses`. `poses_gt` is only present when the ceiling camera ran (it is not 
 imperfect and it overestimates position far from the start pose) and is empty for 73 real runs of 2026-10-14, so identify
 real-robot runs by the `world_lab` path name, not by `poses_gt`.
 
-### `x3_bringup/launch/robot.launch.py` (changes the hardware defaults)
+### `x3_bringup/launch/drl_policy.launch.py` and `robot.launch.py` (change the hardware defaults)
+The policy node parameters below live once in `drl_policy.launch.py` (arguments `agent_name`, `model_name`).
+`robot.launch.py` includes it with the new arguments `policy_model` (default `TD3_00386_1000`, as before) and `start_policy`
+(default `true`; `false` lets `scripts/sim2real/run_robot_schedule.py` start and switch the policy node itself).
+Before this change the model could not be chosen from the launch file.
 | Parameter | Before | Now |
 |---|---|---|
 | `normalized_actions` | default (true) | `True` |
