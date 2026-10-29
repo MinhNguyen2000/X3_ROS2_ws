@@ -77,3 +77,7 @@ def test_start_offset_and_kept_rule():
     far = R.start_offset([{'x': 1.49, 'y': 1.41, 'yaw': 0.1}])
     assert far[0] > R.START_TOL[0]
     assert R.is_kept(row(1, start_ok='1')) and not R.is_kept(row(1, start_ok='0'))
+
+
+def test_manifest_columns_include_the_dirty_marker():
+    assert 'dirty' in R.COLS and R.COLS.index('code') < R.COLS.index('dirty')
