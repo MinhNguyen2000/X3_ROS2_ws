@@ -27,7 +27,7 @@ class CovarianceFilter(Node):
         self.declare_parameter("lidar_twist_variance_xy", 1e-3)
         self.declare_parameter("wheel_twist_variance_xy", 1e-2)
         # frame_id written on the covariance IMU message; empty keeps the frame of the driver message
-        self.declare_parameter("imu_frame_id", "imu_link")
+        self.declare_parameter("imu_frame_id", "")
         p = lambda name: self.get_parameter(name).get_parameter_value().double_value
         imu_w_xy = p("imu_angular_velocity_variance_xy")
         imu_a_xy = p("imu_linear_acceleration_variance_xy")
