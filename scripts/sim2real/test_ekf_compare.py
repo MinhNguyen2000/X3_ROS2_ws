@@ -66,3 +66,14 @@ def test_warning_pattern():
 def test_empty_track_gives_none():
     t, odom = track()
     assert ec.score(np.array([]), np.zeros((0, 3)), t, odom) is None
+
+
+def test_keep_every():
+    assert [i for i in range(12) if ec.keep_every(i, 5)] == [0, 5, 10]
+    assert all(ec.keep_every(i, 1) for i in range(5))
+
+
+def test_odom_rate_is_reported():
+    t = np.arange(0.0, 20.0, 0.1)
+    odom = np.c_[0.2 * t, np.zeros_like(t), np.zeros_like(t)]
+    assert abs(ec.score(t, odom, t, odom)['odom_hz'] - 10.0) < 1e-6

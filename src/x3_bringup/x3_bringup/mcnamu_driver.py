@@ -38,6 +38,7 @@ class yahboomcar_driver(Node):
 		self.declare_parameter('xlinear_limit', 1.0)
 		self.declare_parameter('ylinear_limit', 1.0)
 		self.declare_parameter('angular_limit', 5.0)
+		self.declare_parameter('publish_rate', 10.0)	# Hz of the timer that publishes IMU, wheel velocity, magnetometer and battery
 
 		self.car_type = self.get_parameter('car_type').get_parameter_value().string_value
 		self.Prefix = self.get_parameter('Prefix').get_parameter_value().string_value
@@ -68,7 +69,8 @@ class yahboomcar_driver(Node):
 		self.magPublisher = self.create_publisher(MagneticField,"imu/mag",100)
 
 		#create timer
-		self.timer = self.create_timer(0.1, self.pub_data)
+		publish_rate = self.get_parameter('publish_rate').get_parameter_value().double_value
+		self.timer = self.create_timer(1.0 / publish_rate, self.pub_data)
 
 		#create and init variable
 		self.edition = Float32()

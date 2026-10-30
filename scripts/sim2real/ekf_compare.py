@@ -9,6 +9,8 @@ is scored against the overhead-camera track (/agent0/odom_camera) recorded in th
   1. on the robot, per drive:       ekf_compare.py record-cmd --name straight3m     (prints the ros2 bag record command)
   2. replay one profile of a bag:   ekf_compare.py replay --bag BAG --profile ''  --out OUT_main
                                     ekf_compare.py replay --bag BAG --profile _robot_20261029 --out OUT_robot
+  2b. optional: ekf_compare.py decimate --bag BAG --factor 5 --out BAG_10hz   (keeps every 5th IMU, mag and wheel-velocity
+                                    message: a 50 Hz drive gives the paired 10 Hz data; replay and score it the same way)
   3. score:                         ekf_compare.py score --bag BAG --replay main=OUT_main --replay robot=OUT_robot
 
 Scores (one row per bag and candidate; 'live' is the /agent0/odom recorded during the drive):
@@ -18,6 +20,8 @@ Scores (one row per bag and candidate; 'live' is the /agent0/odom recorded durin
                 the scene, so read this with the scale check against the tape measure)
   yaw_drift_deg turning of the odometry minus turning of the camera between first and last sample (the camera yaw is the
                 stable signal of the overhead tracker); yaw_max_deg is the largest deviation along the drive
+  odom_hz       median rate of the odometry (the EKF output follows its inputs, so it is the driver rate when that is the
+                slowest fast input)
   warn          lines in the replay log about update rate, transforms or dropped messages
 """
 import argparse
@@ -35,6 +39,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 AGENT = 'agent0'
 RAW_TOPICS = [f'/{AGENT}/scan', f'/{AGENT}/imu/data_raw', f'/{AGENT}/imu/mag', f'/{AGENT}/vel_raw']
 REF_TOPICS = [f'/{AGENT}/odom_camera', f'/{AGENT}/odom', f'/{AGENT}/odom_rf2o', f'/{AGENT}/cmd_vel']
+DECIMATED = [f'/{AGENT}/imu/data_raw', f'/{AGENT}/imu/mag', f'/{AGENT}/vel_raw']
 WARN = re.compile(r'update rate|could not transform|extrapolat|dropp|timed out|exceed', re.I)
 
 
@@ -92,6 +97,7 @@ def score(t_odom, odom, t_cam, cam):
         'len_ratio': path_length(o[:, :2]) / path_length(c[:, :2]) if path_length(c[:, :2]) > 0.2 else float('nan'),
         'yaw_drift_deg': float(np.degrees(dyaw[-1])),
         'yaw_max_deg': float(np.degrees(np.abs(dyaw).max())),
+        'odom_hz': float(1.0 / np.median(np.diff(t_odom))),
     }
 
 
@@ -111,6 +117,31 @@ def read_odometry(bag_dir, topic):
         t.append(m.header.stamp.sec + 1e-9 * m.header.stamp.nanosec)
         v.append([m.pose.pose.position.x, m.pose.pose.position.y, yaw_from_quaternion((q.x, q.y, q.z, q.w))])
     return np.array(t), np.array(v)
+
+
+def keep_every(index, factor):
+    """True for every factor-th message (0, factor, 2*factor, ...) of a topic."""
+    return index % factor == 0
+
+
+def decimate(bag, factor, out):
+    """Copy a bag keeping every factor-th IMU, magnetometer and wheel-velocity message (all other topics whole), so a
+    drive recorded at a high driver rate gives a paired low-rate version of the same data."""
+    import rosbag2_py
+    reader = rosbag2_py.SequentialReader()
+    reader.open(rosbag2_py.StorageOptions(uri=bag, storage_id=''), rosbag2_py.ConverterOptions('', ''))
+    writer = rosbag2_py.SequentialWriter()
+    writer.open(rosbag2_py.StorageOptions(uri=out, storage_id='sqlite3'), rosbag2_py.ConverterOptions('', ''))
+    for meta in reader.get_all_topics_and_types():
+        writer.create_topic(meta)
+    seen = {}
+    while reader.has_next():
+        topic, data, t = reader.read_next()
+        i = seen.get(topic, 0)
+        seen[topic] = i + 1
+        if topic not in DECIMATED or keep_every(i, factor):
+            writer.write(topic, data, t)
+    return {topic: seen[topic] for topic in DECIMATED if topic in seen}
 
 
 def record_cmd(name):
@@ -153,13 +184,13 @@ def cmd_score(args):
         name, path = item.split('=', 1)
         t, v = read_odometry(path, f'/{AGENT}/odom')
         rows.append((name, score(t, v, t_cam, cam), warn_count(path + '.launch.log')))
-    print(f"{'candidate':<10}{'fit_rms_m':>10}{'end_err_m':>10}{'len_ratio':>10}{'yaw_drift_deg':>14}{'yaw_max_deg':>12}{'warn':>6}")
+    print(f"{'candidate':<10}{'fit_rms_m':>10}{'end_err_m':>10}{'len_ratio':>10}{'yaw_drift_deg':>14}{'yaw_max_deg':>12}{'odom_hz':>9}{'warn':>6}")
     for name, s, w in rows:
         if s is None:
             print(f'{name:<10} no overlap with the camera track')
             continue
         print(f"{name:<10}{s['fit_rms_m']:>10.3f}{s['end_err_m']:>10.3f}{s['len_ratio']:>10.3f}"
-              f"{s['yaw_drift_deg']:>14.1f}{s['yaw_max_deg']:>12.1f}{'' if w is None else w:>6}")
+              f"{s['yaw_drift_deg']:>14.1f}{s['yaw_max_deg']:>12.1f}{s['odom_hz']:>9.1f}{'' if w is None else w:>6}")
 
 
 def main():
@@ -172,12 +203,18 @@ def main():
     p.add_argument('--profile', default='', help="odom_profile: '' (main) or _robot_20261029")
     p.add_argument('--out', required=True)
     p.add_argument('--rate', type=float, default=1.0)
+    p = sub.add_parser('decimate')
+    p.add_argument('--bag', required=True)
+    p.add_argument('--factor', type=int, default=5, help='keep every factor-th IMU, mag and wheel-velocity message')
+    p.add_argument('--out', required=True)
     p = sub.add_parser('score')
     p.add_argument('--bag', required=True)
     p.add_argument('--replay', action='append', default=[], metavar='NAME=OUT_BAG')
     args = ap.parse_args()
     if args.cmd == 'record-cmd':
         print(' '.join(record_cmd(args.name)))
+    elif args.cmd == 'decimate':
+        print('kept every', args.factor, 'th message; input counts', decimate(args.bag, args.factor, args.out))
     elif args.cmd == 'replay':
         print('launch log:', replay(args.bag, args.profile, args.out, args.rate))
     else:
