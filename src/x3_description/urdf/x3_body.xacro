@@ -29,7 +29,7 @@
     <xacro:fixed_joint prefix="${prefix}" name="base_joint" parent="base_footprint" child="base_link" xyz="0.0 0.0 0.0850" rpy="0 0 0"/>
     
     <link name="${prefix}_imu_link"/>
-    <xacro:fixed_joint prefix="${prefix}" name="base_imu" parent="base_link" child="imu_link" xyz="-0.06 0.025 0.095" rpy="0 3.1415 1.5707"/>
+    <xacro:fixed_joint prefix="${prefix}" name="base_imu" parent="base_link" child="imu_link" xyz="-0.06 0.025 0.095" rpy="0 ${pi} ${pi/2}"/>
 
     <!-- Wheels -->
     <xacro:common_link prefix="${prefix}" name="front_right_wheel" material="White" collision_shape="cylinder" collision_size="0.035 0.03">
