@@ -6,4 +6,4 @@
     lidar_pose_variance_xy: 5.0e-3
     lidar_twist_variance_xy: 1.0e-3
     wheel_twist_variance_xy: 1.0e-2
-    imu_frame_id: "imu_link"
+    imu_frame_id: ""
