@@ -77,6 +77,12 @@ def generate_launch_description():
         description="EKF and covariance parameter files of the odometry: '' (main) or _robot_20261029 (config/)"
     )
 
+    driver_rate_arg = DeclareLaunchArgument(
+        "driver_rate",
+        default_value="10.0",
+        description="Hz at which the driver publishes IMU, wheel velocity and magnetometer (the EKF cannot output faster than its fastest input)"
+    )
+
     enable_face_emotion_arg = DeclareLaunchArgument(
         "enable_face_emotion",
         default_value="true",
@@ -203,6 +209,7 @@ def generate_launch_description():
         namespace=agent_name,
         parameters=[{
             'Prefix': agent_name,
+            'publish_rate': ParameterValue(LaunchConfiguration('driver_rate'), value_type=float),
         }]
     )  
 
@@ -220,6 +227,7 @@ def generate_launch_description():
         start_policy_arg,
         enable_face_emotion_arg,
         odom_profile_arg,
+        driver_rate_arg,
         camera_name_arg,
         is_gazebo_arg,
         robot_state_publisher_node,
