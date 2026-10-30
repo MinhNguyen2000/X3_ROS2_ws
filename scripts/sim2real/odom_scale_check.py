@@ -9,8 +9,11 @@ Procedure (clear 3 m runway, e-stop in hand, the frozen bringup running: robot.l
   1. python3 scripts/sim2real/odom_scale_check.py --kind straight --note "rf2o on scan_filtered"
   2. place the robot at the start of a taped line, press Enter (odometry start pose is read)
   3. drive it straight for about 3 m at 0.2 m/s, e.g.
-       ros2 topic pub -r 20 -t 300 /agent0/cmd_vel geometry_msgs/msg/TwistStamped "{twist: {linear: {x: 0.2}}}"
-     (check the driver's cmd_vel topic and message type first), stop, press Enter (end pose is read)
+       scripts/sim2real/drive_pattern.sh straight        (full turn: drive_pattern.sh turn)
+     which publishes the 20 Hz commands and ends with zero commands: the driver keeps the last cmd_vel, so the robot
+     does not stop by itself when the publishing ends; with a raw `ros2 topic pub` send a zero command afterwards.
+     Check the driver's cmd_vel topic and message type first (/agent0/cmd_vel, TwistStamped), press Enter once it has
+     stopped (end pose is read)
   4. type the tape-measured distance in metres; for --kind turn drive about one full turn and type the measured angle in degrees
 One row per topic (/agent0/odom, the EKF output the policy uses, and /agent0/odom_rf2o) is appended to scripts/sim2real/odom_scale_check.csv
 with ratio = odometry / measured (1.0 = exact, below 1.0 = odometry underestimates).
