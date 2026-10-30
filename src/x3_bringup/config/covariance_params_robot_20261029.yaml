@@ -1,0 +1,9 @@
+# Covariance filter variances of the robot-local setup of 2026-10-29 (stash oct29_1833); the stash kept the driver's IMU frame_id
+/**/covariance_filter_node:
+  ros__parameters:
+    imu_angular_velocity_variance_xy: 1.0e-2
+    imu_linear_acceleration_variance_xy: 1.0e-1
+    lidar_pose_variance_xy: 1.0e-3
+    lidar_twist_variance_xy: 1.0e-1
+    wheel_twist_variance_xy: 1.0e-3
+    imu_frame_id: ""

@@ -1,0 +1,9 @@
+# Covariance filter variances, the values the node used before they were parameters
+/**/covariance_filter_node:
+  ros__parameters:
+    imu_angular_velocity_variance_xy: 1.0e-2
+    imu_linear_acceleration_variance_xy: 5.0e-1
+    lidar_pose_variance_xy: 5.0e-3
+    lidar_twist_variance_xy: 1.0e-3
+    wheel_twist_variance_xy: 1.0e-2
+    imu_frame_id: "imu_link"
