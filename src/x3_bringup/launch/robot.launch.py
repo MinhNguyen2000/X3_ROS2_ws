@@ -71,6 +71,12 @@ def generate_launch_description():
         description="Start the DRL policy node with this launch; false lets scripts/sim2real/run_robot_schedule.py manage it"
     )
 
+    odom_profile_arg = DeclareLaunchArgument(
+        "odom_profile",
+        default_value="",
+        description="EKF and covariance parameter files of the odometry: '' (main) or _robot_20261029 (config/)"
+    )
+
     enable_face_emotion_arg = DeclareLaunchArgument(
         "enable_face_emotion",
         default_value="true",
@@ -164,7 +170,7 @@ def generate_launch_description():
             'inverted': False,
             'flip_x_axis': True,
             'angle_compensate': True,
-            'scan_mode': 'DenseBoost',
+            'scan_mode': 'Standard',      # the mode of the static scan the policy's rear wedge was set from
         }]
     )
 
@@ -177,13 +183,17 @@ def generate_launch_description():
             'input_topic': 'scan',
             'output_topic': 'scan_filtered',
             'mask_center_angle': math.pi,
-            'mask_half_width': 0.80,
+            'mask_half_width': 0.90,     # rad; self returns span -29.1..+36.9 deg, rf2o only
         }]
     )
 
     # Launch the odometry nodes
     odom_launch = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([odom_launch_path])
+        PythonLaunchDescriptionSource([odom_launch_path]),
+        launch_arguments={
+            "rf2o_scan_topic": "scan_filtered",
+            "odom_profile": LaunchConfiguration("odom_profile"),
+        }.items()
     )
 
     # Low level driver node - IMU, wheel encoder, and wheel motors
@@ -209,6 +219,7 @@ def generate_launch_description():
         policy_model_arg,
         start_policy_arg,
         enable_face_emotion_arg,
+        odom_profile_arg,
         camera_name_arg,
         is_gazebo_arg,
         robot_state_publisher_node,
