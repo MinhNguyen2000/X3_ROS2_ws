@@ -20,6 +20,21 @@ class CovarianceFilter(Node):
         # ===== ROS2 Parameters =====
         self.declare_parameter("agent_name", "agent")
         agent_name = self.get_parameter("agent_name").get_parameter_value().string_value
+        # Variances (m^2/s^2, m^2, ...) of the x and y entries; defaults are the values used before they became parameters
+        self.declare_parameter("imu_angular_velocity_variance_xy", 1e-2)
+        self.declare_parameter("imu_linear_acceleration_variance_xy", 5e-1)
+        self.declare_parameter("lidar_pose_variance_xy", 5e-3)
+        self.declare_parameter("lidar_twist_variance_xy", 1e-3)
+        self.declare_parameter("wheel_twist_variance_xy", 1e-2)
+        # frame_id written on the covariance IMU message; empty keeps the frame of the driver message
+        self.declare_parameter("imu_frame_id", "imu_link")
+        p = lambda name: self.get_parameter(name).get_parameter_value().double_value
+        imu_w_xy = p("imu_angular_velocity_variance_xy")
+        imu_a_xy = p("imu_linear_acceleration_variance_xy")
+        lidar_pose_xy = p("lidar_pose_variance_xy")
+        lidar_twist_xy = p("lidar_twist_variance_xy")
+        wheel_twist_xy = p("wheel_twist_variance_xy")
+        self.imu_frame_id = self.get_parameter("imu_frame_id").get_parameter_value().string_value
 
         # ===== ROS Interface =====
         self.imu_sub        = self.create_subscription(Imu, f"/{agent_name}/imu/data_raw", self.imu_callback, 10)
@@ -36,25 +51,25 @@ class CovarianceFilter(Node):
                                            0.0, 1.0, 0.0,
                                            0.0, 0.0, 1e-1]
         # angular velocity covariance row majors, in the order of (vroll, vpitch, vyaw)
-        self.imu_angular_velocity_covariance = [1e-2, 0.0, 0.0,
-                                                0.0, 1e-2, 0.0,
+        self.imu_angular_velocity_covariance = [imu_w_xy, 0.0, 0.0,
+                                                0.0, imu_w_xy, 0.0,
                                                 0.0, 0.0, 5e-2]
         # linear acceleratioin covariance row majors, in the order of (ax, ay, az)
-        self.imu_linear_acceleration_covariance = [5e-1, 0.0,  0.0,
-                                                   0.0,  5e-1, 0.0,
+        self.imu_linear_acceleration_covariance = [imu_a_xy, 0.0,  0.0,
+                                                   0.0,  imu_a_xy, 0.0,
                                                    0.0,  0.0,  1e-2]
         
         # LiDAR covariances - as per https://docs.ros2.org/foxy/api/nav_msgs/msg/Odometry.html
         # pose covariance, in the order of (x, y, z, r, p, y)
-        self.lidar_pose_covariance = [5e-3, 0.0,  0.0, 0.0, 0.0, 0.0,
-                                      0.0,  5e-3, 0.0, 0.0, 0.0, 0.0,
+        self.lidar_pose_covariance = [lidar_pose_xy, 0.0,  0.0, 0.0, 0.0, 0.0,
+                                      0.0,  lidar_pose_xy, 0.0, 0.0, 0.0, 0.0,
                                       0.0,  0.0,  1e9, 0.0, 0.0, 0.0,
                                       0.0,  0.0,  0.0, 1e9, 0.0, 0.0,
                                       0.0,  0.0,  0.0, 0.0, 1e9, 0.0,
                                       0.0,  0.0,  0.0, 0.0, 0.0, 5e-3]
         # twist covariance, in the order of (vx, vy, vz, vr, vp, vy)
-        self.lidar_twist_covariance = [1e-3, 0.0,  0.0,  0.0,  0.0,  0.0,
-                                       0.0,  1e-3, 0.0,  0.0,  0.0,  0.0,
+        self.lidar_twist_covariance = [lidar_twist_xy, 0.0,  0.0,  0.0,  0.0,  0.0,
+                                       0.0,  lidar_twist_xy, 0.0,  0.0,  0.0,  0.0,
                                        0.0,  0.0,  1.0,  0.0,  0.0,  0.0,
                                        0.0,  0.0,  0.0,  1.0,  0.0,  0.0,
                                        0.0,  0.0,  0.0,  0.0,  1.0,  0.0,
@@ -63,8 +78,8 @@ class CovarianceFilter(Node):
         # Wheel velocity covariances
         # as per https://docs.ros.org/en/humble/p/geometry_msgs/msg/TwistWithCovarianceStamped.html
         # twist covariance, in the order of (vx, vy, vz, vr, vp, vy)
-        self.wheel_twist_covariance = [1e-2, 0.0,  0.0,  0.0,  0.0,  0.0,
-                                       0.0,  1e-2, 0.0,  0.0,  0.0,  0.0,
+        self.wheel_twist_covariance = [wheel_twist_xy, 0.0,  0.0,  0.0,  0.0,  0.0,
+                                       0.0,  wheel_twist_xy, 0.0,  0.0,  0.0,  0.0,
                                        0.0,  0.0,  1e9,  0.0,  0.0,  0.0,
                                        0.0,  0.0,  0.0,  1e9,  0.0,  0.0,
                                        0.0,  0.0,  0.0,  0.0,  1e9,  0.0,
@@ -75,7 +90,8 @@ class CovarianceFilter(Node):
 
     def imu_callback(self, msg: Imu):
         msg_covariance = copy.deepcopy(msg)
-        msg_covariance.header.frame_id = "imu_link"
+        if self.imu_frame_id:
+            msg_covariance.header.frame_id = self.imu_frame_id
         msg_covariance.orientation_covariance = self.imu_orientation_covariance
         msg_covariance.angular_velocity_covariance = self.imu_angular_velocity_covariance
         msg_covariance.linear_acceleration_covariance = self.imu_linear_acceleration_covariance
