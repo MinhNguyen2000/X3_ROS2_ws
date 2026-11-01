@@ -10,6 +10,8 @@
   Use: FASTRTPS_DEFAULT_PROFILES_FILE=<this file> (rviz.launch.py sets it for rviz2 only).
   The address is the dongle's DHCP lease; update it if the lease changes.
   The tag must be useBuiltinTransports (plural), otherwise the whitelist is silently ignored.
+  127.0.0.1 is allowed as well so a Fast DDS Discovery Server running on this machine (ROS_DISCOVERY_SERVER=192.168.0.104:11811)
+  can be reached; without it the client finds the server unreachable and sees no topics.
 -->
 <profiles xmlns="http://www.eprosima.com/XMLSchemas/fastRTPS_Profiles">
   <transport_descriptors>
@@ -18,6 +20,7 @@
       <type>UDPv4</type>
       <interfaceWhiteList>
         <address>192.168.0.104</address>
+        <address>127.0.0.1</address>
       </interfaceWhiteList>
     </transport_descriptor>
   </transport_descriptors>
