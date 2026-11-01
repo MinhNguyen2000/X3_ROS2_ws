@@ -12,4 +12,5 @@ docker run -d --name ros2_humble --restart unless-stopped \
   -v /usr/local/cuda-12.6:/usr/local/cuda-12.6:ro \
   -v ~/X3_ROS2_ws/robot_ws/gpu_libs:/usr/lib/gpu_libs:ro \
   -v ~/X3_ROS2_ws:/X3_ROS2_ws \
-  ros2_humble_img sleep infinity
+  -v ~/.ssh/authorized_keys:/home/ros/.ssh/authorized_keys:ro \
+  ros2_humble_img bash -c "sudo mkdir -p /run/sshd && sudo /usr/sbin/sshd && exec sleep infinity"
