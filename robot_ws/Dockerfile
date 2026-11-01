@@ -45,6 +45,12 @@ RUN apt-get update && apt-get install -y \
     ros-${ROS_DISTRO}-vision-msgs \
 && rm -rf /var/lib/apt/lists/*
 
+# ROS2 SLAM and IMU filtering - slam_toolbox (config in x3_bringup/config/slam_toolbox_params.yaml) and the Madgwick IMU filter
+RUN apt-get update && apt-get install -y \
+    ros-${ROS_DISTRO}-slam-toolbox \
+    ros-${ROS_DISTRO}-imu-filter-madgwick \
+&& rm -rf /var/lib/apt/lists/*
+
 WORKDIR /
 RUN git clone https://github.com/libuvc/libuvc.git \
     && cd libuvc \
