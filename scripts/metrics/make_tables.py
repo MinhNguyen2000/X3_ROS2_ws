@@ -5,7 +5,7 @@ Reads scripts/metrics/output/{g2g_units,multigoal_units}.csv (extract_leg_metric
 scripts/sim2real/seed_selection_bm.csv (P1 ranking). Writes to the same output folder:
   table_g2g.tex           table:spl_aggregate       success rate (one decimal), SPL (shortest path)
   table_failure_modes.tex table:failure_modes       collisions and timeouts, G2G and multi-goal
-  table_multigoal.tex     table:multigoal_success   runs, 6/6 policies, goal completion, SPL
+  table_multigoal.tex     table:multigoal_success   runs, 6/6 and >=5/6 policies, goal completion, SPL
   table_deployed.tex      Physical Deployment       the B / M policies, labelled as selected in-sample
   fig_multigoal_seeds.{pdf,png}                     one dot per policy, goal completion and SPL
   tables_meta.json                                  commit, date, inputs
@@ -95,11 +95,21 @@ def table_multigoal(m):
     def full(k):
         return '---' if k == 'apf' else f'{int((mb[k].run_success >= 100 - 1e-9).sum())}/{len(mb[k])}'
 
-    header = [r' & & \multicolumn{2}{c|}{\textbf{Runs}} & \multicolumn{2}{c|}{\textbf{Goal completion (\%)}} & \multicolumn{2}{c}{\textbf{SPL (shortest path)}} \\',
-              r'\textbf{Planner} & \textbf{} & Successful & Policies 6/6 & Mean $\pm$ SD & Median [Q1, Q3] & All legs & Reached legs \\',
-              r' & & & & & & \multicolumn{2}{c}{Median [Q1, Q3]} \\']
-    return tabular('ll|cc|cc|cc', header, lambda k: [
-        runs(k), full(k), ms(mb[k].goal_completion, 1), med(mb[k].goal_completion, 1),
+    def most(k):
+        if k == 'apf':
+            return '---'
+        ok = np.round(mb[k].run_success / 100 * mb[k].n_runs)
+        return f'{int((ok >= mb[k].n_runs - 1).sum())}/{len(mb[k])}'
+
+    def two_line(top, bottom):
+        return r'\begin{tabular}[c]{@{}c@{}}' + top + r'\\' + bottom + r'\end{tabular}'
+
+    header = [r' & & \multicolumn{3}{c|}{\textbf{Runs}} & \multicolumn{2}{c|}{\textbf{Goal completion (\%)}} & \multicolumn{2}{c}{\textbf{SPL (shortest path)}} \\',
+              r'\textbf{Planner} & \textbf{} & Success & ' + two_line('Policies', '6/6') + ' & '
+              + two_line('Policies', r'$\geq$5/6') + r' & Mean $\pm$ SD & Median [Q1, Q3] & All legs & Reached legs \\',
+              r' & & & & & & & \multicolumn{2}{c}{Median [Q1, Q3]} \\']
+    return tabular('ll|ccc|cc|cc', header, lambda k: [
+        runs(k), full(k), most(k), ms(mb[k].goal_completion, 1), med(mb[k].goal_completion, 1),
         med(mb[k].spl_geo, 3), med(mb[k].spl_geo_reached, 3)])
 
 
