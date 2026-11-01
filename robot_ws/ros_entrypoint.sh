@@ -14,4 +14,13 @@ echo "--------------------------------------------------------"
 # Source ROS so it's available in exec'd shells
 source /opt/ros/humble/setup.bash
 
+# --- Lab DDS (added 2026-11-01): Fast DDS Discovery Server on the dev machine (192.168.0.104).
+# Every terminal that sources this file uses it; LAB_DDS=off in a terminal selects default discovery.
+if [ "${LAB_DDS:-server}" != "off" ]; then
+  export ROS_DISCOVERY_SERVER=${LAB_DDS_SERVER:-192.168.0.104:11811}
+else
+  unset ROS_DISCOVERY_SERVER
+fi
+echo "DDS: ${ROS_DISCOVERY_SERVER:-default discovery}${ROS_SUPER_CLIENT:+ (super client)}"
+
 exec "$@"
