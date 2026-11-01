@@ -24,4 +24,14 @@ git submodule update --init --recursive
 source /X3_ROS2_ws/install/setup.bash
 export IGN_GAZEBO_RESOURCE_PATH=/X3_ROS2_ws/install/x3_description/share:$IGN_GAZEBO_RESOURCE_PATH
 
+# --- Lab DDS (added 2026-11-01): Fast DDS Discovery Server on the dev machine (192.168.0.104).
+# Every terminal that sources this file uses it; LAB_DDS=off in a terminal selects default discovery.
+if [ "${LAB_DDS:-server}" != "off" ]; then
+  export ROS_DISCOVERY_SERVER=${LAB_DDS_SERVER:-192.168.0.104:11811}
+  export ROS_SUPER_CLIENT=TRUE   # dev machine only: lets RViz and the ROS tools list every topic
+else
+  unset ROS_DISCOVERY_SERVER ROS_SUPER_CLIENT
+fi
+echo "DDS: ${ROS_DISCOVERY_SERVER:-default discovery}${ROS_SUPER_CLIENT:+ (super client)}"
+
 exec "$@"
