@@ -92,6 +92,22 @@ RUN apt-get update && apt-get install -y sudo \
           && echo "$USERNAME ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/$USERNAME \
           && chmod 0440 /etc/sudoers.d/$USERNAME
 
+# SSH server on port 2222 so VS Code Remote-SSH can open the container directly (the host keeps port 22; the container uses host networking).
+# Key-only: no passwords, no root login, only the ros user. The keys come from the host's ~/.ssh/authorized_keys, bind-mounted by start_container.sh.
+# usermod -p '*' leaves ros without a password but not locked, because sshd refuses key logins for a locked account.
+RUN apt-get update && apt-get install -y openssh-server \
+          && rm -rf /var/lib/apt/lists/* \
+          && mkdir -p /run/sshd \
+          && printf '%s\n' \
+               'Port 2222' \
+               'PermitRootLogin no' \
+               'PasswordAuthentication no' \
+               'KbdInteractiveAuthentication no' \
+               'AllowUsers ros' \
+               > /etc/ssh/sshd_config.d/10-container.conf \
+          && ssh-keygen -A \
+          && usermod -p '*' $USERNAME
+
 # Switch from root to user
 USER $USERNAME
 
