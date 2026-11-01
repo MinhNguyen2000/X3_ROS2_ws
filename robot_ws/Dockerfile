@@ -140,7 +140,10 @@ RUN pip install "numpy<2" \
 # The pip step above pulls in the newest setuptools (84.x), which no longer accepts `setup.py develop --uninstall`;
 # colcon calls it when it rebuilds a package that was built with --symlink-install, so `colcon build` then fails with
 # "option --uninstall not recognized". 79.0.1 keeps the option and still satisfies torch (setuptools>=77.0.3).
-RUN pip install "setuptools==79.0.1"
+# setuptools 79 also needs packaging>=22 (canonicalize_version(strip_trailing_zero=...)), but the system python3-packaging
+# 21.3 in /usr/lib/python3/dist-packages is found first and colcon then fails with "unexpected keyword argument
+# 'strip_trailing_zero'", so a newer packaging goes into the ros user's site, which comes before dist-packages.
+RUN pip install "setuptools==79.0.1" "packaging>=24.2"
 
 WORKDIR /X3_ROS2_ws
 USER root 
