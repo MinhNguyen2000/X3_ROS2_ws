@@ -89,6 +89,12 @@ def generate_launch_description():
         description="Start the face detection and emotion recognition nodes (false saves battery for pure navigation runs)"
     )
 
+    enable_camera_arg = DeclareLaunchArgument(
+        "enable_camera",
+        default_value="true",
+        description="Start the Astra camera driver and the compressed image republisher (false for pure navigation runs; the face and emotion nodes then get no images)"
+    )
+
     robot_model = LaunchConfiguration("robot_model")
     camera_name = LaunchConfiguration("orbbec_cameracamera_name")
 
@@ -118,7 +124,8 @@ def generate_launch_description():
             'depth_registration': 'true',
             'color_depth_synchronization': 'true',
             'enable_d2c_viewer': 'true',
-        }.items()
+        }.items(),
+        condition=IfCondition(LaunchConfiguration("enable_camera")),
     )
 
     # face detection node
@@ -158,6 +165,7 @@ def generate_launch_description():
             'compressed.jpeg_quality': 60,
             'compressed.format': 'jpeg',
         }],
+        condition=IfCondition(LaunchConfiguration("enable_camera")),
     )
 
     # lidar launch file
@@ -226,6 +234,7 @@ def generate_launch_description():
         policy_model_arg,
         start_policy_arg,
         enable_face_emotion_arg,
+        enable_camera_arg,
         odom_profile_arg,
         driver_rate_arg,
         camera_name_arg,
