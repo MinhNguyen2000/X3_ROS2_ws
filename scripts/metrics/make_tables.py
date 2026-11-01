@@ -3,7 +3,7 @@
 
 Reads scripts/metrics/output/{g2g_units,multigoal_units}.csv (extract_leg_metrics.py) and
 scripts/sim2real/seed_selection_bm.csv (P1 ranking). Writes to the same output folder:
-  table_g2g.tex           table:spl_aggregate       success, SPL (shortest path), SPL (straight line)
+  table_g2g.tex           table:spl_aggregate       success rate (one decimal), SPL (shortest path)
   table_failure_modes.tex table:failure_modes       collisions and timeouts, G2G and multi-goal
   table_multigoal.tex     table:multigoal_success   runs, 6/6 policies, goal completion, SPL
   table_deployed.tex      Physical Deployment       the B / M policies, labelled as selected in-sample
@@ -12,7 +12,9 @@ scripts/sim2real/seed_selection_bm.csv (P1 ranking). Writes to the same output f
 
 Layout (decision 2026-10-28): every seed is reported; the statistic is median [Q1, Q3] across
 the units (policies, or the 5 APF repeats), with mean +- sample SD as a secondary column.
-Shortest-path SPL is primary and straight-line SPL secondary. The B / M policies of the P1 rule
+Shortest-path SPL is the SPL in the tables. Update 2026-11-01: the goal-to-goal table shows the success
+rate at one decimal and no longer has the straight-line SPL column (it stays in g2g_units.csv, as
+spl_straight), matching the paper's table:spl_aggregate. The B / M policies of the P1 rule
 are shown separately: they are ranked on these same scenarios, so B is best of 10 by construction.
 Only table bodies (tabular) are written; captions and placement belong to the paper.
 
@@ -66,11 +68,11 @@ def tabular(colspec, header, cells):
 
 def table_g2g(g):
     by = {k: g[g.kind == k] for k in KINDS}
-    header = [r' & & \multicolumn{2}{c|}{\textbf{Success Rate (\%)}} & \multicolumn{2}{c|}{\textbf{SPL (shortest path)}} & \textbf{SPL (straight line)} \\',
-              r'\textbf{Planner} & \textbf{} & Mean $\pm$ SD & Median [Q1, Q3] & Mean $\pm$ SD & Median [Q1, Q3] & Median [Q1, Q3] \\']
-    return tabular('ll|cc|cc|c', header, lambda k: [
-        ms(by[k].success_rate, 2), med(by[k].success_rate, 2),
-        ms(by[k].spl_geo, 3), med(by[k].spl_geo, 3), med(by[k].spl_straight, 3)])
+    header = [r' & & \multicolumn{2}{c|}{\textbf{Success Rate (\%)}} & \multicolumn{2}{c}{\textbf{SPL (shortest path)}} \\',
+              r'\textbf{Planner} & \textbf{} & Mean $\pm$ SD & Median [Q1, Q3] & Mean $\pm$ SD & Median [Q1, Q3] \\']
+    return tabular('ll|cc|cc', header, lambda k: [
+        ms(by[k].success_rate, 1), med(by[k].success_rate, 1),
+        ms(by[k].spl_geo, 3), med(by[k].spl_geo, 3)])
 
 
 def table_failure_modes(g, m):
