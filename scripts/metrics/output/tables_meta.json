@@ -1,7 +1,7 @@
 {
   "script": "scripts/metrics/make_tables.py",
-  "code_commit": "be5e99e",
-  "generated": "2026-10-28T14:55:59",
+  "code_commit": "a78e2e8",
+  "generated": "2026-11-01T14:31:02",
   "inputs": [
     "output/g2g_units.csv",
     "output/multigoal_units.csv",
