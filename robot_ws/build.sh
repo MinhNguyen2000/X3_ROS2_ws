@@ -1,6 +1,9 @@
+#!/bin/bash
 # Script to build the ros2_humble image
 
-#!/bin/bash
+# Stop at the first failing command, so a failed docker build is not reported as "Build complete!"
+set -e
+
 IMAGE_NAME="ros2_humble_img"
 
 # Get the directory where THIS script is located

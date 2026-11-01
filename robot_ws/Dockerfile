@@ -137,5 +137,10 @@ RUN pip install "numpy<2" \
     stable-baselines3 \
     && pip3 install onnxruntime-gpu --extra-index-url https://pypi.jetson-ai-lab.io/jp6/cu126
 
+# The pip step above pulls in the newest setuptools (84.x), which no longer accepts `setup.py develop --uninstall`;
+# colcon calls it when it rebuilds a package that was built with --symlink-install, so `colcon build` then fails with
+# "option --uninstall not recognized". 79.0.1 keeps the option and still satisfies torch (setuptools>=77.0.3).
+RUN pip install "setuptools==79.0.1"
+
 WORKDIR /X3_ROS2_ws
 USER root 

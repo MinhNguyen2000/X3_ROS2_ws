@@ -72,6 +72,7 @@ The policy node parameters below live once in `drl_policy.launch.py` (arguments 
 (default `true`; `false` lets `scripts/sim2real/run_robot_schedule.py` start and switch the policy node itself).
 Before this change the model could not be chosen from the launch file.
 `robot.launch.py` also has `enable_face_emotion` (default `true`); `false` leaves out the face detection and emotion recognition nodes, which are not needed for navigation runs and drain the battery faster.
+It also has `enable_camera` (default `true`); `false` leaves out the Astra camera driver and the compressed image republisher, and the face and emotion nodes then get no images.
 | Parameter | Before | Now |
 |---|---|---|
 | `normalized_actions` | default (true) | `True` |
