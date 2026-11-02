@@ -5,3 +5,9 @@ timestamp,kind,topic,odom_value,measured,unit,ratio,note,code
 2026-11-02T13:23:09,straight,/agent0/odom_rf2o,3.2957,3.24,m,1.0172,"main profile, driver_rate 50, rf2o on scan_filtered",ddc13ed
 2026-11-02T13:24:55,straight,/agent0/odom,3.2041,3.193,m,1.0035,"main profile, driver_rate 50, rf2o on scan_filtered",ddc13ed
 2026-11-02T13:24:55,straight,/agent0/odom_rf2o,3.2316,3.193,m,1.0121,"main profile, driver_rate 50, rf2o on scan_filtered",ddc13ed
+2026-11-02T17:28:15,turn,/agent0/odom,348.6061,350.0,deg,0.996,"main profile, driver_rate 50, rf2o on scan_filtered",5d01d4b
+2026-11-02T17:28:15,turn,/agent0/odom_rf2o,348.9675,350.0,deg,0.997,"main profile, driver_rate 50, rf2o on scan_filtered",5d01d4b
+2026-11-02T17:32:27,turn,/agent0/odom,347.7689,347.0,deg,1.0022,"main profile, driver_rate 50, rf2o on scan_filtered",5d01d4b
+2026-11-02T17:32:27,turn,/agent0/odom_rf2o,347.5946,347.0,deg,1.0017,"main profile, driver_rate 50, rf2o on scan_filtered",5d01d4b
+2026-11-02T17:34:46,turn,/agent0/odom,348.4595,350.0,deg,0.9956,"main profile, driver_rate 50, rf2o on scan_filtered",5d01d4b
+2026-11-02T17:34:46,turn,/agent0/odom_rf2o,348.5433,350.0,deg,0.9958,"main profile, driver_rate 50, rf2o on scan_filtered",5d01d4b
