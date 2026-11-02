@@ -19,6 +19,31 @@ Owner decisions of 2026-10-29: all 160 runs are collected with the frozen config
    runner reports no config mismatch.
 
 6. **Odometry setup (decide before the scale check).** `robot.launch.py` takes `odom_profile:=` (empty = EKF and covariance files of `main`, `_robot_20261029` = the robot-local tuning of 2026-10-29 without the camera input); rf2o reads `scan_filtered` in both. Rebuild `x3_bringup` and `x3_covariance_filter` first. The drives are made with `scripts/sim2real/drive_pattern.sh straight|turn|square` (3 m at 0.2 m/s, one turn at 0.3 rad/s, two laps of a 1 m square), which always ends with zero commands: the driver keeps the last `cmd_vel` until a new one arrives, so a raw `ros2 topic pub` leaves the robot driving; keep the e-stop in hand. Launch with `driver_rate:=50` (the driver publishes IMU and wheel velocity at 10 Hz by default, which caps the odometry at 10 Hz; check `ros2 topic hz /agent0/imu/data_raw /agent0/odom`). Record two or three drives with the bringup up and the overhead-camera tracker on (a straight 3 m, a full turn, a 1-2 minute path like a run); `python3 scripts/sim2real/ekf_compare.py record-cmd --name <drive>` prints the `ros2 bag record` command. Make the 10 Hz version of each bag with `ekf_compare.py decimate --factor 5`. Replay each bag and its decimated copy through each profile (`ekf_compare.py replay`) and score them against the camera track (`ekf_compare.py score`); the table gives the fit error, length ratio, yaw drift and odometry rate per setup and driver rate and the EKF warnings of the replay. Freeze the profile and the driver rate that are chosen (the defaults of `odom_profile` and `driver_rate`, committed) and record the choice in a note before the scale check. The overhead camera is not fused into the odometry for the runs.
+   **Commands for the drives of step 6, one terminal each.** Every robot terminal first enters the container and sources the workspace:
+   ```bash
+   docker exec -it ros2_humble bash
+   cd /X3_ROS2_ws && source install/setup.bash
+   ```
+   On the Pi 5 (overhead tracker, before driving; add `frame_rate:=15` when nobody views the stream):
+   ```bash
+   ros2 launch ceiling_tracker aruco_tracker.launch.py
+   ```
+   Terminal 1, bringup (add `odom_profile:=_robot_20261029` for the robot-local profile; leave it out for the `main` files):
+   ```bash
+   ros2 launch x3_bringup robot.launch.py start_policy:=false enable_face_emotion:=false enable_camera:=false driver_rate:=50
+   ros2 topic hz /agent0/imu/data_raw /agent0/odom /agent0/odom_camera    # from another terminal, before recording
+   ```
+   Terminal 2, recording (the bag folder is created in the current directory; `scripts/sim2real/bags/` is git-ignored). Start it before the drive, one bag per drive (`--name straight`, `--name turn`):
+   ```bash
+   mkdir -p /X3_ROS2_ws/scripts/sim2real/bags/$(date +%F) && cd /X3_ROS2_ws/scripts/sim2real/bags/$(date +%F)
+   python3 /X3_ROS2_ws/scripts/sim2real/ekf_compare.py record-cmd --name straight   # prints the command below; run it
+   ros2 bag record -o straight /agent0/scan /agent0/imu/data_raw /agent0/imu/mag /agent0/vel_raw /agent0/odom_camera /agent0/odom /agent0/odom_rf2o /agent0/cmd_vel
+   ```
+   Terminal 3, drive (e-stop in hand; the script ends with zero commands, also on Ctrl-C):
+   ```bash
+   bash /X3_ROS2_ws/scripts/sim2real/drive_pattern.sh straight    # or turn, or square
+   ```
+   When it prints `done, robot stopped`, press Ctrl-C in Terminal 2 to close the bag, then repeat Terminals 2 and 3 for the next drive.
 7. **Odometry scale check (gate for stretch 1).** The runs are scored by the odometry, so measure its error first: with the frozen bringup running, `python3 scripts/sim2real/odom_scale_check.py --kind straight --note "<setup>"` (about 3 m at 0.2 m/s along a taped line, tape-measured distance) driven with `drive_pattern.sh straight`, and one `--kind turn` run if easy. Note in `--note` which scan rf2o reads (the robot-local change feeds rf2o and the EKF from `scan_filtered`; rf2o on the raw scan underestimates linear motion because of the robot's own parts behind the LiDAR). **DECIDE: the acceptable error (a few percent suggested).** The result goes into the notes and the paper's limitations.
 8. **Uncommitted changes on the robot.** The saved run JSON and the manifest mark runs made with uncommitted changes under `src` (`code` = `<hash>+dirty:<diff hash>`, `dirty` = 1). Commit the robot-local changes to a branch in the repository before stretch 1 so that the diff hash can be matched to a commit.
 
