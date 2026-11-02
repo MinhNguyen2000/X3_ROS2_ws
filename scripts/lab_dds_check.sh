@@ -11,4 +11,5 @@ echo "robot topics (/agent0/*): $robot    Pi camera topics (/camera/*): $cam"
 [ "$up" -lt 1 ] && { echo "RESULT: FAIL, start the server (see the notes) or use LAB_DDS=off"; exit 1; }
 [ "$cam" -lt 1 ] && echo "WARN: no Pi camera topics; is the tracker running with the setting on (new shell shows 'DDS: 192.168.0.104:11811')?"
 [ "$robot" -lt 1 ] && echo "WARN: no robot topics; is the robot bringup running from a new shell on the robot?"
+echo "NOTE: this check runs as a super client. On the robot and the Pi the banner must also say '(super client)'; there, 'ros2 topic list' should show the topics, otherwise 'ros2 bag record' writes empty bags."
 [ "$cam" -ge 1 ] && [ "$robot" -ge 1 ] && echo "RESULT: OK" || echo "RESULT: partial"
