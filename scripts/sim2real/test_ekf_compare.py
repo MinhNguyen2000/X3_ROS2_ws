@@ -77,3 +77,19 @@ def test_odom_rate_is_reported():
     t = np.arange(0.0, 20.0, 0.1)
     odom = np.c_[0.2 * t, np.zeros_like(t), np.zeros_like(t)]
     assert abs(ec.score(t, odom, t, odom)['odom_hz'] - 10.0) < 1e-6
+
+
+def test_camera_offset_is_recovered_from_a_turn():
+    t = np.arange(0.0, 20.0, 0.05)
+    yaw = 2 * np.pi * (1 - np.cos(np.pi * t / t[-1])) / 2     # one full turn, smooth start and stop
+    ref = np.c_[np.zeros_like(t), np.zeros_like(t), yaw]
+    t_cam = np.arange(0.0, 20.0, 1 / 15)
+    cam = np.c_[np.zeros_like(t_cam), np.zeros_like(t_cam), np.interp(t_cam, t, yaw) + 1.0]
+    offset, rms_best, rms_zero = ec.estimate_time_offset(t, ref, t_cam + 0.52, cam)   # camera stamps 0.52 s ahead
+    assert abs(offset - 0.52) < 0.011
+    assert rms_best < 0.1 < rms_zero
+
+
+def test_camera_offset_with_no_overlap_gives_none():
+    t, odom = track()
+    assert ec.estimate_time_offset(t, odom, t + 100.0, odom) is None

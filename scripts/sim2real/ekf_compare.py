@@ -23,6 +23,12 @@ Scores (one row per bag and candidate; 'live' is the /agent0/odom recorded durin
   odom_hz       median rate of the odometry (the EKF output follows its inputs, so it is the driver rate when that is the
                 slowest fast input)
   warn          lines in the replay log about update rate, transforms or dropped messages
+
+Camera time offset: the tracks are aligned by header stamp, and the camera stamps of 2026-11-02 run about 0.5 s ahead
+of the robot (the pose stamped t shows the robot at t - 0.5 s), which costs about 6 degrees of yaw in a full turn.
+score --camera-offset SEC subtracts SEC from the camera stamps; --estimate-camera-offset finds the shift that best
+matches the camera yaw to the live /agent0/odom yaw, prints it and applies it when the drive turns at least 45 degrees
+(estimate it on a turn bag and pass it to the straight ones).
 """
 import argparse
 import glob
@@ -40,6 +46,7 @@ AGENT = 'agent0'
 RAW_TOPICS = [f'/{AGENT}/scan', f'/{AGENT}/imu/data_raw', f'/{AGENT}/imu/mag', f'/{AGENT}/vel_raw']
 REF_TOPICS = [f'/{AGENT}/odom_camera', f'/{AGENT}/odom', f'/{AGENT}/odom_rf2o', f'/{AGENT}/cmd_vel']
 DECIMATED = [f'/{AGENT}/imu/data_raw', f'/{AGENT}/imu/mag', f'/{AGENT}/vel_raw']
+MIN_TURN_DEG = 45.0     # least turning of a drive for --estimate-camera-offset to be applied
 WARN = re.compile(r'update rate|could not transform|extrapolat|dropp|timed out|exceed', re.I)
 
 
@@ -99,6 +106,30 @@ def score(t_odom, odom, t_cam, cam):
         'yaw_max_deg': float(np.degrees(np.abs(dyaw).max())),
         'odom_hz': float(1.0 / np.median(np.diff(t_odom))),
     }
+
+
+def yaw_mismatch_deg(t_ref, ref, t_cam, cam, dt=0.02):
+    """RMS [deg] of the camera yaw against the reference yaw over the time both cover, after removing the constant
+    yaw offset between their frames; None when they overlap for less than a second."""
+    lo, hi = max(t_ref[0], t_cam[0]), min(t_ref[-1], t_cam[-1])
+    if hi - lo < 1.0:
+        return None
+    t = np.arange(lo, hi, dt)
+    d = resample(t_ref, ref, t)[:, 2] - resample(t_cam, cam, t)[:, 2]
+    return float(np.degrees(np.sqrt(((d - d.mean()) ** 2).mean())))
+
+
+def estimate_time_offset(t_ref, ref, t_cam, cam, max_shift=1.0, step=0.01):
+    """(offset [s], yaw RMS at the offset, yaw RMS at 0) where offset is the amount the camera stamps run ahead of the
+    reference: the camera track matches best with its stamps moved back by offset. Only the yaw is matched, so the
+    drive has to turn for the estimate to mean anything."""
+    shifts = np.arange(-max_shift, max_shift + step / 2, step)
+    rms = [yaw_mismatch_deg(t_ref, ref, t_cam - s, cam) for s in shifts]
+    ok = [i for i, r in enumerate(rms) if r is not None]
+    if not ok:
+        return None
+    best = min(ok, key=lambda i: rms[i])
+    return float(shifts[best]), rms[best], yaw_mismatch_deg(t_ref, ref, t_cam, cam)
 
 
 def read_odometry(bag_dir, topic):
@@ -179,6 +210,18 @@ def cmd_score(args):
     t_cam, cam = read_odometry(args.bag, f'/{AGENT}/odom_camera')
     rows = []
     t, v = read_odometry(args.bag, f'/{AGENT}/odom')
+    offset = args.camera_offset
+    if args.estimate_camera_offset:
+        est = estimate_time_offset(t, v, t_cam, cam)
+        if est is None:
+            sys.exit('camera offset: the camera and /odom tracks do not overlap')
+        found, rms_best, rms_zero = est
+        turned = np.degrees(np.ptp(np.unwrap(v[:, 2])))
+        reliable = turned >= MIN_TURN_DEG
+        offset = found if reliable else 0.0
+        print(f'camera offset: {found:+.2f} s (yaw RMS {rms_zero:.1f} -> {rms_best:.1f} deg; the drive turns {turned:.0f} deg'
+              f'{"" if reliable else ", too little to trust it: not applied, pass --camera-offset from a turn"})')
+    t_cam = t_cam - offset
     rows.append(('live', score(t, v, t_cam, cam), None))
     for item in args.replay:
         name, path = item.split('=', 1)
@@ -210,6 +253,11 @@ def main():
     p = sub.add_parser('score')
     p.add_argument('--bag', required=True)
     p.add_argument('--replay', action='append', default=[], metavar='NAME=OUT_BAG')
+    g = p.add_mutually_exclusive_group()
+    g.add_argument('--camera-offset', type=float, default=0.0, metavar='SEC',
+                   help='seconds the camera stamps run ahead of the robot; subtracted from them before scoring')
+    g.add_argument('--estimate-camera-offset', action='store_true',
+                   help='estimate the camera offset from the yaw against the live /odom and apply it')
     args = ap.parse_args()
     if args.cmd == 'record-cmd':
         print(' '.join(record_cmd(args.name)))
