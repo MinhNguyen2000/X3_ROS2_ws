@@ -40,7 +40,7 @@ Owner decisions of 2026-10-29: all 160 runs are collected with the frozen config
    python3 /X3_ROS2_ws/scripts/sim2real/ekf_compare.py record-cmd --name straight   # prints the command below; run it
    ros2 bag record -o straight /agent0/scan /agent0/imu/data_raw /agent0/imu/mag /agent0/vel_raw /agent0/odom_camera /agent0/odom /agent0/odom_rf2o /agent0/cmd_vel
    ```
-   Terminal 3, drive (e-stop in hand; the script ends with zero commands, also on Ctrl-C):
+   Terminal 3, drive (e-stop in hand; the script waits for the driver, ends with zero commands, also on Ctrl-C, and prints `done, robot stopped` only when the driver's wheel velocity reads zero; on `STOP NOT CONFIRMED` use the e-stop):
    ```bash
    bash /X3_ROS2_ws/scripts/sim2real/drive_pattern.sh straight    # or turn, or square
    ```
