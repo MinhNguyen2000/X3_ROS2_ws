@@ -11,8 +11,9 @@ export LIDAR_TYPE=X3
 # Every terminal that sources this file uses it; LAB_DDS=off in a terminal selects default discovery.
 if [ "${LAB_DDS:-server}" != "off" ]; then
   export ROS_DISCOVERY_SERVER=${LAB_DDS_SERVER:-192.168.0.104:11811}
+  export ROS_SUPER_CLIENT=TRUE   # a plain client sees no graph: ros2 topic list/echo, ros2 node list and ros2 bag record need it
 else
-  unset ROS_DISCOVERY_SERVER
+  unset ROS_DISCOVERY_SERVER ROS_SUPER_CLIENT
 fi
 
 echo "--------------------------------------------------------"
