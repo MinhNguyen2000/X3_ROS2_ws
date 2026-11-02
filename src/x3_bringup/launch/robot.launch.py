@@ -74,13 +74,13 @@ def generate_launch_description():
     odom_profile_arg = DeclareLaunchArgument(
         "odom_profile",
         default_value="",
-        description="EKF and covariance parameter files of the odometry: '' (main) or _robot_20261029 (config/)"
+        description="EKF and covariance parameter files of the odometry: '' (main, chosen for the runs on 2026-11-02) or _robot_20261029 (config/)"
     )
 
     driver_rate_arg = DeclareLaunchArgument(
         "driver_rate",
-        default_value="10.0",
-        description="Hz at which the driver publishes IMU, wheel velocity and magnetometer (the EKF cannot output faster than its fastest input)"
+        default_value="50.0",
+        description="Hz at which the driver publishes IMU, wheel velocity and magnetometer (the EKF cannot output faster than its fastest input); 50 is the rate of the drives the odometry was chosen on (2026-11-02)"
     )
 
     enable_face_emotion_arg = DeclareLaunchArgument(
