@@ -1,0 +1,7 @@
+timestamp,kind,topic,odom_value,measured,unit,ratio,note,code
+2026-11-02T13:18:43,straight,/agent0/odom,3.2121,3.21,m,1.0007,"main profile, driver_rate 50, rf2o on scan_filtered",ddc13ed
+2026-11-02T13:18:43,straight,/agent0/odom_rf2o,3.2649,3.21,m,1.0171,"main profile, driver_rate 50, rf2o on scan_filtered",ddc13ed
+2026-11-02T13:23:09,straight,/agent0/odom,3.2499,3.24,m,1.0031,"main profile, driver_rate 50, rf2o on scan_filtered",ddc13ed
+2026-11-02T13:23:09,straight,/agent0/odom_rf2o,3.2957,3.24,m,1.0172,"main profile, driver_rate 50, rf2o on scan_filtered",ddc13ed
+2026-11-02T13:24:55,straight,/agent0/odom,3.2041,3.193,m,1.0035,"main profile, driver_rate 50, rf2o on scan_filtered",ddc13ed
+2026-11-02T13:24:55,straight,/agent0/odom_rf2o,3.2316,3.193,m,1.0121,"main profile, driver_rate 50, rf2o on scan_filtered",ddc13ed
