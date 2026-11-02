@@ -24,6 +24,7 @@ Owner decisions of 2026-10-29: all 160 runs are collected with the frozen config
    docker exec -it ros2_humble bash
    cd /X3_ROS2_ws && source install/setup.bash
    ```
+   The banner must show `DDS: 192.168.0.104:11811 (super client)`. A plain discovery-server client (no `(super client)`) cannot list topics or nodes, and `ros2 bag record` then writes an empty bag (0 messages); in that terminal run `export ROS_SUPER_CLIENT=TRUE; ros2 daemon stop` and check `ros2 topic list` shows the `/agent0/*` topics.
    On the Pi 5 (overhead tracker, before driving; add `frame_rate:=15` when nobody views the stream):
    ```bash
    ros2 launch ceiling_tracker aruco_tracker.launch.py
@@ -43,7 +44,7 @@ Owner decisions of 2026-10-29: all 160 runs are collected with the frozen config
    ```bash
    bash /X3_ROS2_ws/scripts/sim2real/drive_pattern.sh straight    # or turn, or square
    ```
-   When it prints `done, robot stopped`, press Ctrl-C in Terminal 2 to close the bag, then repeat Terminals 2 and 3 for the next drive.
+   When it prints `done, robot stopped`, press Ctrl-C in Terminal 2 to close the bag and run `ros2 bag info straight`: the message counts of `/agent0/odom`, `/agent0/imu/data_raw` and `/agent0/cmd_vel` must not be 0 (expect about 50 Hz for the IMU and 2.6 Hz for `/agent0/odom_camera`). Then repeat Terminals 2 and 3 for the next drive.
 7. **Odometry scale check (gate for stretch 1).** The runs are scored by the odometry, so measure its error first: with the frozen bringup running, `python3 scripts/sim2real/odom_scale_check.py --kind straight --note "<setup>"` (about 3 m at 0.2 m/s along a taped line, tape-measured distance) driven with `drive_pattern.sh straight`, and one `--kind turn` run if easy. Note in `--note` which scan rf2o reads (the robot-local change feeds rf2o and the EKF from `scan_filtered`; rf2o on the raw scan underestimates linear motion because of the robot's own parts behind the LiDAR). **DECIDE: the acceptable error (a few percent suggested).** The result goes into the notes and the paper's limitations.
 8. **Uncommitted changes on the robot.** The saved run JSON and the manifest mark runs made with uncommitted changes under `src` (`code` = `<hash>+dirty:<diff hash>`, `dirty` = 1). Commit the robot-local changes to a branch in the repository before stretch 1 so that the diff hash can be matched to a commit.
 
