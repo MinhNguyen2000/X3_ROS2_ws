@@ -8,3 +8,6 @@ robot_ws/gpu_libs
 
 # Python stuff
 __pycache__
+
+# Odometry drive bags recorded on the robot (docs/real_robot_run_protocol.md)
+scripts/sim2real/bags/
