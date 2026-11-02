@@ -77,8 +77,9 @@ class GoalSequenceServer(Node):
         # published by whichever planner (DRL/APF) is currently active.
         self._cmd_vel_sub = self.create_subscription(TwistStamped, f'cmd_vel', self._cmd_vel_callback, 10)
 
-        # Subscribe to the wheel odometry executed by the robot (only available in Gazebo)
-        self._wheel_odom_sub = self.create_subscription(Odometry, f'wheel_odom', self._wheel_odom_callback, 10)
+        # Subscribe to the wheel velocity executed by the robot: the Rosmaster driver's vel_raw
+        # on hardware, odom_to_vel_raw_node's copy of the wheel_odom twist in Gazebo
+        self._vel_raw_sub = self.create_subscription(TwistStamped, f'vel_raw', self._vel_raw_callback, 10)
 
         # Subscribe to camera-based ground truth odometry (only available on physical system)
         self._camera_odom_sub = self.create_subscription(Odometry, f'odom_camera', self._camera_odom_callback, 10)
@@ -292,11 +293,12 @@ class GoalSequenceServer(Node):
             "vyaw": round(msg.twist.angular.z, 3),
         })
 
-    def _wheel_odom_callback(self, msg: Odometry):
+    def _vel_raw_callback(self, msg: TwistStamped):
         '''
-        Logs the velocity actually executed by the robot, derived from wheel
-        encoders via diff_drive_controller (pre-EKF, so it reflects real
-        motor/wheel behavior rather than a smoothed state estimate).
+        Logs the velocity actually executed by the robot, derived from the wheel
+        encoders (the Rosmaster driver on hardware, diff_drive_controller in Gazebo;
+        pre-EKF, so it reflects real motor/wheel behavior rather than a smoothed
+        state estimate).
         '''
         # Only log while a sequence is actively navigating
         if not hasattr(self, '_start_time'):
@@ -308,8 +310,8 @@ class GoalSequenceServer(Node):
  
         self._actual_vel_buffer.append({
             "t":    round(t, 4),
-            "vx":   round(msg.twist.twist.linear.x, 3),
-            "vyaw": round(msg.twist.twist.angular.z, 3),
+            "vx":   round(msg.twist.linear.x, 3),
+            "vyaw": round(msg.twist.angular.z, 3),
         })
 
     def _camera_odom_callback(self, msg: Odometry):
