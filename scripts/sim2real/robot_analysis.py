@@ -446,7 +446,7 @@ def fig_sim_vs_real(ps, path):
     import matplotlib.pyplot as plt
     plt.rcParams.update({'font.size': 8, 'text.color': INK, 'axes.labelcolor': INK, 'xtick.color': MUTED, 'ytick.color': MUTED,
                          'axes.edgecolor': GRID, 'pdf.fonttype': 42, 'ps.fonttype': 42})
-    fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.9), sharex=True)
+    fig, axes = plt.subplots(1, 2, figsize=(5.3, 2.6), sharex=True)         # the paper's full text width (in)
     x = np.arange(len(ps)) + (np.arange(len(ps)) // 2) * 0.5
     for ax, (sk, rk, ylabel, ylim), letter in zip(axes, (('sim_goals_pct', 'goals_pct', 'Goal completion (%)', (0, 104)),
                                                          ('sim_spl', 'spl_all', 'SPL, shortest path, all legs', (0, 1.0))), '(a)(b)'.replace(')(', ') (').split()):
@@ -517,7 +517,7 @@ def fig_paths(recs, lab, out_dir):
     os.makedirs(panels, exist_ok=True)
     vp.FIG_DIR = panels
     cfg = vc.world_config(WORLD)
-    w = 7.0
+    w = 5.3                                                          # the paper's full text width (in), so the 6 pt fonts stay legible
     fig, axes = plt.subplots(len(rr.VARIANTS), 2, figsize=(w, (w / 2) * cfg['arena_w'] / cfg['arena_l'] * len(rr.VARIANTS) + 0.6))
     for i, v in enumerate(rr.VARIANTS):
         for j, path in enumerate(rr.PATHS):
