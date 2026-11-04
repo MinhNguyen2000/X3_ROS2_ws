@@ -217,10 +217,11 @@ def run_metrics(row, root, lab):
                min_clearance=clr, cmd_rms_a_lin=a_cmd[0], cmd_rms_a_ang=a_cmd[1], act_rms_a_lin=a_act[0], act_rms_a_ang=a_act[1],
                planner=row['variant'].split('_')[0], checkpoint=row['variant'].split('_')[1])
     msg = (d.get('result') or {}).get('message') or ''
-    m = re.search(r'Obstacle hit with distance\s+([0-9.]+)', msg)
+    m = re.search(r'Obstacle hit with distance\s+([0-9.]+),\s*index\s+(\d+)', msg)
     nxt = goals[rec['goals']] if rec['goals'] < len(goals) else None
     rec.update(fail_goal=rec['goals'] + 1 if not rec['success'] else '', message=msg if not rec['success'] else '',
                hit_distance=float(m.group(1)) if m and not rec['success'] else '',
+               hit_index=int(m.group(2)) if m and not rec['success'] else '',
                last_x=float(x[-1] + lab.odom_init[0]), last_y=float(y[-1] + lab.odom_init[1]),
                last_yaw=float(poses[-1].get('yaw', float('nan'))), t_end=float(poses[-1]['t']),
                dist_to_next_goal=float(np.hypot(x[-1] - nxt[0], y[-1] - nxt[1])) if nxt is not None else '',
@@ -336,6 +337,7 @@ def failures_by_obstacle(recs):
     bad = [r for r in recs if not r['success']]
     return dict(n_failed=len(bad), by_obstacle=dict(collections.Counter(r['nearest_obstacle'] for r in bad).most_common()),
                 by_failing_goal=dict(sorted(collections.Counter(int(r['fail_goal']) for r in bad).items())),
+                by_hit_index=dict(sorted(collections.Counter(int(r['hit_index']) for r in bad if r.get('hit_index', '') != '').items())),
                 by_type=dict(collections.Counter(r['failure'] for r in bad)))
 
 
