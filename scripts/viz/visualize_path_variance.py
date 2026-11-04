@@ -157,9 +157,9 @@ def leg_label(k):
 
 
 # ===================== Analysis =====================
-def analyze(path, world, policy):
-    # 1. load and clean the repeated runs of one policy on one sequence
-    keys = get_repeat_batch(path, world, policy)
+def analyze(path, world, policy, keys=None):
+    # 1. load and clean the repeated runs of one policy on one sequence (`keys` overrides the registry, e.g. the manifest's runs)
+    keys = keys if keys is not None else get_repeat_batch(path, world, policy)
     runs = [clean(load_run(k, world)) for k in keys]
 
     # 2. goals, obstacles and goal tolerance; all runs must share them
@@ -314,9 +314,14 @@ def plot_ensemble(res, tag):
     return fig
 
 
-def plot_ensemble_compare(results: list, name):
-    """Policies overlaid on one map: faint runs, median path and percentile band, coloured by policy."""
-    fig, ax = make_arena_fig(results[0]['world'])
+def plot_ensemble_compare(results: list, name, ax=None):
+    """Policies overlaid on one map: faint runs, median path and percentile band, coloured by policy.
+    With `ax` the map is drawn into that axes and nothing is saved (panels of a composite figure)."""
+    own = ax is None
+    if own:
+        fig, ax = make_arena_fig(results[0]['world'])
+    else:
+        fig = ax.figure
     handles = []
     # one colour per policy: individual runs, then band and median per leg
     for res in results:
@@ -338,8 +343,9 @@ def plot_ensemble_compare(results: list, name):
     apply_arena_style(ax, ref['world'])
 
     # handles.append(Patch(facecolor='0.5', alpha=0.3, label=f'{BAND_PCT[0]}–{BAND_PCT[1]}th pct. band'))
-    ax.legend(handles=handles, loc='lower right', fontsize=14, framealpha=0.9)
-    save_fig(fig, f'repeat_{name}_compare')
+    if own:
+        ax.legend(handles=handles, loc='lower right', fontsize=14, framealpha=0.9)
+        save_fig(fig, f'repeat_{name}_compare')
     return fig
 
 
