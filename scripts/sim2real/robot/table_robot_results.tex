@@ -1,0 +1,19 @@
+\begin{tabular}{lllccccccc}
+\midrule[1.5pt]
+ & & & \multicolumn{2}{c}{\textbf{Gazebo}} & \multicolumn{5}{c}{\textbf{Robot (20 runs per policy)}} \\
+\cmidrule(lr){4-5}\cmidrule(lr){6-10}
+\textbf{Variant} & \textbf{Role} & \textbf{Policy} & \textbf{Goals (\%)} & \textbf{SPL} & \textbf{Success} & \textbf{95\% CI} & \textbf{Goals (\%)} & \textbf{Coll./Timeouts} & \textbf{SPL} \\
+\midrule[1.5pt]
+TD3\_direct Final & B & TD3\_00400\_1000 & 100.0 & 0.919 & 19/20 & [0.76, 0.99] & 96.7 & 1/0 & 0.950 \\
+TD3\_direct Final & M & TD3\_00402\_1000 & 100.0 & 0.891 & 1/20 & [0.01, 0.24] & 67.8 & 19/0 & 0.687 \\
+\midrule
+TD3\_direct Best & B & TD3\_00399\_900 & 100.0 & 0.897 & 18/20 & [0.70, 0.97] & 93.3 & 2/0 & 0.893 \\
+TD3\_direct Best & M & TD3\_00401\_900 & 96.9 & 0.862 & 13/20 & [0.43, 0.82] & 84.4 & 7/0 & 0.804 \\
+\midrule
+TD3\_delta Final & B & TD3\_00390\_1000 & 100.0 & 0.872 & 5/20 & [0.11, 0.47] & 65.6 & 6/9 & 0.664 \\
+TD3\_delta Final & M & TD3\_00395\_1000 & 84.4 & 0.746 & 19/20 & [0.76, 0.99] & 96.7 & 1/0 & 0.919 \\
+\midrule
+TD3\_delta Best & B & TD3\_00391\_800 & 100.0 & 0.895 & 20/20 & [0.84, 1.00] & 100.0 & 0/0 & 0.978 \\
+TD3\_delta Best & M & TD3\_00388\_900 & 100.0 & 0.872 & 19/20 & [0.76, 0.99] & 97.8 & 1/0 & 0.969 \\
+\midrule[1.5pt]
+\end{tabular}
