@@ -5,12 +5,12 @@
 # (139 trials) is skipped; an incomplete folder is moved to trial_results_p14/aborted/ (never deleted) and rerun.
 # Runs inside the dev container; on the host: docker exec relaxed_shaw bash <worktree>/scripts/run_p14_g2g.sh [stage]
 # Stages: a1_final, apf, a1_best, paper, all (in that order), or a single unit name (e.g. TD3_01101_1500, APF_run3).
-set -u
 WT=$(cd "$(dirname "$0")/.." && pwd)
 OUT_ROOT=$WT/trial_results_p14
 N_GOALS=139
 STAGE=${1:-all}
-source /opt/ros/humble/setup.bash && source "$WT/install/setup.bash"
+source /opt/ros/humble/setup.bash && source "$WT/install/setup.bash"   # ROS setup files fail under set -u
+set -u
 export ROS_DOMAIN_ID=66 ROS_LOCALHOST_ONLY=0 LIDAR_TYPE=x3 GZ_HEADLESS=1
 export IGN_GAZEBO_RESOURCE_PATH=$WT/install/x3_description/share:${IGN_GAZEBO_RESOURCE_PATH:-}
 
