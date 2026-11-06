@@ -388,14 +388,15 @@ def tab(spec, head, rows, breaks=True):
 
 
 def table_results(ps):
-    head = [r' & & & \multicolumn{2}{c}{\textbf{Gazebo}} & \multicolumn{5}{c}{\textbf{Robot (20 runs per policy)}} \\',
-            r'\cmidrule(lr){4-5}\cmidrule(lr){6-10}',
-            r'\textbf{Variant} & \textbf{Role} & \textbf{Policy} & \textbf{Goals (\%)} & \textbf{SPL} & \textbf{Success} & '
-            r'\textbf{95\% CI} & \textbf{Goals (\%)} & \textbf{Coll./Timeouts} & \textbf{SPL} \\']
-    rows = [(p['variant'], f"{LABEL[p['variant']]} & {p['tier']} & {esc(p['model'])} & {p['sim_goals_pct']:.1f} & {p['sim_spl']:.3f} & "
-             f"{p['n_success']}/{p['n_runs']} & [{p['success_lo']:.2f}, {p['success_hi']:.2f}] & {p['goals_pct']:.1f} & "
-             f"{p['collisions']}/{p['timeouts']} & {p['spl_all']:.3f} \\\\") for p in ps]
-    return tab('lllccccccc', head, rows)
+    """Variant and role rows (no policy id); Gazebo goals and SPL, then the robot goals and SPL next to them, then success and failures."""
+    head = [r' & & \multicolumn{2}{c}{\textbf{Gazebo}} & \multicolumn{5}{c}{\textbf{Robot (20 runs per policy)}} \\',
+            r'\cmidrule(lr){3-4}\cmidrule(lr){5-9}',
+            r'\textbf{Variant} & \textbf{Role} & \textbf{Goals (\%)} & \textbf{SPL} & \textbf{Goals (\%)} & \textbf{SPL} & '
+            r'\textbf{Success} & \textbf{95\% CI} & \textbf{Coll./Timeouts} \\']
+    rows = [(p['variant'], f"{LABEL[p['variant']]} & {p['tier']} & {p['sim_goals_pct']:.1f} & {p['sim_spl']:.3f} & "
+             f"{p['goals_pct']:.1f} & {p['spl_all']:.3f} & {p['n_success']}/{p['n_runs']} & "
+             f"[{p['success_lo']:.2f}, {p['success_hi']:.2f}] & {p['collisions']}/{p['timeouts']} \\\\") for p in ps]
+    return tab('llccccccc', head, rows)
 
 
 def table_by_path(ps):

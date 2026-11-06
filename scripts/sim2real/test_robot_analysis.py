@@ -119,5 +119,8 @@ def test_bm_tests_and_tables_render():
     t = ra.bm_tests(ps)
     assert t['delta_best']['B'] == '20/20' and t['delta_best']['p'] < 0.01
     text = ra.table_results(ps)
-    assert text.count(r'\\') >= 10 and text.count('&') > 70 and r'\end{tabular}' in text
+    rows = [l for l in text.splitlines() if l.startswith('TD3')]
+    assert len(rows) == 8 and all(l.count('&') == 8 for l in rows)                      # variant, role, 2 Gazebo, 5 robot columns
+    assert 'Policy' not in text and ra.esc('TD3_direct_final_B') not in text            # no policy column, no model ids
+    assert rows[0].split(' & ')[2:6] == ['100.0', '0.900', '90.0', '0.900']            # Gazebo goals, SPL, then robot goals, SPL
     assert r'\end{tabular}' in ra.table_by_path(ps)
