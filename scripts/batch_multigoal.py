@@ -77,7 +77,7 @@ def code_state(planner_params):
 
 
 # ----------------------------------------------------------------------------- job list
-def build_jobs(apf_reps):
+def build_jobs(apf_reps, extra_models=()):
     jobs = []
     for world, path in SCENARIOS:
         for rep in range(1, apf_reps + 1):
@@ -91,6 +91,12 @@ def build_jobs(apf_reps):
                 for world, path in SCENARIOS:
                     jobs.append(dict(model=name, kind=f'{family}_{kind}', world=world,
                                      path=path, rep=1))
+    # policies outside the 2026 id ranges (e.g. the P14 policies), run as given; they must exist under POLICY_DIR
+    for name in extra_models:
+        if not (POLICY_DIR / name).is_dir():
+            sys.exit(f'--extra-model {name}: no folder {POLICY_DIR / name}')
+        for world, path in SCENARIOS:
+            jobs.append(dict(model=name, kind='extra', world=world, path=path, rep=1))
     return jobs
 
 
@@ -290,6 +296,8 @@ def main():
     ap.add_argument('--dry-run', action='store_true', help='print the job list and exit')
     ap.add_argument('--only-model', action='append', help='model folder name or APF (repeatable)')
     ap.add_argument('--only-scenario', action='append', help='e.g. world_1/path1 (repeatable)')
+    ap.add_argument('--extra-model', action='append', default=[], metavar='FOLDER',
+                    help='policy folder outside the 2026 id ranges, e.g. TD3_00911_2000 (repeatable)')
     ap.add_argument('--apf-reps', type=int, default=5)
     ap.add_argument('--scenarios', nargs='+', metavar='WORLD/PATH',
                     help='replace the default six scenarios, e.g. world_5/path1')
@@ -316,7 +324,7 @@ def main():
     CODE_STATE = code_state(args.planner_params)
     if args.scenarios:
         SCENARIOS = [tuple(x.split('/')) for x in args.scenarios]
-    jobs = build_jobs(args.apf_reps)
+    jobs = build_jobs(args.apf_reps, args.extra_model)
     if args.skip_apf:
         jobs = [j for j in jobs if j['kind'] != 'apf']
     if args.only_model:
