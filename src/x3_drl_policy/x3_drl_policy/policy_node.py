@@ -63,6 +63,10 @@ class DRLPolicyNode(Node):
         #        utils.py default to 0.01, but gym_TD3.py / test_TD3.py use 0.05), then revisit these gains.
         self.declare_parameter('delta_act_scale_linear', 5.0)
         self.declare_parameter('delta_act_scale_angular', 5.0)
+        # policy decision rate [Hz]. 50 matches the 2026 paper policies (trained at 500 Hz, run at a 10x slower
+        # speed scale); policies trained with a 0.1 s decision period (P14, ROS2_DRL_Navigation train_td3_a1.py)
+        # need 10 together with max_lin_vel 0.5 and max_angular_vel 1.0
+        self.declare_parameter('control_rate', 50.0)
 
         self.agent_name         = self.get_parameter('agent_name').value
         self.goal_tolerance     = self.get_parameter('goal_tolerance').value
@@ -293,7 +297,7 @@ class DRLPolicyNode(Node):
 
         total_distance = 0.0
 
-        ctrl_freq = 50.0
+        ctrl_freq = float(self.get_parameter('control_rate').value)
         ctrl_period = 1.0 / ctrl_freq
 
         while rclpy.ok():
