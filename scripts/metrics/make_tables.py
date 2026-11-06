@@ -104,13 +104,12 @@ def table_multigoal(m):
     def two_line(top, bottom):
         return r'\begin{tabular}[c]{@{}c@{}}' + top + r'\\' + bottom + r'\end{tabular}'
 
-    header = [r' & & \multicolumn{3}{c|}{\textbf{Runs}} & \multicolumn{2}{c|}{\textbf{Goal completion (\%)}} & \multicolumn{2}{c}{\textbf{SPL (shortest path)}} \\',
+    header = [r' & & \multicolumn{3}{c|}{\textbf{Runs}} & \multicolumn{2}{c|}{\textbf{Goal completion (\%)}} & \multicolumn{2}{c}{\textbf{SPL (shortest path)} Median [Q1, Q3]} \\',
               r'\textbf{Planner} & \textbf{} & Success & ' + two_line('Policies', '6/6') + ' & '
-              + two_line('Policies', r'$\geq$5/6') + r' & Mean $\pm$ SD & Median [Q1, Q3] & All legs & Reached legs \\',
-              r' & & & & & & & \multicolumn{2}{c}{Median [Q1, Q3]} \\']
+              + two_line('Policies', r'$\geq$5/6') + r' & Mean $\pm$ SD & Median [Q1, Q3] & Reached legs & All legs \\']
     return tabular('ll|ccc|cc|cc', header, lambda k: [
         runs(k), full(k), most(k), ms(mb[k].goal_completion, 1), med(mb[k].goal_completion, 1),
-        med(mb[k].spl_geo, 3), med(mb[k].spl_geo_reached, 3)])
+        med(mb[k].spl_geo_reached, 3), med(mb[k].spl_geo, 3)])
 
 
 def table_deployed(m, bm):
