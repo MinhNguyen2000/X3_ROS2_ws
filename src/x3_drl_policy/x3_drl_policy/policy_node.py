@@ -67,6 +67,8 @@ class DRLPolicyNode(Node):
         # speed scale); policies trained with a 0.1 s decision period (P14, ROS2_DRL_Navigation train_td3_a1.py)
         # need 10 together with max_lin_vel 0.5 and max_angular_vel 1.0
         self.declare_parameter('control_rate', 50.0)
+        # 'direct' or 'delta' forces the action mode; empty keeps the model-id rule below (paper policies)
+        self.declare_parameter('action_mode', '')
 
         self.agent_name         = self.get_parameter('agent_name').value
         self.goal_tolerance     = self.get_parameter('goal_tolerance').value
@@ -88,7 +90,12 @@ class DRLPolicyNode(Node):
                                             self.get_parameter('delta_act_scale_angular').value], dtype=np.float32)
 
         # determine the action mode
-        if 386 <= int(self.model_id) <= 395 or int(self.model_id) == 384:
+        forced_mode = self.get_parameter('action_mode').value
+        if forced_mode in ('direct', 'delta'):
+            self.action_mode = forced_mode
+        elif forced_mode:
+            raise ValueError(f"action_mode must be 'direct', 'delta' or empty, got {forced_mode!r}")
+        elif 386 <= int(self.model_id) <= 395 or int(self.model_id) == 384:
             self.action_mode = 'delta'
         else:
             self.action_mode = 'direct'
