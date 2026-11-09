@@ -10,6 +10,8 @@ Per step change: delay to 10 %, 10 to 90 % rise time, peak acceleration (largest
 0.1 s moving mean, within 1 s of the change).
 Signals: linear vel_raw linear.x (judged) and EKF odom linear.x; angular IMU gyro z (judged) and vel_raw angular.z.
 slip_max: largest |odom - vel_raw| linear speed in the window. Times are the recorder's receive stamps.
+With the driver's cmd_echo on, delivery.csv gives per command change the time from the recorder's receipt to the
+driver's callback for the new value (cmd_vel_rx stamp).
 Drives are found as bursts of cmd_vel with a non-zero command; --exclude HH:MM:SS (the drive's first non-zero command)
 leaves a drive out of the pass summary.
 
@@ -37,7 +39,7 @@ def read(bag):
     r = rosbag2_py.SequentialReader()
     r.open(rosbag2_py.StorageOptions(uri=bag, storage_id='sqlite3'), rosbag2_py.ConverterOptions('cdr', 'cdr'))
     types = {t.name: get_message(t.type) for t in r.get_all_topics_and_types()}
-    s = {k: [] for k in ('cmd', 'vel', 'gyro', 'odom', 'volt')}
+    s = {k: [] for k in ('cmd', 'vel', 'gyro', 'odom', 'volt', 'echo')}
     while r.has_next():
         topic, data, t = r.read_next()
         m = deserialize_message(data, types[topic])
@@ -52,6 +54,8 @@ def read(bag):
             s['odom'].append((t, m.twist.twist.linear.x))
         elif topic == f'{AGENT}/voltage':
             s['volt'].append((t, m.data))
+        elif topic == f'{AGENT}/cmd_vel_rx':        # driver's echo, stamped when its callback started
+            s['echo'].append((m.header.stamp.sec + m.header.stamp.nanosec * 1e-9, m.twist.linear.x, m.twist.angular.z))
     return {k: np.array(v, float) for k, v in s.items()}
 
 
@@ -105,6 +109,20 @@ def track(tc, c, t, y, is_step):
     return LAGS[k], float(np.sqrt(np.mean(errs[k] ** 2))), float(np.abs(errs[k]).max()), win
 
 
+def delivery(b, echo):
+    """Per change of the command in drive b: time from the recorder's receipt to the driver's callback for the new value
+    (first echo with that value); nan if the driver never echoed it."""
+    rows, after = [], -np.inf      # echoes come in order: a change matches only echoes after the previous change's
+    for k in np.flatnonzero(np.any(np.diff(b[:, 1:], axis=0) != 0, axis=1)) + 1:
+        tcmd, val = b[k, 0], b[k, 1:]
+        hit = echo[(echo[:, 0] >= max(tcmd - 0.01, after)) & np.all(np.isclose(echo[:, 1:], val), axis=1)]
+        if len(hit):
+            after = hit[0, 0]
+        rows.append(dict(t_from_start=tcmd - b[1, 0], v=val[0], w=val[1],
+                         rx_delay_s=hit[0, 0] - tcmd if len(hit) else np.nan))
+    return rows
+
+
 def step_changes(tc, c, t, y, top):
     rows = []
     for k in np.flatnonzero(np.diff(c) != 0) + 1:
@@ -133,7 +151,7 @@ def main():
     ap.add_argument('--out', default=os.path.join(os.path.dirname(os.path.abspath(__file__)), 'step_test_output'))
     args = ap.parse_args()
     os.makedirs(args.out, exist_ok=True)
-    trk, stp = [], []
+    trk, stp, dlv = [], [], []
     for bag in args.bags:
         s = read(bag)
         sig = {'vel_raw': s['vel'][:, [0, 1]], 'odom': s['odom'], 'gyro': s['gyro'], 'vel_raw_w': s['vel'][:, [0, 2]]}
@@ -143,6 +161,8 @@ def main():
             drive = datetime.datetime.fromtimestamp(first).strftime('%H:%M:%S')
             sel = (s['volt'][:, 0] >= b[0, 0]) & (s['volt'][:, 0] <= b[-1, 0])
             volt = float(s['volt'][sel, 1].mean())
+            if len(s['echo']):
+                dlv += [dict(drive=drive, kind=kind, excluded=drive in args.exclude, **r) for r in delivery(b, s['echo'])]
             for part, bound, axis, pc in parts_of(b, kind):
                 tc, c = pc[:, 0], pc[:, 1]
                 is_step = bound is None
@@ -184,6 +204,12 @@ def main():
               f'B=0.2 {1.5 * 0.2 * acc:.2f}')
     if 'slip_max' in use:
         print('\nslip_max (linear, odom - vel_raw):', list(use.slip_max.dropna().round(3)))
+    if dlv:
+        dlv = pd.DataFrame(dlv)
+        dlv.to_csv(os.path.join(args.out, 'delivery.csv'), index=False, float_format='%.4g')
+        print('\ndelivery to the driver per command change (recorder receipt to driver callback), s:')
+        print(dlv.groupby(['drive', 'kind']).rx_delay_s.agg(['size', 'median', 'max', lambda x: x.isna().sum()])
+              .rename(columns={'<lambda_0>': 'never_echoed'}).round(3).to_string())
 
 
 if __name__ == '__main__':
