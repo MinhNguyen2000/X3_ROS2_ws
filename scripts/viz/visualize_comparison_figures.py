@@ -10,11 +10,13 @@ The TD3 policies come from scripts/metrics/multigoal_efficiency.py (representati
 APF: the repeat whose path length is closest to the 5-repeat median, per scenario.
 
 Default: one 2x3 figure of the six scenarios (world 1 paths 1 to 3 on top, worlds 2, 3 and 4
-below). Each panel draws APF, then for each TD3 method the median policy (dashed, with heading
-arrows) and the most efficient policy (dotted, no arrows), and one shared legend sits below the
-panels. The travel time and path length of every drawn run go to a CSV next to the figure
-instead of the legend.
+below). Each panel draws APF and, for each TD3 method, the median policy (solid, with heading
+arrows) and the most efficient policy (dotted, no arrows); the scenario label sits in the upper
+left corner and one shared legend below the panels. The travel time and path length of every
+drawn run go to a CSV next to the figure, and to a LaTeX table body (scenarios as rows, travel
+time and path length per planner and role as columns) for the paper's table:multigoal_paths.
   -> <FIG_DIR>/MultipleGoal_APF_TD3_<direct>_<delta>_eff_<direct>_<delta>_grid.{pdf,png,csv}
+  -> <FIG_DIR>/MultipleGoal_APF_TD3_<direct>_<delta>_eff_<direct>_<delta>_grid_table.tex
 --median-only: the earlier figure, two rows of three panels with the median policies alone and
 a legend per panel (time and length in the labels).
   -> <FIG_DIR>/MultipleGoal_APF_TD3_<direct>_<delta>_<tag>.{pdf,png}
@@ -118,8 +120,8 @@ def plot_grid(chosen, df, apf):
                     drawn.append((method, role, key, run))
             for planner, role, key, run in drawn:
                 stats.append(dict(world=world, path=path, panel=panel_title(world, path), planner=planner,
-                                  role=role, run=key, elapsed_s=round(run['elapsed_time'], 2),
-                                  path_length_m=round(run['path_length'], 3)))
+                                  role=role, run=key, elapsed_s=run['elapsed_time'],
+                                  path_length_m=run['path_length']))
             draw_obstacles(ax, load_obstacles(world))
             draw_goals(ax, load_goals(world, run_path_name(apf_key)))
             apply_arena_style(ax, world)
@@ -143,8 +145,32 @@ def plot_grid(chosen, df, apf):
     for ext in ('pdf', 'png'):
         fig.savefig(os.path.join(FIG_DIR, f'{base}.{ext}'), dpi=200, bbox_inches='tight')
     plt.close(fig)
-    pd.DataFrame(stats).to_csv(os.path.join(FIG_DIR, f'{base}.csv'), index=False)
-    print('wrote', os.path.join(FIG_DIR, base + '.{pdf,png,csv}'))
+    stats = pd.DataFrame(stats)
+    stats.to_csv(os.path.join(FIG_DIR, f'{base}.csv'), index=False, float_format='%.3f')   # raw values go to the table, so it rounds once
+    with open(os.path.join(FIG_DIR, f'{base}_table.tex'), 'w') as f:
+        f.write(table_tex(stats))
+    print('wrote', os.path.join(FIG_DIR, base + '.{pdf,png,csv}, _table.tex'))
+
+
+def table_tex(stats: pd.DataFrame) -> str:
+    """Tabular body: one row per scenario, travel time and path length of each drawn run (one decimal)."""
+    cols = [('APF', ''), ('TD3_direct', 'median'), ('TD3_direct', 'most_efficient'),
+            ('TD3_delta', 'median'), ('TD3_delta', 'most_efficient')]
+    by = stats.fillna({'role': ''}).set_index(['world', 'path', 'planner', 'role'])
+    group = (r'APF & \multicolumn{2}{c}{TD3\_direct} & \multicolumn{2}{c%s}{TD3\_delta}')
+    roles = r' & & Median & Most eff. & Median & Most eff.'   # empty cell under APF
+    lines = [r'\begin{tabular}{ll|ccccc|ccccc}', r'\midrule[1.5pt]',
+             r' & & \multicolumn{5}{c|}{\textbf{Travel time (s)}} & \multicolumn{5}{c}{\textbf{Path length (m)}} \\',
+             r' & & ' + group % '|' + ' & ' + group % '' + r' \\',
+             r'\textbf{World} & \textbf{Path}' + roles + roles + r' \\', r'\midrule[1.5pt]']
+    for scenarios in FIGURES.values():
+        for world, path in scenarios:
+            t = [f"{by.loc[(world, path, p, r)].elapsed_s:.1f}" for p, r in cols]
+            L = [f"{by.loc[(world, path, p, r)].path_length_m:.1f}" for p, r in cols]
+            w = DISPLAY_WORLD.get(world, world).split('_')[1]
+            lines.append(f"{w} & {path.replace('path', '')} & " + ' & '.join(t + L) + r' \\')
+    lines += [r'\midrule[1.5pt]', r'\end{tabular}', '']
+    return '\n'.join(lines)
 
 
 def plot_group(tag, scenarios, chosen, roles, df, apf):
