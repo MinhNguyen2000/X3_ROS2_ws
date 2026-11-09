@@ -23,6 +23,9 @@ A2DELTA=${A2_DELTA_MODELS:-"TD3_01301_1500 TD3_01302_1500 TD3_01303_1500 TD3_013
  TD3_01307_1500 TD3_01308_1500 TD3_01309_1500 TD3_01310_1500 TD3_01301_1200 TD3_01302_900 TD3_01303_1100 TD3_01304_1300
  TD3_01305_1000 TD3_01307_1400 TD3_01308_1300"}
 A2_DELTA_BOUND=${A2_DELTA_BOUND:-0.1}
+# > 0: asymmetric bound (policy_node delta_down), A2_DELTA_BOUND when speeding up; the asymmetric pilot smoke is
+# A2_DELTA_MODELS=TD3_01401_1500 A2_DELTA_DOWN=0.2 ... a2delta --manifest scripts/batch_runs/manifest_a3_smoke.csv
+A2_DELTA_DOWN=${A2_DELTA_DOWN:-0}
 A2BASE="${BASE/manifest_p14.csv/manifest_a2.csv} --skip-apf"
 if [ "$STAGE" = a2dir ] || [ "$STAGE" = a2 ]; then
     args=""; for m in $A2DIR; do args+=" --extra-model $m --only-model $m"; done
@@ -32,6 +35,7 @@ if [ "$STAGE" = a2delta ] || [ "$STAGE" = a2 ]; then
     b=$A2_DELTA_BOUND; args=""; for m in $A2DELTA; do args+=" --extra-model $m --only-model $m"; done
     for x in control_rate:=10.0 action_mode:=delta delta_act_linear:=$b delta_act_angular:=$b \
              delta_act_scale_linear:=1.0 delta_act_scale_angular:=1.0; do args+=" --planner-param $x"; done
+    [ "$A2_DELTA_DOWN" != 0 ] && args+=" --planner-param delta_down:=$A2_DELTA_DOWN"
     run a2delta "$A2BASE $args $*"
 fi
 if [ "$STAGE" = paperdelta ] || [ "$STAGE" = a2 ]; then    # paper TD3_delta Final at node defaults
