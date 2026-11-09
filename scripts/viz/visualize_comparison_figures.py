@@ -33,6 +33,8 @@ FIGURES = {
     'world235':  [('world_2', 'path1'), ('world_3', 'path1'), ('world_5', 'path1')],
 }
 SCENARIOS = [s for group in FIGURES.values() for s in group]
+# the paper calls world_5 "world 4" (world_4/path1 was an experimental setting and is excluded)
+DISPLAY_WORLD = {'world_5': 'world_4'}
 
 
 def run_key(saved_file: str) -> str:
@@ -96,7 +98,7 @@ def plot_group(tag, scenarios, chosen, df, apf):
         draw_obstacles(ax, load_obstacles(world))
         draw_goals(ax, load_goals(world, run_path_name(keys[0][1])))
         apply_arena_style(ax, world)
-        ax.set_title(f"{world.replace('_', ' ').capitalize()}, {path.replace('path', 'path ')}", fontsize=14)
+        ax.set_title(f"{DISPLAY_WORLD.get(world, world).replace('_', ' ').capitalize()}, {path.replace('path', 'path ')}", fontsize=14)
         ax.legend(loc='upper left', fontsize=10)
     fig.tight_layout()
     base = f"MultipleGoal_APF_TD3_{chosen['TD3_direct'][4:]}_{chosen['TD3_delta'][4:]}_{tag}"
