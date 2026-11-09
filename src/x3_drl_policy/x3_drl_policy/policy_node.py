@@ -12,6 +12,7 @@ from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSDurabilityPolicy
 from rclpy.time import Time
 from x3_nav_interfaces.action import NavigateToGoal
 from x3_drl_policy.lidar_processing import preprocess_scan, pool_groups
+from x3_drl_policy.delta_action import asym_delta
 
 import numpy as np
 # TODO - import torch related packages for DRL inference (torch and torch.nn)
@@ -69,6 +70,10 @@ class DRLPolicyNode(Node):
         self.declare_parameter('control_rate', 50.0)
         # 'direct' or 'delta' forces the action mode; empty keeps the model-id rule below (paper policies)
         self.declare_parameter('action_mode', '')
+        # delta mode, > 0: asymmetric bound of the P14 TD3_014xx policies (delta_action.asym_delta). The actor output
+        # is a fraction in [-1, 1]; the command moves by up to delta_act_linear/angular when speeding up and by up to
+        # delta_down when slowing down (normalized units, delta_act_scale unused). 0 keeps the symmetric rule.
+        self.declare_parameter('delta_down', 0.0)
 
         self.agent_name         = self.get_parameter('agent_name').value
         self.goal_tolerance     = self.get_parameter('goal_tolerance').value
@@ -99,6 +104,9 @@ class DRLPolicyNode(Node):
             self.action_mode = 'delta'
         else:
             self.action_mode = 'direct'
+        self.delta_down = self.get_parameter('delta_down').value
+        if self.delta_down > 0 and not (self.action_mode == 'delta' and self.normalized_actions):
+            raise ValueError('delta_down > 0 needs action_mode delta and normalized_actions true')
 
         # TODO - load the model and extract the number of n_ray_groups for LiDAR group
         # Assume that the models and norm stats are stored under drl_policy/policy/TD3_xxx/model.zip and norm_stats.pkl
@@ -188,7 +196,7 @@ class DRLPolicyNode(Node):
             rear_mask_fill=self.rear_mask_fill, range_clip=self.range_clip,
             obstacle_tolerance=self.obstacle_tolerance, goal_timeout=self.goal_timeout,
             delta_act_bounds=[self.delta_act_linear, self.delta_act_angular],
-            delta_act_scale=self.delta_act_scale.tolist()))))
+            delta_act_scale=self.delta_act_scale.tolist(), delta_down=self.delta_down))))
 
         # --- Active goal handle ---
         self._current_goal_handle: ServerGoalHandle | None = None
@@ -209,7 +217,8 @@ class DRLPolicyNode(Node):
             f'Config: normalized_actions={self.normalized_actions} max_lin_vel={self.max_lin_vel} '
             f'max_angular_vel={self.max_angular_vel} antennae_mask_dist={self.antennae_mask_dist} '
             f'rear_mask_deg={self.rear_mask_deg} rear_mask_fill={self.rear_mask_fill} range_clip={self.range_clip} '
-            f'delta_act=({self.delta_act_linear}, {self.delta_act_angular}) x {self.delta_act_scale.tolist()}')
+            f'delta_act=({self.delta_act_linear}, {self.delta_act_angular}) x {self.delta_act_scale.tolist()} '
+            f'delta_down={self.delta_down}')
 
     def _reset_states(self):
         self.action_last = np.zeros(2)
@@ -230,6 +239,8 @@ class DRLPolicyNode(Node):
 
         if self.action_mode == "direct":    # policy outputs direct velocities
             self.action_space = gym.spaces.Box(low = self.action_low, high = self.action_high, dtype = np.float32)            
+        elif self.action_mode == "delta" and self.delta_down > 0:   # asymmetric: fraction of the allowed change
+            self.action_space = gym.spaces.Box(low=-np.ones(2, np.float32), high=np.ones(2, np.float32), dtype=np.float32)
         elif self.action_mode == "delta":   # policy outputs change in velocities
             # Bounds on the actor output (delta action); scaled separately by delta_act_scale when accumulated
             self.delta_act_low  = np.array([-self.delta_act_linear, -self.delta_act_angular], dtype = np.float32)
@@ -391,6 +402,10 @@ class DRLPolicyNode(Node):
             
             if self.action_mode == 'direct':
                 self.action = np.clip(self.action, self.action_low, self.action_high)
+            elif self.action_mode == 'delta' and self.delta_down > 0:
+                up = np.array([self.delta_act_linear, self.delta_act_angular])
+                self.action = np.clip(asym_delta(self.action_last, self.action, up, self.delta_down),
+                                      self.action_low, self.action_high)
             elif self.action_mode == 'delta':
                 self.action = np.clip(self.action_last + self.delta_act_scale * self.action, self.action_low, self.action_high)
 
