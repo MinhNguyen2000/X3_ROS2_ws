@@ -39,6 +39,9 @@ class yahboomcar_driver(Node):
 		self.declare_parameter('ylinear_limit', 1.0)
 		self.declare_parameter('angular_limit', 5.0)
 		self.declare_parameter('publish_rate', 10.0)	# Hz of the timer that publishes IMU, wheel velocity, magnetometer and battery
+		# Debug (P14 step test): re-publish each cmd_vel on cmd_vel_rx, stamped when the callback started, after it was
+		# written to the board; settable at runtime (ros2 param set <node> cmd_echo true)
+		self.declare_parameter('cmd_echo', False)
 
 		self.car_type = self.get_parameter('car_type').get_parameter_value().string_value
 		self.Prefix = self.get_parameter('Prefix').get_parameter_value().string_value
@@ -65,6 +68,7 @@ class yahboomcar_driver(Node):
 		self.volPublisher = self.create_publisher(Float32,"voltage",100)
 		self.staPublisher = self.create_publisher(JointState,"joint_states",100)
 		self.velPublisher = self.create_publisher(TwistStamped,"vel_raw",50)
+		self.cmdEchoPublisher = self.create_publisher(TwistStamped,"cmd_vel_rx",50)
 		self.imuPublisher = self.create_publisher(Imu,"imu/data_raw",100)
 		self.magPublisher = self.create_publisher(MagneticField,"imu/mag",100)
 
@@ -80,12 +84,18 @@ class yahboomcar_driver(Node):
 	def cmd_vel_callback(self, msg:TwistStamped):
         # Car motion control, subscriber callback function
 		if not isinstance(msg, TwistStamped): return
+		t_in = self.get_clock().now()
         # Issue linear vel and angular vel
 		vx = msg.twist.linear.x*1.0
         #vy = msg.linear.y/1000.0*180.0/3.1416    #Radian system
 		vy = msg.twist.linear.y*1.0
 		angular = msg.twist.angular.z*1.0     # wait for chang
 		self.car.set_car_motion(vx, vy, angular)
+		if self.get_parameter('cmd_echo').value:
+			echo = TwistStamped()
+			echo.header.stamp = t_in.to_msg()
+			echo.twist = msg.twist
+			self.cmdEchoPublisher.publish(echo)
 		'''print("cmd_vx: ",vx)
 		print("cmd_vy: ",vy)
 		print("cmd_angular: ",angular)'''
