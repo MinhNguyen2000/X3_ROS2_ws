@@ -2,10 +2,12 @@ import os, json
 import matplotlib.pyplot as plt
 import numpy as np
 
+from viz_common import planner_label
+
 PATH = 'path_1'
 WORLD = 'world_lab'
 CURRENT_DIR         = os.path.dirname(os.path.abspath(__file__))
-SAVED_PATHS_DIR     = os.path.join(CURRENT_DIR, '..', 'scripts', 'recorded_paths')
+SAVED_PATHS_DIR     = os.path.join(CURRENT_DIR, '..', 'recorded_paths')
 
 PATH_LISTS = {
     # ===== WORLD 1 =====
@@ -239,13 +241,7 @@ def main():
 
     for path in path_list:
         data = load_run(path)
-        planner_name = path.split('/')[0].split('_')[:2]
-        if len(planner_name) > 1:
-            if int(planner_name[1]) <= 395:
-                planner_name[1] = 'delta'
-            else:
-                planner_name[1] = 'direct'
-        planner_name = '_'.join(planner_name)
+        planner_name = planner_label(path.split('/')[0])
 
         velocities = data.get("velocities")
         if not velocities:
