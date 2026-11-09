@@ -28,10 +28,10 @@ ODOM_INIT = {'x': -3.0, 'y': -3.0}      # odom origin in the plotting frame (wor
 GOAL_TOLERANCE = 0.20                   # m, trial_orchestrator goal_tolerance
 WORLD = 'world_1'
 OK_COLOR, FAIL_COLOR = '#228B22', '#CD5C5C'
-LEGEND_FONTSIZE = 23.9    # 6.3 pt in the paper (24 in figure scaled to the 455 pt text width), same as the multi-goal legend; the largest size that keeps the seven two-line entries on one row is 24.2 (6.4 pt)
-# legend labels, each on two lines (subject, then what happened) so the one-row legend is narrower
+LEGEND_FONTSIZE = 25.0    # 6.6 pt in the paper (24 in figure scaled to the 455 pt text width), same as the multi-goal legend; the largest size that keeps the seven entries on one row is 25.4 (6.7 pt)
+# legend labels on two lines (subject, then what happened) so the one-row legend is narrower; Obstacles fits on one
 LEGEND_LABELS = ['Successful\ntrajectory', 'Failed\ntrajectory', 'Goal\nreached', 'Goal\nnot reached',
-                 'Collision\npoint', 'Goal\ntimeout', 'Obstacles\n(box & cylinder)']
+                 'Collision\npoint', 'Goal\ntimeout', 'Obstacles']
 
 # Median-rule selections (see seed_selection in the paper repo / G2G pool ranking)
 DEFAULTS = {
