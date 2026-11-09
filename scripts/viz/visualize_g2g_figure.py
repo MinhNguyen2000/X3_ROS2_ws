@@ -28,6 +28,7 @@ ODOM_INIT = {'x': -3.0, 'y': -3.0}      # odom origin in the plotting frame (wor
 GOAL_TOLERANCE = 0.20                   # m, trial_orchestrator goal_tolerance
 WORLD = 'world_1'
 OK_COLOR, FAIL_COLOR = '#228B22', '#CD5C5C'
+PANEL_LABEL_OFFSET_PT = 36   # (a) to (c) labels this far below the bottom of each panel, under the X (m) label
 LEGEND_FONTSIZE = 25.0    # 6.6 pt in the paper (24 in figure scaled to the 455 pt text width), same as the multi-goal legend; the largest size that keeps the seven entries on one row is 25.4 (6.7 pt)
 # legend labels on two lines (subject, then what happened) so the one-row legend is narrower; Obstacles fits on one
 LEGEND_LABELS = ['Successful\ntrajectory', 'Failed\ntrajectory', 'Goal\nreached', 'Goal\nnot reached',
@@ -114,13 +115,17 @@ def main():
     obstacles = parse_sdf_obstacles(sdf_path(WORLD))
     panels = [('(a) APF', args.apf), ('(b) TD3_direct', args.direct), ('(c) TD3_delta', args.delta)]
 
-    fig, axes = plt.subplots(1, 3, figsize=(24, 8.6))
+    # 24 in wide (sets the printed scale and the 6.6 pt legend); 9.7 in tall is the smallest height at which the
+    # square panels fill the width (7.4 in each, 0.5 in gaps for the tick labels) instead of being limited by height
+    fig, axes = plt.subplots(1, 3, figsize=(24, 9.7))
     for ax, (title, csv) in zip(axes, panels):
         csv_path = csv if os.path.isabs(csv) else os.path.join(WS_DIR, csv)
         if not os.path.exists(csv_path):
             raise FileNotFoundError(csv_path)
         s = draw_g2g_panel(ax, obstacles=obstacles, csv_path=csv_path)
-        ax.text(0.5, -0.12, title, transform=ax.transAxes, ha='center', va='top', fontsize=14)
+        # panel label a fixed distance below the x axis label, so it does not move with the panel size
+        ax.annotate(title, xy=(0.5, 0), xycoords='axes fraction', xytext=(0, -PANEL_LABEL_OFFSET_PT),
+                    textcoords='offset points', ha='center', va='top', fontsize=14)
         print(f"{title:15s} n={s['n']} success={s['success']} ({100 * s['success'] / s['n']:.2f}%) "
               f"collision={s['collision']} timeout={s['timeout']} missing={s['missing']}  <- {os.path.basename(csv_path)}")
     axes[0].set_ylabel('Y (m)', fontsize=12)
@@ -143,10 +148,11 @@ def main():
     # one legend below the panels without a frame, as in the multi-goal path figure
     leg = fig.legend(handles=legends, loc='lower center', ncol=len(legends), fontsize=LEGEND_FONTSIZE, frameon=False,
                      handlelength=2.0, bbox_to_anchor=(0.5, 0.0))
-    # the bottom margin holds the legend plus the (a) to (c) panel labels below the x axis labels
+    # the bottom margin holds the legend plus the (a) to (c) panel labels below the x axis labels (fixed in inches)
     fig.canvas.draw()
     leg_h = leg.get_window_extent().height / fig.bbox.height
-    fig.tight_layout(rect=(0, leg_h + 0.10, 1, 1))
+    labels_h = (PANEL_LABEL_OFFSET_PT + 30) / 72 / fig.get_figheight()   # offset, label height and a small gap
+    fig.tight_layout(rect=(0, leg_h + labels_h, 1, 1))
 
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     fig.savefig(args.out)
