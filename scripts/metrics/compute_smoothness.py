@@ -50,7 +50,7 @@ from viz_common import paths_json_path              # noqa: E402
 from multigoal_efficiency import AGG_CSV, load_runs, representatives  # noqa: E402
 
 RP = os.path.join(REPO, 'scripts', 'recorded_paths')
-vv.SAVED_PATHS_DIR = RP                             # the module default points at scripts/scripts/recorded_paths
+vv.SAVED_PATHS_DIR = RP
 SCEN = [s for group in vcf.FIGURES.values() for s in group]
 WINDOWS = {'narrow': (-0.1, 0.1), 'wide': (-0.5, 2.0)}   # s around each goal arrival (and run end)
 # A turning-direction reversal counts only when omega_z crosses from above +OMEGA_BAND to below -OMEGA_BAND
@@ -131,6 +131,22 @@ def metrics(data, world, path, window=None):
                 rate_hz=s['sample_rate_hz'], n_arrivals=len(arr), excluded_frac=float(1 - ka.mean()))
 
 
+def representative_keys(df: pd.DataFrame) -> dict:
+    """{(world, path, planner): run key} of the runs drawn in the multi-goal path figure, for the six scenarios:
+    the median TD3_direct and TD3_delta policies and the APF repeat closest to the median path length.
+    Also used by scripts/viz/regen_vel_figures.py, so the appendix velocity figures show the same runs."""
+    reps = representatives(load_runs())
+    chosen = {m: reps[(m, 'median')] for m in ('TD3_direct', 'TD3_delta')}
+    print('representative TD3 policies:', chosen)
+    apf = df[df.planner == 'apf']
+    out = {}
+    for world, path in SCEN:
+        out[(world, path, 'APF')] = vcf.pick_apf_run(apf, world, path)
+        for pl, model in chosen.items():
+            out[(world, path, pl)] = vcf.drl_run(df, model, world, path)
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--out', default=os.path.join(HERE, 'output'))
@@ -138,10 +154,7 @@ def main():
     os.makedirs(args.out, exist_ok=True)
 
     df = pd.read_csv(AGG_CSV)
-    reps = representatives(load_runs())
-    chosen = {m: reps[(m, 'median')] for m in ('TD3_direct', 'TD3_delta')}
-    apf = df[df.planner == 'apf']
-    print('representative TD3 policies:', chosen)
+    rep_keys = representative_keys(df)
     df6 = df[[(w, p) in SCEN for w, p in zip(df.world, df.path)]].copy()
     df6['key'] = df6.saved_file.map(vcf.run_key)
     df6['label'] = df6.planner.map({'apf': 'APF', 'direct': 'TD3_direct', 'delta': 'TD3_delta'})
@@ -149,8 +162,7 @@ def main():
     rows = []
     for _, r in df6.iterrows():
         data = load(r.key)
-        rep_key = (vcf.pick_apf_run(apf, r.world, r.path) if r.label == 'APF'
-                   else vcf.drl_run(df, chosen[r.label], r.world, r.path))
+        rep_key = rep_keys[(r.world, r.path, r.label)]
         for variant, win in [('all', None)] + [(f'excl_{k}', v) for k, v in WINDOWS.items()]:
             m = metrics(data, r.world, r.path, win)
             rows.append(dict(world=r.world, path=r.path, planner=r.label, model=r.model, kind=r.kind,
