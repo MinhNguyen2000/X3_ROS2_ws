@@ -1,18 +1,27 @@
 """
 Comparative path figures (APF vs TD3_direct vs TD3_delta) for the paper, with the plotted TD3
-policies chosen by a fixed rule from aggregate_7_scenarios.csv instead of by hand.
+policies chosen by a fixed rule instead of by hand.
 
-Rule (per method):
-  1. pool      : every policy (Final and distinct Best checkpoint of each seed; 19 delta, 17 direct), since
-                 the MuJoCo-selected Best is not guaranteed to beat Final in the multi-goal test
-  2. eligible  : succeeded on every plotted scenario
-  3. pick      : eligible policy closest to the method's median in mean path length and mean time,
-                 both relative to the APF mean for the same scenario (sum of |standardized deviation|)
-  APF          : the repeat whose path length is closest to the 5-repeat median, per scenario.
+The TD3 policies come from scripts/metrics/multigoal_efficiency.py (representatives), per method:
+  median         : the eligible policy (all six scenarios completed) closest to the method's median
+                   in mean path length and travel time relative to APF, the typical efficiency
+  most efficient : the eligible policy with the shortest and fastest runs relative to APF, the
+                   best case
+APF: the repeat whose path length is closest to the 5-repeat median, per scenario.
 
-Outputs <FIG_DIR>/MultipleGoal_APF_TD3_<direct>_<delta>_<tag>.{pdf,png}. Does not touch run_registry.py.
+Each panel draws APF, then for each TD3 method the median policy (dashed, with heading arrows)
+and the most efficient policy (dotted, no arrows). --median-only draws the median policies alone,
+as in the earlier figure.
+
+Outputs <FIG_DIR>/MultipleGoal_APF_TD3_<direct>_<delta>[_eff_<direct>_<delta>]_<tag>.{pdf,png}.
+Does not touch run_registry.py.
+
+Usage: visualize_comparison_figures.py [--median-only]
 """
+import argparse
 import os
+import sys
+
 import numpy as np
 import pandas as pd
 import matplotlib
@@ -22,17 +31,20 @@ import matplotlib.pyplot as plt
 from viz_common import (WS_DIR, load_run, load_obstacles, load_goals, run_path_name,
                         draw_obstacles, draw_goals, apply_arena_style)
 
-CSV     = os.path.join(WS_DIR, 'scripts', 'batch_runs', 'aggregate_7_scenarios.csv')
+sys.path.insert(0, os.path.join(WS_DIR, 'scripts', 'metrics'))
+from multigoal_efficiency import AGG_CSV, load_runs, representatives  # noqa: E402
+
 FIG_DIR = os.path.join(WS_DIR, 'scripts', 'figures')
 ARROW_EVERY_N = 500
 COLORS = {'APF': 'tab:blue', 'TD3_direct': 'tab:orange', 'TD3_delta': 'tab:green'}
+STYLE = {'median': dict(ls='--', lw=1.5, arrows=True, name='median'),
+         'most_efficient': dict(ls=':', lw=2.0, arrows=False, name='most efficient')}
 
-# (world, path) scenarios that define "plotted" and the figure groups; world 4 path 1 is excluded
+# (world, path) scenarios of each figure; world 4 path 1 is excluded
 FIGURES = {
     'world1':    [('world_1', 'path1'), ('world_1', 'path2'), ('world_1', 'path3')],
     'world235':  [('world_2', 'path1'), ('world_3', 'path1'), ('world_5', 'path1')],
 }
-SCENARIOS = [s for group in FIGURES.values() for s in group]
 # the paper calls world_5 "world 4" (world_4/path1 was an experimental setting and is excluded)
 DISPLAY_WORLD = {'world_5': 'world_4'}
 
@@ -40,33 +52,6 @@ DISPLAY_WORLD = {'world_5': 'world_4'}
 def run_key(saved_file: str) -> str:
     """'scripts/recorded_paths/TD3_00386_1000/path2_world_1_241026_2358.json' -> 'TD3_00386_1000/path2_world_1_241026_2358'"""
     return saved_file.split('recorded_paths/')[1][:-len('.json')]
-
-
-def select_policies(df: pd.DataFrame) -> dict:
-    df = df[[(w, p) in SCENARIOS for w, p in zip(df.world, df.path)]].copy()
-    apf = df[df.planner == 'apf']
-    ref_len = apf.groupby(['world', 'path']).path_len_m.mean()
-    ref_t = apf.groupby(['world', 'path']).elapsed_s.mean()
-
-    drl = df[df.planner != 'apf'].copy()
-    drl['seed'] = drl.model.str.extract(r'TD3_(\d+)_')[0].astype(int)
-    drl = drl.drop_duplicates(['model', 'world', 'path'])    # a policy whose Best == Final is one policy
-
-    idx = list(zip(drl.world, drl.path))
-    drl['len_r'] = drl.path_len_m.values / ref_len.reindex(idx).values
-    drl['t_r'] = drl.elapsed_s.values / ref_t.reindex(idx).values
-
-    chosen = {}
-    for planner, g in drl.groupby('planner'):
-        per = g.groupby('model').agg(ok=('success', 'min'), len_r=('len_r', 'mean'), t_r=('t_r', 'mean'))
-        n_total = len(per)
-        per = per[per.ok == 1].copy()
-        z = lambda s: (s - s.median()) / (s.std() if s.std() > 0 else 1.0)
-        per['dist'] = z(per.len_r).abs() + z(per.t_r).abs()
-        per = per.sort_values('dist')
-        print(f'{planner}: {len(per)}/{n_total} eligible; closest to median:\n{per.round(3).head(3)}\n')
-        chosen['TD3_' + planner] = per.index[0]
-    return chosen, apf
 
 
 def pick_apf_run(apf: pd.DataFrame, world: str, path: str) -> str:
@@ -81,27 +66,39 @@ def drl_run(df: pd.DataFrame, model: str, world: str, path: str) -> str:
     return run_key(r.iloc[0].saved_file)
 
 
-def plot_group(tag, scenarios, chosen, df, apf):
+def draw_run(ax, key, color, label, ls, lw, arrows):
+    run = load_run(key)
+    ax.plot(run['x'], run['y'], ls, color=color, alpha=0.8, lw=lw, zorder=1,
+            label=f"{label} | {run['elapsed_time']:.1f} s | {run['path_length']:.1f} m")
+    if arrows:
+        i = range(0, len(run['x']), ARROW_EVERY_N)
+        ax.quiver([run['x'][j] for j in i], [run['y'][j] for j in i],
+                  [np.cos(run['yaw'][j]) for j in i], [np.sin(run['yaw'][j]) for j in i],
+                  color=color, scale=50, width=0.004, headwidth=4, headlength=5, alpha=0.8)
+
+
+def plot_group(tag, scenarios, chosen, roles, df, apf):
     fig, axes = plt.subplots(1, len(scenarios), figsize=(6.0 * len(scenarios), 6.4))
     for ax, (world, path) in zip(np.atleast_1d(axes), scenarios):
-        keys = [('APF', pick_apf_run(apf, world, path)),
-                ('TD3_direct', drl_run(df, chosen['TD3_direct'], world, path)),
-                ('TD3_delta', drl_run(df, chosen['TD3_delta'], world, path))]
-        for label, key in keys:
-            run = load_run(key)
-            line = ax.plot(run['x'], run['y'], '--', color=COLORS[label], alpha=0.8, lw=1.5, zorder=1,
-                           label=f"{label} | {run['elapsed_time']:.1f} s | {run['path_length']:.1f} m")
-            i = range(0, len(run['x']), ARROW_EVERY_N)
-            ax.quiver([run['x'][j] for j in i], [run['y'][j] for j in i],
-                      [np.cos(run['yaw'][j]) for j in i], [np.sin(run['yaw'][j]) for j in i],
-                      color=line[0].get_color(), scale=50, width=0.004, headwidth=4, headlength=5, alpha=0.8)
+        apf_key = pick_apf_run(apf, world, path)
+        draw_run(ax, apf_key, COLORS['APF'], 'APF', '--', 1.5, True)
+        for method in ('TD3_direct', 'TD3_delta'):
+            for role in roles:
+                s = STYLE[role]
+                label = method if roles == ('median',) else f"{method} {s['name']}"
+                draw_run(ax, drl_run(df, chosen[(method, role)], world, path), COLORS[method],
+                         label, s['ls'], s['lw'], s['arrows'])
         draw_obstacles(ax, load_obstacles(world))
-        draw_goals(ax, load_goals(world, run_path_name(keys[0][1])))
+        draw_goals(ax, load_goals(world, run_path_name(apf_key)))
         apply_arena_style(ax, world)
         ax.set_title(f"{DISPLAY_WORLD.get(world, world).replace('_', ' ').capitalize()}, {path.replace('path', 'path ')}", fontsize=14)
         ax.legend(loc='upper left', fontsize=10)
     fig.tight_layout()
-    base = f"MultipleGoal_APF_TD3_{chosen['TD3_direct'][4:]}_{chosen['TD3_delta'][4:]}_{tag}"
+    ids = lambda role: f"{chosen[('TD3_direct', role)][4:]}_{chosen[('TD3_delta', role)][4:]}"
+    base = 'MultipleGoal_APF_TD3_' + ids('median')
+    if 'most_efficient' in roles:
+        base += '_eff_' + ids('most_efficient')
+    base += f'_{tag}'
     os.makedirs(FIG_DIR, exist_ok=True)
     for ext in ('pdf', 'png'):
         fig.savefig(os.path.join(FIG_DIR, f'{base}.{ext}'), dpi=200, bbox_inches='tight')
@@ -110,11 +107,17 @@ def plot_group(tag, scenarios, chosen, df, apf):
 
 
 def main():
-    df = pd.read_csv(CSV)
-    chosen, apf = select_policies(df)
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument('--median-only', action='store_true', help='draw only the median policies')
+    args = ap.parse_args()
+    roles = ('median',) if args.median_only else ('median', 'most_efficient')
+
+    df = pd.read_csv(AGG_CSV)
+    chosen = representatives(load_runs())
+    apf = df[df.planner == 'apf']
     print('chosen:', chosen)
     for tag, scenarios in FIGURES.items():
-        plot_group(tag, scenarios, chosen, df, apf)
+        plot_group(tag, scenarios, chosen, roles, df, apf)
 
 
 if __name__ == '__main__':
