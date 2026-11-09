@@ -123,3 +123,32 @@ def test_wheels_that_keep_turning_are_reported():
     assert code == 1
     assert 'STOP NOT CONFIRMED' in out and 'done' not in out
     assert got[-5:] == [(0.0, 0.0)] * 5
+
+
+def _values(segments, axis):
+    return [t[axis] for count, t in segments for _ in range(count)]
+
+
+@pytest.mark.parametrize('segments,axis,bound,top', [
+    ('ramp10', 0, 0.1, 0.5), ('ramp20', 0, 0.2, 0.5), ('turn10', 1, 0.1, 1.0), ('turn20', 1, 0.2, 1.0)])
+def test_step_test_ramps_move_by_the_bound_per_decision(segments, axis, bound, top):
+    import sys
+    sys.path.insert(0, os.path.dirname(SCRIPT))
+    import drive_pattern as D
+    segs = D.PATTERNS[segments] if segments in D.PATTERNS else D._turn(float(segments[-2:]) / 100)
+    v = [0.0] + _values(segs, axis)
+    decisions = v[1::D.DEC]                     # the command changes only at 10 Hz decision ticks
+    assert all(v[1 + i] == decisions[i // D.DEC] for i in range(len(v) - 1))
+    steps = [abs(b - a) for a, b in zip([0.0] + decisions, decisions)]
+    assert max(steps) <= bound * top + 1e-9
+    assert max(v) == top and v[-1] == 0.0 and (axis == 0 or min(v) == -top)
+    assert all(t[1 - axis] == 0.0 for _, t in segs)
+
+
+def test_ramp20_on_the_wire_moves_at_most_0_1_m_s_per_decision_and_ends_with_zeros():
+    got, code, _ = run('ramp20')
+    assert code == 0
+    v = [g[0] for g in got]
+    assert max(v) == 0.5 and all(g[1] == 0.0 for g in got)
+    assert max(abs(b - a) for a, b in zip(v, v[1:])) <= 0.1 + 1e-9
+    assert got[-5:] == [(0.0, 0.0)] * 5

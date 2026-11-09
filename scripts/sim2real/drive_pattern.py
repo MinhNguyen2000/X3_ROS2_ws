@@ -4,6 +4,11 @@
   drive_pattern.py straight   3 m at 0.2 m/s (300 messages at 20 Hz)
   drive_pattern.py turn       one full turn at 0.3 rad/s, counter-clockwise (420 messages)
   drive_pattern.py square     two laps of a 1 m square: 8 x (1 m straight, 90 degree turn), 1 s stops in between
+  drive_pattern.py step       0.5 m/s for 2 s, then 0 for 2 s (about 1.0 m)
+  drive_pattern.py ramp10     0 -> 0.5 m/s -> 0 in steps of 0.05 m/s per 0.1 s (delta bound 0.1), 1 s at 0.5 m/s (1.0 m)
+  drive_pattern.py ramp20     the same in steps of 0.1 m/s per 0.1 s (delta bound 0.2) (about 0.75 m)
+  drive_pattern.py turnsteps  in place, 0 -> +1 -> -1 -> 0 rad/s three times, 2 s at each level: as steps, then ramps of
+                              0.1 and of 0.2 rad/s per 0.1 s (delta bounds 0.1 and 0.2)
 
 The driver (mcnamu_driver.py) keeps the last cmd_vel until a new one arrives, so the robot keeps moving when the
 publishing ends, and everything depends on the zero command reaching the driver. The first version of this tool
@@ -49,6 +54,40 @@ PATTERNS = {
     'turn': [(420, TURN)],
     'square': [seg for _ in range(8) for seg in ((100, FORWARD), (20, STOP), (105, TURN), (20, STOP))],
 }
+
+# Step-response test of the delta bounds (P14): A2's top speeds, and ramps shaped as policy_node sends them in delta
+# mode, a change of bound x top speed per 10 Hz decision.
+TOP_V, TOP_W = 0.5, 1.0
+DEC = int(RATE / 10)        # ticks per 10 Hz decision
+
+
+def _twist(axis, v):
+    return (v, 0.0) if axis == 0 else (0.0, v)
+
+
+def _hold(axis, v, s):
+    return [(int(s * RATE), _twist(axis, v))]
+
+
+def _ramp(axis, a, b, bound):
+    top = TOP_V if axis == 0 else TOP_W
+    n = round(abs(b - a) / (bound * top))
+    return [(DEC, _twist(axis, round(a + (b - a) * k / n, 6))) for k in range(1, n + 1)]
+
+
+def _turn(bound):
+    """0 -> +TOP_W -> -TOP_W -> 0, 2 s at each level; a step when bound is None."""
+    to = (lambda a, b: []) if bound is None else (lambda a, b: _ramp(1, a, b, bound))
+    return (to(0, TOP_W) + _hold(1, TOP_W, 2) + to(TOP_W, -TOP_W) + _hold(1, -TOP_W, 2)
+            + to(-TOP_W, 0) + _hold(1, 0.0, 2))
+
+
+PATTERNS.update({
+    'step': _hold(0, TOP_V, 2) + _hold(0, 0.0, 2),                                              # about 1.0 m
+    'ramp10': _ramp(0, 0, TOP_V, 0.1) + _hold(0, TOP_V, 1) + _ramp(0, TOP_V, 0, 0.1) + _hold(0, 0.0, 1),  # 1.0 m
+    'ramp20': _ramp(0, 0, TOP_V, 0.2) + _hold(0, TOP_V, 1) + _ramp(0, TOP_V, 0, 0.2) + _hold(0, 0.0, 1),  # 0.75 m
+    'turnsteps': _turn(None) + _turn(0.1) + _turn(0.2),                                        # in place
+})
 
 
 class Interrupted(Exception):
@@ -172,7 +211,8 @@ def main():
                 if args.pattern == 'square' and i % 4 == 0:
                     print(f'square: side {i // 4 + 1} of 8', flush=True)
                 elif i == 0:
-                    print({'straight': 'straight: 3 m', 'turn': 'turn: one full turn'}[args.pattern], flush=True)
+                    print({'straight': 'straight: 3 m', 'turn': 'turn: one full turn'}.get(args.pattern, args.pattern),
+                          flush=True)
                 for _ in range(count):
                     check()
                     drive.send(twist)
