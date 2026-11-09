@@ -28,7 +28,7 @@ ODOM_INIT = {'x': -3.0, 'y': -3.0}      # odom origin in the plotting frame (wor
 GOAL_TOLERANCE = 0.20                   # m, trial_orchestrator goal_tolerance
 WORLD = 'world_1'
 OK_COLOR, FAIL_COLOR = '#228B22', '#CD5C5C'
-LEGEND_FONTSIZE = 22.4    # 5.9 pt in the paper (24 in figure scaled to the 455 pt text width), same as the multi-goal legend, which sets this limit; with two-line labels this legend fits one row up to 24.2 (6.4 pt)
+LEGEND_FONTSIZE = 23.9    # 6.3 pt in the paper (24 in figure scaled to the 455 pt text width), same as the multi-goal legend; the largest size that keeps the seven two-line entries on one row is 24.2 (6.4 pt)
 # legend labels, each on two lines (subject, then what happened) so the one-row legend is narrower
 LEGEND_LABELS = ['Successful\ntrajectory', 'Failed\ntrajectory', 'Goal\nreached', 'Goal\nnot reached',
                  'Collision\npoint', 'Goal\ntimeout', 'Obstacles\n(box & cylinder)']

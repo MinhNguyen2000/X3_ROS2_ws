@@ -40,7 +40,7 @@ from multigoal_efficiency import AGG_CSV, load_runs, representatives  # noqa: E4
 
 FIG_DIR = os.path.join(WS_DIR, 'scripts', 'figures')
 ARROW_EVERY_N = 500
-LEGEND_FONTSIZE = 16.7    # 5.9 pt in the paper (17.9 in figure scaled to the 455 pt text width), same as the G2G legend; the largest size that keeps the five entries on one row
+LEGEND_FONTSIZE = 17.8    # 6.3 pt in the paper (17.9 in figure scaled to the 455 pt text width), same as the G2G legend, which sets the limit; with two-line labels this legend fits one row up to 22.8 (8.1 pt)
 COLORS = {'APF': 'tab:blue', 'TD3_direct': 'tab:orange', 'TD3_delta': 'tab:green'}
 # --median-only row figures (unchanged from the published version)
 STYLE = {'median': dict(ls='--', lw=1.5, arrows=True, name='median'),
@@ -112,7 +112,8 @@ def plot_grid(chosen, df, apf):
                 for role in ('median', 'most_efficient'):
                     s = GRID_STYLE[role]
                     key = drl_run(df, chosen[(method, role)], world, path)
-                    run = draw_run(ax, key, COLORS[method], f"{method} {s['name']}",
+                    # legend label on two lines (method, then role) so the one-row legend is narrower
+                    run = draw_run(ax, key, COLORS[method], f"{method}\n{s['name']}",
                                    s['ls'], s['lw'], s['arrows'], False)
                     drawn.append((method, role, key, run))
             for planner, role, key, run in drawn:
@@ -130,9 +131,12 @@ def plot_grid(chosen, df, apf):
             if r < len(rows) - 1:
                 ax.set_xlabel('')
     handles, labels = axes[0][0].get_legend_handles_labels()
-    fig.legend(handles, labels, loc='lower center', ncol=len(labels), fontsize=LEGEND_FONTSIZE, frameon=False,
-               bbox_to_anchor=(0.5, 0.0), handlelength=3.0)
-    fig.tight_layout(rect=(0, 0.04, 1, 1))
+    leg = fig.legend(handles, labels, loc='lower center', ncol=len(labels), fontsize=LEGEND_FONTSIZE, frameon=False,
+                     bbox_to_anchor=(0.5, 0.0), handlelength=3.0)
+    # the bottom margin follows the measured legend height
+    fig.canvas.draw()
+    leg_h = leg.get_window_extent().height / fig.bbox.height
+    fig.tight_layout(rect=(0, leg_h + 0.01, 1, 1))
     ids = lambda role: f"{chosen[('TD3_direct', role)][4:]}_{chosen[('TD3_delta', role)][4:]}"
     base = f"MultipleGoal_APF_TD3_{ids('median')}_eff_{ids('most_efficient')}_grid"
     os.makedirs(FIG_DIR, exist_ok=True)
