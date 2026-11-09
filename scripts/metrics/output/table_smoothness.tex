@@ -1,0 +1,29 @@
+\begin{tabular}{llcccccc}
+\midrule[1.5pt]
+\textbf{Scenario} & \textbf{Planner} & \makecell{$\overline{|a_x|}$\\(m/s$^2$)} & \makecell{$a_{x,\text{RMS}}$\\(m/s$^2$)} & \makecell{$\overline{|\alpha_z|}$\\(rad/s$^2$)} & \makecell{$\alpha_{z,\text{RMS}}$\\(rad/s$^2$)} & \makecell{$\overline{|\omega_z|}$\\(rad/s)} & \makecell{$\omega_z$ reversals\\per s} \\
+\midrule[1.5pt]
+\multirow{3}{*}{World 1, path 1} & APF & 0.174 & 1.417 & 0.675 & 2.414 & 0.666 & 0.26 \\
+ & TD3\_direct & 0.028 & 0.745 & 7.522 & 19.943 & 0.645 & 5.51 \\
+ & TD3\_delta & 0.368 & 0.673 & 1.569 & 2.014 & 0.577 & 0.77 \\
+\hline
+\multirow{3}{*}{World 1, path 2} & APF & 0.112 & 1.163 & 0.557 & 4.004 & 0.691 & 0.26 \\
+ & TD3\_direct & 0.415 & 2.862 & 5.158 & 17.530 & 0.671 & 3.13 \\
+ & TD3\_delta & 0.437 & 0.741 & 1.445 & 1.886 & 0.609 & 0.61 \\
+\hline
+\multirow{3}{*}{World 1, path 3} & APF & 0.148 & 1.616 & 0.681 & 2.125 & 0.685 & 0.39 \\
+ & TD3\_direct & 0.398 & 2.752 & 6.934 & 19.737 & 0.611 & 4.34 \\
+ & TD3\_delta & 0.302 & 0.610 & 1.465 & 1.882 & 0.538 & 0.72 \\
+\hline
+\multirow{3}{*}{World 2, path 1} & APF & 0.156 & 1.427 & 0.679 & 2.273 & 0.550 & 0.26 \\
+ & TD3\_direct & 0.333 & 2.531 & 6.125 & 18.636 & 0.603 & 3.72 \\
+ & TD3\_delta & 0.263 & 0.569 & 1.521 & 1.927 & 0.569 & 0.45 \\
+\hline
+\multirow{3}{*}{World 3, path 1} & APF & 0.129 & 1.310 & 0.667 & 2.261 & 0.569 & 0.25 \\
+ & TD3\_direct & 1.591 & 5.387 & 5.440 & 16.874 & 0.646 & 4.63 \\
+ & TD3\_delta & 0.214 & 0.514 & 1.522 & 1.931 & 0.553 & 0.63 \\
+\hline
+\multirow{3}{*}{World 4, path 1} & APF & 0.207 & 1.722 & 0.649 & 2.345 & 0.700 & 0.24 \\
+ & TD3\_direct & 2.103 & 6.304 & 3.377 & 13.801 & 0.722 & 1.95 \\
+ & TD3\_delta & 0.226 & 0.526 & 1.287 & 1.850 & 0.618 & 0.51 \\
+\midrule[1.5pt]
+\end{tabular}

@@ -4,7 +4,10 @@ table:APF_TD3_navigation_benchmark and the across-seed values in the Motion smoo
 
 Metrics come from scripts/viz/visualize_vel.py compute_accel (unchanged): finite-difference linear and
 angular accelerations of the commanded v_x and omega_z over the recorded timestamps (about 50 Hz),
-their mean absolute value and RMS, the mean |omega_z|, and the omega_z sign changes per second.
+their mean absolute value and RMS, the mean |omega_z|, and the omega_z sign changes per second (osc_per_s,
+every sign change). reversals_per_s counts a turning-direction reversal only when omega_z crosses from above
++OMEGA_BAND to below -OMEGA_BAND or back (0.05 rad/s), so small commands dithering around zero do not count;
+the paper uses this count.
 
 Each run is evaluated three ways (column `variant`):
   all          every sample, as compute_accel reports it
@@ -23,6 +26,9 @@ Writes to --out (default scripts/metrics/output):
   smoothness_representative.csv  the representative runs only (the paper table)
   smoothness_aggregate.csv       mean and sample SD per scenario, planner and variant, over all runs
                                  (subset all_policies) or successful runs only (subset successful_only)
+  table_smoothness.tex           tabular body of table:APF_TD3_navigation_benchmark (representative runs,
+                                 variant TABLE_VARIANT = excl_narrow, reversals_per_s in the last column)
+  smoothness_summary.txt         the ranges and ratios the paper text quotes, for variants all and excl_narrow
 
 Ported from the 2026-10-27 job script (P9); it reproduces those CSVs. Usage: compute_smoothness.py [--out DIR]
 """
@@ -47,6 +53,11 @@ RP = os.path.join(REPO, 'scripts', 'recorded_paths')
 vv.SAVED_PATHS_DIR = RP                             # the module default points at scripts/scripts/recorded_paths
 SCEN = [s for group in vcf.FIGURES.values() for s in group]
 WINDOWS = {'narrow': (-0.1, 0.1), 'wide': (-0.5, 2.0)}   # s around each goal arrival (and run end)
+# A turning-direction reversal counts only when omega_z crosses from above +OMEGA_BAND to below -OMEGA_BAND
+# (or back), so small commands that dither around zero are not counted; 5 percent of the 1 rad/s limit.
+OMEGA_BAND = 0.05
+TABLE_VARIANT = 'excl_narrow'      # the paper table leaves out the goal-stop transients
+PLANNERS = ['APF', 'TD3_direct', 'TD3_delta']
 
 
 def load(key):
@@ -74,15 +85,30 @@ def arrivals(data, world, path):
     return np.array(out)
 
 
+def reversal_times(t, w, band=OMEGA_BAND):
+    """Times at which omega_z completes a reversal across the band (+band to -band or back)."""
+    out, side = [], 0
+    for ti, wi in zip(t, w):
+        s = 1 if wi > band else (-1 if wi < -band else 0)
+        if s:
+            if side and s != side:
+                out.append(ti)
+            side = s
+    return np.array(out)
+
+
 def metrics(data, world, path, window=None):
     r = vv.compute_accel(data['velocities'])
     s = r['stats']
     t, vyaw, ta, al, aa = r['t'], r['vyaw'], r['t_accel'], r['a_lin'], r['a_ang']
+    t, vyaw = np.asarray(t), np.asarray(vyaw)
+    rev = reversal_times(t, vyaw)
     if window is None:
+        dur = float(t[-1] - t[0])
         return dict(mean_abs_ax=s['mean_abs_a_lin'], rms_ax=s['rms_a_lin'],
                     mean_abs_alpha=s['mean_abs_a_ang'], rms_alpha=s['rms_a_ang'],
                     mean_abs_omega=float(np.mean(np.abs(vyaw))), mean_signed_omega=s['mean_signed_vyaw'],
-                    osc_per_s=s['oscillations_per_s'], duration_s=float(t[-1] - t[0]),
+                    osc_per_s=s['oscillations_per_s'], reversals_per_s=len(rev) / dur, duration_s=dur,
                     rate_hz=s['sample_rate_hz'], n_arrivals=np.nan, excluded_frac=0.0)
     arr = arrivals(data, world, path)
     lo, hi = window
@@ -100,7 +126,8 @@ def metrics(data, world, path, window=None):
     return dict(mean_abs_ax=float(np.nanmean(np.abs(al[ka]))), rms_ax=float(np.sqrt(np.nanmean(al[ka] ** 2))),
                 mean_abs_alpha=float(np.nanmean(np.abs(aa[ka]))), rms_alpha=float(np.sqrt(np.nanmean(aa[ka] ** 2))),
                 mean_abs_omega=float(np.mean(np.abs(vyaw[kv]))), mean_signed_omega=float(np.mean(vyaw[kv])),
-                osc_per_s=float(flips[ka].sum() / kept_dur), duration_s=kept_dur,
+                osc_per_s=float(flips[ka].sum() / kept_dur),
+                reversals_per_s=float((~excl(rev)).sum() / kept_dur) if len(rev) else 0.0, duration_s=kept_dur,
                 rate_hz=s['sample_rate_hz'], n_arrivals=len(arr), excluded_frac=float(1 - ka.mean()))
 
 
@@ -135,7 +162,8 @@ def main():
     rep = per[per.representative].copy()
     rep.to_csv(os.path.join(args.out, 'smoothness_representative.csv'), index=False)
 
-    cols = ['mean_abs_ax', 'rms_ax', 'mean_abs_alpha', 'rms_alpha', 'mean_abs_omega', 'mean_signed_omega', 'osc_per_s']
+    cols = ['mean_abs_ax', 'rms_ax', 'mean_abs_alpha', 'rms_alpha', 'mean_abs_omega', 'mean_signed_omega', 'osc_per_s',
+            'reversals_per_s']
     agg = []
     for subset, sel in [('all_policies', per), ('successful_only', per[per.success == 1])]:
         for (w, p, pl, var), g in sel.groupby(['world', 'path', 'planner', 'variant']):
@@ -143,8 +171,69 @@ def main():
             for c in cols:
                 d[c + '_mean'] = g[c].mean(); d[c + '_sd'] = g[c].std(ddof=1)
             agg.append(d)
-    pd.DataFrame(agg).to_csv(os.path.join(args.out, 'smoothness_aggregate.csv'), index=False)
-    print('wrote smoothness_per_run.csv, smoothness_representative.csv, smoothness_aggregate.csv to', args.out)
+    agg = pd.DataFrame(agg)
+    agg.to_csv(os.path.join(args.out, 'smoothness_aggregate.csv'), index=False)
+
+    with open(os.path.join(args.out, 'table_smoothness.tex'), 'w') as f:
+        f.write(table_tex(rep))
+    summary = text_summary(rep, agg)
+    with open(os.path.join(args.out, 'smoothness_summary.txt'), 'w') as f:
+        f.write(summary)
+    print(summary)
+    print('wrote smoothness_per_run.csv, smoothness_representative.csv, smoothness_aggregate.csv, '
+          'table_smoothness.tex, smoothness_summary.txt to', args.out)
+
+
+TABLE_COLS = [('mean_abs_ax', 3), ('rms_ax', 3), ('mean_abs_alpha', 3), ('rms_alpha', 3), ('mean_abs_omega', 3),
+              ('reversals_per_s', 2)]
+
+
+def table_tex(rep: pd.DataFrame) -> str:
+    """Tabular body of table:APF_TD3_navigation_benchmark: representative runs, TABLE_VARIANT samples."""
+    r = rep[rep.variant == TABLE_VARIANT].set_index(['world', 'path', 'planner'])
+    lines = [r'\begin{tabular}{llcccccc}', r'\midrule[1.5pt]',
+             r'\textbf{Scenario} & \textbf{Planner} & \makecell{$\overline{|a_x|}$\\(m/s$^2$)} & '
+             r'\makecell{$a_{x,\text{RMS}}$\\(m/s$^2$)} & \makecell{$\overline{|\alpha_z|}$\\(rad/s$^2$)} & '
+             r'\makecell{$\alpha_{z,\text{RMS}}$\\(rad/s$^2$)} & \makecell{$\overline{|\omega_z|}$\\(rad/s)} & '
+             r'\makecell{$\omega_z$ reversals\\per s} \\', r'\midrule[1.5pt]']
+    for k, (world, path) in enumerate(SCEN):
+        name = f"{vcf.DISPLAY_WORLD.get(world, world).replace('_', ' ').capitalize()}, {path.replace('path', 'path ')}"
+        for i, pl in enumerate(PLANNERS):
+            x = r.loc[(world, path, pl)]
+            head = (r'\multirow{3}{*}{' + name + '}') if i == 0 else ''
+            lines.append(f"{head} & {pl.replace('_', chr(92) + '_')} & "
+                         + ' & '.join(f'{x[c]:.{d}f}' for c, d in TABLE_COLS) + r' \\')
+        lines.append(r'\hline' if k < len(SCEN) - 1 else r'\midrule[1.5pt]')
+    lines += [r'\end{tabular}', '']
+    return '\n'.join(lines)
+
+
+def text_summary(rep: pd.DataFrame, agg: pd.DataFrame) -> str:
+    """Ranges over the six scenarios that the paper text quotes, per planner and variant."""
+    out = [f'Ranges over the six scenarios (min to max); reversals use the {OMEGA_BAND} rad/s band.', '']
+    for var in ['all', TABLE_VARIANT]:
+        out.append(f'Representative runs, variant {var}:')
+        r = rep[rep.variant == var]
+        for pl in PLANNERS:
+            g = r[r.planner == pl]
+            out.append(f'  {pl:10s} ' + '  '.join(
+                f'{c} {g[c].min():.{d}f} to {g[c].max():.{d}f}' for c, d in TABLE_COLS + [('osc_per_s', 2)]))
+        for c in ['reversals_per_s', 'mean_abs_alpha', 'rms_alpha', 'rms_ax']:
+            ratio = r.pivot_table(index=['world', 'path'], columns='planner', values=c)
+            for num, den in [('TD3_direct', 'APF'), ('TD3_delta', 'APF'), ('TD3_direct', 'TD3_delta')]:
+                q = ratio[num] / ratio[den]
+                out.append(f'  {c} {num}/{den} per scenario: {q.min():.2f} to {q.max():.2f}')
+        out.append('')
+        a = agg[(agg.subset == 'successful_only') & (agg.variant == var)]
+        out.append(f'Successful runs of all final and best checkpoints (APF: 5 repeats), variant {var}, mean +- sample SD per scenario:')
+        for pl in PLANNERS:
+            g = a[a.planner == pl]
+            for c, d in [('rms_alpha', 2), ('reversals_per_s', 2), ('rms_ax', 2)]:
+                lo = g.loc[g[c + '_mean'].idxmin()]; hi = g.loc[g[c + '_mean'].idxmax()]
+                out.append(f'  {pl:10s} {c}: {lo[c + "_mean"]:.{d}f} +- {lo[c + "_sd"]:.{d}f} to '
+                           f'{hi[c + "_mean"]:.{d}f} +- {hi[c + "_sd"]:.{d}f}  (n {int(g.n.min())} to {int(g.n.max())})')
+        out.append('')
+    return '\n'.join(out)
 
 
 if __name__ == '__main__':
