@@ -134,8 +134,11 @@ def main():
                label='Goal timeout'),
         patches.Patch(facecolor='red', alpha=0.5, edgecolor='red', linewidth=1.5, label='Obstacles (box & cylinder)'),
     ]
-    fig.legend(handles=legends, loc='upper center', ncol=7, fontsize=11, framealpha=0.95, handlelength=1.5)
-    fig.tight_layout(rect=(0, 0.10, 1, 0.93))
+    # one legend below the panels without a frame, as in the multi-goal path figure
+    # the bottom margin leaves room for the (a) to (c) panel labels below the x axis labels
+    fig.tight_layout(rect=(0, 0.15, 1, 1))
+    fig.legend(handles=legends, loc='lower center', ncol=7, fontsize=13, frameon=False, handlelength=2.0,
+               bbox_to_anchor=(0.5, 0.0))
 
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     fig.savefig(args.out)

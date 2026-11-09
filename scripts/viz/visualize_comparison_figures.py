@@ -41,8 +41,13 @@ from multigoal_efficiency import AGG_CSV, load_runs, representatives  # noqa: E4
 FIG_DIR = os.path.join(WS_DIR, 'scripts', 'figures')
 ARROW_EVERY_N = 500
 COLORS = {'APF': 'tab:blue', 'TD3_direct': 'tab:orange', 'TD3_delta': 'tab:green'}
+# --median-only row figures (unchanged from the published version)
 STYLE = {'median': dict(ls='--', lw=1.5, arrows=True, name='median'),
          'most_efficient': dict(ls=':', lw=2.0, arrows=False, name='most efficient')}
+# grid figure: APF and the median policies solid, the most efficient policies dotted, thinner lines
+GRID_STYLE = {'APF': dict(ls='-', lw=1.1, arrows=True, name=''),
+              'median': dict(ls='-', lw=1.1, arrows=True, name='median'),
+              'most_efficient': dict(ls=':', lw=1.4, arrows=False, name='most efficient')}
 
 # (world, path) scenarios of each figure; world 4 path 1 is excluded
 FIGURES = {
@@ -87,18 +92,24 @@ def panel_title(world, path):
     return f"{DISPLAY_WORLD.get(world, world).replace('_', ' ').capitalize()}, {path.replace('path', 'path ')}"
 
 
+def corner_label(world, path):
+    """'world_5', 'path1' -> 'World 4\\nPath 1'"""
+    return f"{DISPLAY_WORLD.get(world, world).replace('_', ' ').capitalize()}\n{path.replace('path', 'Path ')}"
+
+
 def plot_grid(chosen, df, apf):
     """All six scenarios in one 2x3 figure with one legend below the panels."""
     rows = list(FIGURES.values())
     fig, axes = plt.subplots(len(rows), len(rows[0]), figsize=(6.0 * len(rows[0]), 6.0 * len(rows) + 0.8))
     stats = []
-    for ax_row, scenarios in zip(axes, rows):
-        for ax, (world, path) in zip(ax_row, scenarios):
+    for r, (ax_row, scenarios) in enumerate(zip(axes, rows)):
+        for c, (ax, (world, path)) in enumerate(zip(ax_row, scenarios)):
             apf_key = pick_apf_run(apf, world, path)
-            drawn = [('APF', '', apf_key, draw_run(ax, apf_key, COLORS['APF'], 'APF', '--', 1.5, True, False))]
+            a = GRID_STYLE['APF']
+            drawn = [('APF', '', apf_key, draw_run(ax, apf_key, COLORS['APF'], 'APF', a['ls'], a['lw'], a['arrows'], False))]
             for method in ('TD3_direct', 'TD3_delta'):
                 for role in ('median', 'most_efficient'):
-                    s = STYLE[role]
+                    s = GRID_STYLE[role]
                     key = drl_run(df, chosen[(method, role)], world, path)
                     run = draw_run(ax, key, COLORS[method], f"{method} {s['name']}",
                                    s['ls'], s['lw'], s['arrows'], False)
@@ -110,7 +121,13 @@ def plot_grid(chosen, df, apf):
             draw_obstacles(ax, load_obstacles(world))
             draw_goals(ax, load_goals(world, run_path_name(apf_key)))
             apply_arena_style(ax, world)
-            ax.set_title(panel_title(world, path), fontsize=14)
+            # scenario label in the upper left corner; axis labels only on the outer panels
+            ax.text(0.025, 0.975, corner_label(world, path), transform=ax.transAxes, ha='left', va='top',
+                    fontsize=14, zorder=20, bbox=dict(facecolor='white', edgecolor='none', alpha=0.8, pad=2))
+            if c > 0:
+                ax.set_ylabel('')
+            if r < len(rows) - 1:
+                ax.set_xlabel('')
     handles, labels = axes[0][0].get_legend_handles_labels()
     fig.legend(handles, labels, loc='lower center', ncol=len(labels), fontsize=13, frameon=False,
                bbox_to_anchor=(0.5, 0.0), handlelength=3.0)
