@@ -1,19 +1,23 @@
 #!/usr/bin/env python3
-"""P14 multi-goal metrics: the A1 policies and the same-code reruns of APF and TD3_direct Final.
+"""P14 multi-goal metrics: the A1 and A2 policies and the same-code reruns of APF and the paper's TD3.
 
-Reads scripts/batch_runs/manifest_p14.csv (written by scripts/run_p14_gazebo.sh) and computes the
-multi-goal measures of extract_leg_metrics.py with its own functions (leg parsing, shortest-path SPL,
+Reads scripts/batch_runs/manifest_p14.csv (written by scripts/run_p14_gazebo.sh; more with --manifest) and
+computes the multi-goal measures of extract_leg_metrics.py with its own functions (leg parsing, shortest-path SPL,
 per-unit aggregation, median [Q1, Q3] and bootstrap summary), so the numbers are defined as in
 Table multigoal_success. world_4/path1 is run but left out of the per-unit and summary outputs.
 
 Kinds:
-  - a1_final: TD3_011<seed>_1500; a1_best: the MuJoCo-selected checkpoint per seed (BEST below),
-    a policy that is both counts in both rows, as extract_leg_metrics.py does;
-  - apf_rerun: APF, one unit per repeat; direct_final_rerun: TD3_00396_1000 to TD3_00405_1000.
-The published units (scripts/metrics/output/multigoal_units.csv, kinds apf and direct_final) are
-added to the summary as apf_paper and direct_final_paper when that file exists.
+  - <group>_final: TD3_0SSxx_1500 with group a1 (011), a2dir (012) or a2delta (013); <group>_best: the
+    MuJoCo-selected checkpoint per seed (BEST below), a policy that is both counts in both rows, as
+    extract_leg_metrics.py does;
+  - apf_rerun: APF, one unit per repeat; direct_final_rerun: TD3_00396_1000 to TD3_00405_1000;
+    delta_final_rerun: TD3_00386_1000 to TD3_00395_1000.
+The published units (scripts/metrics/output/multigoal_units.csv, kinds apf, direct_final and delta_final) are
+added to the summary as <kind>_paper when that file exists. With scipy available, a two-sided Mann-Whitney U
+test of each A2 Final group against apf_rerun is written to mwu.csv (notes/a2_eval_protocol_20261109.md).
 
-Usage: scripts/metrics/p14_multigoal.py [--out scripts/metrics/output_p14] [--n-boot 10000]
+Usage: scripts/metrics/p14_multigoal.py [--manifest scripts/batch_runs/manifest_p14.csv ...]
+                                        [--out scripts/metrics/output_p14] [--n-boot 10000]
 """
 import argparse
 import datetime
@@ -28,21 +32,28 @@ from shortest_path import OBSTACLE_TOLERANCE, ShortestPath
 
 MANIFEST = os.path.join(E.REPO, 'scripts', 'batch_runs', 'manifest_p14.csv')
 LOG_DIR = os.path.join(E.REPO, 'scripts', 'batch_runs', 'logs')
-BEST = {'101': '1300', '102': '1500', '103': '1400'}     # notes/a1_eval_protocol_20261106.md, eval seed 11
+GROUP = {'011': 'a1', '012': 'a2dir', '013': 'a2delta'}
+BEST = {'01101': '1300', '01102': '1500', '01103': '1400',      # notes/a1_eval_protocol_20261106.md, eval seed 11
+        # notes/a2_mujoco_result_20261109.md, eval seed 11
+        '01201': '1100', '01202': '1000', '01203': '1100', '01204': '1500', '01205': '1000',
+        '01206': '1100', '01207': '1500', '01208': '1500', '01209': '1400', '01210': '1400',
+        '01301': '1200', '01302': '900', '01303': '1100', '01304': '1300', '01305': '1000',
+        '01306': '1500', '01307': '1400', '01308': '1300', '01309': '1500', '01310': '1500'}
 
 
 def kinds_of(model):
     if model == 'APF':
         return 'apf', ['apf_rerun']
     _, sid, ckpt = model.split('_')
-    if sid.startswith('011'):
-        seed = sid[2:]
-        return 'a1', [k for k, hit in (('a1_final', ckpt == '1500'), ('a1_best', BEST.get(seed) == ckpt)) if hit]
-    return 'direct', ['direct_final_rerun'] if ckpt == '1000' else []
+    g = GROUP.get(sid[:3])
+    if g:
+        return g, [k for k, hit in ((f'{g}_final', ckpt == '1500'), (f'{g}_best', BEST.get(sid) == ckpt)) if hit]
+    p = 'delta' if 386 <= int(sid) <= 395 else 'direct'
+    return p, [f'{p}_final_rerun'] if ckpt == '1000' else []
 
 
-def load_runs():
-    man = pd.read_csv(MANIFEST, dtype={'rep': int})
+def load_runs(manifests):
+    man = pd.concat([pd.read_csv(m, dtype={'rep': int}) for m in manifests], ignore_index=True)
     ok = man[man['status'] == 'ok'].copy()
     # one row per job: the last ok row (resumed batches skip jobs already ok, so duplicates are reruns)
     ok = ok.drop_duplicates(['model', 'world', 'path', 'rep'], keep='last')
@@ -108,13 +119,14 @@ def runs_of(legs):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split('\n')[0])
+    ap.add_argument('--manifest', nargs='+', default=[MANIFEST])
     ap.add_argument('--out', default=os.path.join(E.HERE, 'output_p14'))
     ap.add_argument('--n-boot', type=int, default=10000)
     args = ap.parse_args()
     os.makedirs(args.out, exist_ok=True)
     rng = np.random.default_rng(0)
 
-    man, ok = load_runs()
+    man, ok = load_runs(args.manifest)
     sp_by_world = {w: ShortestPath(w, OBSTACLE_TOLERANCE) for w in sorted(ok['world'].unique())}
     legs = legs_of(ok, sp_by_world)
     runs = runs_of(legs)
@@ -123,7 +135,7 @@ def main():
     published = os.path.join(E.HERE, 'output', 'multigoal_units.csv')
     if os.path.exists(published):
         pub = pd.read_csv(published)
-        pub = pub[pub['kind'].isin(['apf', 'direct_final'])].copy()
+        pub = pub[pub['kind'].isin(['apf', 'direct_final', 'delta_final'])].copy()
         pub['kind'] = pub['kind'] + '_paper'
         units_all = pd.concat([units, pub[units.columns.intersection(pub.columns)]], ignore_index=True)
     else:
@@ -135,17 +147,33 @@ def main():
     for name, df in {'p14_legs.csv': legs, 'p14_runs.csv': runs, 'p14_units.csv': units_all,
                      'p14_summary.csv': summary}.items():
         df.to_csv(os.path.join(args.out, name), index=False, float_format='%.6g')
-    expected = {'a1': 35, 'apf': 35, 'direct': 70}
-    counts = {p: int(sum(kinds_of(m)[0] == p for m in ok['model'])) for p in expected}
+    mwu = []
+    try:
+        from scipy.stats import mannwhitneyu
+        apf = units[units['kind'] == 'apf_rerun']
+        for kind in ('a2dir_final', 'a2delta_final'):
+            for m in ('goal_completion', 'spl_geo'):
+                x = units.loc[units['kind'] == kind, m].dropna()
+                if len(x):
+                    r = mannwhitneyu(x, apf[m].dropna(), alternative='two-sided')
+                    mwu.append(dict(kind=kind, vs='apf_rerun', metric=m, n=len(x), n_vs=apf[m].notna().sum(),
+                                    U=r.statistic, p=r.pvalue))
+        pd.DataFrame(mwu).to_csv(os.path.join(args.out, 'mwu.csv'), index=False, float_format='%.6g')
+    except Exception as e:      # the system scipy may not load against numpy 2; the test is then skipped
+        print('Mann-Whitney U skipped:', e)
+
+    counts = ok['model'].map(lambda m: kinds_of(m)[0]).value_counts().to_dict()
     meta = dict(script='scripts/metrics/p14_multigoal.py', code_commit=E.code_commit(),
-                generated=datetime.datetime.now().isoformat(timespec='seconds'), manifest=MANIFEST,
-                manifest_rows=len(man), ok_jobs=counts, expected_jobs=expected,
+                generated=datetime.datetime.now().isoformat(timespec='seconds'), manifest=args.manifest,
+                manifest_rows=len(man), ok_jobs=counts,
                 not_ok_rows=int((man['status'] != 'ok').sum()), radius_m=OBSTACLE_TOLERANCE,
                 n_boot=args.n_boot, bootstrap_rng_seed=0, best_checkpoints=BEST,
                 excluded_scenarios=sorted('/'.join(s) for s in E.EXCLUDED_SCENARIOS))
     json.dump(meta, open(os.path.join(args.out, 'meta.json'), 'w'), indent=2)
 
-    print(json.dumps({k: meta[k] for k in ('code_commit', 'ok_jobs', 'expected_jobs', 'not_ok_rows')}))
+    print(json.dumps({k: meta[k] for k in ('code_commit', 'ok_jobs', 'not_ok_rows')}))
+    if mwu:
+        print(pd.DataFrame(mwu).to_string(index=False))
     pd.set_option('display.width', 200)
     s = summary.assign(v=lambda d: d.apply(lambda r: f"{r['median']:.4g} [{r['q1']:.4g}, {r['q3']:.4g}]", axis=1))
     print(s.pivot(index='kind', columns='metric', values='v')[metrics].to_string())
