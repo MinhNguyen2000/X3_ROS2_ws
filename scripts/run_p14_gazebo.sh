@@ -1,7 +1,7 @@
 #!/bin/bash
 # P14: Gazebo multi-goal batch for the A1 policies and the same-code controls (protocol: personal_hub notes/a1_gazebo_protocol_20261106.md).
 # Runs inside the dev container relaxed_shaw; resumable (batch_multigoal.py skips jobs already ok in the manifest).
-# Usage on the host: scripts/run_p14_gazebo.sh [a1|apf|paper|all] [extra batch_multigoal.py args, e.g. --limit 1]
+# Usage on the host: scripts/run_p14_gazebo.sh [a1|apf|paper|all|a2delta] [extra batch_multigoal.py args, e.g. --limit 1]
 set -u
 STAGE=${1:-all}; shift || true
 WT=/X3_ROS2_ws/.claude/worktrees/p14-gazebo
@@ -12,6 +12,14 @@ run() { echo "$(date +%F_%T) stage $1"; docker exec relaxed_shaw bash -c "cd $WT
 if [ "$STAGE" = a1 ] || [ "$STAGE" = all ]; then
     args=""; for m in $A1; do args+=" --extra-model $m --only-model $m"; done
     run a1 "$BASE --skip-apf $args --planner-param control_rate:=10.0 $*"
+fi
+# A2 delta policy (not part of "all"): A2_DELTA_MODEL=TD3_013xx_1500 A2_DELTA_BOUND=<trained delta bound>
+if [ "$STAGE" = a2delta ]; then
+    m=${A2_DELTA_MODEL:?set A2_DELTA_MODEL}; b=${A2_DELTA_BOUND:?set A2_DELTA_BOUND}
+    pargs=""
+    for x in control_rate:=10.0 action_mode:=delta delta_act_linear:=$b delta_act_angular:=$b \
+             delta_act_scale_linear:=1.0 delta_act_scale_angular:=1.0; do pargs+=" --planner-param $x"; done
+    run a2delta "$BASE --skip-apf --extra-model $m --only-model $m $pargs $*"
 fi
 if [ "$STAGE" = apf ] || [ "$STAGE" = all ]; then
     run apf "$BASE --only-model APF --apf-reps 5 $*"
