@@ -40,7 +40,7 @@ from multigoal_efficiency import AGG_CSV, load_runs, representatives  # noqa: E4
 
 FIG_DIR = os.path.join(WS_DIR, 'scripts', 'figures')
 ARROW_EVERY_N = 500
-LEGEND_FONTSIZE = 13      # 4.6 pt in the paper (figure scaled to the 455 pt text width), same as the G2G legend
+LEGEND_FONTSIZE = 16.7    # 5.9 pt in the paper (17.9 in figure scaled to the 455 pt text width), same as the G2G legend; the largest size that keeps the five entries on one row
 COLORS = {'APF': 'tab:blue', 'TD3_direct': 'tab:orange', 'TD3_delta': 'tab:green'}
 # --median-only row figures (unchanged from the published version)
 STYLE = {'median': dict(ls='--', lw=1.5, arrows=True, name='median'),

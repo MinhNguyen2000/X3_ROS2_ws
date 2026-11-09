@@ -28,7 +28,10 @@ ODOM_INIT = {'x': -3.0, 'y': -3.0}      # odom origin in the plotting frame (wor
 GOAL_TOLERANCE = 0.20                   # m, trial_orchestrator goal_tolerance
 WORLD = 'world_1'
 OK_COLOR, FAIL_COLOR = '#228B22', '#CD5C5C'
-LEGEND_FONTSIZE = 17.4    # 4.6 pt in the paper (24 in figure scaled to the 455 pt text width), same as the multi-goal legend; the largest size that keeps all seven entries on one row
+LEGEND_FONTSIZE = 22.4    # 5.9 pt in the paper (24 in figure scaled to the 455 pt text width), same as the multi-goal legend, which sets this limit; with two-line labels this legend fits one row up to 24.2 (6.4 pt)
+# legend labels, each on two lines (subject, then what happened) so the one-row legend is narrower
+LEGEND_LABELS = ['Successful\ntrajectory', 'Failed\ntrajectory', 'Goal\nreached', 'Goal\nnot reached',
+                 'Collision\npoint', 'Goal\ntimeout', 'Obstacles\n(box & cylinder)']
 
 # Median-rule selections (see seed_selection in the paper repo / G2G pool ranking)
 DEFAULTS = {
@@ -135,11 +138,15 @@ def main():
                label='Goal timeout'),
         patches.Patch(facecolor='red', alpha=0.5, edgecolor='red', linewidth=1.5, label='Obstacles (box & cylinder)'),
     ]
+    for handle, label in zip(legends, LEGEND_LABELS):
+        handle.set_label(label)
     # one legend below the panels without a frame, as in the multi-goal path figure
-    # the bottom margin leaves room for the (a) to (c) panel labels below the x axis labels
-    fig.tight_layout(rect=(0, 0.15, 1, 1))
-    fig.legend(handles=legends, loc='lower center', ncol=7, fontsize=LEGEND_FONTSIZE, frameon=False, handlelength=2.0,
-               bbox_to_anchor=(0.5, 0.0))
+    leg = fig.legend(handles=legends, loc='lower center', ncol=len(legends), fontsize=LEGEND_FONTSIZE, frameon=False,
+                     handlelength=2.0, bbox_to_anchor=(0.5, 0.0))
+    # the bottom margin holds the legend plus the (a) to (c) panel labels below the x axis labels
+    fig.canvas.draw()
+    leg_h = leg.get_window_extent().height / fig.bbox.height
+    fig.tight_layout(rect=(0, leg_h + 0.10, 1, 1))
 
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     fig.savefig(args.out)
