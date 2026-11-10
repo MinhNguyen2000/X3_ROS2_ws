@@ -81,6 +81,7 @@ class TrialConfig:
     velocity_zero_timeout_s:    float = 5.0
     node_ready_timeout_s:       float = 15.0
     output_dir:                 str = "trial_results"
+    planner_params:             list = field(default_factory=list)  # extra "name:=value" ROS parameters
 
     # Gazebo spawn initial conditions
     agent_start_x:              float = -3.0
@@ -379,6 +380,8 @@ class TrialOrchestrator(Node):
             ]
         else:
             raise ValueError(f"Unknown planner: {self.cfg.planner}")
+        for param in self.cfg.planner_params:
+            cmd += ["-p", param]
 
         self._planner_proc = ManagedProcess(cmd, f"planner_{self.cfg.planner}")
         self._planner_proc.start()
@@ -679,6 +682,10 @@ def parse_arguments():
     parser.add_argument("--agent_name", default="agent0")
     parser.add_argument("--planner", required=True, choices=["DRL", "APF"])
     parser.add_argument("--output_dir", default="trial_results")
+    parser.add_argument("--model", default=None,
+                        help="DRL policy folder in x3_drl_policy/policies (default: TrialConfig.drl_model_name)")
+    parser.add_argument("--planner-param", action="append", default=[], metavar="NAME:=VALUE",
+                        help="extra ROS parameter for the planner node, repeatable (e.g. control_rate:=10.0)")
 
     return parser.parse_args()
 
@@ -705,7 +712,10 @@ def main():
         agent_name=args.agent_name,
         planner=args.planner,
         output_dir=args.output_dir,
+        planner_params=list(args.planner_param),
     )
+    if args.model:
+        cfg.drl_model_name = args.model
 
     # TODO: this script assumes Gazebo + rsp + bridges + spawner +
     # controllers are ALREADY running (i.e. you've separately launched a
