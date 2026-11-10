@@ -54,18 +54,20 @@ def world_from_run_key(run_key: str) -> str:
 
 
 GOAL_TOLERANCE  = 0.30                            # goal circle radius (m)
-DELTA_MAX_ID    = 395                             # TD3 model ids <= this are delta, above are direct
+# TD3 model ids trained with delta actions; every other id outputs direct velocities. Same rule as
+# src/x3_drl_policy/x3_drl_policy/policy_node.py (action_mode), so the older seeds 00378-00383 and 00385 are direct.
+DELTA_IDS       = set(range(386, 396)) | {384}
 
 
 # ===== Run naming =====
 def planner_label(model_folder: str) -> str:
     """
     Categorize the TD3 policies as TD3_delta or TD3_direct
-    'TD3_00395_1000' -> 'TD3_delta', 'TD3_00404_500' -> 'TD3_direct', 'APF' -> 'APF'.
+    'TD3_00395_1000' -> 'TD3_delta', 'TD3_00404_500' -> 'TD3_direct', 'TD3_00380_1000' -> 'TD3_direct', 'APF' -> 'APF'.
     """
     parts = model_folder.split('_')[:2]
     if len(parts) > 1:
-        parts[1] = 'delta' if int(parts[1]) <= DELTA_MAX_ID else 'direct'
+        parts[1] = 'delta' if int(parts[1]) in DELTA_IDS else 'direct'
     return '_'.join(parts)
 
 
