@@ -14,7 +14,7 @@ Usage (from any shell; ROS 2 and the workspace are sourced internally):
     python3 scripts/batch_multigoal.py --dry-run
     python3 scripts/batch_multigoal.py --only-model TD3_00386_1000 --only-scenario world_1/path1
     python3 scripts/batch_multigoal.py            # full batch, resumable
-    python3 scripts/batch_multigoal.py --only-model APF --apf-param k_att:=5.0 --manifest scripts/batch_runs/manifest_apf_x.csv
+    python3 scripts/batch_multigoal.py --only-model APF --classical-param APF:k_att:=5.0 --manifest scripts/batch_runs/manifest_apf_x.csv
 '''
 import argparse
 import csv
@@ -59,10 +59,24 @@ MANIFEST_COLS = ['model', 'kind', 'world', 'path', 'rep', 'status', 'success',
                  'timestamp', 'code_state']
 
 procs = []          # (name, Popen) currently alive, for cleanup
-CODE_STATE = {}     # per planner kind ('drl', 'apf'): git HEAD + node hash + parameters, set in main()
+CODE_STATE = {}     # 'drl' and one entry per classical planner: git HEAD + node hashes + parameters, set in main()
 
 POLICY_NODE = WS / 'src' / 'x3_drl_policy' / 'x3_drl_policy' / 'policy_node.py'
-APF_NODE    = WS / 'src' / 'x3_apf_planner' / 'x3_apf_planner' / 'apf_node.py'
+
+# Classical (non-learned) planners. Each serves navigate_to_goal and publishes its name on active_planner, so a job
+# runs exactly like an APF job. To add one (P16 DWA, P17 MPPI), add an entry:
+#   cmd(params):   shell command that starts the planner under NS, given its parameter overrides {key: value}
+#   server_choice: goal_sequence_server's planner_choice
+#   hash_files:    files whose sha1 goes into code_state (node source, params YAML, ...)
+#   declared:      Python node whose declare_parameter() calls define the allowed keys and their types; None = keys
+#                  are passed unchecked and only the overrides are recorded
+# Job model and active_planner name = the key; job kind = the key in lower case.
+APF_NODE = WS / 'src' / 'x3_apf_planner' / 'x3_apf_planner' / 'apf_node.py'
+CLASSICAL = {
+    'APF': dict(cmd=lambda p: 'ros2 run x3_apf_planner apf_node --ros-args '
+                              + ''.join(f'-p {k}:={v} ' for k, v in p.items()) + f'--remap __ns:={NS}',
+                server_choice='apf', hash_files=[APF_NODE], declared=APF_NODE),
+}
 
 
 def git_head():
@@ -85,46 +99,65 @@ def code_state(planner_params):
     return f'{git_head()}+policy_node:{file_sha(POLICY_NODE)}' + (f' [{planner_params}]' if planner_params else '')
 
 
-def apf_defaults():
-    '''Parameter defaults declared in apf_node.py, in declaration order (agent_name left out).'''
-    src = APF_NODE.read_text()
-    found = re.findall(r"declare_parameter\(\s*'(\w+)'\s*,\s*([^)#\n]+?)\s*\)", src)
-    # same text form as parse_apf_params, so a default and an equal override read the same in code_state
+def declared_params(node_file):
+    '''Parameter defaults declared in a Python node, in declaration order (agent_name left out).'''
+    found = re.findall(r"declare_parameter\(\s*'(\w+)'\s*,\s*([^)#\n]+?)\s*\)", node_file.read_text())
+    # same text form as parse_classical_params, so a default and an equal override read the same in code_state
     return {k: repr(float(v)) if '.' in v else str(int(v)) for k, v in found if k != 'agent_name'}
 
 
-def parse_apf_params(items):
-    '''--apf-param KEY:=VALUE list -> {key: value}; unknown keys stop the batch (ROS 2 would ignore them silently).'''
-    known = apf_defaults()
-    out = {}
+def parse_classical_params(items):
+    '''PLANNER:KEY:=VALUE list -> {planner: {key: value}}. For a planner with a declared node, unknown keys stop the
+    batch (ROS 2 would ignore them silently) and values are cast to the default's type (ROS 2 refuses an int override
+    of a parameter declared as a double, and the reverse).'''
+    out = {name: {} for name in CLASSICAL}
     for item in items:
-        key, sep, value = item.partition(':=')
-        if not sep or not value:
-            sys.exit(f'--apf-param {item}: expected KEY:=VALUE')
+        name, sep1, rest = item.partition(':')
+        key, sep2, value = rest.partition(':=')
+        if name not in CLASSICAL:
+            sys.exit(f'--classical-param {item}: unknown planner {name!r} (known: {", ".join(CLASSICAL)})')
+        if not (sep1 and sep2 and key and value):
+            sys.exit(f'--classical-param {item}: expected PLANNER:KEY:=VALUE')
+        node = CLASSICAL[name]['declared']
+        if node is None:
+            out[name][key] = value
+            continue
+        known = declared_params(node)
         if key not in known:
-            sys.exit(f'--apf-param {item}: {key} is not a parameter of apf_node.py ({", ".join(known)})')
-        # ROS 2 refuses an int override of a parameter declared as a double (and the reverse), so match the default
+            sys.exit(f'--classical-param {item}: {key} is not a parameter of {node.name} ({", ".join(known)})')
         is_float = '.' in known[key]
         try:
-            out[key] = repr(float(value)) if is_float else str(int(value))
+            out[name][key] = repr(float(value)) if is_float else str(int(value))
         except ValueError:
-            sys.exit(f'--apf-param {item}: {key} needs {"a float" if is_float else "an integer"} value')
+            sys.exit(f'--classical-param {item}: {key} needs {"a float" if is_float else "an integer"} value')
     return out
 
 
-def apf_code_state(apf_params):
-    '''Identify the APF code and the full gain set an APF job ran with: node defaults with --apf-param overrides.'''
-    gains = {**apf_defaults(), **apf_params}
-    return (f'{git_head()}+apf_node:{file_sha(APF_NODE)} ['
-            + ' '.join(f'{k}:={v}' for k, v in gains.items()) + ']')
+def classical_code_state(name, params):
+    '''Identify a classical planner's code and parameters: HEAD + each hashed file's sha1, then the full parameter
+    set (declared defaults with the overrides applied) or, without a declared node, the overrides only.'''
+    spec = CLASSICAL[name]
+    full = {**declared_params(spec['declared']), **params} if spec['declared'] else params
+    return (git_head() + ''.join(f'+{f.stem}:{file_sha(f)}' for f in spec['hash_files'])
+            + ' [' + ' '.join(f'{k}:={v}' for k, v in full.items()) + ']')
+
+
+def classical_of(job):
+    '''Name of the classical planner a job runs, or None for a DRL job.'''
+    return job['model'] if job['model'] in CLASSICAL and job['kind'] == job['model'].lower() else None
+
+
+def job_code_state(job):
+    return CODE_STATE[classical_of(job) or 'drl']
 
 
 # ----------------------------------------------------------------------------- job list
-def build_jobs(apf_reps, extra_models=()):
+def build_jobs(classical_reps, extra_models=(), classical=('APF',)):
     jobs = []
-    for world, path in SCENARIOS:
-        for rep in range(1, apf_reps + 1):
-            jobs.append(dict(model='APF', kind='apf', world=world, path=path, rep=rep))
+    for name in classical:
+        for world, path in SCENARIOS:
+            for rep in range(1, classical_reps + 1):
+                jobs.append(dict(model=name, kind=name.lower(), world=world, path=path, rep=rep))
     for ids, family in ((DELTA_IDS, 'delta'), (DIRECT_IDS, 'direct')):
         for i in ids:
             folders = sorted(p.name for p in POLICY_DIR.glob(f'TD3_{i:05d}_*') if p.is_dir())
@@ -265,7 +298,7 @@ def run_job(job, args, tag):
                status='launch_fail', success='', waypoints_completed='',
                total_waypoints=total_waypoints(world, path), elapsed_s='', saved_file='',
                log_file=str(log['client']), timestamp=datetime.now().isoformat(timespec='seconds'),
-               code_state=CODE_STATE['apf' if job['kind'] == 'apf' else 'drl'])
+               code_state=job_code_state(job))
     try:
         if gz_running():
             teardown()
@@ -275,10 +308,10 @@ def run_job(job, args, tag):
             print('    sim not ready'); return row
         time.sleep(args.settle)
 
-        if job['kind'] == 'apf':
-            spawn('planner', f'ros2 run x3_apf_planner apf_node --ros-args {args.apf_ros_params} '
-                  f'--remap __ns:={NS}', log['planner'])
-            server_choice = 'apf'
+        name = classical_of(job)
+        if name:
+            spawn('planner', CLASSICAL[name]['cmd'](args.classical_params[name]), log['planner'])
+            server_choice = CLASSICAL[name]['server_choice']
         else:
             spawn('planner', 'ros2 run x3_drl_policy policy_node --ros-args '
                   f'-p model_name:={model} {args.planner_params} --remap __ns:={NS}',
@@ -337,14 +370,18 @@ def main():
     global ROS_DOMAIN, MANIFEST, CODE_STATE, SCENARIOS
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
     ap.add_argument('--dry-run', action='store_true', help='print the job list and exit')
-    ap.add_argument('--only-model', action='append', help='model folder name or APF (repeatable)')
+    ap.add_argument('--only-model', action='append', help='model folder name or a classical planner, e.g. APF (repeatable)')
     ap.add_argument('--only-scenario', action='append', help='e.g. world_1/path1 (repeatable)')
     ap.add_argument('--extra-model', action='append', default=[], metavar='FOLDER',
                     help='policy folder outside the 2026 id ranges, e.g. TD3_00911_2000 (repeatable)')
-    ap.add_argument('--apf-reps', type=int, default=5)
+    ap.add_argument('--classical', action='append', choices=list(CLASSICAL), metavar='PLANNER',
+                    help=f'classical planner to run (repeatable; default APF; known: {", ".join(CLASSICAL)})')
+    ap.add_argument('--classical-reps', '--apf-reps', dest='classical_reps', type=int, default=5,
+                    help='repeats per scenario of each classical planner')
     ap.add_argument('--scenarios', nargs='+', metavar='WORLD/PATH',
                     help='replace the default six scenarios, e.g. world_5/path1')
-    ap.add_argument('--skip-apf', action='store_true', help='run the DRL policies only')
+    ap.add_argument('--skip-classical', '--skip-apf', dest='skip_classical', action='store_true',
+                    help='run the DRL policies only')
     ap.add_argument('--start-index', type=int, default=0, help='skip the first N jobs of the list')
     ap.add_argument('--limit', type=int, default=0, help='run at most N jobs (0 = all)')
     ap.add_argument('--seq-timeout', type=float, default=600, help='per-sequence timeout [s]')
@@ -354,9 +391,12 @@ def main():
     ap.add_argument('--ros-domain-id', default=ROS_DOMAIN, help='ROS_DOMAIN_ID for the batch')
     ap.add_argument('--planner-param', action='append', default=[], metavar='KEY:=VALUE',
                     help='extra policy_node parameter, e.g. normalized_actions:=false (repeatable)')
+    ap.add_argument('--classical-param', action='append', default=[], metavar='PLANNER:KEY:=VALUE',
+                    help='parameter for a classical planner\'s jobs, e.g. APF:k_att:=5.0 (repeatable); the full '
+                         'parameter set goes into that planner\'s rows\' code_state. Use a separate --manifest per '
+                         'parameter set.')
     ap.add_argument('--apf-param', action='append', default=[], metavar='KEY:=VALUE',
-                    help='apf_node parameter for the APF jobs, e.g. k_att:=5.0 (repeatable); the full gain set '
-                         'goes into the APF rows\' code_state. Use a separate --manifest per gain set.')
+                    help='shorthand for --classical-param APF:KEY:=VALUE')
     ap.add_argument('--manifest', help='manifest CSV path (default: scripts/batch_runs/manifest.csv); '
                                        'use a separate one for A/B experiments')
     ap.add_argument('--rerun-failed', action='store_true',
@@ -365,16 +405,16 @@ def main():
 
     ROS_DOMAIN = str(args.ros_domain_id)
     args.planner_params = ' '.join(f'-p {p}' for p in args.planner_param)
-    apf_params = parse_apf_params(args.apf_param)
-    args.apf_ros_params = ' '.join(f'-p {k}:={v}' for k, v in apf_params.items())
+    args.classical_params = parse_classical_params(args.classical_param + [f'APF:{p}' for p in args.apf_param])
     if args.manifest:
         MANIFEST = Path(args.manifest).resolve()
-    CODE_STATE = {'drl': code_state(args.planner_params), 'apf': apf_code_state(apf_params)}
+    CODE_STATE = {'drl': code_state(args.planner_params),
+                  **{n: classical_code_state(n, args.classical_params[n]) for n in CLASSICAL}}
     if args.scenarios:
         SCENARIOS = [tuple(x.split('/')) for x in args.scenarios]
-    jobs = build_jobs(args.apf_reps, args.extra_model)
-    if args.skip_apf:
-        jobs = [j for j in jobs if j['kind'] != 'apf']
+    jobs = build_jobs(args.classical_reps, args.extra_model, args.classical or ['APF'])
+    if args.skip_classical:
+        jobs = [j for j in jobs if not classical_of(j)]
     if args.only_model:
         jobs = [j for j in jobs if j['model'] in args.only_model]
     if args.only_scenario:
@@ -386,13 +426,14 @@ def main():
     if args.limit:
         todo = todo[:args.limit]
 
-    n_models = len({j['model'] for j in jobs if j['kind'] != 'apf'})
-    print(f'{len(jobs)} jobs selected ({n_models} DRL policies + APF), '
+    n_models = len({j['model'] for j in jobs if not classical_of(j)})
+    names = sorted({classical_of(j) for j in jobs if classical_of(j)})
+    print(f'{len(jobs)} jobs selected ({n_models} DRL policies' + ''.join(f' + {n}' for n in names) + '), '
           f'{len(jobs) - len([j for j in jobs if job_key(j) not in done])} already ok, '
           f'{len(todo)} to run')
     if args.dry_run:
-        if any(j['kind'] == 'apf' for j in todo):
-            print(f'APF code_state: {CODE_STATE["apf"]}')
+        for n in sorted({classical_of(j) for j in todo if classical_of(j)}):
+            print(f'{n} code_state: {CODE_STATE[n]}')
         for k, j in enumerate(todo):
             print(f'{k:4d}  {j["kind"]:13s} {j["model"]:16s} {j["world"]}/{j["path"]} rep{j["rep"]}')
         return
@@ -423,7 +464,7 @@ def main():
             row = dict(model=job['model'], kind=job['kind'], world=job['world'], path=job['path'],
                        rep=job['rep'], status='launch_fail', log_file=str(LOG_DIR / tag),
                        timestamp=datetime.now().isoformat(timespec='seconds'),
-                       code_state=CODE_STATE['apf' if job['kind'] == 'apf' else 'drl'])
+                       code_state=job_code_state(job))
             teardown()
         if row['status'] == 'launch_fail':
             print('    launch failed, retrying once')
