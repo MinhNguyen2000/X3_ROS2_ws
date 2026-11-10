@@ -14,6 +14,7 @@ Usage (from any shell; ROS 2 and the workspace are sourced internally):
     python3 scripts/batch_multigoal.py --dry-run
     python3 scripts/batch_multigoal.py --only-model TD3_00386_1000 --only-scenario world_1/path1
     python3 scripts/batch_multigoal.py            # full batch, resumable
+    python3 scripts/batch_multigoal.py --only-model APF --apf-param k_att:=5.0 --manifest scripts/batch_runs/manifest_apf_x.csv
 '''
 import argparse
 import csv
@@ -58,22 +59,64 @@ MANIFEST_COLS = ['model', 'kind', 'world', 'path', 'rep', 'status', 'success',
                  'timestamp', 'code_state']
 
 procs = []          # (name, Popen) currently alive, for cleanup
-CODE_STATE = ''     # git HEAD + policy_node.py hash + planner params, set in main()
+CODE_STATE = {}     # per planner kind ('drl', 'apf'): git HEAD + node hash + parameters, set in main()
+
+POLICY_NODE = WS / 'src' / 'x3_drl_policy' / 'x3_drl_policy' / 'policy_node.py'
+APF_NODE    = WS / 'src' / 'x3_apf_planner' / 'x3_apf_planner' / 'apf_node.py'
+
+
+def git_head():
+    try:
+        return subprocess.run(['git', '-C', str(WS), 'rev-parse', '--short', 'HEAD'],
+                              capture_output=True, text=True, timeout=10).stdout.strip() or 'nogit'
+    except Exception:
+        return 'nogit'
+
+
+def file_sha(path):
+    try:
+        return hashlib.sha1(path.read_bytes()).hexdigest()[:10]
+    except OSError:
+        return 'unknown'
 
 
 def code_state(planner_params):
-    '''Identify the code a batch ran with, since policy_node.py edits may be uncommitted.'''
-    try:
-        head = subprocess.run(['git', '-C', str(WS), 'rev-parse', '--short', 'HEAD'],
-                              capture_output=True, text=True, timeout=10).stdout.strip() or 'nogit'
-    except Exception:
-        head = 'nogit'
-    try:
-        node = (WS / 'src' / 'x3_drl_policy' / 'x3_drl_policy' / 'policy_node.py').read_bytes()
-        sha = hashlib.sha1(node).hexdigest()[:10]
-    except OSError:
-        sha = 'unknown'
-    return f'{head}+policy_node:{sha}' + (f' [{planner_params}]' if planner_params else '')
+    '''Identify the code a DRL job ran with, since policy_node.py edits may be uncommitted.'''
+    return f'{git_head()}+policy_node:{file_sha(POLICY_NODE)}' + (f' [{planner_params}]' if planner_params else '')
+
+
+def apf_defaults():
+    '''Parameter defaults declared in apf_node.py, in declaration order (agent_name left out).'''
+    src = APF_NODE.read_text()
+    found = re.findall(r"declare_parameter\(\s*'(\w+)'\s*,\s*([^)#\n]+?)\s*\)", src)
+    # same text form as parse_apf_params, so a default and an equal override read the same in code_state
+    return {k: repr(float(v)) if '.' in v else str(int(v)) for k, v in found if k != 'agent_name'}
+
+
+def parse_apf_params(items):
+    '''--apf-param KEY:=VALUE list -> {key: value}; unknown keys stop the batch (ROS 2 would ignore them silently).'''
+    known = apf_defaults()
+    out = {}
+    for item in items:
+        key, sep, value = item.partition(':=')
+        if not sep or not value:
+            sys.exit(f'--apf-param {item}: expected KEY:=VALUE')
+        if key not in known:
+            sys.exit(f'--apf-param {item}: {key} is not a parameter of apf_node.py ({", ".join(known)})')
+        # ROS 2 refuses an int override of a parameter declared as a double (and the reverse), so match the default
+        is_float = '.' in known[key]
+        try:
+            out[key] = repr(float(value)) if is_float else str(int(value))
+        except ValueError:
+            sys.exit(f'--apf-param {item}: {key} needs {"a float" if is_float else "an integer"} value')
+    return out
+
+
+def apf_code_state(apf_params):
+    '''Identify the APF code and the full gain set an APF job ran with: node defaults with --apf-param overrides.'''
+    gains = {**apf_defaults(), **apf_params}
+    return (f'{git_head()}+apf_node:{file_sha(APF_NODE)} ['
+            + ' '.join(f'{k}:={v}' for k, v in gains.items()) + ']')
 
 
 # ----------------------------------------------------------------------------- job list
@@ -222,7 +265,7 @@ def run_job(job, args, tag):
                status='launch_fail', success='', waypoints_completed='',
                total_waypoints=total_waypoints(world, path), elapsed_s='', saved_file='',
                log_file=str(log['client']), timestamp=datetime.now().isoformat(timespec='seconds'),
-               code_state=CODE_STATE)
+               code_state=CODE_STATE['apf' if job['kind'] == 'apf' else 'drl'])
     try:
         if gz_running():
             teardown()
@@ -233,8 +276,8 @@ def run_job(job, args, tag):
         time.sleep(args.settle)
 
         if job['kind'] == 'apf':
-            spawn('planner', f'ros2 run x3_apf_planner apf_node --ros-args --remap __ns:={NS}',
-                  log['planner'])
+            spawn('planner', f'ros2 run x3_apf_planner apf_node --ros-args {args.apf_ros_params} '
+                  f'--remap __ns:={NS}', log['planner'])
             server_choice = 'apf'
         else:
             spawn('planner', 'ros2 run x3_drl_policy policy_node --ros-args '
@@ -311,6 +354,9 @@ def main():
     ap.add_argument('--ros-domain-id', default=ROS_DOMAIN, help='ROS_DOMAIN_ID for the batch')
     ap.add_argument('--planner-param', action='append', default=[], metavar='KEY:=VALUE',
                     help='extra policy_node parameter, e.g. normalized_actions:=false (repeatable)')
+    ap.add_argument('--apf-param', action='append', default=[], metavar='KEY:=VALUE',
+                    help='apf_node parameter for the APF jobs, e.g. k_att:=5.0 (repeatable); the full gain set '
+                         'goes into the APF rows\' code_state. Use a separate --manifest per gain set.')
     ap.add_argument('--manifest', help='manifest CSV path (default: scripts/batch_runs/manifest.csv); '
                                        'use a separate one for A/B experiments')
     ap.add_argument('--rerun-failed', action='store_true',
@@ -319,9 +365,11 @@ def main():
 
     ROS_DOMAIN = str(args.ros_domain_id)
     args.planner_params = ' '.join(f'-p {p}' for p in args.planner_param)
+    apf_params = parse_apf_params(args.apf_param)
+    args.apf_ros_params = ' '.join(f'-p {k}:={v}' for k, v in apf_params.items())
     if args.manifest:
         MANIFEST = Path(args.manifest).resolve()
-    CODE_STATE = code_state(args.planner_params)
+    CODE_STATE = {'drl': code_state(args.planner_params), 'apf': apf_code_state(apf_params)}
     if args.scenarios:
         SCENARIOS = [tuple(x.split('/')) for x in args.scenarios]
     jobs = build_jobs(args.apf_reps, args.extra_model)
@@ -343,6 +391,8 @@ def main():
           f'{len(jobs) - len([j for j in jobs if job_key(j) not in done])} already ok, '
           f'{len(todo)} to run')
     if args.dry_run:
+        if any(j['kind'] == 'apf' for j in todo):
+            print(f'APF code_state: {CODE_STATE["apf"]}')
         for k, j in enumerate(todo):
             print(f'{k:4d}  {j["kind"]:13s} {j["model"]:16s} {j["world"]}/{j["path"]} rep{j["rep"]}')
         return
@@ -373,7 +423,7 @@ def main():
             row = dict(model=job['model'], kind=job['kind'], world=job['world'], path=job['path'],
                        rep=job['rep'], status='launch_fail', log_file=str(LOG_DIR / tag),
                        timestamp=datetime.now().isoformat(timespec='seconds'),
-                       code_state=CODE_STATE)
+                       code_state=CODE_STATE['apf' if job['kind'] == 'apf' else 'drl'])
             teardown()
         if row['status'] == 'launch_fail':
             print('    launch failed, retrying once')
