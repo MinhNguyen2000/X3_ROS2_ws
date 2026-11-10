@@ -28,7 +28,8 @@ Writes to --out (default scripts/metrics/output):
                                  (subset all_policies) or successful runs only (subset successful_only)
   table_smoothness.tex           tabular body of table:APF_TD3_navigation_benchmark (representative runs,
                                  variant TABLE_VARIANT = excl_narrow, reversals_per_s in the last column)
-  smoothness_summary.txt         the ranges and ratios the paper text quotes, for variants all and excl_narrow
+  smoothness_summary.txt         the ranges and ratios the paper text quotes, for variants all and excl_narrow, and
+                                 the per-run ordering between planners over successful runs (variant excl_narrow)
 
 Ported from the 2026-10-27 job script (P9); it reproduces those CSVs. Usage: compute_smoothness.py [--out DIR]
 """
@@ -188,7 +189,7 @@ def main():
 
     with open(os.path.join(args.out, 'table_smoothness.tex'), 'w') as f:
         f.write(table_tex(rep))
-    summary = text_summary(rep, agg)
+    summary = text_summary(rep, agg) + ordering_summary(per)
     with open(os.path.join(args.out, 'smoothness_summary.txt'), 'w') as f:
         f.write(summary)
     print(summary)
@@ -245,6 +246,26 @@ def text_summary(rep: pd.DataFrame, agg: pd.DataFrame) -> str:
                 out.append(f'  {pl:10s} {c}: {lo[c + "_mean"]:.{d}f} +- {lo[c + "_sd"]:.{d}f} to '
                            f'{hi[c + "_mean"]:.{d}f} +- {hi[c + "_sd"]:.{d}f}  (n {int(g.n.min())} to {int(g.n.max())})')
         out.append('')
+    return '\n'.join(out)
+
+
+def ordering_summary(per: pd.DataFrame) -> str:
+    """For each metric and planner pair (A, B), the number of scenarios in which every successful run of A is above
+    every successful run of B (min over A > max over B), for TABLE_VARIANT. Lets the text state an ordering that
+    holds for all seeds and checkpoints without quoting statistics."""
+    d = per[(per.variant == TABLE_VARIANT) & (per.success == 1)]
+    n = d.groupby('planner').size()
+    out = [f'Per-run ordering over successful runs of all final and best checkpoints (APF: 5 repeats), variant {TABLE_VARIANT}:',
+           '  runs per planner over the six scenarios: ' + ', '.join(f'{pl} {n[pl]}' for pl in PLANNERS),
+           '  "A > B k/6" means every run of A is above every run of B in k of the six scenarios']
+    pairs = [('TD3_direct', 'APF'), ('TD3_direct', 'TD3_delta'), ('TD3_delta', 'APF'), ('APF', 'TD3_delta')]
+    for c, _ in TABLE_COLS:
+        k = {pr: 0 for pr in pairs}
+        for _, g in d.groupby(['world', 'path']):
+            for a, b in pairs:
+                k[(a, b)] += int(g[g.planner == a][c].min() > g[g.planner == b][c].max())
+        out.append(f'  {c:16s} ' + '  '.join(f'{a} > {b} {k[(a, b)]}/6' for a, b in pairs))
+    out.append('')
     return '\n'.join(out)
 
 
