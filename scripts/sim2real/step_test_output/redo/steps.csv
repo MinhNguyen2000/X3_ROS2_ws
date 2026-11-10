@@ -1,0 +1,31 @@
+bag,drive,kind,part,bound,axis,signal,judged,lag_s,rms,max_err,volt,excluded,slip_max,change_from,change_to,direction,delay10_s,rise_10_90_s,peak_acc
+step_redo,14:54:35,step,step,,linear,vel_raw,True,0,0.06313,0.253,11.84,False,0.1361,0,0.5,speed up,0.129,0.6203,1.061
+step_redo,14:54:35,step,step,,linear,vel_raw,True,0,0.06313,0.253,11.84,False,0.1361,0.5,0,slow down,0.07878,0.1594,3.961
+step_redo,14:54:35,step,step,,linear,odom,False,0,0.1002,0.3622,11.84,False,,0,0.5,speed up,0.2258,0.5996,0.9967
+step_redo,14:54:35,step,step,,linear,odom,False,0,0.1002,0.3622,11.84,False,,0.5,0,slow down,0.1079,0.2669,1.488
+step_redo,14:55:55,turnsteps,step,,angular,gyro,True,0,0.381,0.99,11.8,False,,0,1,speed up,0.3498,0.4001,3.141
+step_redo,14:55:55,turnsteps,step,,angular,gyro,True,0,0.381,0.99,11.8,False,,1,-1,reverse,0.1184,1.059,4.835
+step_redo,14:55:55,turnsteps,step,,angular,gyro,True,0,0.381,0.99,11.8,False,,-1,0,slow down,0.07849,0.02016,10.38
+step_redo,14:55:55,turnsteps,step,,angular,vel_raw,False,0,0.3796,0.977,11.8,False,,0,1,speed up,0.33,0.4799,2.896
+step_redo,14:55:55,turnsteps,step,,angular,vel_raw,False,0,0.3796,0.977,11.8,False,,1,-1,reverse,0.09855,1.08,4.221
+step_redo,14:55:55,turnsteps,step,,angular,vel_raw,False,0,0.3796,0.977,11.8,False,,-1,0,slow down,0.07869,0.01998,10.33
+step_redo,14:56:51,step,step,,linear,vel_raw,True,0,0.06119,0.238,11.8,False,0.1596,0,0.5,speed up,0.11,0.6203,1.102
+step_redo,14:56:51,step,step,,linear,vel_raw,True,0,0.06119,0.238,11.8,False,0.1596,0.5,0,slow down,0.03974,0.1796,3.574
+step_redo,14:56:51,step,step,,linear,odom,False,0.34,0.09702,0.3247,11.8,False,,0,0.5,speed up,0.2273,0.633,1.027
+step_redo,14:56:51,step,step,,linear,odom,False,0.34,0.09702,0.3247,11.8,False,,0.5,0,slow down,0.1097,0.3336,1.46
+step_redo,14:58:50,turnsteps,step,,angular,gyro,True,0.32,0.3773,1.005,11.8,False,,0,1,speed up,0.2266,0.6396,1.902
+step_redo,14:58:50,turnsteps,step,,angular,gyro,True,0.32,0.3773,1.005,11.8,False,,1,-1,reverse,0.1202,0.9803,5.612
+step_redo,14:58:50,turnsteps,step,,angular,gyro,True,0.32,0.3773,1.005,11.8,False,,-1,0,slow down,0.06026,0.05993,9.692
+step_redo,14:58:50,turnsteps,step,,angular,vel_raw,False,0,0.3738,1,11.8,False,,0,1,speed up,0.2463,0.6998,2.338
+step_redo,14:58:50,turnsteps,step,,angular,vel_raw,False,0,0.3738,1,11.8,False,,1,-1,reverse,0.1412,0.9997,5.171
+step_redo,14:58:50,turnsteps,step,,angular,vel_raw,False,0,0.3738,1,11.8,False,,-1,0,slow down,0.06048,0.03974,9.45
+step_redo,14:59:58,step,step,,linear,vel_raw,True,0,0.06149,0.265,11.76,False,0.2296,0,0.5,speed up,0.111,0.5803,1.006
+step_redo,14:59:58,step,step,,linear,vel_raw,True,0,0.06149,0.265,11.76,False,0.2296,0.5,0,slow down,0.06021,0.1601,3.649
+step_redo,14:59:58,step,step,,linear,odom,False,0.36,0.09563,0.3026,11.76,False,,0,0.5,speed up,0.1877,0.6334,1.032
+step_redo,14:59:58,step,step,,linear,odom,False,0.36,0.09563,0.3026,11.76,False,,0.5,0,slow down,0.1371,0.3666,1.357
+step_redo,15:01:44,turnsteps,step,,angular,gyro,True,0,0.3879,1.019,11.73,False,,0,1,speed up,0.2498,0.6998,2.537
+step_redo,15:01:44,turnsteps,step,,angular,gyro,True,0,0.3879,1.019,11.73,False,,1,-1,reverse,0.1581,0.9805,4.864
+step_redo,15:01:44,turnsteps,step,,angular,gyro,True,0,0.3879,1.019,11.73,False,,-1,0,slow down,0.05855,0.08003,9.599
+step_redo,15:01:44,turnsteps,step,,angular,vel_raw,False,0,0.3874,1,11.73,False,,0,1,speed up,0.2697,0.6203,2.572
+step_redo,15:01:44,turnsteps,step,,angular,vel_raw,False,0,0.3874,1,11.73,False,,1,-1,reverse,0.1384,0.9799,5.725
+step_redo,15:01:44,turnsteps,step,,angular,vel_raw,False,0,0.3874,1,11.73,False,,-1,0,slow down,0.0588,0.08006,8.773
