@@ -1,0 +1,117 @@
+{
+ "date": "2026-11-05",
+ "script_commit": "db377cf",
+ "n_kept": 160,
+ "n_scheduled": 160,
+ "complete": true,
+ "manifest_sha1": "6a206c3ec5de4f722e38bb18187d418d2d8f2801",
+ "n_boot": 10000,
+ "seed": 20261103,
+ "checks": {
+  "attempts": 160,
+  "kept": 160,
+  "faults": 0,
+  "success_by_stretch": {
+   "1": "28/40",
+   "2": "30/40",
+   "3": "31/40",
+   "4": "25/40"
+  },
+  "battery_v": [
+   10.9,
+   12.1
+  ],
+  "codes": {
+   "4a32cfb": 42,
+   "74bb4bb": 46,
+   "d18f894": 32,
+   "99cd606": 40
+  },
+  "dirty": 0,
+  "config_ok": 160,
+  "start_ok": 160
+ },
+ "group_differences": {
+  "planner: delta - direct": {
+   "diff_pct": 15.000000000000002,
+   "lo": -32.49999999999999,
+   "hi": 61.25000000000001
+  },
+  "checkpoint: best - final": {
+   "diff_pct": 32.49999999999999,
+   "lo": -9.999999999999986,
+   "hi": 75.0
+  },
+  "tier: B - M": {
+   "diff_pct": 12.5,
+   "lo": -35.0,
+   "hi": 58.74999999999999
+  }
+ },
+ "spearman_sim_vs_robot": {
+  "goals": 0.023520912854933646,
+  "spl": 0.3333333333333334,
+  "success": 0.0
+ },
+ "failures": {
+  "n_failed": 46,
+  "by_obstacle": {
+   "box_2": 37,
+   "cylinder_1": 6,
+   "box_1": 2,
+   "box_3": 1
+  },
+  "by_failing_goal": {
+   "2": 1,
+   "3": 16,
+   "4": 29
+  },
+  "by_hit_index": {
+   "0": 4,
+   "1": 1,
+   "2": 4,
+   "3": 7,
+   "12": 1,
+   "13": 6,
+   "14": 7,
+   "15": 2,
+   "17": 5
+  },
+  "by_type": {
+   "timeout": 9,
+   "collision": 37
+  }
+ },
+ "b_vs_m": {
+  "direct_final": {
+   "B": "19/20",
+   "M": "1/20",
+   "p": 5.818064530643726e-09
+  },
+  "direct_best": {
+   "B": "18/20",
+   "M": "13/20",
+   "p": 0.1273861273861274
+  },
+  "delta_final": {
+   "B": "5/20",
+   "M": "19/20",
+   "p": 1.0021144615137942e-05
+  },
+  "delta_best": {
+   "B": "20/20",
+   "M": "19/20",
+   "p": 1.0
+  }
+ },
+ "fisher_paths": {
+  "direct_final B": 1.0,
+  "direct_final M": 1.0,
+  "direct_best B": 0.9999999999999999,
+  "direct_best M": 0.0030959752321981426,
+  "delta_final B": 0.032507739938080496,
+  "delta_final M": 1.0,
+  "delta_best B": 1.0,
+  "delta_best M": 1.0
+ }
+}
