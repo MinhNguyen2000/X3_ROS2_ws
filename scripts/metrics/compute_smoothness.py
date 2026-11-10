@@ -28,7 +28,8 @@ Writes to --out (default scripts/metrics/output):
                                  (subset all_policies) or successful runs only (subset successful_only)
   table_smoothness.tex           tabular body of table:APF_TD3_navigation_benchmark (representative runs,
                                  variant TABLE_VARIANT = excl_narrow, reversals_per_s in the last column)
-  smoothness_summary.txt         the ranges and ratios the paper text quotes, for variants all and excl_narrow
+  smoothness_summary.txt         the ranges and ratios the paper text quotes, for variants all and excl_narrow, and
+                                 the per-run ordering between planners over successful runs (variant excl_narrow)
 
 Ported from the 2026-10-27 job script (P9); it reproduces those CSVs. Usage: compute_smoothness.py [--out DIR]
 """
@@ -50,7 +51,7 @@ from viz_common import paths_json_path              # noqa: E402
 from multigoal_efficiency import AGG_CSV, load_runs, representatives  # noqa: E402
 
 RP = os.path.join(REPO, 'scripts', 'recorded_paths')
-vv.SAVED_PATHS_DIR = RP                             # the module default points at scripts/scripts/recorded_paths
+vv.SAVED_PATHS_DIR = RP
 SCEN = [s for group in vcf.FIGURES.values() for s in group]
 WINDOWS = {'narrow': (-0.1, 0.1), 'wide': (-0.5, 2.0)}   # s around each goal arrival (and run end)
 # A turning-direction reversal counts only when omega_z crosses from above +OMEGA_BAND to below -OMEGA_BAND
@@ -131,6 +132,22 @@ def metrics(data, world, path, window=None):
                 rate_hz=s['sample_rate_hz'], n_arrivals=len(arr), excluded_frac=float(1 - ka.mean()))
 
 
+def representative_keys(df: pd.DataFrame) -> dict:
+    """{(world, path, planner): run key} of the runs drawn in the multi-goal path figure, for the six scenarios:
+    the median TD3_direct and TD3_delta policies and the APF repeat closest to the median path length.
+    Also used by scripts/viz/regen_vel_figures.py, so the appendix velocity figures show the same runs."""
+    reps = representatives(load_runs())
+    chosen = {m: reps[(m, 'median')] for m in ('TD3_direct', 'TD3_delta')}
+    print('representative TD3 policies:', chosen)
+    apf = df[df.planner == 'apf']
+    out = {}
+    for world, path in SCEN:
+        out[(world, path, 'APF')] = vcf.pick_apf_run(apf, world, path)
+        for pl, model in chosen.items():
+            out[(world, path, pl)] = vcf.drl_run(df, model, world, path)
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--out', default=os.path.join(HERE, 'output'))
@@ -138,10 +155,7 @@ def main():
     os.makedirs(args.out, exist_ok=True)
 
     df = pd.read_csv(AGG_CSV)
-    reps = representatives(load_runs())
-    chosen = {m: reps[(m, 'median')] for m in ('TD3_direct', 'TD3_delta')}
-    apf = df[df.planner == 'apf']
-    print('representative TD3 policies:', chosen)
+    rep_keys = representative_keys(df)
     df6 = df[[(w, p) in SCEN for w, p in zip(df.world, df.path)]].copy()
     df6['key'] = df6.saved_file.map(vcf.run_key)
     df6['label'] = df6.planner.map({'apf': 'APF', 'direct': 'TD3_direct', 'delta': 'TD3_delta'})
@@ -149,8 +163,7 @@ def main():
     rows = []
     for _, r in df6.iterrows():
         data = load(r.key)
-        rep_key = (vcf.pick_apf_run(apf, r.world, r.path) if r.label == 'APF'
-                   else vcf.drl_run(df, chosen[r.label], r.world, r.path))
+        rep_key = rep_keys[(r.world, r.path, r.label)]
         for variant, win in [('all', None)] + [(f'excl_{k}', v) for k, v in WINDOWS.items()]:
             m = metrics(data, r.world, r.path, win)
             rows.append(dict(world=r.world, path=r.path, planner=r.label, model=r.model, kind=r.kind,
@@ -176,7 +189,7 @@ def main():
 
     with open(os.path.join(args.out, 'table_smoothness.tex'), 'w') as f:
         f.write(table_tex(rep))
-    summary = text_summary(rep, agg)
+    summary = text_summary(rep, agg) + ordering_summary(per)
     with open(os.path.join(args.out, 'smoothness_summary.txt'), 'w') as f:
         f.write(summary)
     print(summary)
@@ -203,7 +216,7 @@ def table_tex(rep: pd.DataFrame) -> str:
             head = (r'\multirow{3}{*}{' + name + '}') if i == 0 else ''
             lines.append(f"{head} & {pl.replace('_', chr(92) + '_')} & "
                          + ' & '.join(f'{x[c]:.{d}f}' for c, d in TABLE_COLS) + r' \\')
-        lines.append(r'\hline' if k < len(SCEN) - 1 else r'\midrule[1.5pt]')
+        lines.append(r'\midrule' if k < len(SCEN) - 1 else r'\midrule[1.5pt]')
     lines += [r'\end{tabular}', '']
     return '\n'.join(lines)
 
@@ -233,6 +246,26 @@ def text_summary(rep: pd.DataFrame, agg: pd.DataFrame) -> str:
                 out.append(f'  {pl:10s} {c}: {lo[c + "_mean"]:.{d}f} +- {lo[c + "_sd"]:.{d}f} to '
                            f'{hi[c + "_mean"]:.{d}f} +- {hi[c + "_sd"]:.{d}f}  (n {int(g.n.min())} to {int(g.n.max())})')
         out.append('')
+    return '\n'.join(out)
+
+
+def ordering_summary(per: pd.DataFrame) -> str:
+    """For each metric and planner pair (A, B), the number of scenarios in which every successful run of A is above
+    every successful run of B (min over A > max over B), for TABLE_VARIANT. Lets the text state an ordering that
+    holds for all seeds and checkpoints without quoting statistics."""
+    d = per[(per.variant == TABLE_VARIANT) & (per.success == 1)]
+    n = d.groupby('planner').size()
+    out = [f'Per-run ordering over successful runs of all final and best checkpoints (APF: 5 repeats), variant {TABLE_VARIANT}:',
+           '  runs per planner over the six scenarios: ' + ', '.join(f'{pl} {n[pl]}' for pl in PLANNERS),
+           '  "A > B k/6" means every run of A is above every run of B in k of the six scenarios']
+    pairs = [('TD3_direct', 'APF'), ('TD3_direct', 'TD3_delta'), ('TD3_delta', 'APF'), ('APF', 'TD3_delta')]
+    for c, _ in TABLE_COLS:
+        k = {pr: 0 for pr in pairs}
+        for _, g in d.groupby(['world', 'path']):
+            for a, b in pairs:
+                k[(a, b)] += int(g[g.planner == a][c].min() > g[g.planner == b][c].max())
+        out.append(f'  {c:16s} ' + '  '.join(f'{a} > {b} {k[(a, b)]}/6' for a, b in pairs))
+    out.append('')
     return '\n'.join(out)
 
 

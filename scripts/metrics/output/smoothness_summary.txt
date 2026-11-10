@@ -55,3 +55,12 @@ Successful runs of all final and best checkpoints (APF: 5 repeats), variant excl
   TD3_delta  rms_alpha: 1.81 +- 0.10 to 2.02 +- 0.09  (n 13 to 18)
   TD3_delta  reversals_per_s: 0.58 +- 0.17 to 0.84 +- 0.22  (n 13 to 18)
   TD3_delta  rms_ax: 0.52 +- 0.09 to 0.72 +- 0.07  (n 13 to 18)
+Per-run ordering over successful runs of all final and best checkpoints (APF: 5 repeats), variant excl_narrow:
+  runs per planner over the six scenarios: APF 30, TD3_direct 92, TD3_delta 96
+  "A > B k/6" means every run of A is above every run of B in k of the six scenarios
+  mean_abs_ax      TD3_direct > APF 0/6  TD3_direct > TD3_delta 0/6  TD3_delta > APF 3/6  APF > TD3_delta 0/6
+  rms_ax           TD3_direct > APF 0/6  TD3_direct > TD3_delta 1/6  TD3_delta > APF 0/6  APF > TD3_delta 6/6
+  mean_abs_alpha   TD3_direct > APF 6/6  TD3_direct > TD3_delta 6/6  TD3_delta > APF 6/6  APF > TD3_delta 0/6
+  rms_alpha        TD3_direct > APF 6/6  TD3_direct > TD3_delta 6/6  TD3_delta > APF 0/6  APF > TD3_delta 6/6
+  mean_abs_omega   TD3_direct > APF 0/6  TD3_direct > TD3_delta 0/6  TD3_delta > APF 0/6  APF > TD3_delta 0/6
+  reversals_per_s  TD3_direct > APF 6/6  TD3_direct > TD3_delta 6/6  TD3_delta > APF 6/6  APF > TD3_delta 0/6
