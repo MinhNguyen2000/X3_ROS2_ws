@@ -7,14 +7,16 @@ per-unit aggregation, median [Q1, Q3] and bootstrap summary), so the numbers are
 Table multigoal_success. world_4/path1 is run but left out of the per-unit and summary outputs.
 
 Kinds:
-  - <group>_final: TD3_0SSxx_1500 with group a1 (011), a2dir (012) or a2delta (013); <group>_best: the
+  - <group>_final: TD3_0SSxx_1500 with group a1 (011), a2dir (012), a2delta (013) or a2ad (014, asymmetric delta
+    bound); <group>_best: the
     MuJoCo-selected checkpoint per seed (BEST below), a policy that is both counts in both rows, as
     extract_leg_metrics.py does;
   - apf_rerun: APF, one unit per repeat; direct_final_rerun: TD3_00396_1000 to TD3_00405_1000;
     delta_final_rerun: TD3_00386_1000 to TD3_00395_1000.
 The published units (scripts/metrics/output/multigoal_units.csv, kinds apf, direct_final and delta_final) are
 added to the summary as <kind>_paper when that file exists. With scipy available, a two-sided Mann-Whitney U
-test of each A2 Final group against apf_rerun is written to mwu.csv (notes/a2_eval_protocol_20261109.md).
+test of each A2 Final group against apf_rerun, and of a2ad_final against the other A2 Final groups, is written to
+mwu.csv (notes/a2_eval_protocol_20261109.md, notes/a2_ad_eval_protocol_20261109.md).
 
 Usage: scripts/metrics/p14_multigoal.py [--manifest scripts/batch_runs/manifest_p14.csv ...]
                                         [--out scripts/metrics/output_p14] [--n-boot 10000]
@@ -32,13 +34,16 @@ from shortest_path import OBSTACLE_TOLERANCE, ShortestPath
 
 MANIFEST = os.path.join(E.REPO, 'scripts', 'batch_runs', 'manifest_p14.csv')
 LOG_DIR = os.path.join(E.REPO, 'scripts', 'batch_runs', 'logs')
-GROUP = {'011': 'a1', '012': 'a2dir', '013': 'a2delta'}
+GROUP = {'011': 'a1', '012': 'a2dir', '013': 'a2delta', '014': 'a2ad'}
 BEST = {'01101': '1300', '01102': '1500', '01103': '1400',      # notes/a1_eval_protocol_20261106.md, eval seed 11
         # notes/a2_mujoco_result_20261109.md, eval seed 11
         '01201': '1100', '01202': '1000', '01203': '1100', '01204': '1500', '01205': '1000',
         '01206': '1100', '01207': '1500', '01208': '1500', '01209': '1400', '01210': '1400',
         '01301': '1200', '01302': '900', '01303': '1100', '01304': '1300', '01305': '1000',
-        '01306': '1500', '01307': '1400', '01308': '1300', '01309': '1500', '01310': '1500'}
+        '01306': '1500', '01307': '1400', '01308': '1300', '01309': '1500', '01310': '1500',
+        # notes/a2_ad_mujoco_result_20261109.md, eval seed 11
+        '01401': '1300', '01402': '1400', '01403': '1500', '01404': '1500', '01405': '1400',
+        '01406': '1300', '01407': '1500', '01408': '1500', '01409': '1500', '01410': '1300'}
 
 
 def kinds_of(model):
@@ -150,14 +155,15 @@ def main():
     mwu = []
     try:
         from scipy.stats import mannwhitneyu
-        apf = units[units['kind'] == 'apf_rerun']
-        for kind in ('a2dir_final', 'a2delta_final'):
+        pairs = [('a2dir_final', 'apf_rerun'), ('a2delta_final', 'apf_rerun'), ('a2ad_final', 'apf_rerun'),
+                 ('a2ad_final', 'a2delta_final'), ('a2ad_final', 'a2dir_final')]  # notes/a2_ad_eval_protocol_20261109.md
+        for kind, vs in pairs:
             for m in ('goal_completion', 'spl_geo'):
                 x = units.loc[units['kind'] == kind, m].dropna()
-                if len(x):
-                    r = mannwhitneyu(x, apf[m].dropna(), alternative='two-sided')
-                    mwu.append(dict(kind=kind, vs='apf_rerun', metric=m, n=len(x), n_vs=apf[m].notna().sum(),
-                                    U=r.statistic, p=r.pvalue))
+                y = units.loc[units['kind'] == vs, m].dropna()
+                if len(x) and len(y):
+                    r = mannwhitneyu(x, y, alternative='two-sided')
+                    mwu.append(dict(kind=kind, vs=vs, metric=m, n=len(x), n_vs=len(y), U=r.statistic, p=r.pvalue))
         pd.DataFrame(mwu).to_csv(os.path.join(args.out, 'mwu.csv'), index=False, float_format='%.6g')
     except Exception as e:      # the system scipy may not load against numpy 2; the test is then skipped
         print('Mann-Whitney U skipped:', e)
