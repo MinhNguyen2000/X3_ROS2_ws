@@ -216,7 +216,7 @@ def table_tex(rep: pd.DataFrame) -> str:
             head = (r'\multirow{3}{*}{' + name + '}') if i == 0 else ''
             lines.append(f"{head} & {pl.replace('_', chr(92) + '_')} & "
                          + ' & '.join(f'{x[c]:.{d}f}' for c, d in TABLE_COLS) + r' \\')
-        lines.append(r'\hline' if k < len(SCEN) - 1 else r'\midrule[1.5pt]')
+        lines.append(r'\midrule' if k < len(SCEN) - 1 else r'\midrule[1.5pt]')
     lines += [r'\end{tabular}', '']
     return '\n'.join(lines)
 
