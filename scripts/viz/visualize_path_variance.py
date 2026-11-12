@@ -314,9 +314,10 @@ def plot_ensemble(res, tag):
     return fig
 
 
-def plot_ensemble_compare(results: list, name, ax=None):
+def plot_ensemble_compare(results: list, name, ax=None, style=None):
     """Policies overlaid on one map: faint runs, median path and percentile band, coloured by policy.
-    With `ax` the map is drawn into that axes and nothing is saved (panels of a composite figure)."""
+    With `ax` the map is drawn into that axes and nothing is saved (panels of a composite figure).
+    `style` maps a policy name to overrides {color, ls, lw, band_alpha, zorder} of its median path and band (defaults as before)."""
     own = ax is None
     if own:
         fig, ax = make_arena_fig(results[0]['world'])
@@ -325,15 +326,17 @@ def plot_ensemble_compare(results: list, name, ax=None):
     handles = []
     # one colour per policy: individual runs, then band and median per leg
     for res in results:
-        color = POLICY_COLORS.get(res['policy'], 'C0')
+        sty = (style or {}).get(res['policy'], {})
+        color = sty.get('color', POLICY_COLORS.get(res['policy'], 'C0'))
+        ls, lw, band_alpha, zo = sty.get('ls', '-'), sty.get('lw', 2.2), sty.get('band_alpha', 0.25), sty.get('zorder', 3)
         for r in res['runs']:
             ax.plot(r['x'], r['y'], color=color, lw=0.8, alpha=0.00, zorder=1)
         for st in res['stats']:
             m, nrm = st['median'], st['normal']
             poly = np.vstack([m + st['hi'][:, None] * nrm, (m + st['lo'][:, None] * nrm)[::-1]])
-            ax.fill(poly[:, 0], poly[:, 1], color=color, alpha=0.25, lw=0, zorder=2)
-            ax.plot(m[:, 0], m[:, 1], '-', color=color, lw=2.2, zorder=3)
-        handles.append(Line2D([0], [0], color=color, lw=2.2,
+            ax.fill(poly[:, 0], poly[:, 1], color=color, alpha=band_alpha, lw=0, zorder=2)
+            ax.plot(m[:, 0], m[:, 1], ls, color=color, lw=lw, zorder=zo)
+        handles.append(Line2D([0], [0], color=color, ls=ls, lw=lw,
                               label=f"{res['policy']} median (n={len(res['runs'])})"))
 
     # obstacles, goals and arena are shared, so draw them once from the first result

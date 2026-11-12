@@ -1,6 +1,6 @@
 {
- "date": "2026-11-05",
- "script_commit": "db377cf",
+ "date": "2026-11-11",
+ "script_commit": "5f80638",
  "n_kept": 160,
  "n_scheduled": 160,
  "complete": true,
@@ -56,8 +56,8 @@
  "failures": {
   "n_failed": 46,
   "by_obstacle": {
-   "box_2": 37,
-   "cylinder_1": 6,
+   "box_2": 34,
+   "wall_east": 9,
    "box_1": 2,
    "box_3": 1
   },

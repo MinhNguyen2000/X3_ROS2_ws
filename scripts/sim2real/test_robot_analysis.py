@@ -62,6 +62,15 @@ def test_min_obstacle_clearance():
     assert ra.min_obstacle_clearance(np.array([4.0]), np.array([0.0]), obs)[0] == pytest.approx(0.0)
 
 
+def test_load_walls_in_failure_search():
+    lab = ra.Lab()
+    walls = ra.load_walls(ra.vc.sdf_path(ra.WORLD))
+    assert sorted(w['name'] for w in walls) == ['wall_east', 'wall_north', 'wall_south', 'wall_west']
+    assert not any(o['name'].startswith('wall') for o in lab.obstacles)            # clearance metric keeps boxes and cylinders only
+    d, name = ra.min_obstacle_clearance(np.array([2.2]), np.array([0.0]), lab.stop_obstacles)
+    assert name == 'wall_east' and d == pytest.approx(2.3125 - 0.025 - 2.2)
+
+
 class FakeSP:
     def length(self, a, b):
         return float(np.hypot(b[0] - a[0], b[1] - a[1])), []
