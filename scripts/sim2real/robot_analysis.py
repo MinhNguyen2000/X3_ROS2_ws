@@ -18,7 +18,7 @@ Outputs (--out, default robot/): robot_run_metrics.csv, robot_failures.csv, robo
 robot_stats.json, table_robot_results.tex, table_robot_by_path.tex, table_robot_groups.tex, table_robot_failures.tex,
 table_robot_smoothness.tex, fig_robot_sim_vs_real.{pdf,png}, fig_robot_paths.{pdf,png}, panels/repeat_<path>_world_lab_<variant>_compare.{pdf,png}.
 
-Usage: robot_analysis.py [--out DIR] [--n-boot N] [--seed S] [--no-figs]
+Usage: robot_analysis.py [--out DIR] [--n-boot N] [--seed S] [--no-figs | --paths-only]
 """
 import argparse
 import collections
@@ -44,7 +44,12 @@ import viz_common as vc  # noqa: E402
 WORLD = 'world_lab'
 GOAL_SLACK = 0.01                      # m, the unlogged decision-time pose (scoring rule note, section 1)
 SIM_UNITS = os.path.join(HERE, '..', 'metrics', 'output', 'multigoal_units.csv')
-TIER_COLOR = {'B': '#9467bd', 'M': '#8c564b'}                # tier colours; not the planner colours of the trajectory figures
+# trajectory figure style of scripts/viz/visualize_comparison_figures.py (COLORS, GRID_STYLE, LEGEND_FONTSIZE), so the figures agree in the paper
+PLANNER_COLOR = {'direct': 'tab:orange', 'delta': 'tab:green'}
+PATH_STYLE = {'B': dict(ls='-', lw=1.1), 'M': dict(ls=':', lw=1.4)}      # B solid like the median policies there, M dotted like the most efficient ones
+FAILED_STYLE = dict(ls='--', lw=0.8, alpha=0.8)
+LEGEND_FONTSIZE = 18.7                                       # 6.6 pt in the paper at the scale of those figures (455 pt text width = 17.9 in)
+PANEL_IN = 8.3                                               # width of one panel in the composite figure (in)
 PLANNER_STYLE = {'direct': ('#ff7f0e', 's'), 'delta': ('#2ca02c', '^')}       # as make_tables.py
 INK, MUTED, GRID = '#222222', '#666666', '#d9d9d9'
 LABEL = rr.LABEL
@@ -477,19 +482,23 @@ def fig_sim_vs_real(ps, path):
     plt.close(fig)
 
 
-def draw_panel(ax, lab, recs, path, variant, fs):
-    """B and M of one variant on one path: median and band of the successful runs, failed runs dashed."""
+def draw_panel(ax, lab, recs, path, variant, fs=None):
+    """B and M of one variant on one path: median and band of the successful runs (B solid, M dotted, planner colour), failed runs dashed.
+    With `fs` (single panels) the fonts are set to that size and the label is the axes title; without it (composite figure) the fonts are
+    those of apply_arena_style and the label sits in the upper left corner, as in the other trajectory figures."""
     import visualize_path_variance as vp
     cells = {t: [r for r in recs if r['variant'] == variant and r['tier'] == t and r['path'] == path] for t in ('B', 'M')}
     key = lambda r: r['saved_file'].replace('scripts/recorded_paths/', '')[:-5]
+    planner, ckpt = variant.split('_')
+    color = PLANNER_COLOR[planner]
+    style = {t: dict(color=color, band_alpha=0.2, **PATH_STYLE[t]) for t in ('B', 'M')}
     results = []
     for t in ('B', 'M'):
         ok = [key(r) for r in cells[t] if r['success']]
-        vp.POLICY_COLORS[t] = TIER_COLOR[t]
         if ok:
             results.append(vp.analyze(path[:5].replace('path', 'path_'), WORLD, t, keys=ok))
     if results:
-        vp.plot_ensemble_compare(results, '', ax=ax)
+        vp.plot_ensemble_compare(results, '', ax=ax, style=style)
     else:
         vc.draw_obstacles(ax, lab.obstacles)
         vc.draw_goals(ax, lab.goals[path], 0.3)
@@ -498,14 +507,19 @@ def draw_panel(ax, lab, recs, path, variant, fs):
         for r in cells[t]:
             if not r['success']:
                 run = vp.clean(vc.load_run(key(r), WORLD))
-                ax.plot(run['x'], run['y'], color=TIER_COLOR[t], lw=0.9, ls='--', alpha=0.8, zorder=4)
-    ax.tick_params(axis='both', which='both', labelsize=fs)
-    for a in ax.texts:
-        a.set_fontsize(fs)
-    ax.xaxis.label.set_size(fs)
-    ax.yaxis.label.set_size(fs)
+                ax.plot(run['x'], run['y'], color=color, zorder=4, **FAILED_STYLE)
     ks = {t: f"{sum(r['success'] for r in cells[t])}/{len(cells[t])}" for t in ('B', 'M')}
-    ax.set_title(f"{variant.replace('_', ' ')}, path {path[4]}:  B {ks['B']}  M {ks['M']}", fontsize=fs + 1)
+    name = f"TD3_{planner} {ckpt.capitalize()}"
+    if fs is None:
+        ax.text(0.025, 0.975, f"{name}, Path {path[4]}\nB {ks['B']}   M {ks['M']}", transform=ax.transAxes, ha='left', va='top',
+                fontsize=14, zorder=20, bbox=dict(facecolor='white', edgecolor='none', alpha=0.8, pad=2))
+    else:
+        ax.tick_params(axis='both', which='both', labelsize=fs)
+        for a in ax.texts:
+            a.set_fontsize(fs)
+        ax.xaxis.label.set_size(fs)
+        ax.yaxis.label.set_size(fs)
+        ax.set_title(f"{name}, Path {path[4]}:  B {ks['B']}  M {ks['M']}", fontsize=fs + 1)
     return ks
 
 
@@ -519,29 +533,41 @@ def fig_paths(recs, lab, out_dir):
     os.makedirs(panels, exist_ok=True)
     vp.FIG_DIR = panels
     cfg = vc.world_config(WORLD)
-    w = 5.3                                                          # the paper's full text width (in), so the 6 pt fonts stay legible
-    fig, axes = plt.subplots(len(rr.VARIANTS), 2, figsize=(w, (w / 2) * cfg['arena_w'] / cfg['arena_l'] * len(rr.VARIANTS) + 0.6))
-    for i, v in enumerate(rr.VARIANTS):
-        for j, path in enumerate(rr.PATHS):
-            draw_panel(axes[i, j], lab, recs, path, v, 6)
-            if i < len(rr.VARIANTS) - 1:
-                axes[i, j].set_xlabel('')
-            if j > 0:
-                axes[i, j].set_ylabel('')
-    fig.legend(handles=[Line2D([0], [0], color=TIER_COLOR['B'], lw=2, label='B median (successful runs), band 10th to 90th percentile'),
-                        Line2D([0], [0], color=TIER_COLOR['M'], lw=2, label='M median (successful runs)'),
-                        Line2D([0], [0], color='0.3', lw=1, ls='--', label='failed run')],
-               loc='lower center', ncol=3, fontsize=6, frameon=False)
-    fig.tight_layout(rect=(0, 0.03, 1, 1))
-    for ext in ('pdf', 'png'):
-        fig.savefig(os.path.join(out_dir, f'fig_robot_paths.{ext}'), dpi=300)
-    plt.close(fig)
-    for v in rr.VARIANTS:                                           # single panels, large
-        for path in rr.PATHS:
-            f, ax = vc.make_arena_fig(WORLD, long_side=8.0)
-            draw_panel(ax, lab, recs, path, v, 12)
-            vp.save_fig(f, f'repeat_{path[:5].replace("path", "path_")}_{WORLD}_{v}_compare')
-            plt.close(f)
+    nrow, ncol = len(rr.VARIANTS), len(rr.PATHS)
+    with matplotlib.rc_context():                                   # default style, as the other trajectory figures (fig_sim_vs_real changes the globals)
+        matplotlib.rcdefaults()
+        # drawn at the scale of the other trajectory figures (fonts 14 pt, goal circles, line widths), which the paper shrinks by a common
+        # factor; one shared x axis per column and one shared y axis per row, so only the outer panels carry tick labels and axis labels
+        pw, gap = PANEL_IN, 0.12
+        ph = pw * cfg['arena_w'] / cfg['arena_l']
+        left, right, top, bottom = 0.95, 0.1, 0.1, 1.3             # margins (in): y labels at the left, x labels and the legend below
+        W, H = left + right + ncol * pw + (ncol - 1) * gap, top + bottom + nrow * ph + (nrow - 1) * gap
+        fig = plt.figure(figsize=(W, H))
+        gs = fig.add_gridspec(nrow, ncol, left=left / W, right=1 - right / W, top=1 - top / H, bottom=bottom / H,
+                              wspace=gap / pw, hspace=gap / ph)
+        axes = [[None] * ncol for _ in range(nrow)]
+        for i in range(nrow):
+            for j in range(ncol):
+                axes[i][j] = fig.add_subplot(gs[i, j], sharex=axes[0][0] if (i or j) else None, sharey=axes[0][0] if (i or j) else None)
+        for i, v in enumerate(rr.VARIANTS):
+            for j, path in enumerate(rr.PATHS):
+                draw_panel(axes[i][j], lab, recs, path, v)
+                axes[i][j].label_outer()
+        grey = '0.25'
+        leg = fig.legend(handles=[Line2D([0], [0], color=grey, label='Policy B\nmedian', **PATH_STYLE['B']),
+                                  Line2D([0], [0], color=grey, label='Policy M\nmedian', **PATH_STYLE['M']),
+                                  Line2D([0], [0], color=grey, label='Failed\nrun', ls=FAILED_STYLE['ls'], lw=FAILED_STYLE['lw'])],
+                         loc='lower center', ncol=3, fontsize=LEGEND_FONTSIZE, frameon=False, bbox_to_anchor=(0.5, 0.0), handlelength=3.0)
+        for ext in ('pdf', 'png'):
+            fig.savefig(os.path.join(out_dir, f'fig_robot_paths.{ext}'), dpi=200)
+        print(f'fig_robot_paths: {W:.2f} x {H:.2f} in; width {W / 17.9:.3f} of the text width at the scale of the other trajectory figures')
+        plt.close(fig)
+        for v in rr.VARIANTS:                                       # single panels, large
+            for path in rr.PATHS:
+                f, ax = vc.make_arena_fig(WORLD, long_side=8.0)
+                draw_panel(ax, lab, recs, path, v, 12)
+                vp.save_fig(f, f'repeat_{path[:5].replace("path", "path_")}_{WORLD}_{v}_compare')
+                plt.close(f)
 
 
 # ----------------------------------------------------------------------------- main
@@ -571,6 +597,7 @@ def main():
     ap.add_argument('--n-boot', type=int, default=10000)
     ap.add_argument('--seed', type=int, default=20261103)
     ap.add_argument('--no-figs', action='store_true')
+    ap.add_argument('--paths-only', action='store_true', help='only redraw fig_robot_paths and panels/, leave every other output untouched')
     a = ap.parse_args()
     manifest = rr.rrs.load_manifest(a.manifest)
     kept = rr.kept_runs(manifest)
@@ -578,6 +605,10 @@ def main():
     rr.progress(schedule, manifest, kept)
     lab = Lab()
     recs = [run_metrics(r, a.root, lab) for _, r in sorted(kept.items())]
+    if a.paths_only:
+        os.makedirs(a.out, exist_ok=True)
+        fig_paths(recs, lab, a.out)
+        return
     rng = np.random.default_rng(a.seed)
     ps = policy_stats(recs, load_sim())
     gs, diffs = group_stats(recs, a.n_boot, rng)
