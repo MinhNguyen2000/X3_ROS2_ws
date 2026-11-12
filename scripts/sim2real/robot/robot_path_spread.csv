@@ -1,0 +1,14 @@
+variant,planner,tier,path,n_success,mean_width,max_width
+direct_final,direct,B,path1_world_lab,9,0.0728,0.324
+direct_final,direct,B,path2_world_lab,10,0.0737,0.3028
+direct_best,direct,B,path1_world_lab,9,0.0563,0.2528
+direct_best,direct,B,path2_world_lab,9,0.048,0.1641
+direct_best,direct,M,path1_world_lab,10,0.0705,0.2131
+direct_best,direct,M,path2_world_lab,3,0.0502,0.1092
+delta_final,delta,B,path2_world_lab,5,0.0351,0.0805
+delta_final,delta,M,path1_world_lab,9,0.0414,0.1028
+delta_final,delta,M,path2_world_lab,10,0.0456,0.0909
+delta_best,delta,B,path1_world_lab,10,0.0233,0.045
+delta_best,delta,B,path2_world_lab,10,0.034,0.1012
+delta_best,delta,M,path1_world_lab,9,0.0291,0.0895
+delta_best,delta,M,path2_world_lab,10,0.0339,0.0686

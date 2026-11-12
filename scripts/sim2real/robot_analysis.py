@@ -16,9 +16,10 @@ Score = online goal count (notes/scoring_rule_decision_20261028.md): goals reach
 
 Outputs (--out, default robot/): robot_run_metrics.csv, robot_failures.csv, robot_policy_stats.csv, robot_group_stats.csv,
 robot_stats.json, table_robot_results.tex, table_robot_by_path.tex, table_robot_groups.tex, table_robot_failures.tex,
-table_robot_smoothness.tex, fig_robot_sim_vs_real.{pdf,png}, fig_robot_paths.{pdf,png}, panels/repeat_<path>_world_lab_<variant>_compare.{pdf,png}.
+table_robot_smoothness.tex, robot_path_spread.{csv,json} (run-to-run band width of the paths, see path_spread),
+fig_robot_sim_vs_real.{pdf,png}, fig_robot_paths.{pdf,png}, panels/repeat_<path>_world_lab_<variant>_compare.{pdf,png}.
 
-Usage: robot_analysis.py [--out DIR] [--n-boot N] [--seed S] [--no-figs | --paths-only]
+Usage: robot_analysis.py [--out DIR] [--n-boot N] [--seed S] [--no-figs | --paths-only | --spread-only]
 """
 import argparse
 import collections
@@ -500,6 +501,57 @@ def fig_sim_vs_real(ps, path):
     plt.close(fig)
 
 
+def run_key(r):
+    """Run name as visualize_path_variance loads it (saved file relative to scripts/recorded_paths, without .json)."""
+    return r['saved_file'].replace('scripts/recorded_paths/', '')[:-5]
+
+
+SPREAD_MIN_RUNS = 3                    # fewer successful runs give no meaningful 10th to 90th percentile band
+
+
+def path_spread(recs):
+    """Run-to-run spread of the paths, per policy and path: the width of the 10th to 90th percentile band of the cross-track offset from
+    the median path (the shaded band of fig_robot_paths, visualize_path_variance.leg_stats), over the successful runs, every leg resampled
+    to the same number of points. mean_width is the average over all points of all legs, max_width the widest point. Policies with fewer
+    than SPREAD_MIN_RUNS successful runs on a path are left out. Paths are odometry estimates, so the widths include odometry error."""
+    import visualize_path_variance as vp
+    rows = []
+    for v in rr.VARIANTS:
+        for t in ('B', 'M'):
+            for path in rr.PATHS:
+                ok = [run_key(r) for r in recs if r['variant'] == v and r['tier'] == t and r['path'] == path and r['success']]
+                if len(ok) < SPREAD_MIN_RUNS:
+                    continue
+                res = vp.analyze(path[:5].replace('path', 'path_'), WORLD, t, keys=ok)
+                w = np.concatenate([s['width'] for s in res['stats']])
+                rows.append(dict(variant=v, planner=v.split('_')[0], tier=t, path=path, n_success=len(ok),
+                                 mean_width=round(float(w.mean()), 4), max_width=round(float(w.max()), 4)))
+    return rows
+
+
+def spread_summary(rows):
+    """Per planner over its policy-path rows: number of rows, median, minimum and maximum of mean_width and of max_width."""
+    out = {}
+    for planner in ('delta', 'direct'):
+        sub = [r for r in rows if r['planner'] == planner]
+        if not sub:
+            continue
+        s = dict(n_rows=len(sub))
+        for c in ('mean_width', 'max_width'):
+            v = [r[c] for r in sub]
+            s.update({f'{c}_median': round(float(np.median(v)), 4), f'{c}_min': min(v), f'{c}_max': max(v)})
+        out[planner] = s
+    return out
+
+
+def write_spread(recs, out_dir):
+    rows = path_spread(recs)
+    write_csv(os.path.join(out_dir, 'robot_path_spread.csv'), rows)
+    summary = dict(min_runs=SPREAD_MIN_RUNS, script_commit=git_head(), by_planner=spread_summary(rows))
+    json.dump(summary, open(os.path.join(out_dir, 'robot_path_spread.json'), 'w'), indent=1)
+    return summary
+
+
 def draw_panel(ax, lab, recs, path, variant, fs=None):
     """B and M of one variant on one path: median and band of the successful runs (solid; B a darker shade of the planner colour than M),
     failed runs thin with an x at their last pose.
@@ -509,7 +561,7 @@ def draw_panel(ax, lab, recs, path, variant, fs=None):
     from matplotlib.ticker import AutoMinorLocator, MultipleLocator
     import visualize_path_variance as vp
     cells = {t: [r for r in recs if r['variant'] == variant and r['tier'] == t and r['path'] == path] for t in ('B', 'M')}
-    key = lambda r: r['saved_file'].replace('scripts/recorded_paths/', '')[:-5]
+    key = run_key
     planner, ckpt = variant.split('_')
     base = mcolors.to_rgb(PLANNER_COLOR[planner])
     color = {'B': tuple(c * B_DARKEN for c in base), 'M': base}
@@ -623,6 +675,7 @@ def main():
     ap.add_argument('--seed', type=int, default=20261103)
     ap.add_argument('--no-figs', action='store_true')
     ap.add_argument('--paths-only', action='store_true', help='only redraw fig_robot_paths and panels/, leave every other output untouched')
+    ap.add_argument('--spread-only', action='store_true', help='only write robot_path_spread.csv and .json, leave every other output untouched')
     a = ap.parse_args()
     manifest = rr.rrs.load_manifest(a.manifest)
     kept = rr.kept_runs(manifest)
@@ -633,6 +686,10 @@ def main():
     if a.paths_only:
         os.makedirs(a.out, exist_ok=True)
         fig_paths(recs, lab, a.out)
+        return
+    if a.spread_only:
+        os.makedirs(a.out, exist_ok=True)
+        print(json.dumps(write_spread(recs, a.out), indent=1))
         return
     rng = np.random.default_rng(a.seed)
     ps = policy_stats(recs, load_sim())
@@ -648,6 +705,7 @@ def main():
                        ('table_robot_groups.tex', table_groups(gs, diffs)), ('table_robot_failures.tex', table_failures(fs)),
                        ('table_robot_smoothness.tex', table_smoothness(recs))):
         open(os.path.join(a.out, name), 'w').write(text)
+    write_spread(recs, a.out)
     stats = dict(date=datetime.date.today().isoformat(), script_commit=git_head(), n_kept=len(kept), n_scheduled=len(schedule),
                  complete=len(kept) == len(schedule), manifest_sha1=hashlib.sha1(open(a.manifest, 'rb').read()).hexdigest(),
                  n_boot=a.n_boot, seed=a.seed, checks=order_checks(recs, manifest), group_differences=diffs,

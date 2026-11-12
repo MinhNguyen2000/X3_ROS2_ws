@@ -1,0 +1,24 @@
+{
+ "min_runs": 3,
+ "script_commit": "c55d70e",
+ "by_planner": {
+  "delta": {
+   "n_rows": 7,
+   "mean_width_median": 0.034,
+   "mean_width_min": 0.0233,
+   "mean_width_max": 0.0456,
+   "max_width_median": 0.0895,
+   "max_width_min": 0.045,
+   "max_width_max": 0.1028
+  },
+  "direct": {
+   "n_rows": 6,
+   "mean_width_median": 0.0634,
+   "mean_width_min": 0.048,
+   "mean_width_max": 0.0737,
+   "max_width_median": 0.233,
+   "max_width_min": 0.1092,
+   "max_width_max": 0.324
+  }
+ }
+}

@@ -133,3 +133,18 @@ def test_bm_tests_and_tables_render():
     assert 'Policy' not in text and ra.esc('TD3_direct_final_B') not in text            # no policy column, no model ids
     assert rows[0].split(' & ')[2:6] == ['100.0', '0.900', '90.0', '0.900']            # Gazebo goals, SPL, then robot goals, SPL
     assert r'\end{tabular}' in ra.table_by_path(ps)
+
+
+def test_path_spread_skips_thin_panels_and_summarises(monkeypatch):
+    import visualize_path_variance as vp
+    widths = {'B': np.array([0.02, 0.04]), 'M': np.array([0.06, 0.10])}
+    monkeypatch.setattr(vp, 'analyze', lambda path, world, tier, keys: {'stats': [{'width': widths[tier]}]})
+    v, p = ra.rr.VARIANTS[0], ra.rr.PATHS[0]
+    rec = lambda tier, ok, i: dict(variant=v, tier=tier, path=p, success=ok, saved_file=f'scripts/recorded_paths/{tier}{i}.json')
+    recs = [rec('B', 1, i) for i in range(3)] + [rec('M', 1, i) for i in range(2)] + [rec('M', 0, 9)]
+    rows = ra.path_spread(recs)
+    assert [(r['tier'], r['n_success']) for r in rows] == [('B', 3)]                 # M has 2 successful runs, below SPREAD_MIN_RUNS
+    assert rows[0]['mean_width'] == 0.03 and rows[0]['max_width'] == 0.04
+    s = ra.spread_summary(rows + [dict(rows[0], planner='direct' if rows[0]['planner'] == 'delta' else 'delta', mean_width=0.07, max_width=0.2)])
+    assert s['delta']['n_rows'] == 1 and s['direct']['n_rows'] == 1
+    assert {s['delta']['mean_width_median'], s['direct']['mean_width_median']} == {0.03, 0.07}
