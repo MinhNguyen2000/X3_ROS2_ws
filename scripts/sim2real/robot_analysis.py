@@ -31,6 +31,7 @@ import os
 import re
 import subprocess
 import sys
+import xml.etree.ElementTree as ET
 
 import numpy as np
 
@@ -129,6 +130,17 @@ def quart(v):
 
 
 # ----------------------------------------------------------------------------- per-run metrics
+def load_walls(sdf):
+    """Arena walls (models named wall_*) of an SDF world as box obstacles in the plotting frame."""
+    out = []
+    for m in ET.parse(sdf).getroot().iter('model'):
+        if m.get('name', '').startswith('wall'):
+            v = [float(t) for t in m.find('pose').text.split()]
+            sx, sy, _ = [float(t) for t in m.find('.//collision/geometry/box/size').text.split()]
+            out.append(dict(name=m.get('name'), type='box', x=v[0], y=v[1], sx=sx, sy=sy, yaw=v[5] if len(v) > 5 else 0.0))
+    return out
+
+
 class Lab:
     """World constants of the lab: goals in the odom frame, obstacles in the plotting frame, shortest-path planner."""
 
@@ -138,6 +150,7 @@ class Lab:
         with open(vc.paths_json_path(WORLD)) as f:
             self.goals = {k: np.array(v, float) for k, v in json.load(f).items()}
         self.obstacles = vc.load_obstacles(WORLD)
+        self.stop_obstacles = self.obstacles + load_walls(vc.sdf_path(WORLD))      # failure forensics also see the arena walls
         self.sp = sps.ShortestPath(WORLD)
 
     def to_sp(self, p):
@@ -236,7 +249,7 @@ def run_metrics(row, root, lab):
                last_yaw=float(poses[-1].get('yaw', float('nan'))), t_end=float(poses[-1]['t']),
                dist_to_next_goal=float(np.hypot(x[-1] - nxt[0], y[-1] - nxt[1])) if nxt is not None else '',
                nearest_obstacle=min_obstacle_clearance(np.array([x[-1] + lab.odom_init[0]]), np.array([y[-1] + lab.odom_init[1]]),
-                                                       lab.obstacles)[1],
+                                                       lab.stop_obstacles)[1],
                end_cmd_speed=tail_speed(cmd), end_exec_speed=tail_speed(act))
     return rec
 
