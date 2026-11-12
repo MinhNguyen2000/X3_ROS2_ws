@@ -317,7 +317,7 @@ def plot_ensemble(res, tag):
 def plot_ensemble_compare(results: list, name, ax=None, style=None):
     """Policies overlaid on one map: faint runs, median path and percentile band, coloured by policy.
     With `ax` the map is drawn into that axes and nothing is saved (panels of a composite figure).
-    `style` maps a policy name to overrides {color, ls, lw, band_alpha} of its median path and band (defaults as before)."""
+    `style` maps a policy name to overrides {color, ls, lw, band_alpha, zorder} of its median path and band (defaults as before)."""
     own = ax is None
     if own:
         fig, ax = make_arena_fig(results[0]['world'])
@@ -328,14 +328,14 @@ def plot_ensemble_compare(results: list, name, ax=None, style=None):
     for res in results:
         sty = (style or {}).get(res['policy'], {})
         color = sty.get('color', POLICY_COLORS.get(res['policy'], 'C0'))
-        ls, lw, band_alpha = sty.get('ls', '-'), sty.get('lw', 2.2), sty.get('band_alpha', 0.25)
+        ls, lw, band_alpha, zo = sty.get('ls', '-'), sty.get('lw', 2.2), sty.get('band_alpha', 0.25), sty.get('zorder', 3)
         for r in res['runs']:
             ax.plot(r['x'], r['y'], color=color, lw=0.8, alpha=0.00, zorder=1)
         for st in res['stats']:
             m, nrm = st['median'], st['normal']
             poly = np.vstack([m + st['hi'][:, None] * nrm, (m + st['lo'][:, None] * nrm)[::-1]])
             ax.fill(poly[:, 0], poly[:, 1], color=color, alpha=band_alpha, lw=0, zorder=2)
-            ax.plot(m[:, 0], m[:, 1], ls, color=color, lw=lw, zorder=3)
+            ax.plot(m[:, 0], m[:, 1], ls, color=color, lw=lw, zorder=zo)
         handles.append(Line2D([0], [0], color=color, ls=ls, lw=lw,
                               label=f"{res['policy']} median (n={len(res['runs'])})"))
 

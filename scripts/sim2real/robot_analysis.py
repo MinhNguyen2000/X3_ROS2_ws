@@ -46,8 +46,14 @@ GOAL_SLACK = 0.01                      # m, the unlogged decision-time pose (sco
 SIM_UNITS = os.path.join(HERE, '..', 'metrics', 'output', 'multigoal_units.csv')
 # trajectory figure style of scripts/viz/visualize_comparison_figures.py (COLORS, GRID_STYLE, LEGEND_FONTSIZE), so the figures agree in the paper
 PLANNER_COLOR = {'direct': 'tab:orange', 'delta': 'tab:green'}
-PATH_STYLE = {'B': dict(ls='-', lw=1.1), 'M': dict(ls=':', lw=1.4)}      # B solid like the median policies there, M dotted like the most efficient ones
-FAILED_STYLE = dict(ls='--', lw=0.8, alpha=0.8)
+# B and M are both solid and differ by shade of the planner colour (B darker, M the planner colour of those figures); B is drawn on top of
+# the slightly thicker M, so both stay visible where the medians coincide. Failed runs are thin and faint below the medians, and an x marks
+# the pose where each ended, so they cannot be mistaken for a median and stay countable where many overlap.
+PATH_STYLE = {'B': dict(ls='-', lw=1.1, zorder=4), 'M': dict(ls='-', lw=1.6, zorder=3)}
+B_DARKEN = 0.6                                                # factor on the planner colour (RGB) for policy B
+FAILED_STYLE = dict(ls='-', lw=0.6, alpha=0.6, zorder=2.5)
+FAILED_END = dict(marker='x', ms=6, mew=1.0, ls='', zorder=5)
+TICK_STEP = 0.5                                               # m, major ticks of both axes
 LEGEND_FONTSIZE = 18.7                                       # 6.6 pt in the paper at the scale of those figures (455 pt text width = 17.9 in)
 PANEL_IN = 8.3                                               # width of one panel in the composite figure (in)
 PLANNER_STYLE = {'direct': ('#ff7f0e', 's'), 'delta': ('#2ca02c', '^')}       # as make_tables.py
@@ -483,15 +489,19 @@ def fig_sim_vs_real(ps, path):
 
 
 def draw_panel(ax, lab, recs, path, variant, fs=None):
-    """B and M of one variant on one path: median and band of the successful runs (B solid, M dotted, planner colour), failed runs dashed.
+    """B and M of one variant on one path: median and band of the successful runs (solid; B a darker shade of the planner colour than M),
+    failed runs thin with an x at their last pose.
     With `fs` (single panels) the fonts are set to that size and the label is the axes title; without it (composite figure) the fonts are
     those of apply_arena_style and the label sits in the upper left corner, as in the other trajectory figures."""
+    import matplotlib.colors as mcolors
+    from matplotlib.ticker import AutoMinorLocator, MultipleLocator
     import visualize_path_variance as vp
     cells = {t: [r for r in recs if r['variant'] == variant and r['tier'] == t and r['path'] == path] for t in ('B', 'M')}
     key = lambda r: r['saved_file'].replace('scripts/recorded_paths/', '')[:-5]
     planner, ckpt = variant.split('_')
-    color = PLANNER_COLOR[planner]
-    style = {t: dict(color=color, band_alpha=0.2, **PATH_STYLE[t]) for t in ('B', 'M')}
+    base = mcolors.to_rgb(PLANNER_COLOR[planner])
+    color = {'B': tuple(c * B_DARKEN for c in base), 'M': base}
+    style = {t: dict(color=color[t], band_alpha=0.2, **PATH_STYLE[t]) for t in ('B', 'M')}
     results = []
     for t in ('B', 'M'):
         ok = [key(r) for r in cells[t] if r['success']]
@@ -507,12 +517,21 @@ def draw_panel(ax, lab, recs, path, variant, fs=None):
         for r in cells[t]:
             if not r['success']:
                 run = vp.clean(vc.load_run(key(r), WORLD))
-                ax.plot(run['x'], run['y'], color=color, zorder=4, **FAILED_STYLE)
+                ax.plot(run['x'], run['y'], color=color[t], **FAILED_STYLE)
+                ax.plot(run['x'][-1:], run['y'][-1:], color=color[t], **FAILED_END)
     ks = {t: f"{sum(r['success'] for r in cells[t])}/{len(cells[t])}" for t in ('B', 'M')}
     name = f"TD3_{planner} {ckpt.capitalize()}"
+    for axis, minor in ((ax.xaxis, 5), (ax.yaxis, 5)):               # the same ticks on both axes
+        axis.set_major_locator(MultipleLocator(TICK_STEP))
+        axis.set_minor_locator(AutoMinorLocator(minor))
     if fs is None:
-        ax.text(0.025, 0.975, f"{name}, Path {path[4]}\nB {ks['B']}   M {ks['M']}", transform=ax.transAxes, ha='left', va='top',
-                fontsize=14, zorder=20, bbox=dict(facecolor='white', edgecolor='none', alpha=0.8, pad=2))
+        box = dict(facecolor='white', edgecolor='none', alpha=0.8, pad=2)
+        head = ax.text(0.025, 0.975, f"{name}, Path {path[4]}", transform=ax.transAxes, ha='left', va='top', fontsize=14, zorder=20, bbox=box)
+        # the B and M counts in the colours of their lines, so the panel needs no key for the two shades
+        b_txt = ax.annotate(f"B {ks['B']}", xy=(0, 0), xycoords=head, xytext=(0, -3), textcoords='offset points', ha='left', va='top',
+                            fontsize=14, color=color['B'], zorder=20, bbox=box)
+        ax.annotate(f"M {ks['M']}", xy=(1, 0.5), xycoords=b_txt, xytext=(10, 0), textcoords='offset points', ha='left', va='center',
+                    fontsize=14, color=color['M'], zorder=20, bbox=box)
     else:
         ax.tick_params(axis='both', which='both', labelsize=fs)
         for a in ax.texts:
@@ -553,10 +572,11 @@ def fig_paths(recs, lab, out_dir):
             for j, path in enumerate(rr.PATHS):
                 draw_panel(axes[i][j], lab, recs, path, v)
                 axes[i][j].label_outer()
-        grey = '0.25'
-        leg = fig.legend(handles=[Line2D([0], [0], color=grey, label='Policy B\nmedian', **PATH_STYLE['B']),
-                                  Line2D([0], [0], color=grey, label='Policy M\nmedian', **PATH_STYLE['M']),
-                                  Line2D([0], [0], color=grey, label='Failed\nrun', ls=FAILED_STYLE['ls'], lw=FAILED_STYLE['lw'])],
+        # neutral dark and light grey stand for the darker (B) and lighter (M) shade of the planner colour
+        leg = fig.legend(handles=[Line2D([0], [0], color='0.15', label='Policy B\nmedian', ls='-', lw=PATH_STYLE['B']['lw']),
+                                  Line2D([0], [0], color='0.55', label='Policy M\nmedian', ls='-', lw=PATH_STYLE['M']['lw']),
+                                  Line2D([0], [0], color='0.4', label='Failed run\nand its end', ls='-', lw=FAILED_STYLE['lw'],
+                                         marker=FAILED_END['marker'], ms=FAILED_END['ms'], mew=FAILED_END['mew'])],
                          loc='lower center', ncol=3, fontsize=LEGEND_FONTSIZE, frameon=False, bbox_to_anchor=(0.5, 0.0), handlelength=3.0)
         for ext in ('pdf', 'png'):
             fig.savefig(os.path.join(out_dir, f'fig_robot_paths.{ext}'), dpi=200)
