@@ -19,7 +19,7 @@ robot_stats.json, table_robot_results.tex, table_robot_by_path.tex, table_robot_
 table_robot_smoothness.tex, robot_path_spread.{csv,json} (run-to-run band width of the paths, see path_spread),
 fig_robot_sim_vs_real.{pdf,png}, fig_robot_paths.{pdf,png}, panels/repeat_<path>_world_lab_<variant>_compare.{pdf,png}.
 
-Usage: robot_analysis.py [--out DIR] [--n-boot N] [--seed S] [--no-figs | --paths-only | --spread-only]
+Usage: robot_analysis.py [--out DIR] [--n-boot N] [--seed S] [--no-figs | --paths-only | --spread-only | --simreal-only]
 """
 import argparse
 import collections
@@ -467,38 +467,46 @@ def table_smoothness(recs):
 
 # ----------------------------------------------------------------------------- figures
 def fig_sim_vs_real(ps, path):
+    """Gazebo against robot goal completion (a) and SPL (b) of the eight policies, drawn at the reference scale of the trajectory figures
+    (17.9 in wide, scaled to the 455 pt text width in the paper) with the default matplotlib style and the same font sizes."""
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
-    plt.rcParams.update({'font.size': 8, 'text.color': INK, 'axes.labelcolor': INK, 'xtick.color': MUTED, 'ytick.color': MUTED,
-                         'axes.edgecolor': GRID, 'pdf.fonttype': 42, 'ps.fonttype': 42})
-    fig, axes = plt.subplots(1, 2, figsize=(5.3, 2.6), sharex=True)         # the paper's full text width (in)
-    x = np.arange(len(ps)) + (np.arange(len(ps)) // 2) * 0.5
-    for ax, (sk, rk, ylabel, ylim), letter in zip(axes, (('sim_goals_pct', 'goals_pct', 'Goal completion (%)', (0, 104)),
-                                                         ('sim_spl', 'spl_all', 'SPL, shortest path, all legs', (0, 1.0))), '(a)(b)'.replace(')(', ') (').split()):
-        for xi, p in zip(x, ps):
-            color, marker = PLANNER_STYLE[p['variant'].split('_')[0]]
-            ax.plot([xi, xi], [p[sk], p[rk]], color=GRID, lw=1.2, zorder=1)
-            ax.scatter(xi, p[sk], marker='o', facecolor='white', edgecolor=MUTED, s=26, zorder=2)
-            ax.scatter(xi, p[rk], marker=marker, color=color, s=30, zorder=3)
-        ax.set_xticks(x, [p['tier'] for p in ps], fontsize=7)
-        for g in range(0, len(ps), 2):                              # variant label under each B/M pair
-            ax.text((x[g] + x[g + 1]) / 2, -0.17, ps[g]['variant'].replace('_', ' '), transform=ax.get_xaxis_transform(),
-                    ha='center', va='top', fontsize=7, color=INK)
-        ax.set_ylabel(ylabel)
-        ax.set_ylim(*ylim)
-        ax.set_title(letter, loc='left', fontsize=8)
-        for s in ('top', 'right'):
-            ax.spines[s].set_visible(False)
     from matplotlib.lines import Line2D
-    axes[0].legend(handles=[Line2D([0], [0], marker='o', ls='', mfc='white', mec=MUTED, label='Gazebo, 6 scenarios'),
-                            Line2D([0], [0], marker='s', ls='', color=PLANNER_STYLE['direct'][0], label='Robot, TD3_direct'),
-                            Line2D([0], [0], marker='^', ls='', color=PLANNER_STYLE['delta'][0], label='Robot, TD3_delta')],
-                   loc='lower left', fontsize=6, frameon=False)
-    fig.tight_layout()
-    for ext in ('pdf', 'png'):
-        fig.savefig(f'{path}.{ext}', dpi=300)
-    plt.close(fig)
+    with matplotlib.rc_context():
+        matplotlib.rcdefaults()
+        plt.rcParams.update({'pdf.fonttype': 42, 'ps.fonttype': 42})
+        fig, axes = plt.subplots(1, 2, figsize=(17.9, 7.4), sharex=True)
+        x = np.arange(len(ps)) + (np.arange(len(ps)) // 2) * 0.5
+        panels = (('sim_goals_pct', 'goals_pct', 'Goal completion (%)', (58, 102), np.arange(60, 101, 10)),
+                  ('sim_spl', 'spl_all', 'SPL, shortest path, all legs', (0.58, 1.02), np.arange(0.6, 1.01, 0.1)))
+        for ax, (sk, rk, ylabel, ylim, yticks), letter in zip(axes, panels, ('(a)', '(b)')):
+            for g in range(2, len(ps), 2):                          # faint dotted separators between the variants
+                ax.axvline((x[g - 1] + x[g]) / 2, color='0.7', ls=':', lw=1.5, zorder=0)
+            for xi, p in zip(x, ps):
+                color, marker = PLANNER_STYLE[p['variant'].split('_')[0]]
+                ax.plot([xi, xi], [p[sk], p[rk]], color='0.75', lw=3, zorder=1)
+                ax.scatter(xi, p[sk], marker='o', facecolor='white', edgecolor='0.4', s=170, linewidths=1.8, zorder=2)
+                ax.scatter(xi, p[rk], marker=marker, color=color, s=190, zorder=3)
+            ax.set_xticks(x, [p['tier'] for p in ps])
+            for g in range(0, len(ps), 2):                          # checkpoint under each B/M pair; the planner is the marker colour
+                ax.text((x[g] + x[g + 1]) / 2, -0.075, ps[g]['variant'].split('_')[1].capitalize(), transform=ax.get_xaxis_transform(),
+                        ha='center', va='top', fontsize=14)
+            ax.set_ylabel(ylabel, fontsize=12)
+            ax.set_ylim(*ylim)
+            ax.set_yticks(yticks)
+            ax.minorticks_on()
+            ax.tick_params(axis='x', which='minor', bottom=False)
+            ax.tick_params(axis='both', which='both', direction='in', labelsize=14)
+            ax.set_title(letter, loc='left', fontsize=14)
+        fig.legend(handles=[Line2D([0], [0], marker='o', ls='', mfc='white', mec='0.4', mew=1.8, ms=13, label='Gazebo, 6 scenarios'),
+                            Line2D([0], [0], marker='s', ls='', color=PLANNER_STYLE['direct'][0], ms=13, label='Robot, TD3_direct'),
+                            Line2D([0], [0], marker='^', ls='', color=PLANNER_STYLE['delta'][0], ms=13, label='Robot, TD3_delta')],
+                   loc='lower center', ncol=3, fontsize=18.7, frameon=False)
+        fig.tight_layout(rect=(0, 0.07, 1, 1))
+        for ext in ('pdf', 'png'):
+            fig.savefig(f'{path}.{ext}', dpi=150)
+        plt.close(fig)
 
 
 def run_key(r):
@@ -675,6 +683,7 @@ def main():
     ap.add_argument('--seed', type=int, default=20261103)
     ap.add_argument('--no-figs', action='store_true')
     ap.add_argument('--paths-only', action='store_true', help='only redraw fig_robot_paths and panels/, leave every other output untouched')
+    ap.add_argument('--simreal-only', action='store_true', help='only redraw fig_robot_sim_vs_real, leave every other output untouched')
     ap.add_argument('--spread-only', action='store_true', help='only write robot_path_spread.csv and .json, leave every other output untouched')
     a = ap.parse_args()
     manifest = rr.rrs.load_manifest(a.manifest)
@@ -686,6 +695,10 @@ def main():
     if a.paths_only:
         os.makedirs(a.out, exist_ok=True)
         fig_paths(recs, lab, a.out)
+        return
+    if a.simreal_only:
+        os.makedirs(a.out, exist_ok=True)
+        fig_sim_vs_real(policy_stats(recs, load_sim()), os.path.join(a.out, 'fig_robot_sim_vs_real'))
         return
     if a.spread_only:
         os.makedirs(a.out, exist_ok=True)
