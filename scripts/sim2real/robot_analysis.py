@@ -44,7 +44,7 @@ import viz_common as vc  # noqa: E402
 WORLD = 'world_lab'
 GOAL_SLACK = 0.01                      # m, the unlogged decision-time pose (scoring rule note, section 1)
 SIM_UNITS = os.path.join(HERE, '..', 'metrics', 'output', 'multigoal_units.csv')
-# trajectory figure style of scripts/viz/visualize_comparison_figures.py (COLORS, GRID_STYLE, LEGEND_FONTSIZE), so the figures agree in the paper
+# trajectory figure style of scripts/viz/visualize_comparison_figures.py (COLORS, GRID_STYLE), so the figures agree in the paper
 PLANNER_COLOR = {'direct': 'tab:orange', 'delta': 'tab:green'}
 # B and M are both solid and differ by shade of the planner colour (B darker, M the planner colour of those figures); B is drawn on top of
 # the slightly thicker M, so both stay visible where the medians coincide. Failed runs are thin and faint below the medians, and an x marks
@@ -54,8 +54,7 @@ B_DARKEN = 0.6                                                # factor on the pl
 FAILED_STYLE = dict(ls='-', lw=0.6, alpha=0.6, zorder=2.5)
 FAILED_END = dict(marker='x', ms=6, mew=1.0, ls='', zorder=5)
 TICK_STEP = 0.5                                               # m, major ticks of both axes
-LEGEND_FONTSIZE = 18.7                                       # 6.6 pt in the paper at the scale of those figures (455 pt text width = 17.9 in)
-PANEL_IN = 8.3                                               # width of one panel in the composite figure (in)
+PANEL_IN = 8.35                                               # width of one panel in the composite figure (in)
 PLANNER_STYLE = {'direct': ('#ff7f0e', 's'), 'delta': ('#2ca02c', '^')}       # as make_tables.py
 INK, MUTED, GRID = '#222222', '#666666', '#d9d9d9'
 LABEL = rr.LABEL
@@ -547,7 +546,6 @@ def fig_paths(recs, lab, out_dir):
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     import visualize_path_variance as vp
-    from matplotlib.lines import Line2D
     panels = os.path.join(out_dir, 'panels')
     os.makedirs(panels, exist_ok=True)
     vp.FIG_DIR = panels
@@ -559,7 +557,7 @@ def fig_paths(recs, lab, out_dir):
         # factor; one shared x axis per column and one shared y axis per row, so only the outer panels carry tick labels and axis labels
         pw, gap = PANEL_IN, 0.12
         ph = pw * cfg['arena_w'] / cfg['arena_l']
-        left, right, top, bottom = 0.95, 0.1, 0.1, 1.3             # margins (in): y labels at the left, x labels and the legend below
+        left, right, top, bottom = 0.95, 0.1, 0.1, 0.7             # margins (in): y labels at the left, x labels below (no legend, the caption explains the lines)
         W, H = left + right + ncol * pw + (ncol - 1) * gap, top + bottom + nrow * ph + (nrow - 1) * gap
         fig = plt.figure(figsize=(W, H))
         gs = fig.add_gridspec(nrow, ncol, left=left / W, right=1 - right / W, top=1 - top / H, bottom=bottom / H,
@@ -572,12 +570,6 @@ def fig_paths(recs, lab, out_dir):
             for j, path in enumerate(rr.PATHS):
                 draw_panel(axes[i][j], lab, recs, path, v)
                 axes[i][j].label_outer()
-        # neutral dark and light grey stand for the darker (B) and lighter (M) shade of the planner colour
-        leg = fig.legend(handles=[Line2D([0], [0], color='0.15', label='Policy B\nmedian', ls='-', lw=PATH_STYLE['B']['lw']),
-                                  Line2D([0], [0], color='0.55', label='Policy M\nmedian', ls='-', lw=PATH_STYLE['M']['lw']),
-                                  Line2D([0], [0], color='0.4', label='Failed run\nand its end', ls='-', lw=FAILED_STYLE['lw'],
-                                         marker=FAILED_END['marker'], ms=FAILED_END['ms'], mew=FAILED_END['mew'])],
-                         loc='lower center', ncol=3, fontsize=LEGEND_FONTSIZE, frameon=False, bbox_to_anchor=(0.5, 0.0), handlelength=3.0)
         for ext in ('pdf', 'png'):
             fig.savefig(os.path.join(out_dir, f'fig_robot_paths.{ext}'), dpi=200)
         print(f'fig_robot_paths: {W:.2f} x {H:.2f} in; width {W / 17.9:.3f} of the text width at the scale of the other trajectory figures')
