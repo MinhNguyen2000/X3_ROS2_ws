@@ -26,4 +26,4 @@ esac
 GITDIR=$(git -C "$WT" rev-parse --git-common-dir)
 docker run --rm --name p2repeats-$MODE --gpus all -e NVIDIA_DRIVER_CAPABILITIES=all,graphics -e GZ_HEADLESS=1 \
   -v $WT:/X3_ROS2_ws -v $GITDIR:$GITDIR:ro -w /X3_ROS2_ws "$IMG" \
-  bash -lc "git config --global --add safe.directory '*' >/dev/null 2>&1; nice python3 scripts/batch_multigoal.py --skip-apf --ros-domain-id 68 --reps $REPS --kill-stragglers --manifest $MAN $SEL $ARGS $*"
+  bash -lc "unset ROS_DISCOVERY_SERVER ROS_SUPER_CLIENT; git config --global --add safe.directory '*' >/dev/null 2>&1; nice python3 scripts/batch_multigoal.py --skip-apf --ros-domain-id 68 --reps $REPS --kill-stragglers --manifest $MAN $SEL $ARGS $*"
