@@ -52,6 +52,17 @@ def test_rms_accel_and_tail_speed():
     assert math.isnan(ra.tail_speed([]))
 
 
+def test_smooth_rms_accel_ignores_quantisation():
+    t = 0.02 * np.arange(500)
+    v = 0.1 * t                                                              # constant 0.1 rad/s^2
+    s = [{'t': float(ti), 'vx': 0.0, 'vyaw': float(np.round(vi / 0.024) * 0.024)} for ti, vi in zip(t, v)]
+    raw = ra.rms_accel(s)[1]
+    sm = ra.smooth_rms_accel(s)[1]
+    assert raw > 3 * sm                                                      # steps of 0.024 rad/s read as 1.2 rad/s^2 between two samples
+    assert sm == pytest.approx(0.1, rel=0.1) and ra.smooth_rms_accel(s)[0] == pytest.approx(0.0)
+    assert all(math.isnan(x) for x in ra.smooth_rms_accel(s[:10]))
+
+
 def test_min_obstacle_clearance():
     obs = [dict(name='cylinder_1', type='cylinder', x=0.0, y=0.0, radius=0.5, yaw=0.0),
            dict(name='box_1', type='box', x=5.0, y=0.0, sx=2.0, sy=2.0, yaw=0.0)]
