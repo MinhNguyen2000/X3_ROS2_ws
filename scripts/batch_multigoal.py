@@ -59,6 +59,7 @@ MANIFEST_COLS = ['model', 'kind', 'world', 'path', 'rep', 'status', 'success',
                  'timestamp', 'code_state']
 
 procs = []          # (name, Popen) currently alive, for cleanup
+KILL_STRAGGLERS = False   # --kill-stragglers
 GAZEBO_ARGS = ''   # extra gazebo.launch.py arguments (--gazebo-arg), e.g. the spawn offset of world_lab
 CODE_STATE = {}     # 'drl' and one entry per classical planner: git HEAD + node hashes + parameters, set in main()
 
@@ -240,6 +241,8 @@ def teardown():
     # Gazebo can leave server/gui children outside the process group
     subprocess.run(['pkill', '-f', '[g]z sim'], stderr=subprocess.DEVNULL)
     subprocess.run(['pkill', '-f', '[i]gn gazebo'], stderr=subprocess.DEVNULL)
+    if KILL_STRAGGLERS:
+        kill_stragglers()
     time.sleep(2.0)
     # a Gazebo server hung in start-up can ignore SIGTERM and then poisons every later launch (two servers on the
     # same transport: wrong world, 'sim not ready'); found 2026-10-28 in the container batch, so kill it for good
@@ -249,6 +252,16 @@ def teardown():
         time.sleep(2.0)
         if gz_running():
             print('    WARNING: a Gazebo process survived SIGKILL')
+
+
+STRAGGLERS = ('[o]dom_offset_node|[o]dom_to_vel_raw_node|[c]ovariance_filter|[r]f2o_laser_odometry_node|[e]kf_node|'
+              '[p]arameter_bridge|[r]obot_state_publisher|ros2 topic [e]cho|[s]pawner|[p]olicy_node|[g]oal_sequence_')
+
+
+def kill_stragglers():
+    '''ROS nodes of a failed launch can outlive the process-group kill and then poison every later job (two odom
+    publishers, found 2026-11-12 in the world_lab batch). Only for use in a container that runs this batch alone.'''
+    subprocess.run(['pkill', '-9', '-f', STRAGGLERS], stderr=subprocess.DEVNULL)
 
 
 def gz_running():
@@ -371,7 +384,7 @@ def wait_next_minute_if_needed(job, last_save):
 
 
 def main():
-    global ROS_DOMAIN, MANIFEST, CODE_STATE, SCENARIOS, GAZEBO_ARGS
+    global ROS_DOMAIN, MANIFEST, CODE_STATE, SCENARIOS, GAZEBO_ARGS, KILL_STRAGGLERS
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
     ap.add_argument('--dry-run', action='store_true', help='print the job list and exit')
     ap.add_argument('--only-model', action='append', help='model folder name or a classical planner, e.g. APF (repeatable)')
@@ -406,6 +419,9 @@ def main():
                     help='extra gazebo.launch.py argument, e.g. x_offset:=-1.6775 (repeatable); goes into code_state. '
                          'Spawn default is (-3, -3); world_lab needs x_offset:=-1.6775 y_offset:=-0.7625 '
                          '(odom origin of the lab, viz_common.WORLD_CONFIGS)')
+    ap.add_argument('--kill-stragglers', action='store_true',
+                    help='after every job also kill leftover ROS nodes of the launch (pkill -9 by name); only in a '
+                         'container that runs this batch alone, never on a shared host')
     ap.add_argument('--manifest', help='manifest CSV path (default: scripts/batch_runs/manifest.csv); '
                                        'use a separate one for A/B experiments')
     ap.add_argument('--rerun-failed', action='store_true',
@@ -418,6 +434,7 @@ def main():
     if args.manifest:
         MANIFEST = Path(args.manifest).resolve()
     GAZEBO_ARGS = ' '.join(args.gazebo_arg)
+    KILL_STRAGGLERS = args.kill_stragglers
     CODE_STATE = {'drl': code_state(args.planner_params, GAZEBO_ARGS),
                   **{n: classical_code_state(n, args.classical_params[n]) for n in CLASSICAL}}
     if args.scenarios:
