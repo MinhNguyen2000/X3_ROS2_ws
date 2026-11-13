@@ -216,6 +216,30 @@ def rms_accel(samples):
     return out[0], out[1]
 
 
+SMOOTH_S = 0.5            # boxcar window (s) of the smoothed acceleration; the logged wheel velocity is quantised (0.024 rad/s, 0.007 m/s at 50 Hz)
+SMOOTH_DT = 0.02          # uniform grid (s) the logs are resampled to before smoothing (the log timestamps jitter)
+
+
+def smooth_rms_accel(samples, window=SMOOTH_S, dt=SMOOTH_DT):
+    """(RMS linear, RMS angular) acceleration of a [{t, vx, vyaw}] log after resampling to a uniform grid and averaging the velocity over
+    `window` seconds, so that the quantisation of the logged velocity does not count as acceleration; NaN when the log is shorter than the window."""
+    if not samples or len(samples) < 3:
+        return float('nan'), float('nan')
+    t = np.array([s['t'] for s in samples], float)
+    order = np.argsort(t)
+    t = t[order]
+    grid = np.arange(t[0], t[-1], dt)
+    k = int(round(window / dt))
+    if len(grid) < k + 2:
+        return float('nan'), float('nan')
+    out = []
+    for key in ('vx', 'vyaw'):
+        v = np.interp(grid, t, np.array([s[key] for s in samples], float)[order])
+        a = np.diff(np.convolve(v, np.ones(k) / k, mode='valid')) / dt
+        out.append(float(np.sqrt(np.mean(a ** 2))))
+    return out[0], out[1]
+
+
 def tail_speed(samples, seconds=3.0):
     """Mean |vx| over the last `seconds` of a velocity log (NaN when empty)."""
     if not samples:
@@ -237,8 +261,10 @@ def run_metrics(row, root, lab):
     clr, clr_name = min_obstacle_clearance(x + lab.odom_init[0], y + lab.odom_init[1], lab.obstacles)
     cmd, act = d.get('velocities') or [], d.get('actual_velocities') or []
     a_cmd, a_act = rms_accel(cmd), rms_accel(act)
+    s_cmd, s_act = smooth_rms_accel(cmd), smooth_rms_accel(act)
     rec.update(spl_all=sum(legs) / rec['total'], spl_reached=float(np.mean(legs)) if legs else float('nan'),
                min_clearance=clr, cmd_rms_a_lin=a_cmd[0], cmd_rms_a_ang=a_cmd[1], act_rms_a_lin=a_act[0], act_rms_a_ang=a_act[1],
+               cmd_smooth_a_lin=s_cmd[0], cmd_smooth_a_ang=s_cmd[1], act_smooth_a_lin=s_act[0], act_smooth_a_ang=s_act[1],
                planner=row['variant'].split('_')[0], checkpoint=row['variant'].split('_')[1])
     msg = (d.get('result') or {}).get('message') or ''
     m = re.search(r'Obstacle hit with distance\s+([0-9.]+),\s*index\s+(\d+)', msg)
@@ -461,7 +487,7 @@ def table_smoothness(recs):
     for pl in ('direct', 'delta'):
         rs = [r for r in recs if r['planner'] == pl and r['success']]
         rows.append((pl, f"TD3\\_{pl} & {len(rs)} & " + ' & '.join(
-            iqr(*quart([r[k] for r in rs]), 2) for k in ('cmd_rms_a_lin', 'act_rms_a_lin', 'cmd_rms_a_ang', 'act_rms_a_ang')) + r' \\'))
+            iqr(*quart([r[k] for r in rs]), 2) for k in ('cmd_smooth_a_lin', 'act_smooth_a_lin', 'cmd_smooth_a_ang', 'act_smooth_a_ang')) + r' \\'))
     return tab('lccccc', head, rows)
 
 
