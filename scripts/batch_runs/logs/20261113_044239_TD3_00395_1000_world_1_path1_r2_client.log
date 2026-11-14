@@ -1,0 +1,54 @@
+[INFO] [1794544972.327144260] [agent0.goal_sequence_client]: Path 'path1_world_1' selected with 5 waypoints | tolerance=0.3m | stop_on_failure=True
+[INFO] [1794544972.661270051] [agent0.goal_sequence_client]: Waiting for goal sequence server...
+[INFO] [1794544972.661949717] [agent0.goal_sequence_client]: Sending path: 'path1_world_1' to the goal sequence server...
+[INFO] [1794544972.664062321] [agent0.goal_sequence_client]: Sequence goal accepted
+[INFO] [1794544973.675758319] [agent0.goal_sequence_client]:  Time:   1.01 | Waypoint 1/5 | current goal dist:  1.849m
+[INFO] [1794544974.682061964] [agent0.goal_sequence_client]:  Time:   2.02 | Waypoint 1/5 | current goal dist:  1.362m
+[INFO] [1794544975.688023665] [agent0.goal_sequence_client]:  Time:   3.02 | Waypoint 1/5 | current goal dist:  0.875m
+[INFO] [1794544976.692322880] [agent0.goal_sequence_client]:  Time:   4.03 | Waypoint 1/5 | current goal dist:  0.351m
+[INFO] [1794544977.701002376] [agent0.goal_sequence_client]:  Time:   5.04 | Waypoint 2/5 | current goal dist:  3.067m
+[INFO] [1794544978.706050282] [agent0.goal_sequence_client]:  Time:   6.04 | Waypoint 2/5 | current goal dist:  3.015m
+[INFO] [1794544979.712399586] [agent0.goal_sequence_client]:  Time:   7.05 | Waypoint 2/5 | current goal dist:  2.779m
+[INFO] [1794544980.718100543] [agent0.goal_sequence_client]:  Time:   8.05 | Waypoint 2/5 | current goal dist:  2.358m
+[INFO] [1794544981.723293724] [agent0.goal_sequence_client]:  Time:   9.06 | Waypoint 2/5 | current goal dist:  1.829m
+[INFO] [1794544982.728876067] [agent0.goal_sequence_client]:  Time:  10.06 | Waypoint 2/5 | current goal dist:  1.288m
+[INFO] [1794544983.735271633] [agent0.goal_sequence_client]:  Time:  11.07 | Waypoint 2/5 | current goal dist:  0.750m
+[INFO] [1794544984.744145596] [agent0.goal_sequence_client]:  Time:  12.08 | Waypoint 3/5 | current goal dist:  5.042m
+[INFO] [1794544985.748914817] [agent0.goal_sequence_client]:  Time:  13.08 | Waypoint 3/5 | current goal dist:  5.103m
+[INFO] [1794544986.754439388] [agent0.goal_sequence_client]:  Time:  14.09 | Waypoint 3/5 | current goal dist:  5.078m
+[INFO] [1794544987.760484437] [agent0.goal_sequence_client]:  Time:  15.10 | Waypoint 3/5 | current goal dist:  4.817m
+[INFO] [1794544988.765815459] [agent0.goal_sequence_client]:  Time:  16.10 | Waypoint 3/5 | current goal dist:  4.348m
+[INFO] [1794544989.771145007] [agent0.goal_sequence_client]:  Time:  17.11 | Waypoint 3/5 | current goal dist:  3.808m
+[INFO] [1794544990.777028825] [agent0.goal_sequence_client]:  Time:  18.11 | Waypoint 3/5 | current goal dist:  3.273m
+[INFO] [1794544991.781584341] [agent0.goal_sequence_client]:  Time:  19.12 | Waypoint 3/5 | current goal dist:  2.738m
+[INFO] [1794544992.787621136] [agent0.goal_sequence_client]:  Time:  20.12 | Waypoint 3/5 | current goal dist:  2.200m
+[INFO] [1794544993.792673035] [agent0.goal_sequence_client]:  Time:  21.13 | Waypoint 3/5 | current goal dist:  1.650m
+[INFO] [1794544994.798630013] [agent0.goal_sequence_client]:  Time:  22.13 | Waypoint 3/5 | current goal dist:  1.112m
+[INFO] [1794544995.803902366] [agent0.goal_sequence_client]:  Time:  23.14 | Waypoint 3/5 | current goal dist:  0.574m
+[INFO] [1794544996.813754522] [agent0.goal_sequence_client]:  Time:  24.15 | Waypoint 4/5 | current goal dist:  4.088m
+[INFO] [1794544997.819248673] [agent0.goal_sequence_client]:  Time:  25.15 | Waypoint 4/5 | current goal dist:  4.064m
+[INFO] [1794544998.826202071] [agent0.goal_sequence_client]:  Time:  26.16 | Waypoint 4/5 | current goal dist:  3.771m
+[INFO] [1794544999.831290479] [agent0.goal_sequence_client]:  Time:  27.17 | Waypoint 4/5 | current goal dist:  3.288m
+[INFO] [1794545000.835837739] [agent0.goal_sequence_client]:  Time:  28.17 | Waypoint 4/5 | current goal dist:  2.754m
+[INFO] [1794545001.841752948] [agent0.goal_sequence_client]:  Time:  29.18 | Waypoint 4/5 | current goal dist:  2.242m
+[INFO] [1794545002.847855397] [agent0.goal_sequence_client]:  Time:  30.18 | Waypoint 4/5 | current goal dist:  1.916m
+[INFO] [1794545003.853234060] [agent0.goal_sequence_client]:  Time:  31.19 | Waypoint 4/5 | current goal dist:  1.749m
+[INFO] [1794545004.859475671] [agent0.goal_sequence_client]:  Time:  32.19 | Waypoint 4/5 | current goal dist:  1.631m
+[INFO] [1794545005.863872203] [agent0.goal_sequence_client]:  Time:  33.20 | Waypoint 4/5 | current goal dist:  1.620m
+[INFO] [1794545006.869159816] [agent0.goal_sequence_client]:  Time:  34.20 | Waypoint 4/5 | current goal dist:  1.483m
+[INFO] [1794545007.875359176] [agent0.goal_sequence_client]:  Time:  35.21 | Waypoint 4/5 | current goal dist:  1.272m
+[INFO] [1794545008.880157807] [agent0.goal_sequence_client]:  Time:  36.22 | Waypoint 4/5 | current goal dist:  0.822m
+[INFO] [1794545009.889523883] [agent0.goal_sequence_client]:  Time:  37.23 | Waypoint 5/5 | current goal dist:  5.423m
+[INFO] [1794545010.895343101] [agent0.goal_sequence_client]:  Time:  38.23 | Waypoint 5/5 | current goal dist:  5.308m
+[INFO] [1794545011.901687677] [agent0.goal_sequence_client]:  Time:  39.24 | Waypoint 5/5 | current goal dist:  4.898m
+[INFO] [1794545012.906733571] [agent0.goal_sequence_client]:  Time:  40.24 | Waypoint 5/5 | current goal dist:  4.364m
+[INFO] [1794545013.912199072] [agent0.goal_sequence_client]:  Time:  41.25 | Waypoint 5/5 | current goal dist:  3.817m
+[INFO] [1794545014.917540642] [agent0.goal_sequence_client]:  Time:  42.25 | Waypoint 5/5 | current goal dist:  3.288m
+[INFO] [1794545015.923798161] [agent0.goal_sequence_client]:  Time:  43.26 | Waypoint 5/5 | current goal dist:  2.750m
+[INFO] [1794545016.929125322] [agent0.goal_sequence_client]:  Time:  44.26 | Waypoint 5/5 | current goal dist:  2.213m
+[INFO] [1794545017.934456614] [agent0.goal_sequence_client]:  Time:  45.27 | Waypoint 5/5 | current goal dist:  1.862m
+[INFO] [1794545018.940395219] [agent0.goal_sequence_client]:  Time:  46.28 | Waypoint 5/5 | current goal dist:  1.400m
+[INFO] [1794545019.946443597] [agent0.goal_sequence_client]:  Time:  47.28 | Waypoint 5/5 | current goal dist:  1.093m
+[INFO] [1794545020.952947451] [agent0.goal_sequence_client]:  Time:  48.29 | Waypoint 5/5 | current goal dist:  0.741m
+[INFO] [1794545021.958487508] [agent0.goal_sequence_client]:  Time:  49.29 | Waypoint 5/5 | current goal dist:  0.323m
+[INFO] [1794545022.521795746] [agent0.goal_sequence_client]: [SUCCESS] All waypoints completed | Completed 5 waypoint(s) | Total distance:  1.468m

@@ -1,0 +1,57 @@
+[INFO] [1794534291.722875956] [agent0.goal_sequence_client]: Path 'path1_world_1' selected with 5 waypoints | tolerance=0.3m | stop_on_failure=True
+[INFO] [1794534291.745869906] [agent0.goal_sequence_client]: Waiting for goal sequence server...
+[INFO] [1794534291.746248454] [agent0.goal_sequence_client]: Sending path: 'path1_world_1' to the goal sequence server...
+[INFO] [1794534291.748564036] [agent0.goal_sequence_client]: Sequence goal accepted
+[INFO] [1794534292.760715656] [agent0.goal_sequence_client]:  Time:   1.01 | Waypoint 1/5 | current goal dist:  1.839m
+[INFO] [1794534293.767721978] [agent0.goal_sequence_client]:  Time:   2.02 | Waypoint 1/5 | current goal dist:  1.311m
+[INFO] [1794534294.772391409] [agent0.goal_sequence_client]:  Time:   3.02 | Waypoint 1/5 | current goal dist:  0.841m
+[INFO] [1794534295.782620522] [agent0.goal_sequence_client]:  Time:   4.03 | Waypoint 2/5 | current goal dist:  3.187m
+[INFO] [1794534296.789362222] [agent0.goal_sequence_client]:  Time:   5.04 | Waypoint 2/5 | current goal dist:  3.040m
+[INFO] [1794534297.795300157] [agent0.goal_sequence_client]:  Time:   6.05 | Waypoint 2/5 | current goal dist:  2.964m
+[INFO] [1794534298.800723276] [agent0.goal_sequence_client]:  Time:   7.05 | Waypoint 2/5 | current goal dist:  2.660m
+[INFO] [1794534299.807120959] [agent0.goal_sequence_client]:  Time:   8.06 | Waypoint 2/5 | current goal dist:  2.196m
+[INFO] [1794534300.812921978] [agent0.goal_sequence_client]:  Time:   9.06 | Waypoint 2/5 | current goal dist:  1.659m
+[INFO] [1794534301.818872805] [agent0.goal_sequence_client]:  Time:  10.07 | Waypoint 2/5 | current goal dist:  1.119m
+[INFO] [1794534302.825166447] [agent0.goal_sequence_client]:  Time:  11.08 | Waypoint 2/5 | current goal dist:  0.582m
+[INFO] [1794534303.835215032] [agent0.goal_sequence_client]:  Time:  12.09 | Waypoint 3/5 | current goal dist:  5.067m
+[INFO] [1794534304.840726184] [agent0.goal_sequence_client]:  Time:  13.09 | Waypoint 3/5 | current goal dist:  5.186m
+[INFO] [1794534305.847574782] [agent0.goal_sequence_client]:  Time:  14.10 | Waypoint 3/5 | current goal dist:  5.247m
+[INFO] [1794534306.852797651] [agent0.goal_sequence_client]:  Time:  15.10 | Waypoint 3/5 | current goal dist:  4.975m
+[INFO] [1794534307.859315765] [agent0.goal_sequence_client]:  Time:  16.11 | Waypoint 3/5 | current goal dist:  4.494m
+[INFO] [1794534308.864343754] [agent0.goal_sequence_client]:  Time:  17.12 | Waypoint 3/5 | current goal dist:  3.964m
+[INFO] [1794534309.871241033] [agent0.goal_sequence_client]:  Time:  18.12 | Waypoint 3/5 | current goal dist:  3.427m
+[INFO] [1794534310.876325113] [agent0.goal_sequence_client]:  Time:  19.13 | Waypoint 3/5 | current goal dist:  2.880m
+[INFO] [1794534311.881694578] [agent0.goal_sequence_client]:  Time:  20.13 | Waypoint 3/5 | current goal dist:  2.345m
+[INFO] [1794534312.887544993] [agent0.goal_sequence_client]:  Time:  21.14 | Waypoint 3/5 | current goal dist:  1.810m
+[INFO] [1794534313.892795099] [agent0.goal_sequence_client]:  Time:  22.14 | Waypoint 3/5 | current goal dist:  1.274m
+[INFO] [1794534314.898719027] [agent0.goal_sequence_client]:  Time:  23.15 | Waypoint 3/5 | current goal dist:  0.725m
+[INFO] [1794534315.908672703] [agent0.goal_sequence_client]:  Time:  24.16 | Waypoint 4/5 | current goal dist:  4.093m
+[INFO] [1794534316.915174285] [agent0.goal_sequence_client]:  Time:  25.17 | Waypoint 4/5 | current goal dist:  4.032m
+[INFO] [1794534317.920229976] [agent0.goal_sequence_client]:  Time:  26.17 | Waypoint 4/5 | current goal dist:  3.710m
+[INFO] [1794534318.926178178] [agent0.goal_sequence_client]:  Time:  27.18 | Waypoint 4/5 | current goal dist:  3.239m
+[INFO] [1794534319.931907637] [agent0.goal_sequence_client]:  Time:  28.18 | Waypoint 4/5 | current goal dist:  2.699m
+[INFO] [1794534320.938686683] [agent0.goal_sequence_client]:  Time:  29.19 | Waypoint 4/5 | current goal dist:  2.189m
+[INFO] [1794534321.944090974] [agent0.goal_sequence_client]:  Time:  30.19 | Waypoint 4/5 | current goal dist:  1.981m
+[INFO] [1794534322.951091315] [agent0.goal_sequence_client]:  Time:  31.20 | Waypoint 4/5 | current goal dist:  1.777m
+[INFO] [1794534323.957055747] [agent0.goal_sequence_client]:  Time:  32.21 | Waypoint 4/5 | current goal dist:  1.370m
+[INFO] [1794534324.962609062] [agent0.goal_sequence_client]:  Time:  33.21 | Waypoint 4/5 | current goal dist:  0.858m
+[INFO] [1794534325.967902836] [agent0.goal_sequence_client]:  Time:  34.22 | Waypoint 4/5 | current goal dist:  0.322m
+[INFO] [1794534326.977924128] [agent0.goal_sequence_client]:  Time:  35.23 | Waypoint 5/5 | current goal dist:  5.270m
+[INFO] [1794534327.984322604] [agent0.goal_sequence_client]:  Time:  36.24 | Waypoint 5/5 | current goal dist:  4.816m
+[INFO] [1794534328.524556141] [agent0.goal_sequence_client]: Sending cancel request to sequence server...
+Failed to publish log message to rosout: publisher's context is invalid, at ./src/rcl/publisher.c:389
+[INFO] [1794534328.525074919] [agent0.goal_sequence_client]: Cancel request rejectedd by the sequence server
+Failed to publish log message to rosout: publisher's context is invalid, at ./src/rcl/publisher.c:389
+Traceback (most recent call last):
+  File "/X3_ROS2_ws/install/x3_nav_bringup/lib/x3_nav_bringup/goal_sequence_client", line 33, in <module>
+    sys.exit(load_entry_point('x3-nav-bringup', 'console_scripts', 'goal_sequence_client')())
+  File "/X3_ROS2_ws/build/x3_nav_bringup/x3_nav_bringup/goal_sequence_client.py", line 159, in main
+    rclpy.shutdown()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+    _shutdown(context=context)
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+    return context.shutdown()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+    self.__context.shutdown()
+rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241
+[ros2run]: Process exited with failure 1
