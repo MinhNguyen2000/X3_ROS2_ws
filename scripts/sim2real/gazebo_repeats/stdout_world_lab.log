@@ -1,0 +1,410 @@
+----------
+ROS_DOMAIN_ID:[32m6[0m | ROS_IP:[32m172.17.0.2[0m
+LIDAR_TYPE: [32mx3[0m
+DDS: [32m192.168.0.104:11811 (super client)[0m
+----------
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/p2-gazebo-repeats/modules/src/fisheye_calibration'
+Failed to clone 'src/fisheye_calibration'. Retry scheduled
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/p2-gazebo-repeats/modules/src/rplidar_ros'
+Failed to clone 'src/rplidar_ros'. Retry scheduled
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/p2-gazebo-repeats/modules/src/fisheye_calibration'
+Failed to clone 'src/fisheye_calibration' a second time, aborting
+160 jobs selected (8 DRL policies), 1 already ok, 159 to run
+[1/159] TD3_00388_900 world_lab/path2 rep1
+    -> ok success=0 wp=2/4 (0.8 min elapsed)
+[2/159] TD3_00390_1000 world_lab/path1 rep1
+    -> ok success=0 wp=3/5 (3.0 min elapsed)
+[3/159] TD3_00390_1000 world_lab/path2 rep1
+    -> ok success=0 wp=2/4 (4.1 min elapsed)
+[4/159] TD3_00391_800 world_lab/path1 rep1
+    -> ok success=0 wp=3/5 (4.9 min elapsed)
+[5/159] TD3_00391_800 world_lab/path2 rep1
+    -> ok success=0 wp=2/4 (5.7 min elapsed)
+[6/159] TD3_00395_1000 world_lab/path1 rep1
+    -> ok success=0 wp=4/5 (6.7 min elapsed)
+[7/159] TD3_00395_1000 world_lab/path2 rep1
+    -> ok success=0 wp=1/4 (7.2 min elapsed)
+[8/159] TD3_00399_900 world_lab/path1 rep1
+    -> ok success=0 wp=2/5 (7.7 min elapsed)
+[9/159] TD3_00399_900 world_lab/path2 rep1
+    -> ok success=0 wp=1/4 (8.3 min elapsed)
+[10/159] TD3_00400_1000 world_lab/path1 rep1
+    -> ok success=1 wp=5/5 (9.7 min elapsed)
+[11/159] TD3_00400_1000 world_lab/path2 rep1
+    -> ok success=0 wp=3/4 (10.5 min elapsed)
+[12/159] TD3_00401_900 world_lab/path1 rep1
+    -> ok success=0 wp=3/5 (11.5 min elapsed)
+[13/159] TD3_00401_900 world_lab/path2 rep1
+    -> ok success=0 wp=3/4 (12.3 min elapsed)
+[14/159] TD3_00402_1000 world_lab/path1 rep1
+    -> ok success=0 wp=3/5 (13.0 min elapsed)
+[15/159] TD3_00402_1000 world_lab/path2 rep1
+    -> ok success=0 wp=3/4 (14.4 min elapsed)
+[16/159] TD3_00388_900 world_lab/path1 rep2
+    -> ok success=1 wp=5/5 (15.4 min elapsed)
+[17/159] TD3_00388_900 world_lab/path2 rep2
+    -> ok success=0 wp=2/4 (16.2 min elapsed)
+[18/159] TD3_00390_1000 world_lab/path1 rep2
+    -> ok success=0 wp=3/5 (18.3 min elapsed)
+[19/159] TD3_00390_1000 world_lab/path2 rep2
+    -> ok success=0 wp=2/4 (19.4 min elapsed)
+[20/159] TD3_00391_800 world_lab/path1 rep2
+    -> ok success=0 wp=3/5 (20.2 min elapsed)
+[21/159] TD3_00391_800 world_lab/path2 rep2
+    -> ok success=0 wp=2/4 (21.0 min elapsed)
+[22/159] TD3_00395_1000 world_lab/path1 rep2
+    -> ok success=0 wp=4/5 (22.0 min elapsed)
+[23/159] TD3_00395_1000 world_lab/path2 rep2
+    -> ok success=0 wp=1/4 (22.5 min elapsed)
+[24/159] TD3_00399_900 world_lab/path1 rep2
+    -> ok success=0 wp=2/5 (23.0 min elapsed)
+[25/159] TD3_00399_900 world_lab/path2 rep2
+    -> ok success=0 wp=1/4 (23.6 min elapsed)
+[26/159] TD3_00400_1000 world_lab/path1 rep2
+    -> ok success=1 wp=5/5 (25.0 min elapsed)
+[27/159] TD3_00400_1000 world_lab/path2 rep2
+    -> ok success=0 wp=3/4 (25.8 min elapsed)
+[28/159] TD3_00401_900 world_lab/path1 rep2
+    -> ok success=0 wp=3/5 (26.7 min elapsed)
+[29/159] TD3_00401_900 world_lab/path2 rep2
+    -> ok success=0 wp=3/4 (27.5 min elapsed)
+[30/159] TD3_00402_1000 world_lab/path1 rep2
+    -> ok success=0 wp=4/5 (28.5 min elapsed)
+[31/159] TD3_00402_1000 world_lab/path2 rep2
+    -> ok success=0 wp=3/4 (29.8 min elapsed)
+[32/159] TD3_00388_900 world_lab/path1 rep3
+    -> ok success=1 wp=5/5 (30.9 min elapsed)
+[33/159] TD3_00388_900 world_lab/path2 rep3
+    -> ok success=0 wp=2/4 (31.7 min elapsed)
+[34/159] TD3_00390_1000 world_lab/path1 rep3
+    -> ok success=0 wp=3/5 (33.8 min elapsed)
+[35/159] TD3_00390_1000 world_lab/path2 rep3
+    -> ok success=0 wp=2/4 (34.9 min elapsed)
+[36/159] TD3_00391_800 world_lab/path1 rep3
+    -> ok success=0 wp=3/5 (35.7 min elapsed)
+[37/159] TD3_00391_800 world_lab/path2 rep3
+    -> ok success=0 wp=2/4 (36.5 min elapsed)
+[38/159] TD3_00395_1000 world_lab/path1 rep3
+    -> ok success=0 wp=4/5 (37.5 min elapsed)
+[39/159] TD3_00395_1000 world_lab/path2 rep3
+    -> ok success=0 wp=1/4 (38.1 min elapsed)
+[40/159] TD3_00399_900 world_lab/path1 rep3
+    -> ok success=0 wp=3/5 (38.9 min elapsed)
+[41/159] TD3_00399_900 world_lab/path2 rep3
+    -> ok success=0 wp=1/4 (39.5 min elapsed)
+[42/159] TD3_00400_1000 world_lab/path1 rep3
+    -> ok success=1 wp=5/5 (40.8 min elapsed)
+[43/159] TD3_00400_1000 world_lab/path2 rep3
+    -> ok success=0 wp=3/4 (41.7 min elapsed)
+[44/159] TD3_00401_900 world_lab/path1 rep3
+    -> ok success=0 wp=3/5 (42.6 min elapsed)
+[45/159] TD3_00401_900 world_lab/path2 rep3
+    sim not ready
+    launch failed, retrying once
+    sim not ready
+    -> launch_fail success= wp=/4 (46.0 min elapsed)
+[46/159] TD3_00402_1000 world_lab/path1 rep3
+    sim not ready
+    launch failed, retrying once
+    sim not ready
+    -> launch_fail success= wp=/5 (49.4 min elapsed)
+[47/159] TD3_00402_1000 world_lab/path2 rep3
+    sim not ready
+    launch failed, retrying once
+    sim not ready
+    -> launch_fail success= wp=/4 (52.7 min elapsed)
+[48/159] TD3_00388_900 world_lab/path1 rep4
+    sim not ready
+    launch failed, retrying once
+    sim not ready
+    -> launch_fail success= wp=/5 (56.1 min elapsed)
+[49/159] TD3_00388_900 world_lab/path2 rep4
+----------
+ROS_DOMAIN_ID:[32m6[0m | ROS_IP:[32m172.17.0.2[0m
+LIDAR_TYPE: [32mx3[0m
+DDS: [32m192.168.0.104:11811 (super client)[0m
+----------
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/p2-gazebo-repeats/modules/src/fisheye_calibration'
+Failed to clone 'src/fisheye_calibration'. Retry scheduled
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/p2-gazebo-repeats/modules/src/rplidar_ros'
+Failed to clone 'src/rplidar_ros'. Retry scheduled
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/p2-gazebo-repeats/modules/src/fisheye_calibration'
+Failed to clone 'src/fisheye_calibration' a second time, aborting
+160 jobs selected (8 DRL policies), 45 already ok, 115 to run
+[1/115] TD3_00401_900 world_lab/path2 rep3
+    -> ok success=0 wp=3/4 (0.8 min elapsed)
+[2/115] TD3_00402_1000 world_lab/path1 rep3
+    -> ok success=0 wp=4/5 (1.8 min elapsed)
+[3/115] TD3_00402_1000 world_lab/path2 rep3
+    -> ok success=0 wp=3/4 (3.1 min elapsed)
+[4/115] TD3_00388_900 world_lab/path1 rep4
+    sim not ready
+    launch failed, retrying once
+    sim not ready
+    -> launch_fail success= wp=/5 (6.5 min elapsed)
+[5/115] TD3_00388_900 world_lab/path2 rep4
+    sim not ready
+    launch failed, retrying once
+    sim not ready
+    -> launch_fail success= wp=/4 (9.8 min elapsed)
+[6/115] TD3_00390_1000 world_lab/path1 rep4
+----------
+ROS_DOMAIN_ID:[32m6[0m | ROS_IP:[32m172.17.0.2[0m
+LIDAR_TYPE: [32mx3[0m
+DDS: [32m192.168.0.104:11811 (super client)[0m
+----------
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/p2-gazebo-repeats/modules/src/fisheye_calibration'
+Failed to clone 'src/fisheye_calibration'. Retry scheduled
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/p2-gazebo-repeats/modules/src/rplidar_ros'
+Failed to clone 'src/rplidar_ros'. Retry scheduled
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/p2-gazebo-repeats/modules/src/fisheye_calibration'
+Failed to clone 'src/fisheye_calibration' a second time, aborting
+160 jobs selected (8 DRL policies), 48 already ok, 112 to run
+[1/112] TD3_00388_900 world_lab/path1 rep4
+    -> ok success=1 wp=5/5 (1.0 min elapsed)
+[2/112] TD3_00388_900 world_lab/path2 rep4
+    -> ok success=0 wp=2/4 (1.8 min elapsed)
+[3/112] TD3_00390_1000 world_lab/path1 rep4
+    -> ok success=0 wp=3/5 (3.8 min elapsed)
+[4/112] TD3_00390_1000 world_lab/path2 rep4
+    -> ok success=0 wp=2/4 (4.9 min elapsed)
+[5/112] TD3_00391_800 world_lab/path1 rep4
+    -> ok success=0 wp=3/5 (5.7 min elapsed)
+[6/112] TD3_00391_800 world_lab/path2 rep4
+    -> ok success=0 wp=2/4 (6.4 min elapsed)
+[7/112] TD3_00395_1000 world_lab/path1 rep4
+    -> ok success=0 wp=4/5 (7.4 min elapsed)
+[8/112] TD3_00395_1000 world_lab/path2 rep4
+    -> ok success=0 wp=1/4 (7.9 min elapsed)
+[9/112] TD3_00399_900 world_lab/path1 rep4
+    -> ok success=0 wp=2/5 (8.4 min elapsed)
+[10/112] TD3_00399_900 world_lab/path2 rep4
+    -> ok success=0 wp=1/4 (8.9 min elapsed)
+[11/112] TD3_00400_1000 world_lab/path1 rep4
+    -> ok success=1 wp=5/5 (10.2 min elapsed)
+[12/112] TD3_00400_1000 world_lab/path2 rep4
+    -> ok success=0 wp=3/4 (11.0 min elapsed)
+[13/112] TD3_00401_900 world_lab/path1 rep4
+    -> ok success=0 wp=3/5 (11.9 min elapsed)
+[14/112] TD3_00401_900 world_lab/path2 rep4
+    -> ok success=0 wp=3/4 (12.6 min elapsed)
+[15/112] TD3_00402_1000 world_lab/path1 rep4
+    -> ok success=0 wp=4/5 (13.6 min elapsed)
+[16/112] TD3_00402_1000 world_lab/path2 rep4
+    -> ok success=0 wp=3/4 (14.9 min elapsed)
+[17/112] TD3_00388_900 world_lab/path1 rep5
+    -> ok success=1 wp=5/5 (15.9 min elapsed)
+[18/112] TD3_00388_900 world_lab/path2 rep5
+    -> ok success=1 wp=4/4 (17.5 min elapsed)
+[19/112] TD3_00390_1000 world_lab/path1 rep5
+    -> ok success=0 wp=3/5 (19.5 min elapsed)
+[20/112] TD3_00390_1000 world_lab/path2 rep5
+    -> ok success=0 wp=2/4 (20.6 min elapsed)
+[21/112] TD3_00391_800 world_lab/path1 rep5
+    -> ok success=0 wp=3/5 (21.3 min elapsed)
+[22/112] TD3_00391_800 world_lab/path2 rep5
+    -> ok success=0 wp=2/4 (22.1 min elapsed)
+[23/112] TD3_00395_1000 world_lab/path1 rep5
+    -> ok success=0 wp=4/5 (23.0 min elapsed)
+[24/112] TD3_00395_1000 world_lab/path2 rep5
+    -> ok success=0 wp=1/4 (23.5 min elapsed)
+[25/112] TD3_00399_900 world_lab/path1 rep5
+    -> ok success=0 wp=2/5 (24.1 min elapsed)
+[26/112] TD3_00399_900 world_lab/path2 rep5
+    -> ok success=0 wp=1/4 (24.7 min elapsed)
+[27/112] TD3_00400_1000 world_lab/path1 rep5
+    -> ok success=1 wp=5/5 (26.0 min elapsed)
+[28/112] TD3_00400_1000 world_lab/path2 rep5
+    -> ok success=0 wp=3/4 (26.8 min elapsed)
+[29/112] TD3_00401_900 world_lab/path1 rep5
+    -> ok success=0 wp=3/5 (27.7 min elapsed)
+[30/112] TD3_00401_900 world_lab/path2 rep5
+    -> ok success=0 wp=3/4 (28.4 min elapsed)
+[31/112] TD3_00402_1000 world_lab/path1 rep5
+    -> ok success=0 wp=4/5 (29.5 min elapsed)
+[32/112] TD3_00402_1000 world_lab/path2 rep5
+    -> ok success=0 wp=3/4 (30.8 min elapsed)
+[33/112] TD3_00388_900 world_lab/path1 rep6
+    -> ok success=1 wp=5/5 (31.8 min elapsed)
+[34/112] TD3_00388_900 world_lab/path2 rep6
+    -> ok success=0 wp=2/4 (32.5 min elapsed)
+[35/112] TD3_00390_1000 world_lab/path1 rep6
+    -> ok success=0 wp=3/5 (34.6 min elapsed)
+[36/112] TD3_00390_1000 world_lab/path2 rep6
+    -> ok success=0 wp=2/4 (35.6 min elapsed)
+[37/112] TD3_00391_800 world_lab/path1 rep6
+    -> ok success=0 wp=3/5 (36.4 min elapsed)
+[38/112] TD3_00391_800 world_lab/path2 rep6
+    -> ok success=0 wp=2/4 (37.2 min elapsed)
+[39/112] TD3_00395_1000 world_lab/path1 rep6
+    -> ok success=0 wp=4/5 (38.1 min elapsed)
+[40/112] TD3_00395_1000 world_lab/path2 rep6
+    -> ok success=0 wp=1/4 (38.6 min elapsed)
+[41/112] TD3_00399_900 world_lab/path1 rep6
+    -> ok success=0 wp=3/5 (39.4 min elapsed)
+[42/112] TD3_00399_900 world_lab/path2 rep6
+    -> ok success=0 wp=1/4 (40.0 min elapsed)
+[43/112] TD3_00400_1000 world_lab/path1 rep6
+    -> ok success=1 wp=5/5 (41.3 min elapsed)
+[44/112] TD3_00400_1000 world_lab/path2 rep6
+    -> ok success=0 wp=3/4 (42.1 min elapsed)
+[45/112] TD3_00401_900 world_lab/path1 rep6
+    -> ok success=0 wp=3/5 (43.0 min elapsed)
+[46/112] TD3_00401_900 world_lab/path2 rep6
+    -> ok success=0 wp=3/4 (43.7 min elapsed)
+[47/112] TD3_00402_1000 world_lab/path1 rep6
+    -> ok success=0 wp=4/5 (44.7 min elapsed)
+[48/112] TD3_00402_1000 world_lab/path2 rep6
+    -> ok success=0 wp=3/4 (45.9 min elapsed)
+[49/112] TD3_00388_900 world_lab/path1 rep7
+    -> ok success=1 wp=5/5 (47.0 min elapsed)
+[50/112] TD3_00388_900 world_lab/path2 rep7
+    -> ok success=1 wp=4/4 (48.5 min elapsed)
+[51/112] TD3_00390_1000 world_lab/path1 rep7
+    -> ok success=0 wp=3/5 (50.5 min elapsed)
+[52/112] TD3_00390_1000 world_lab/path2 rep7
+    -> ok success=0 wp=2/4 (51.6 min elapsed)
+[53/112] TD3_00391_800 world_lab/path1 rep7
+    -> ok success=0 wp=3/5 (52.4 min elapsed)
+[54/112] TD3_00391_800 world_lab/path2 rep7
+    -> ok success=0 wp=2/4 (53.1 min elapsed)
+[55/112] TD3_00395_1000 world_lab/path1 rep7
+    -> ok success=0 wp=4/5 (54.1 min elapsed)
+[56/112] TD3_00395_1000 world_lab/path2 rep7
+    -> ok success=0 wp=1/4 (54.6 min elapsed)
+[57/112] TD3_00399_900 world_lab/path1 rep7
+    -> ok success=0 wp=2/5 (55.1 min elapsed)
+[58/112] TD3_00399_900 world_lab/path2 rep7
+    -> ok success=0 wp=1/4 (55.6 min elapsed)
+[59/112] TD3_00400_1000 world_lab/path1 rep7
+    -> ok success=1 wp=5/5 (56.9 min elapsed)
+[60/112] TD3_00400_1000 world_lab/path2 rep7
+    -> ok success=0 wp=3/4 (57.7 min elapsed)
+[61/112] TD3_00401_900 world_lab/path1 rep7
+    -> ok success=0 wp=3/5 (58.6 min elapsed)
+[62/112] TD3_00401_900 world_lab/path2 rep7
+    -> ok success=0 wp=3/4 (59.4 min elapsed)
+[63/112] TD3_00402_1000 world_lab/path1 rep7
+    -> ok success=0 wp=4/5 (60.3 min elapsed)
+[64/112] TD3_00402_1000 world_lab/path2 rep7
+    -> ok success=0 wp=3/4 (61.6 min elapsed)
+[65/112] TD3_00388_900 world_lab/path1 rep8
+    -> ok success=1 wp=5/5 (62.6 min elapsed)
+[66/112] TD3_00388_900 world_lab/path2 rep8
+    -> ok success=1 wp=4/4 (64.1 min elapsed)
+[67/112] TD3_00390_1000 world_lab/path1 rep8
+    -> ok success=0 wp=3/5 (66.2 min elapsed)
+[68/112] TD3_00390_1000 world_lab/path2 rep8
+    -> ok success=0 wp=2/4 (67.2 min elapsed)
+[69/112] TD3_00391_800 world_lab/path1 rep8
+    -> ok success=0 wp=3/5 (68.0 min elapsed)
+[70/112] TD3_00391_800 world_lab/path2 rep8
+    -> ok success=0 wp=2/4 (68.8 min elapsed)
+[71/112] TD3_00395_1000 world_lab/path1 rep8
+    -> ok success=0 wp=4/5 (69.8 min elapsed)
+[72/112] TD3_00395_1000 world_lab/path2 rep8
+    -> ok success=0 wp=1/4 (70.3 min elapsed)
+[73/112] TD3_00399_900 world_lab/path1 rep8
+    -> ok success=0 wp=2/5 (70.8 min elapsed)
+[74/112] TD3_00399_900 world_lab/path2 rep8
+    -> ok success=0 wp=1/4 (71.3 min elapsed)
+[75/112] TD3_00400_1000 world_lab/path1 rep8
+    -> ok success=1 wp=5/5 (72.6 min elapsed)
+[76/112] TD3_00400_1000 world_lab/path2 rep8
+    -> ok success=0 wp=3/4 (73.4 min elapsed)
+[77/112] TD3_00401_900 world_lab/path1 rep8
+    -> ok success=0 wp=3/5 (74.2 min elapsed)
+[78/112] TD3_00401_900 world_lab/path2 rep8
+    -> ok success=0 wp=3/4 (75.0 min elapsed)
+[79/112] TD3_00402_1000 world_lab/path1 rep8
+    -> ok success=0 wp=3/5 (75.7 min elapsed)
+[80/112] TD3_00402_1000 world_lab/path2 rep8
+    -> ok success=0 wp=3/4 (77.0 min elapsed)
+[81/112] TD3_00388_900 world_lab/path1 rep9
+    -> ok success=1 wp=5/5 (78.0 min elapsed)
+[82/112] TD3_00388_900 world_lab/path2 rep9
+    -> ok success=0 wp=2/4 (78.7 min elapsed)
+[83/112] TD3_00390_1000 world_lab/path1 rep9
+    -> ok success=0 wp=3/5 (80.8 min elapsed)
+[84/112] TD3_00390_1000 world_lab/path2 rep9
+    -> ok success=0 wp=2/4 (81.8 min elapsed)
+[85/112] TD3_00391_800 world_lab/path1 rep9
+    -> ok success=0 wp=3/5 (82.6 min elapsed)
+[86/112] TD3_00391_800 world_lab/path2 rep9
+    -> ok success=0 wp=2/4 (83.3 min elapsed)
+[87/112] TD3_00395_1000 world_lab/path1 rep9
+    -> ok success=0 wp=4/5 (84.3 min elapsed)
+[88/112] TD3_00395_1000 world_lab/path2 rep9
+    -> ok success=0 wp=1/4 (84.8 min elapsed)
+[89/112] TD3_00399_900 world_lab/path1 rep9
+    -> ok success=0 wp=2/5 (85.3 min elapsed)
+[90/112] TD3_00399_900 world_lab/path2 rep9
+    -> ok success=0 wp=1/4 (85.8 min elapsed)
+[91/112] TD3_00400_1000 world_lab/path1 rep9
+    -> ok success=1 wp=5/5 (87.1 min elapsed)
+[92/112] TD3_00400_1000 world_lab/path2 rep9
+    -> ok success=0 wp=3/4 (88.0 min elapsed)
+[93/112] TD3_00401_900 world_lab/path1 rep9
+    -> ok success=0 wp=3/5 (88.8 min elapsed)
+[94/112] TD3_00401_900 world_lab/path2 rep9
+    -> ok success=0 wp=3/4 (89.6 min elapsed)
+[95/112] TD3_00402_1000 world_lab/path1 rep9
+    -> ok success=0 wp=4/5 (90.5 min elapsed)
+[96/112] TD3_00402_1000 world_lab/path2 rep9
+    -> ok success=0 wp=3/4 (91.8 min elapsed)
+[97/112] TD3_00388_900 world_lab/path1 rep10
+    -> ok success=1 wp=5/5 (92.8 min elapsed)
+[98/112] TD3_00388_900 world_lab/path2 rep10
+    -> ok success=0 wp=2/4 (93.5 min elapsed)
+[99/112] TD3_00390_1000 world_lab/path1 rep10
+    -> ok success=0 wp=3/5 (95.6 min elapsed)
+[100/112] TD3_00390_1000 world_lab/path2 rep10
+    -> ok success=0 wp=2/4 (96.7 min elapsed)
+[101/112] TD3_00391_800 world_lab/path1 rep10
+    -> ok success=0 wp=3/5 (97.4 min elapsed)
+[102/112] TD3_00391_800 world_lab/path2 rep10
+    -> ok success=0 wp=2/4 (98.2 min elapsed)
+[103/112] TD3_00395_1000 world_lab/path1 rep10
+    -> ok success=0 wp=4/5 (99.1 min elapsed)
+[104/112] TD3_00395_1000 world_lab/path2 rep10
+    -> ok success=0 wp=1/4 (99.6 min elapsed)
+[105/112] TD3_00399_900 world_lab/path1 rep10
+    -> ok success=0 wp=2/5 (100.1 min elapsed)
+[106/112] TD3_00399_900 world_lab/path2 rep10
+    -> ok success=0 wp=1/4 (100.7 min elapsed)
+[107/112] TD3_00400_1000 world_lab/path1 rep10
+    -> ok success=1 wp=5/5 (102.0 min elapsed)
+[108/112] TD3_00400_1000 world_lab/path2 rep10
+    -> ok success=0 wp=3/4 (102.8 min elapsed)
+[109/112] TD3_00401_900 world_lab/path1 rep10
+    -> ok success=0 wp=3/5 (103.6 min elapsed)
+[110/112] TD3_00401_900 world_lab/path2 rep10
+    -> ok success=0 wp=3/4 (104.4 min elapsed)
+[111/112] TD3_00402_1000 world_lab/path1 rep10
+    -> ok success=0 wp=4/5 (105.3 min elapsed)
+[112/112] TD3_00402_1000 world_lab/path2 rep10
+    -> ok success=0 wp=2/4 (106.6 min elapsed)
+----------
+ROS_DOMAIN_ID:[32m6[0m | ROS_IP:[32m172.17.0.2[0m
+LIDAR_TYPE: [32mx3[0m
+DDS: [32m192.168.0.104:11811 (super client)[0m
+----------
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/p2-gazebo-repeats/modules/src/fisheye_calibration'
+Failed to clone 'src/fisheye_calibration'. Retry scheduled
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/p2-gazebo-repeats/modules/src/rplidar_ros'
+Failed to clone 'src/rplidar_ros'. Retry scheduled
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/p2-gazebo-repeats/modules/src/fisheye_calibration'
+Failed to clone 'src/fisheye_calibration' a second time, aborting
+160 jobs selected (8 DRL policies), 160 already ok, 0 to run
+----------
+ROS_DOMAIN_ID:[32m6[0m | ROS_IP:[32m172.17.0.2[0m
+LIDAR_TYPE: [32mx3[0m
+DDS: [32m192.168.0.104:11811 (super client)[0m
+----------
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/p2-gazebo-repeats/modules/src/fisheye_calibration'
+Failed to clone 'src/fisheye_calibration'. Retry scheduled
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/p2-gazebo-repeats/modules/src/rplidar_ros'
+Failed to clone 'src/rplidar_ros'. Retry scheduled
+fatal: could not create directory '/home/controlslab/X3_ROS2_ws/.git/worktrees/p2-gazebo-repeats/modules/src/fisheye_calibration'
+Failed to clone 'src/fisheye_calibration' a second time, aborting
+160 jobs selected (8 DRL policies), 160 already ok, 0 to run

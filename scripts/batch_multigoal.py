@@ -59,6 +59,8 @@ MANIFEST_COLS = ['model', 'kind', 'world', 'path', 'rep', 'status', 'success',
                  'timestamp', 'code_state']
 
 procs = []          # (name, Popen) currently alive, for cleanup
+KILL_STRAGGLERS = False   # --kill-stragglers
+GAZEBO_ARGS = ''   # extra gazebo.launch.py arguments (--gazebo-arg), e.g. the spawn offset of world_lab
 CODE_STATE = {}     # 'drl' and one entry per classical planner: git HEAD + node hashes + parameters, set in main()
 
 POLICY_NODE = WS / 'src' / 'x3_drl_policy' / 'x3_drl_policy' / 'policy_node.py'
@@ -94,9 +96,10 @@ def file_sha(path):
         return 'unknown'
 
 
-def code_state(planner_params):
+def code_state(planner_params, gazebo_args=''):
     '''Identify the code a DRL job ran with, since policy_node.py edits may be uncommitted.'''
-    return f'{git_head()}+policy_node:{file_sha(POLICY_NODE)}' + (f' [{planner_params}]' if planner_params else '')
+    return (f'{git_head()}+policy_node:{file_sha(POLICY_NODE)}' + (f' [{planner_params}]' if planner_params else '')
+            + (f' gazebo[{gazebo_args}]' if gazebo_args else ''))
 
 
 def declared_params(node_file):
@@ -152,21 +155,23 @@ def job_code_state(job):
 
 
 # ----------------------------------------------------------------------------- job list
-def build_jobs(classical_reps, extra_models=(), classical=('APF',)):
+def build_jobs(classical_reps, extra_models=(), classical=('APF',), reps=1):
     jobs = []
     for name in classical:
         for world, path in SCENARIOS:
             for rep in range(1, classical_reps + 1):
                 jobs.append(dict(model=name, kind=name.lower(), world=world, path=path, rep=rep))
-    for ids, family in ((DELTA_IDS, 'delta'), (DIRECT_IDS, 'direct')):
-        for i in ids:
-            folders = sorted(p.name for p in POLICY_DIR.glob(f'TD3_{i:05d}_*') if p.is_dir())
-            for name in folders:
-                suffix = name.rsplit('_', 1)[1]
-                kind = 'final' if suffix == '1000' else 'best'
-                for world, path in SCENARIOS:
-                    jobs.append(dict(model=name, kind=f'{family}_{kind}', world=world,
-                                     path=path, rep=1))
+    # reps is the outermost loop, so an interrupted batch has complete repeats first
+    for rep in range(1, reps + 1):
+        for ids, family in ((DELTA_IDS, 'delta'), (DIRECT_IDS, 'direct')):
+            for i in ids:
+                folders = sorted(p.name for p in POLICY_DIR.glob(f'TD3_{i:05d}_*') if p.is_dir())
+                for name in folders:
+                    suffix = name.rsplit('_', 1)[1]
+                    kind = 'final' if suffix == '1000' else 'best'
+                    for world, path in SCENARIOS:
+                        jobs.append(dict(model=name, kind=f'{family}_{kind}', world=world,
+                                         path=path, rep=rep))
     # policies outside the 2026 id ranges (e.g. the P14 policies), run as given; they must exist under POLICY_DIR
     for name in extra_models:
         if not (POLICY_DIR / name).is_dir():
@@ -236,6 +241,8 @@ def teardown():
     # Gazebo can leave server/gui children outside the process group
     subprocess.run(['pkill', '-f', '[g]z sim'], stderr=subprocess.DEVNULL)
     subprocess.run(['pkill', '-f', '[i]gn gazebo'], stderr=subprocess.DEVNULL)
+    if KILL_STRAGGLERS:
+        kill_stragglers()
     time.sleep(2.0)
     # a Gazebo server hung in start-up can ignore SIGTERM and then poisons every later launch (two servers on the
     # same transport: wrong world, 'sim not ready'); found 2026-10-28 in the container batch, so kill it for good
@@ -245,6 +252,16 @@ def teardown():
         time.sleep(2.0)
         if gz_running():
             print('    WARNING: a Gazebo process survived SIGKILL')
+
+
+STRAGGLERS = ('[o]dom_offset_node|[o]dom_to_vel_raw_node|[c]ovariance_filter|[r]f2o_laser_odometry_node|[e]kf_node|'
+              '[p]arameter_bridge|[r]obot_state_publisher|ros2 topic [e]cho|[s]pawner|[p]olicy_node|[g]oal_sequence_')
+
+
+def kill_stragglers():
+    '''ROS nodes of a failed launch can outlive the process-group kill and then poison every later job (two odom
+    publishers, found 2026-11-12 in the world_lab batch). Only for use in a container that runs this batch alone.'''
+    subprocess.run(['pkill', '-9', '-f', STRAGGLERS], stderr=subprocess.DEVNULL)
 
 
 def gz_running():
@@ -302,7 +319,7 @@ def run_job(job, args, tag):
     try:
         if gz_running():
             teardown()
-        spawn('gazebo', f'ros2 launch x3_description gazebo.launch.py world:={world}.sdf',
+        spawn('gazebo', f'ros2 launch x3_description gazebo.launch.py world:={world}.sdf {GAZEBO_ARGS}',
               log['gazebo'])
         if not wait_sim_ready(args.sim_timeout):
             print('    sim not ready'); return row
@@ -367,7 +384,7 @@ def wait_next_minute_if_needed(job, last_save):
 
 
 def main():
-    global ROS_DOMAIN, MANIFEST, CODE_STATE, SCENARIOS
+    global ROS_DOMAIN, MANIFEST, CODE_STATE, SCENARIOS, GAZEBO_ARGS, KILL_STRAGGLERS
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
     ap.add_argument('--dry-run', action='store_true', help='print the job list and exit')
     ap.add_argument('--only-model', action='append', help='model folder name or a classical planner, e.g. APF (repeatable)')
@@ -382,6 +399,7 @@ def main():
                     help='replace the default six scenarios, e.g. world_5/path1')
     ap.add_argument('--skip-classical', '--skip-apf', dest='skip_classical', action='store_true',
                     help='run the DRL policies only')
+    ap.add_argument('--reps', type=int, default=1, help='repeats per scenario of each DRL policy (rep numbers 1..N)')
     ap.add_argument('--start-index', type=int, default=0, help='skip the first N jobs of the list')
     ap.add_argument('--limit', type=int, default=0, help='run at most N jobs (0 = all)')
     ap.add_argument('--seq-timeout', type=float, default=600, help='per-sequence timeout [s]')
@@ -397,6 +415,13 @@ def main():
                          'parameter set.')
     ap.add_argument('--apf-param', action='append', default=[], metavar='KEY:=VALUE',
                     help='shorthand for --classical-param APF:KEY:=VALUE')
+    ap.add_argument('--gazebo-arg', action='append', default=[], metavar='KEY:=VALUE',
+                    help='extra gazebo.launch.py argument, e.g. x_offset:=-1.6775 (repeatable); goes into code_state. '
+                         'Spawn default is (-3, -3); world_lab needs x_offset:=-1.6775 y_offset:=-0.7625 '
+                         '(odom origin of the lab, viz_common.WORLD_CONFIGS)')
+    ap.add_argument('--kill-stragglers', action='store_true',
+                    help='after every job also kill leftover ROS nodes of the launch (pkill -9 by name); only in a '
+                         'container that runs this batch alone, never on a shared host')
     ap.add_argument('--manifest', help='manifest CSV path (default: scripts/batch_runs/manifest.csv); '
                                        'use a separate one for A/B experiments')
     ap.add_argument('--rerun-failed', action='store_true',
@@ -408,11 +433,13 @@ def main():
     args.classical_params = parse_classical_params(args.classical_param + [f'APF:{p}' for p in args.apf_param])
     if args.manifest:
         MANIFEST = Path(args.manifest).resolve()
-    CODE_STATE = {'drl': code_state(args.planner_params),
+    GAZEBO_ARGS = ' '.join(args.gazebo_arg)
+    KILL_STRAGGLERS = args.kill_stragglers
+    CODE_STATE = {'drl': code_state(args.planner_params, GAZEBO_ARGS),
                   **{n: classical_code_state(n, args.classical_params[n]) for n in CLASSICAL}}
     if args.scenarios:
         SCENARIOS = [tuple(x.split('/')) for x in args.scenarios]
-    jobs = build_jobs(args.classical_reps, args.extra_model, args.classical or ['APF'])
+    jobs = build_jobs(args.classical_reps, args.extra_model, args.classical or ['APF'], args.reps)
     if args.skip_classical:
         jobs = [j for j in jobs if not classical_of(j)]
     if args.only_model:
