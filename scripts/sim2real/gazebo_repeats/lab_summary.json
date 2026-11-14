@@ -1,0 +1,27 @@
+{
+ "job": "lab",
+ "manifest": "scripts/sim2real/gazebo_repeats/manifest_world_lab.csv",
+ "analysis_commit": "d5d9c75",
+ "code_states": [
+  "87fbb20+policy_node:e3e2892cc7 [-p max_lin_vel:=0.2 -p max_angular_vel:=0.3 -p normalized_actions:=true -p goal_timeout:=90.0 -p antennae_mask_dist:=0.0 -p rear_mask_deg:=40.0 -p rear_mask_fill:=train_mean -p range_clip:=11.10 -p obstacle_tolerance:=0.205] gazebo[x_offset:=-1.6775 y_offset:=-0.7625]",
+  "d5d9c75+policy_node:e3e2892cc7 [-p max_lin_vel:=0.2 -p max_angular_vel:=0.3 -p normalized_actions:=true -p goal_timeout:=90.0 -p antennae_mask_dist:=0.0 -p rear_mask_deg:=40.0 -p rear_mask_fill:=train_mean -p range_clip:=11.10 -p obstacle_tolerance:=0.205] gazebo[x_offset:=-1.6775 y_offset:=-0.7625]",
+  "e56140c+policy_node:e3e2892cc7 [-p max_lin_vel:=0.2 -p max_angular_vel:=0.3 -p normalized_actions:=true -p goal_timeout:=90.0 -p antennae_mask_dist:=0.0 -p rear_mask_deg:=40.0 -p rear_mask_fill:=train_mean -p range_clip:=11.10 -p obstacle_tolerance:=0.205] gazebo[x_offset:=-1.6775 y_offset:=-0.7625]"
+ ],
+ "manifest_rows": 166,
+ "status_counts": {
+  "launch_fail": 6,
+  "ok": 160
+ },
+ "first_timestamp": "2026-11-13T00:31:31",
+ "last_timestamp": "2026-11-13T03:30:57",
+ "sequence_time_h": 1.7757777777777777,
+ "determinism": {
+  "cells": 16,
+  "cells_identical_outcome": 12,
+  "max_time_spread_s": 48.149760246276855,
+  "reps_per_cell_min": 10,
+  "reps_per_cell_max": 10
+ },
+ "gazebo_mean_spl_reached": 0.9257639890529152,
+ "robot_mean_spl_reached": 0.9757798373509254
+}
