@@ -1,0 +1,81 @@
+{
+ "job": "standard",
+ "manifest": "scripts/sim2real/gazebo_repeats/manifest_standard.csv",
+ "analysis_commit": "5479304",
+ "code_states": [
+  "5479304+policy_node:e3e2892cc7",
+  "d5d9c75+policy_node:e3e2892cc7"
+ ],
+ "manifest_rows": 280,
+ "status_counts": {
+  "ok": 280
+ },
+ "first_timestamp": "2026-11-13T03:32:18",
+ "last_timestamp": "2026-11-13T14:17:38",
+ "sequence_time_h": 3.7465277777777755,
+ "determinism": {
+  "cells": 48,
+  "cells_identical_outcome": 45,
+  "max_time_spread_s": 23.29098081588745,
+  "reps_per_cell_min": 5,
+  "reps_per_cell_max": 5
+ },
+ "scenarios": [
+  "world_1/path1",
+  "world_1/path2",
+  "world_1/path3",
+  "world_2/path1",
+  "world_3/path1",
+  "world_5/path1"
+ ],
+ "ranking": {
+  "TD3_00400_1000": {
+   "variant": "direct_final",
+   "tier": "B",
+   "rank": 1,
+   "old_rank": 1
+  },
+  "TD3_00402_1000": {
+   "variant": "direct_final",
+   "tier": "M",
+   "rank": 6,
+   "old_rank": 1
+  },
+  "TD3_00399_900": {
+   "variant": "direct_best",
+   "tier": "B",
+   "rank": 1,
+   "old_rank": 1
+  },
+  "TD3_00401_900": {
+   "variant": "direct_best",
+   "tier": "M",
+   "rank": 7,
+   "old_rank": 7
+  },
+  "TD3_00390_1000": {
+   "variant": "delta_final",
+   "tier": "B",
+   "rank": 1,
+   "old_rank": 1
+  },
+  "TD3_00395_1000": {
+   "variant": "delta_final",
+   "tier": "M",
+   "rank": 8,
+   "old_rank": 8
+  },
+  "TD3_00391_800": {
+   "variant": "delta_best",
+   "tier": "B",
+   "rank": 1,
+   "old_rank": 1
+  },
+  "TD3_00388_900": {
+   "variant": "delta_best",
+   "tier": "M",
+   "rank": 1,
+   "old_rank": 1
+  }
+ }
+}
