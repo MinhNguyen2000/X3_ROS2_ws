@@ -11,8 +11,9 @@ Per policy: runs, success runs (all legs reached), goal completion (goals reache
 robot_results.failure_type), SPL over all planned legs (failed and not attempted legs score 0) and over reached legs.
 SPL per leg = L / max(L, P): L = shortest collision-free path (scripts/metrics/shortest_path.py, clearance 0.21 m, the world's .sdf) from
 the pose where the leg started to the goal, P = travelled length of the leg; leg boundaries from the poses (first pose within goal
-tolerance + 0.01 m of each goal), as robot_analysis.py. Job A also reports the subset without world_4/path1, which the original
-batch tables exclude (multigoal_units.csv).
+tolerance + 0.01 m of each goal), as robot_analysis.py. Job A covers the paper's six scenarios only (PAPER_SIX); runs of code
+world_4/path1 in the manifest are ignored, as in the original batch tables (multigoal_units.csv, EXCLUDED_SCENARIOS of
+extract_leg_metrics.py).
 
 Usage: analyze_gazebo_repeats.py --job lab|standard [--manifest CSV] [--out DIR]
 Outputs (default scripts/sim2real/gazebo_repeats/): <job>_runs.csv, <job>_policies.csv, <job>_summary.json
@@ -39,7 +40,8 @@ ROBOT_STATS = os.path.join(HERE, 'robot', 'robot_policy_stats.csv')
 OLD_UNITS = os.path.join(WS, 'scripts', 'metrics', 'output', 'multigoal_units.csv')
 OUT = os.path.join(HERE, 'gazebo_repeats')
 MANIFESTS = {'lab': os.path.join(OUT, 'manifest_world_lab.csv'), 'standard': os.path.join(OUT, 'manifest_standard.csv')}
-EXCLUDED = {('world_4', 'path1')}
+PAPER_SIX = [('world_1', 'path1'), ('world_1', 'path2'), ('world_1', 'path3'), ('world_2', 'path1'), ('world_3', 'path1'),
+             ('world_5', 'path1')]    # the paper's six scenarios (world_5 is 'World 4' in the paper); code world_4/path1 is left out
 
 
 def failure_type(result):
@@ -189,6 +191,8 @@ def main():
     models = {m: (r['variant'], r['tier']) for m, r in robot.items()}
     worlds = Worlds()
     rows, recs = load_runs(manifest, worlds)
+    if a.job == 'standard':
+        recs = [r for r in recs if (r['world'], r['path']) in PAPER_SIX]
     stamps = sorted(r['timestamp'] for r in rows if r['timestamp'])
     summary = dict(job=a.job, manifest=os.path.relpath(manifest, WS), analysis_commit=git_head(),
                    code_states=sorted({r['code_state'] for r in rows}), manifest_rows=len(rows),
@@ -196,6 +200,8 @@ def main():
                    first_timestamp=stamps[0] if stamps else '', last_timestamp=stamps[-1] if stamps else '',
                    sequence_time_h=sum(float(r['elapsed_s'] or 0) for r in rows) / 3600)
     summary['determinism'] = determinism(recs)
+    if a.job == 'standard':
+        summary['scenarios'] = [f'{w}/{p}' for w, p in PAPER_SIX]
     write_csv(os.path.join(a.out, f'{a.job}_runs.csv'), recs)
     pol = policy_table(recs, models)
     if a.job == 'lab':
@@ -206,8 +212,7 @@ def main():
         summary['gazebo_mean_spl_reached'] = float(np.mean([r['spl_reached'] for r in pol]))
         summary['robot_mean_spl_reached'] = float(np.mean([r['robot_spl_reached'] for r in pol]))
     else:
-        sub = [r for r in recs if (r['world'], r['path']) not in EXCLUDED]
-        pol_sub = policy_table(sub, models)
+        pol_sub = pol
         old = {}
         for r in csv.DictReader(open(OLD_UNITS)):
             if r['unit'] in models and r['kind'] in ('delta_final', 'delta_best', 'direct_final', 'direct_best'):
@@ -220,8 +225,7 @@ def main():
             r.update(rank_goals=rk_new[r['model']], old_goals_pct=float(o.get('goal_completion', 'nan')),
                      old_rank_goals=rk_old.get(r['model']), old_collisions_per_100_legs=float(o.get('collisions_per_100_legs', 'nan')),
                      old_spl_geo=float(o.get('spl_geo', 'nan')), old_spl_geo_reached=float(o.get('spl_geo_reached', 'nan')))
-        write_csv(os.path.join(a.out, 'standard_policies_without_world_4.csv'), pol_sub)
-        summary['ranking_without_world_4'] = {r['model']: dict(variant=r['variant'], tier=r['tier'], rank=r['rank_goals'],
+        summary['ranking'] = {r['model']: dict(variant=r['variant'], tier=r['tier'], rank=r['rank_goals'],
                                                                old_rank=r['old_rank_goals']) for r in pol_sub}
     write_csv(os.path.join(a.out, f'{a.job}_policies.csv'), pol)
     json.dump(summary, open(os.path.join(a.out, f'{a.job}_summary.json'), 'w'), indent=1)
